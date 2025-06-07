@@ -11,6 +11,7 @@ import NewPetScreen from '../screens/pets/NewPetScreen';
 import NewConsultationScreen from '../screens/consultations/NewConsultationScreen';
 import VetLibraryScreen from '../screens/library/VetLibraryScreen';
 import AgendaScreen from '../screens/agenda/AgendaScreen';
+import NewAppointmentScreen from '../screens/agenda/NewAppointmentScreen';
 import { useAuth } from '../contexts/AuthContext';
 import { Colors } from '../constants/Colors';
 import { globalStyles } from '../styles/globalStyles';
@@ -130,6 +131,16 @@ const HomeStackNavigator = () => (
       }}
     />
     <Stack.Screen 
+      name="NewAppointment" 
+      component={NewAppointmentScreen}
+      options={{
+        title: 'Novo Agendamento',
+        headerStyle: { backgroundColor: Colors.primary },
+        headerTintColor: Colors.surface,
+        headerTitleStyle: { fontWeight: 'bold' }
+      }}
+    />
+    <Stack.Screen 
       name="ConsultationHistory" 
       component={PlaceholderScreen}
       options={{
@@ -237,6 +248,16 @@ const AgendaStackNavigator = () => (
       component={NewConsultationScreen}
       options={{
         title: 'Nova Consulta',
+        headerStyle: { backgroundColor: Colors.primary },
+        headerTintColor: Colors.surface,
+        headerTitleStyle: { fontWeight: 'bold' }
+      }}
+    />
+    <Stack.Screen 
+      name="NewAppointment" 
+      component={NewAppointmentScreen}
+      options={{
+        title: 'Novo Agendamento',
         headerStyle: { backgroundColor: Colors.primary },
         headerTintColor: Colors.surface,
         headerTitleStyle: { fontWeight: 'bold' }

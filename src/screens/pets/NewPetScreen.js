@@ -44,11 +44,14 @@ const NewPetScreen = ({ navigation, route }) => {
   const [availableBreeds, setAvailableBreeds] = useState([]);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
     loadClients();
     if (isEditing) {
       loadPet();
+    } else {
+      setLoadingData(false);
     }
   }, [petId]);
 
@@ -67,12 +70,26 @@ const NewPetScreen = ({ navigation, route }) => {
 
   const loadPet = async () => {
     try {
+      setLoadingData(true);
       const pet = await PetService.getById(petId);
       if (pet) {
-        setFormData(pet);
+        setFormData({
+          name: pet.name || '',
+          clientId: pet.clientId || pet.client_id || '',
+          species: pet.species || '',
+          breed: pet.breed || '',
+          gender: pet.gender || '',
+          birthDate: pet.birthDate || pet.birth_date || '',
+          weight: pet.weight?.toString() || '',
+          color: pet.color || '',
+          microchip: pet.microchip || '',
+          notes: pet.notes || ''
+        });
       }
     } catch (error) {
       Alert.alert('Erro', 'Erro ao carregar dados do pet');
+    } finally {
+      setLoadingData(false);
     }
   };
 
@@ -86,6 +103,11 @@ const NewPetScreen = ({ navigation, route }) => {
         break;
       default:
         setAvailableBreeds(['SRD (Sem Raça Definida)', 'Outros']);
+    }
+    
+    // Reset breed if not compatible with new species
+    if (formData.breed && !availableBreeds.includes(formData.breed)) {
+      setFormData(prev => ({ ...prev, breed: '' }));
     }
   };
 
@@ -117,11 +139,24 @@ const NewPetScreen = ({ navigation, route }) => {
 
     setLoading(true);
     try {
+      const petData = {
+        name: formData.name.trim(),
+        client_id: formData.clientId,
+        species: formData.species,
+        breed: formData.breed,
+        gender: formData.gender,
+        birth_date: formData.birthDate || null,
+        weight: formData.weight ? parseFloat(formData.weight) : null,
+        color: formData.color.trim(),
+        microchip: formData.microchip.trim(),
+        notes: formData.notes.trim()
+      };
+
       let result;
       if (isEditing) {
-        result = await PetService.update(petId, formData);
+        result = await PetService.update(petId, petData);
       } else {
-        result = await PetService.create(formData);
+        result = await PetService.create(petData);
       }
 
       if (result.success) {
@@ -134,6 +169,7 @@ const NewPetScreen = ({ navigation, route }) => {
         Alert.alert('Erro', result.error);
       }
     } catch (error) {
+      console.error('Erro ao salvar pet:', error);
       Alert.alert('Erro', 'Erro interno do sistema');
     } finally {
       setLoading(false);
@@ -161,13 +197,27 @@ const NewPetScreen = ({ navigation, route }) => {
 
   const selectedClient = clients.find(client => client.id === formData.clientId);
 
+  if (loadingData) {
+    return (
+      <SafeAreaView style={globalStyles.container}>
+        <View style={[globalStyles.container, globalStyles.justifyCenter, globalStyles.alignCenter]}>
+          <Text style={globalStyles.textRegular}>Carregando dados do pet...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={globalStyles.container}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={globalStyles.keyboardView}
       >
-        <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
+        <ScrollView 
+          contentContainerStyle={globalStyles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
           <Card>
             <View style={styles.header}>
               <Ionicons name="paw" size={24} color={Colors.primary} />
@@ -187,6 +237,8 @@ const NewPetScreen = ({ navigation, route }) => {
                 leftIcon="heart"
                 error={errors.name}
                 required
+                editable={true}
+                autoCapitalize="words"
               />
 
               <View style={styles.pickerContainer}>
@@ -198,6 +250,7 @@ const NewPetScreen = ({ navigation, route }) => {
                     selectedValue={formData.clientId}
                     onValueChange={(value) => updateField('clientId', value)}
                     style={styles.picker}
+                    enabled={true}
                   >
                     <Picker.Item label="Selecione o cliente..." value="" />
                     {clients.map(client => (
@@ -224,8 +277,12 @@ const NewPetScreen = ({ navigation, route }) => {
                 <View style={[styles.pickerWrapper, errors.species && styles.pickerWrapperError]}>
                   <Picker
                     selectedValue={formData.species}
-                    onValueChange={(value) => updateField('species', value)}
+                    onValueChange={(value) => {
+                      updateField('species', value);
+                      updateField('breed', ''); // Reset breed when species changes
+                    }}
                     style={styles.picker}
+                    enabled={true}
                   >
                     <Picker.Item label="Selecione a espécie..." value="" />
                     {ESPECIES.map(especie => (
@@ -262,6 +319,7 @@ const NewPetScreen = ({ navigation, route }) => {
                     selectedValue={formData.gender}
                     onValueChange={(value) => updateField('gender', value)}
                     style={styles.picker}
+                    enabled={true}
                   >
                     <Picker.Item label="Selecione o sexo..." value="" />
                     <Picker.Item label="Macho" value="Macho" />
@@ -283,6 +341,7 @@ const NewPetScreen = ({ navigation, route }) => {
                 keyboardType="numeric"
                 leftIcon="calendar"
                 maxLength={10}
+                editable={true}
               />
 
               {formData.birthDate && formData.birthDate.length === 10 && (
@@ -298,6 +357,7 @@ const NewPetScreen = ({ navigation, route }) => {
                 placeholder="Ex: 5.2"
                 keyboardType="decimal-pad"
                 leftIcon="fitness"
+                editable={true}
               />
 
               <Input
@@ -306,6 +366,8 @@ const NewPetScreen = ({ navigation, route }) => {
                 onChangeText={(value) => updateField('color', value)}
                 placeholder="Cor predominante"
                 leftIcon="color-palette"
+                editable={true}
+                autoCapitalize="words"
               />
 
               <Input
@@ -314,6 +376,7 @@ const NewPetScreen = ({ navigation, route }) => {
                 onChangeText={(value) => updateField('microchip', value)}
                 placeholder="Número do microchip"
                 leftIcon="radio"
+                editable={true}
               />
             </View>
 
@@ -328,6 +391,8 @@ const NewPetScreen = ({ navigation, route }) => {
                 multiline
                 numberOfLines={3}
                 maxLength={500}
+                editable={true}
+                autoCapitalize="sentences"
               />
             </View>
 
@@ -337,6 +402,7 @@ const NewPetScreen = ({ navigation, route }) => {
                 variant="outline"
                 onPress={() => navigation.goBack()}
                 style={styles.cancelButton}
+                disabled={loading}
               />
               <Button
                 title={isEditing ? 'Atualizar' : 'Cadastrar'}

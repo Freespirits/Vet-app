@@ -6,51 +6,135 @@ const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState(null);
 
   useEffect(() => {
     // Verificar sessão inicial
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Sessão inicial:', session);
+      setSession(session);
       if (session?.user) {
-        loadUserProfile(session.user.id);
+        loadUserProfile(session.user);
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     // Escutar mudanças de autenticação
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event);
+      console.log('Auth state changed:', event, session);
+      setSession(session);
       
       if (event === 'SIGNED_IN' && session?.user) {
-        await loadUserProfile(session.user.id);
+        await loadUserProfile(session.user);
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
+        setSession(null);
+        setLoading(false);
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const loadUserProfile = async (userId) => {
+  const loadUserProfile = async (authUser) => {
     try {
-      console.log('Carregando perfil para usuário:', userId);
+      console.log('Carregando perfil para usuário:', authUser.id, authUser.email);
       
-      const { data, error } = await supabase
+      // Primeiro, tentar buscar pelo ID
+      let { data, error } = await supabase
         .from('users_consultorio')
         .select('*')
-        .eq('id', userId)
+        .eq('id', authUser.id)
         .single();
 
-      if (error) {
-        console.error('Erro ao carregar perfil:', error);
-        return;
-      }
+      // Se não encontrar pelo ID, tentar buscar pelo email
+      if (error && error.code === 'PGRST116') {
+        console.log('Perfil não encontrado pelo ID, tentando pelo email...');
+        
+        const { data: profileByEmail, error: emailError } = await supabase
+          .from('users_consultorio')
+          .select('*')
+          .eq('email', authUser.email)
+          .single();
 
-      if (data) {
-        console.log('Perfil carregado com sucesso');
+        if (emailError && emailError.code === 'PGRST116') {
+          // Perfil não existe, criar automaticamente
+          console.log('Perfil não existe, criando automaticamente...');
+          await createUserProfile(authUser);
+          return;
+        } else if (emailError) {
+          console.error('Erro ao buscar perfil por email:', emailError);
+          setLoading(false);
+          return;
+        } else {
+          // Perfil encontrado por email, atualizar o ID
+          console.log('Perfil encontrado por email, atualizando ID...');
+          const { data: updatedProfile, error: updateError } = await supabase
+            .from('users_consultorio')
+            .update({ id: authUser.id, updated_at: new Date().toISOString() })
+            .eq('email', authUser.email)
+            .select()
+            .single();
+
+          if (updateError) {
+            console.error('Erro ao atualizar ID do perfil:', updateError);
+            setUser(profileByEmail); // Usar perfil sem atualizar ID
+          } else {
+            setUser(updatedProfile);
+          }
+        }
+      } else if (error) {
+        console.error('Erro ao carregar perfil:', error);
+        setLoading(false);
+        return;
+      } else {
+        // Perfil encontrado pelo ID
+        console.log('Perfil carregado com sucesso:', data);
         setUser(data);
       }
     } catch (error) {
       console.error('Erro ao carregar usuário:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createUserProfile = async (authUser) => {
+    try {
+      console.log('Criando perfil automático para:', authUser.email);
+      
+      // Dados padrão para usuário de demonstração
+      const isDemo = authUser.email === 'admin@petcare.com';
+      
+      const profileData = {
+        id: authUser.id,
+        email: authUser.email,
+        name: isDemo ? 'Dr. João Silva' : authUser.user_metadata?.name || 'Usuário',
+        profession: 'Veterinário(a)',
+        clinic: isDemo ? 'Clínica VetCare' : 'Minha Clínica',
+        crmv: isDemo ? '12345-SP' : '',
+        phone: isDemo ? '(11) 99999-9999' : '',
+      };
+
+      const { data, error } = await supabase
+        .from('users_consultorio')
+        .insert([profileData])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Erro ao criar perfil automático:', error);
+        setLoading(false);
+        return;
+      }
+
+      console.log('Perfil criado automaticamente:', data);
+      setUser(data);
+    } catch (error) {
+      console.error('Erro ao criar perfil automático:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,6 +170,11 @@ export const AuthProvider = ({ children }) => {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: email,
         password: userData.password,
+        options: {
+          data: {
+            name: userData.name,
+          }
+        }
       });
 
       if (authError) {
@@ -99,10 +188,7 @@ export const AuthProvider = ({ children }) => {
 
       console.log('Usuário criado na auth, ID:', authData.user.id);
 
-      // Aguardar um momento
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Criar perfil na tabela users_consultorio
+      // Se o usuário foi criado mas não está confirmado, ainda criar o perfil
       const profileData = {
         id: authData.user.id,
         email: email,
@@ -138,7 +224,11 @@ export const AuthProvider = ({ children }) => {
       }
 
       console.log('Perfil criado com sucesso');
-      setUser(profileResult);
+      
+      // Se o usuário foi auto-confirmado (ambiente de desenvolvimento), definir como usuário ativo
+      if (authData.session) {
+        setUser(profileResult);
+      }
       
       return { success: true, data: authData };
 
@@ -180,6 +270,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await supabase.auth.signOut();
       setUser(null);
+      setSession(null);
     } catch (error) {
       console.error('Erro no logout:', error);
     }
@@ -189,12 +280,13 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        session,
         loading,
         login,
         register,
         updateProfile,
         logout,
-        isAuthenticated: !!user,
+        isAuthenticated: !!user && !!session,
       }}
     >
       {children}

@@ -9,11 +9,14 @@ import {
   Modal,
   RefreshControl,
   Alert,
-  Dimensions
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Picker } from '@react-native-picker/picker';
 import Input from '../../components/common/Input';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
@@ -21,6 +24,7 @@ import Loading from '../../components/common/Loading';
 import { LibraryService } from '../../services/LibraryService';
 import { MEDICAMENTOS, VACINAS, PROCEDIMENTOS } from '../../constants/Data';
 import { formatCurrency } from '../../utils/helpers';
+import { validateRequired } from '../../utils/validators';
 import { Colors } from '../../constants/Colors';
 import { globalStyles } from '../../styles/globalStyles';
 
@@ -32,9 +36,29 @@ const VetLibraryScreen = ({ navigation }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
   const [customItems, setCustomItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+
+  // Estado do formulário para adicionar/editar
+  const [formData, setFormData] = useState({
+    category: '',
+    name: '',
+    description: '',
+    dosage: '',
+    frequency: '',
+    contraindications: '',
+    observations: '',
+    species: '',
+    diseases: '',
+    schedule: '',
+    booster: '',
+    duration: '',
+    price: '',
+  });
+  const [formErrors, setFormErrors] = useState({});
 
   useFocusEffect(
     useCallback(() => {
@@ -98,6 +122,135 @@ const VetLibraryScreen = ({ navigation }) => {
   const openItemDetail = (item) => {
     setSelectedItem(item);
     setModalVisible(true);
+  };
+
+  const openAddModal = () => {
+    resetForm();
+    setFormData({
+      ...formData,
+      category: activeTab === 'medicamentos' ? 'medicamento' : 
+               activeTab === 'vacinas' ? 'vacina' : 'procedimento'
+    });
+    setAddModalVisible(true);
+  };
+
+  const openEditModal = (item) => {
+    setFormData({
+      category: item.category,
+      name: item.name,
+      description: item.description || '',
+      dosage: item.dosage || '',
+      frequency: item.frequency || '',
+      contraindications: item.contraindications || '',
+      observations: item.observations || '',
+      species: item.species || '',
+      diseases: Array.isArray(item.diseases) ? item.diseases.join(', ') : item.diseases || '',
+      schedule: item.schedule || '',
+      booster: item.booster || '',
+      duration: item.duration?.toString() || '',
+      price: item.price?.toString() || '',
+    });
+    setSelectedItem(item);
+    setModalVisible(false);
+    setEditModalVisible(true);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      category: '',
+      name: '',
+      description: '',
+      dosage: '',
+      frequency: '',
+      contraindications: '',
+      observations: '',
+      species: '',
+      diseases: '',
+      schedule: '',
+      booster: '',
+      duration: '',
+      price: '',
+    });
+    setFormErrors({});
+  };
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!validateRequired(formData.name)) {
+      errors.name = 'Nome é obrigatório';
+    }
+
+    if (formData.category === 'medicamento') {
+      if (!validateRequired(formData.dosage)) {
+        errors.dosage = 'Dosagem é obrigatória';
+      }
+      if (!validateRequired(formData.frequency)) {
+        errors.frequency = 'Frequência é obrigatória';
+      }
+    }
+
+    if (formData.category === 'vacina') {
+      if (!validateRequired(formData.species)) {
+        errors.species = 'Espécie é obrigatória';
+      }
+      if (!validateRequired(formData.diseases)) {
+        errors.diseases = 'Doenças prevenidas são obrigatórias';
+      }
+    }
+
+    if (formData.category === 'procedimento') {
+      if (!validateRequired(formData.duration)) {
+        errors.duration = 'Duração é obrigatória';
+      }
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSaveItem = async () => {
+    if (!validateForm()) return;
+
+    setFormLoading(true);
+    try {
+      const itemData = {
+        category: formData.category,
+        name: formData.name,
+        description: formData.description,
+        dosage: formData.dosage,
+        frequency: formData.frequency,
+        contraindications: formData.contraindications,
+        observations: formData.observations,
+        species: formData.species,
+        diseases: formData.diseases ? formData.diseases.split(',').map(d => d.trim()) : [],
+        schedule: formData.schedule,
+        booster: formData.booster,
+        duration: formData.duration ? parseInt(formData.duration) : null,
+        price: formData.price ? parseFloat(formData.price) : null,
+      };
+
+      let result;
+      if (editModalVisible && selectedItem) {
+        result = await LibraryService.update(selectedItem.id, itemData);
+      } else {
+        result = await LibraryService.create(itemData);
+      }
+
+      if (result.success) {
+        await loadCustomItems();
+        setAddModalVisible(false);
+        setEditModalVisible(false);
+        resetForm();
+        Alert.alert('Sucesso', `Item ${editModalVisible ? 'atualizado' : 'adicionado'} com sucesso!`);
+      } else {
+        Alert.alert('Erro', result.error);
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Erro interno do sistema');
+    } finally {
+      setFormLoading(false);
+    }
   };
 
   const handleDeleteItem = async (item) => {
@@ -359,13 +512,22 @@ const VetLibraryScreen = ({ navigation }) => {
 
           <View style={styles.modalActions}>
             {selectedItem.user_id && (
-              <Button
-                title="Excluir"
-                variant="danger"
-                onPress={() => handleDeleteItem(selectedItem)}
-                style={styles.deleteButton}
-                icon={<Ionicons name="trash" size={16} color={Colors.surface} />}
-              />
+              <>
+                <Button
+                  title="Editar"
+                  variant="secondary"
+                  onPress={() => openEditModal(selectedItem)}
+                  style={styles.editButton}
+                  icon={<Ionicons name="create" size={16} color={Colors.surface} />}
+                />
+                <Button
+                  title="Excluir"
+                  variant="danger"
+                  onPress={() => handleDeleteItem(selectedItem)}
+                  style={styles.deleteButton}
+                  icon={<Ionicons name="trash" size={16} color={Colors.surface} />}
+                />
+              </>
             )}
             <Button
               title="Fechar"
@@ -389,31 +551,160 @@ const VetLibraryScreen = ({ navigation }) => {
     </View>
   );
 
-  const AddItemModal = () => (
+  const AddEditModal = ({ visible, onClose, isEdit = false }) => (
     <Modal
-      visible={addModalVisible}
+      visible={visible}
       animationType="slide"
       presentationStyle="pageSheet"
-      onRequestClose={() => setAddModalVisible(false)}
+      onRequestClose={onClose}
     >
       <SafeAreaView style={styles.modalContainer}>
-        <View style={styles.addModalHeader}>
-          <Text style={styles.addModalTitle}>Adicionar {activeTab.slice(0, -1)}</Text>
-          <TouchableOpacity
-            onPress={() => setAddModalVisible(false)}
-            style={styles.closeButton}
-          >
-            <Ionicons name="close" size={24} color={Colors.textSecondary} />
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.addModalSubtitle}>
-          Funcionalidade em desenvolvimento. Em breve você poderá adicionar seus próprios itens à biblioteca!
-        </Text>
-        <Button
-          title="Fechar"
-          onPress={() => setAddModalVisible(false)}
-          style={styles.addModalButton}
-        />
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1 }}
+        >
+          <View style={styles.addModalHeader}>
+            <Text style={styles.addModalTitle}>
+              {isEdit ? 'Editar' : 'Adicionar'} {
+                formData.category === 'medicamento' ? 'Medicamento' :
+                formData.category === 'vacina' ? 'Vacina' : 'Procedimento'
+              }
+            </Text>
+            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+              <Ionicons name="close" size={24} color={Colors.textSecondary} />
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView style={styles.formContent} showsVerticalScrollIndicator={false}>
+            <Input
+              label="Nome"
+              value={formData.name}
+              onChangeText={(value) => setFormData(prev => ({ ...prev, name: value }))}
+              placeholder="Nome do item"
+              error={formErrors.name}
+              required
+            />
+
+            <Input
+              label="Descrição"
+              value={formData.description}
+              onChangeText={(value) => setFormData(prev => ({ ...prev, description: value }))}
+              placeholder="Descrição do item"
+              multiline
+              numberOfLines={3}
+            />
+
+            {formData.category === 'medicamento' && (
+              <>
+                <Input
+                  label="Dosagem"
+                  value={formData.dosage}
+                  onChangeText={(value) => setFormData(prev => ({ ...prev, dosage: value }))}
+                  placeholder="Ex: 25mg/kg"
+                  error={formErrors.dosage}
+                  required
+                />
+                <Input
+                  label="Frequência"
+                  value={formData.frequency}
+                  onChangeText={(value) => setFormData(prev => ({ ...prev, frequency: value }))}
+                  placeholder="Ex: A cada 8 horas"
+                  error={formErrors.frequency}
+                  required
+                />
+                <Input
+                  label="Contraindicações"
+                  value={formData.contraindications}
+                  onChangeText={(value) => setFormData(prev => ({ ...prev, contraindications: value }))}
+                  placeholder="Contraindicações conhecidas"
+                  multiline
+                  numberOfLines={3}
+                />
+                <Input
+                  label="Observações"
+                  value={formData.observations}
+                  onChangeText={(value) => setFormData(prev => ({ ...prev, observations: value }))}
+                  placeholder="Observações importantes"
+                  multiline
+                  numberOfLines={3}
+                />
+              </>
+            )}
+
+            {formData.category === 'vacina' && (
+              <>
+                <Input
+                  label="Espécie"
+                  value={formData.species}
+                  onChangeText={(value) => setFormData(prev => ({ ...prev, species: value }))}
+                  placeholder="Ex: Cão/Gato"
+                  error={formErrors.species}
+                  required
+                />
+                <Input
+                  label="Doenças Prevenidas"
+                  value={formData.diseases}
+                  onChangeText={(value) => setFormData(prev => ({ ...prev, diseases: value }))}
+                  placeholder="Separe por vírgula: Cinomose, Hepatite..."
+                  multiline
+                  numberOfLines={3}
+                  error={formErrors.diseases}
+                  required
+                />
+                <Input
+                  label="Protocolo de Vacinação"
+                  value={formData.schedule}
+                  onChangeText={(value) => setFormData(prev => ({ ...prev, schedule: value }))}
+                  placeholder="Ex: 6-8 semanas, 10-12 semanas"
+                  multiline
+                  numberOfLines={2}
+                />
+                <Input
+                  label="Reforço"
+                  value={formData.booster}
+                  onChangeText={(value) => setFormData(prev => ({ ...prev, booster: value }))}
+                  placeholder="Ex: Anual"
+                />
+              </>
+            )}
+
+            {formData.category === 'procedimento' && (
+              <>
+                <Input
+                  label="Duração (minutos)"
+                  value={formData.duration}
+                  onChangeText={(value) => setFormData(prev => ({ ...prev, duration: value }))}
+                  placeholder="Ex: 30"
+                  keyboardType="numeric"
+                  error={formErrors.duration}
+                  required
+                />
+                <Input
+                  label="Preço (R$)"
+                  value={formData.price}
+                  onChangeText={(value) => setFormData(prev => ({ ...prev, price: value }))}
+                  placeholder="Ex: 80.00"
+                  keyboardType="decimal-pad"
+                />
+              </>
+            )}
+          </ScrollView>
+
+          <View style={styles.formActions}>
+            <Button
+              title="Cancelar"
+              variant="outline"
+              onPress={onClose}
+              style={styles.formCancelButton}
+            />
+            <Button
+              title={isEdit ? 'Atualizar' : 'Adicionar'}
+              onPress={handleSaveItem}
+              loading={formLoading}
+              style={styles.formSaveButton}
+            />
+          </View>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </Modal>
   );
@@ -483,7 +774,7 @@ const VetLibraryScreen = ({ navigation }) => {
         
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() => setAddModalVisible(true)}
+          onPress={openAddModal}
         >
           <Ionicons name="add" size={24} color={Colors.surface} />
         </TouchableOpacity>
@@ -525,7 +816,7 @@ const VetLibraryScreen = ({ navigation }) => {
               </Text>
               <Button
                 title="Adicionar Item"
-                onPress={() => setAddModalVisible(true)}
+                onPress={openAddModal}
                 style={styles.emptyStateButton}
                 icon={<Ionicons name="add" size={16} color={Colors.surface} />}
               />
@@ -572,7 +863,21 @@ const VetLibraryScreen = ({ navigation }) => {
       </ScrollView>
 
       <ItemDetailModal />
-      <AddItemModal />
+      <AddEditModal 
+        visible={addModalVisible} 
+        onClose={() => {
+          setAddModalVisible(false);
+          resetForm();
+        }} 
+      />
+      <AddEditModal 
+        visible={editModalVisible} 
+        onClose={() => {
+          setEditModalVisible(false);
+          resetForm();
+        }} 
+        isEdit={true}
+      />
     </SafeAreaView>
   );
 };
@@ -877,6 +1182,9 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.border,
     gap: 12,
   },
+  editButton: {
+    flex: 1,
+  },
   deleteButton: {
     flex: 1,
   },
@@ -896,15 +1204,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: Colors.text,
   },
-  addModalSubtitle: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    padding: 32,
-    lineHeight: 22,
+  formContent: {
+    flex: 1,
+    padding: 20,
   },
-  addModalButton: {
-    margin: 20,
+  formActions: {
+    flexDirection: 'row',
+    padding: 20,
+    backgroundColor: Colors.surface,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+    gap: 12,
+  },
+  formCancelButton: {
+    flex: 1,
+  },
+  formSaveButton: {
+    flex: 1,
   },
 });
 

@@ -104,6 +104,8 @@ const LoginScreen = ({ navigation }) => {
           errorMessage = 'Cadastro de novos usuários está temporariamente desabilitado.';
         } else if (errorMessage.includes('permission denied')) {
           errorMessage = 'Erro de permissão. Verifique suas credenciais.';
+        } else if (errorMessage.includes('PGRST116')) {
+          errorMessage = 'Erro de configuração do perfil. Tente novamente.';
         }
         
         Alert.alert('Erro', errorMessage);
