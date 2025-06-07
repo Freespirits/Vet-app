@@ -1,191 +1,1222 @@
-# PetCare Pro
+<div align="center">
+  <img src="./assets/logo.png" alt="PetCare Pro Logo" width="200" height="200" style="border-radius: 50%; box-shadow: 0 10px 30px rgba(46, 125, 50, 0.3);">
+  
+  <h1 style="color: #2E7D32; margin-top: 20px;">🐾 PetCare Pro</h1>
+  
+  <p><strong>Sistema Completo para Gestão de Clínicas Veterinárias e Petshops</strong></p>
+  
+  <p>
+    <img src="https://img.shields.io/badge/React%20Native-0.79.2-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React Native">
+    <img src="https://img.shields.io/badge/Expo%20SDK-53-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo">
+    <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase">
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
+  </p>
+  
+  <p>
+    <img src="https://img.shields.io/badge/Versão-1.0.0-2E7D32?style=for-the-badge" alt="Version">
+    <img src="https://img.shields.io/badge/Licença-MIT-81C784?style=for-the-badge" alt="License">
+    <img src="https://img.shields.io/badge/Plataforma-iOS%20%7C%20Android-4CAF50?style=for-the-badge" alt="Platform">
+  </p>
+</div>
 
-Sistema completo para gestão de clínicas veterinárias e petshops desenvolvido com React Native e Expo.
+---
+
+## 📋 Índice
+
+- [🎯 Sobre o Projeto](#-sobre-o-projeto)
+- [🚀 Características](#-características)
+- [🛠️ Tecnologias](#️-tecnologias)
+- [📱 Compatibilidade](#-compatibilidade)
+- [🏗️ Arquitetura](#️-arquitetura)
+- [📁 Estrutura do Projeto](#-estrutura-do-projeto)
+- [⚡ Instalação e Configuração](#-instalação-e-configuração)
+- [🎮 Como Usar](#-como-usar)
+- [📊 Funcionalidades Principais](#-funcionalidades-principais)
+- [🎨 Design System](#-design-system)
+- [📘 Scripts Disponíveis](#-scripts-disponíveis)
+- [🔧 Configuração do Ambiente](#-configuração-do-ambiente)
+- [🗄️ Banco de Dados](#️-banco-de-dados)
+- [📈 Roadmap](#-roadmap)
+- [🤝 Contribuição](#-contribuição)
+- [📄 Licença](#-licença)
+- [👥 Equipe](#-equipe)
+- [📞 Suporte](#-suporte)
+
+---
+
+## 🎯 Sobre o Projeto
+
+O **PetCare Pro** é um sistema completo e moderno desenvolvido especificamente para veterinários brasileiros que desejam digitalizar e otimizar a gestão de suas clínicas veterinárias e petshops. 
+
+### 🌟 Por que PetCare Pro?
+
+Em um mercado veterinário em constante crescimento no Brasil, com mais de 149 milhões de animais de estimação (segundo o Instituto Pet Brasil), a digitalização dos processos se tornou essencial para:
+
+- **Eficiência Operacional**: Reduzir tempo gasto em tarefas administrativas
+- **Melhor Atendimento**: Acesso rápido ao histórico completo dos pacientes
+- **Gestão Financeira**: Controle de receitas e procedimentos realizados
+- **Organização**: Sistema centralizado para clientes, pets e consultas
+- **Mobilidade**: Acesso às informações em qualquer lugar
+
+### 🎯 Objetivo Principal
+
+Fornecer uma solução **gratuita**, **intuitiva** e **completa** que permita aos veterinários focar no que fazem de melhor: **cuidar dos animais**.
+
+---
 
 ## 🚀 Características
 
-### ✅ Implementado
-- ✅ Sistema de autenticação completo
-- ✅ Dashboard com estatísticas em tempo real
-- ✅ Gestão de clientes (CRUD completo)
-- ✅ Gestão de pets (CRUD completo)
-- ✅ Histórico de consultas
-- ✅ Interface responsiva e moderna
-- ✅ Componentes reutilizáveis
-- ✅ Navegação intuitiva
-- ✅ Armazenamento local (AsyncStorage)
-- ✅ Validação de formulários
-- ✅ Estados de loading e erro
+### ✅ Funcionalidades Implementadas
+
+| Módulo | Funcionalidade | Status |
+|--------|----------------|--------|
+| 🔐 **Autenticação** | Sistema completo de login/registro | ✅ Completo |
+| 📊 **Dashboard** | Estatísticas em tempo real | ✅ Completo |
+| 👥 **Gestão de Clientes** | CRUD completo com validações | ✅ Completo |
+| 🐾 **Gestão de Pets** | Cadastro detalhado e histórico | ✅ Completo |
+| 📋 **Consultas** | Registro completo de atendimentos | ✅ Completo |
+| 📅 **Agenda** | Sistema de agendamentos | ✅ Completo |
+| 📚 **Biblioteca Veterinária** | Medicamentos, vacinas e procedimentos | ✅ Completo |
+| 📱 **Interface Responsiva** | Design moderno e intuitivo | ✅ Completo |
+| 💾 **Armazenamento** | Banco de dados robusto (Supabase) | ✅ Completo |
+| ✅ **Validação** | Formulários com validação completa | ✅ Completo |
+| 🔄 **Estados** | Loading, erro e sucesso | ✅ Completo |
 
 ### 🚧 Em Desenvolvimento
-- 🚧 Cadastro de usuários
-- 🚧 Agendamento de consultas
-- 🚧 Biblioteca veterinária
-- 🚧 Relatórios e estatísticas
-- 🚧 Backup e sincronização
-- 🚧 Notificações push
-- 🚧 Modo offline
 
-## 📱 Compatibilidade
+| Funcionalidade | Previsão | Prioridade |
+|----------------|----------|------------|
+| 📧 **Notificações Push** | v1.1.0 | Alta |
+| 📊 **Relatórios PDF** | v1.2.0 | Alta |
+| ☁️ **Backup em Nuvem** | v1.2.0 | Média |
+| 🔄 **Sincronização Multi-device** | v1.3.0 | Média |
+| 📱 **App para Clientes** | v2.0.0 | Baixa |
+| 🏥 **Multi-clínica** | v2.0.0 | Baixa |
 
-- ✅ iOS
-- ✅ Android
-- ✅ Expo Go (SDK 53)
-- ✅ Expo Development Build
+---
 
 ## 🛠️ Tecnologias
 
-- **React Native** - Framework principal
-- **Expo SDK 53** - Plataforma de desenvolvimento
-- **React Navigation v6** - Navegação
-- **AsyncStorage** - Armazenamento local
-- **Expo Vector Icons** - Ícones
-- **React Native Gesture Handler** - Gestos
-- **React Native Reanimated** - Animações
+### 🎯 Core Technologies
+
+| Tecnologia | Versão | Propósito |
+|------------|--------|-----------|
+| **React Native** | 0.79.2 | Framework principal para desenvolvimento móvel |
+| **Expo SDK** | 53.0.9 | Plataforma de desenvolvimento e build |
+| **Supabase** | 2.39.0 | Backend-as-a-Service (BaaS) |
+| **React Navigation** | v6 | Navegação entre telas |
+| **AsyncStorage** | 2.1.2 | Armazenamento local |
+
+### 🎨 UI/UX Libraries
+
+| Biblioteca | Versão | Funcionalidade |
+|------------|--------|----------------|
+| **Expo Vector Icons** | 14.1.0 | Ícones vetorizados |
+| **React Native Gesture Handler** | 2.24.0 | Gestos e interações |
+| **React Native Reanimated** | 3.17.4 | Animações fluidas |
+| **Expo Linear Gradient** | 14.1.4 | Gradientes visuais |
+| **React Native Safe Area Context** | 5.4.0 | Área segura para dispositivos |
+
+### 🔧 Development Tools
+
+| Ferramenta | Versão | Propósito |
+|------------|--------|-----------|
+| **Babel Core** | 7.20.0 | Transpilação JavaScript |
+| **React Native Picker** | 2.11.0 | Seletores dropdown |
+| **Expo Image Picker** | 15.0.7 | Seleção de imagens |
+| **Expo Splash Screen** | 0.29.9 | Tela de carregamento |
+
+### 🗄️ Database & Backend
+
+| Serviço | Funcionalidade |
+|---------|----------------|
+| **Supabase PostgreSQL** | Banco de dados principal |
+| **Supabase Auth** | Autenticação de usuários |
+| **Supabase Storage** | Armazenamento de arquivos |
+| **Supabase Realtime** | Sincronização em tempo real |
+
+---
+
+## 📱 Compatibilidade
+
+### 📋 Requisitos de Sistema
+
+| Plataforma | Versão Mínima | Status |
+|------------|---------------|--------|
+| **iOS** | 12.0+ | ✅ Totalmente suportado |
+| **Android** | API 21+ (Android 5.0) | ✅ Totalmente suportado |
+| **Expo Go** | Última versão | ✅ Desenvolvimento e testes |
+| **Expo Development Build** | - | ✅ Builds customizados |
+
+### 🎯 Dispositivos Testados
+
+- **iOS**: iPhone 12+, iPad Air 4+
+- **Android**: Samsung Galaxy S21+, Pixel 6+
+- **Tablets**: Suporte responsivo completo
+
+---
+
+## 🏗️ Arquitetura
+
+### 📐 Padrões Arquiteturais
+
+```mermaid
+graph TB
+    A[React Native App] --> B[Expo Framework]
+    B --> C[Components Layer]
+    C --> D[Services Layer]
+    D --> E[Supabase Backend]
+    
+    C --> F[Context API]
+    F --> G[AsyncStorage]
+    
+    E --> H[PostgreSQL Database]
+    E --> I[Authentication]
+    E --> J[File Storage]
+```
+
+### 🔄 Fluxo de Dados
+
+1. **UI Components** → Interação do usuário
+2. **Context API** → Gerenciamento de estado global
+3. **Services** → Lógica de negócio e API calls
+4. **Supabase** → Backend e persistência
+5. **AsyncStorage** → Cache local
+
+---
 
 ## 📁 Estrutura do Projeto
 
 ```
-src/
-├── components/          # Componentes reutilizáveis
-│   ├── common/         # Button, Input, Card, Loading
-│   └── forms/          # Componentes de formulário
-├── screens/            # Telas da aplicação
-│   ├── auth/          # Telas de autenticação
-│   ├── clients/       # Gestão de clientes
-│   ├── pets/          # Gestão de pets
-│   ├── library/       # Biblioteca veterinária
-│   └── profile/       # Perfil do usuário
-├── services/          # Serviços de dados
-├── contexts/          # Contextos React
-├── constants/         # Constantes (cores, dados)
-├── utils/            # Utilitários e helpers
-├── styles/           # Estilos globais
-└── navigation/       # Configuração de navegação
+📦 PetCare Pro
+├── 📱 App.js                     # Componente raiz da aplicação
+├── 📝 app.json                   # Configurações do Expo
+├── 📦 package.json               # Dependências e scripts
+├── 🛠️ babel.config.js            # Configuração do Babel
+├── 🚫 .gitignore                 # Arquivos ignorados pelo Git
+├── 📖 README.md                  # Documentação do projeto
+├── 🖼️ assets/                    # Recursos estáticos
+│   └── 🎨 logo.png              # Logo da aplicação
+├── 🗄️ db/                        # Scripts de banco de dados
+│   └── 📊 supabase.sql          # Schema e dados iniciais
+└── 📂 src/                       # Código fonte principal
+    ├── 🧩 components/            # Componentes reutilizáveis
+    │   ├── 🔄 common/           # Componentes genéricos
+    │   │   ├── 🔘 Button.js     # Botão customizado
+    │   │   ├── 📇 Card.js       # Container de conteúdo
+    │   │   ├── 📝 Input.js      # Campo de entrada
+    │   │   └── ⏳ Loading.js    # Indicador de carregamento
+    │   └── 📋 forms/            # Componentes de formulário
+    ├── 📱 screens/              # Telas da aplicação
+    │   ├── 🔐 auth/             # Autenticação
+    │   │   └── 🚪 LoginScreen.js
+    │   ├── 👥 clients/          # Gestão de clientes
+    │   │   ├── 📋 ClientListScreen.js
+    │   │   └── ➕ NewClientScreen.js
+    │   ├── 🐾 pets/             # Gestão de pets
+    │   │   ├── 📋 PetListScreen.js
+    │   │   └── ➕ NewPetScreen.js
+    │   ├── 🩺 consultations/    # Consultas veterinárias
+    │   │   └── ➕ NewConsultationScreen.js
+    │   ├── 📅 agenda/           # Sistema de agendamentos
+    │   │   ├── 📅 AgendaScreen.js
+    │   │   └── ➕ NewAppointmentScreen.js
+    │   ├── 📚 library/          # Biblioteca veterinária
+    │   │   └── 📖 VetLibraryScreen.js
+    │   ├── 👤 profile/          # Perfil do usuário
+    │   │   └── 👤 ProfileScreen.js
+    │   └── 🏠 HomeScreen.js     # Dashboard principal
+    ├── 🌐 services/             # Serviços de dados
+    │   ├── 👥 ClientService.js
+    │   ├── 🐾 PetService.js
+    │   ├── 🩺 ConsultationService.js
+    │   ├── 📅 AppointmentService.js
+    │   └── 📚 LibraryService.js
+    ├── 🔄 contexts/             # Contextos React
+    │   └── 🔐 AuthContext.js
+    ├── 📱 navigation/           # Configuração de navegação
+    │   ├── 🧭 AppNavigator.js
+    │   ├── 🔐 AuthNavigator.js
+    │   └── 🏠 MainNavigator.js
+    ├── 🎨 constants/            # Constantes da aplicação
+    │   ├── 🎨 Colors.js
+    │   ├── 📊 Data.js
+    │   └── 💾 Storage.js
+    ├── 🔧 utils/                # Utilitários
+    │   ├── 🛠️ helpers.js
+    │   ├── 💾 storage.js
+    │   └── ✅ validators.js
+    ├── 🎨 styles/               # Estilos globais
+    │   └── 🌐 globalStyles.js
+    └── ⚙️ config/               # Configurações
+        └── 🔧 supabase.js
 ```
-
-## 🚀 Instalação e Uso
-
-### Pré-requisitos
-- Node.js 18+ 
-- Expo CLI
-- iOS Simulator ou Android Emulator (opcional)
-- Expo Go no dispositivo móvel
-
-### Instalação Automática
-```bash
-# Executar o script de setup
-node setup-petcare-pro.js
-```
-
-### Instalação Manual
-```bash
-# Criar projeto Expo
-npx create-expo-app PetCarePro --template blank
-cd PetCarePro
-
-# Instalar dependências
-npm install @react-navigation/native @react-navigation/stack @react-navigation/bottom-tabs react-native-screens react-native-safe-area-context @react-native-async-storage/async-storage @expo/vector-icons @react-native-picker/picker react-native-gesture-handler react-native-reanimated
-
-# Iniciar projeto
-npx expo start
-```
-
-## 🔐 Credenciais de Demonstração
-
-Para testar o aplicativo, use:
-- **Email:** admin@petcare.com
-- **Senha:** 123456
-
-## 📊 Funcionalidades Principais
-
-### Dashboard
-- Estatísticas em tempo real
-- Consultas do dia
-- Ações rápidas
-- Histórico recente
-
-### Gestão de Clientes
-- Cadastro completo
-- Validação de CPF
-- Busca e filtros
-- Histórico de pets
-
-### Gestão de Pets
-- Cadastro detalhado
-- Espécies e raças
-- Histórico médico
-- Fotos e documentos
-
-### Sistema de Consultas
-- Registro de atendimentos
-- Prescrições
-- Procedimentos
-- Acompanhamento
-
-## 🎨 Design System
-
-### Cores
-- **Primary:** #2E7D32 (Verde Veterinário)
-- **Secondary:** #81C784 (Verde Claro)
-- **Background:** #F1F8E9 (Verde Muito Claro)
-- **Surface:** #FFFFFF (Branco)
-- **Error:** #F44336 (Vermelho)
-
-### Componentes
-- **Button:** Variações primary, secondary, outline, ghost
-- **Input:** Com ícones, validação e estados
-- **Card:** Container padronizado
-- **Loading:** Estados de carregamento
-
-## 📈 Próximas Versões
-
-### v1.1.0
-- [ ] Cadastro de usuários
-- [ ] Recuperação de senha
-- [ ] Perfil do veterinário
-
-### v1.2.0
-- [ ] Agendamento online
-- [ ] Lembretes automáticos
-- [ ] Integração com calendário
-
-### v1.3.0
-- [ ] Relatórios PDF
-- [ ] Backup em nuvem
-- [ ] Sincronização multi-device
-
-### v2.0.0
-- [ ] API REST
-- [ ] Multi-clínica
-- [ ] Aplicativo para clientes
-
-## 🤝 Contribuição
-
-1. Fork o projeto
-2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/nova-funcionalidade`)
-5. Abra um Pull Request
-
-## 📄 Licença
-
-Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-## 📞 Suporte
-
-Para dúvidas, sugestões ou problemas:
-- 📧 Email: suporte@petcarepro.com
-- 💬 Issues: GitHub Issues
-- 📱 WhatsApp: Disponível no app
-
-## 🏆 Agradecimentos
-
-- Comunidade React Native
-- Expo Team
-- Veterinários que contribuíram com feedback
-- Beta testers
 
 ---
 
-**Desenvolvido com ❤️ para veterinários brasileiros**
+## ⚡ Instalação e Configuração
+
+### 📋 Pré-requisitos
+
+Certifique-se de ter instalado:
+
+- **Node.js** (versão 18.0.0 ou superior)
+- **npm** ou **yarn**
+- **Expo CLI** (recomendado: versão mais recente)
+- **Git**
+
+```bash
+# Verificar versões
+node --version    # v18.0.0+
+npm --version     # 8.0.0+
+expo --version    # 49.0.0+
+```
+
+### 🚀 Instalação Rápida
+
+#### Opção 1: Clone do Repositório
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/seu-usuario/petcare-pro.git
+
+# 2. Entre no diretório
+cd petcare-pro
+
+# 3. Instale as dependências
+npm install
+# ou
+yarn install
+
+# 4. Configure o banco de dados (ver seção Database)
+
+# 5. Inicie o projeto
+npm start
+# ou
+expo start
+```
+
+#### Opção 2: Criação do Zero
+
+```bash
+# 1. Criar projeto Expo
+npx create-expo-app PetCarePro --template blank
+
+# 2. Entrar no diretório
+cd PetCarePro
+
+# 3. Instalar dependências principais
+npm install @react-navigation/native @react-navigation/stack @react-navigation/bottom-tabs
+
+# 4. Instalar dependências do React Navigation
+npm install react-native-screens react-native-safe-area-context
+
+# 5. Instalar outras dependências
+npm install @react-native-async-storage/async-storage @expo/vector-icons @react-native-picker/picker react-native-gesture-handler react-native-reanimated @supabase/supabase-js expo-image-picker expo-splash-screen expo-linear-gradient react-native-url-polyfill
+
+# 6. Configurar projeto (copiar arquivos src/, db/, etc.)
+```
+
+### ⚙️ Configuração do Supabase
+
+1. **Criar conta no Supabase**: [https://supabase.com](https://supabase.com)
+
+2. **Criar novo projeto**:
+   - Nome: `PetCare Pro`
+   - Região: `South America (São Paulo)`
+   - Senha do banco: (escolha uma senha forte)
+
+3. **Executar script do banco**:
+   ```sql
+   -- Execute o conteúdo do arquivo db/supabase.sql
+   -- no SQL Editor do Supabase
+   ```
+
+4. **Configurar credenciais**:
+   ```javascript
+   // src/config/supabase.js
+   const supabaseUrl = 'SUA_URL_DO_SUPABASE'
+   const supabaseAnonKey = 'SUA_CHAVE_PUBLICA'
+   ```
+
+### 📱 Executar o Projeto
+
+```bash
+# Modo desenvolvimento
+npm start
+
+# Executar no iOS Simulator
+npm run ios
+
+# Executar no Android Emulator  
+npm run android
+
+# Executar na web
+npm run web
+```
+
+---
+
+## 🎮 Como Usar
+
+### 🔐 Primeiro Acesso
+
+1. **Abra o aplicativo**
+2. **Use as credenciais de demonstração**:
+   - 📧 **Email**: `admin@petcare.com`
+   - 🔒 **Senha**: `123456`
+3. **Ou crie uma nova conta** clicando em "Cadastrar"
+
+### 🏠 Dashboard Principal
+
+O dashboard oferece uma visão geral completa:
+
+- **📊 Estatísticas em tempo real**
+- **📅 Agenda do dia**
+- **⚡ Ações rápidas**
+- **📈 Métricas importantes**
+
+### 👥 Gestão de Clientes
+
+#### ➕ Adicionar Cliente
+1. Navegue para **Clientes** → **Novo**
+2. Preencha os dados obrigatórios:
+   - Nome completo
+   - Email
+   - Telefone
+3. Dados opcionais:
+   - CPF, endereço, observações
+
+#### 🔍 Buscar Clientes
+- Use a barra de busca
+- Pesquise por: nome, email, telefone, CPF
+
+### 🐾 Gestão de Pets
+
+#### ➕ Cadastrar Pet
+1. **Clientes** → Selecionar cliente → **Novo Pet**
+2. Informações básicas:
+   - Nome do pet
+   - Espécie (Cão, Gato, etc.)
+   - Raça
+   - Sexo
+3. Detalhes físicos:
+   - Data de nascimento
+   - Peso
+   - Cor
+   - Microchip
+
+### 🩺 Registro de Consultas
+
+#### ➕ Nova Consulta
+1. **Pets** → Selecionar pet → **Nova Consulta**
+2. Informações da consulta:
+   - Tipo de consulta
+   - Sintomas
+   - Diagnóstico
+   - Tratamento
+   - Prescrição
+3. Sinais vitais:
+   - Peso, temperatura, frequência cardíaca
+4. Valor da consulta
+
+### 📅 Sistema de Agendamentos
+
+#### ➕ Novo Agendamento
+1. **Agenda** → **Novo Agendamento**
+2. Selecionar:
+   - Cliente e pet
+   - Data e hora
+   - Duração
+   - Tipo de procedimento
+
+### 📚 Biblioteca Veterinária
+
+A biblioteca contém:
+
+#### 💊 Medicamentos
+- Dosagem recomendada
+- Frequência de administração
+- Contraindicações
+- Observações importantes
+
+#### 💉 Vacinas
+- Protocolo de vacinação
+- Doenças prevenidas
+- Cronograma de reforços
+- Espécies aplicáveis
+
+#### ⚕️ Procedimentos
+- Duração estimada
+- Preço sugerido
+- Descrição detalhada
+
+---
+
+## 📊 Funcionalidades Principais
+
+### 🔐 Sistema de Autenticação
+
+```javascript
+// Exemplo de uso
+const { login, register, logout, user } = useAuth();
+
+// Login
+const result = await login('email@exemplo.com', 'senha123');
+
+// Verificar se está autenticado
+if (user) {
+  // Usuário logado
+}
+```
+
+### 📊 Dashboard Interativo
+
+- **Estatísticas em tempo real**
+- **Gráficos e métricas**
+- **Agenda do dia**
+- **Ações rápidas**
+- **Lembretes importantes**
+
+### 👥 Gestão Completa de Clientes
+
+```javascript
+// Exemplo de operações CRUD
+import { ClientService } from '../services/ClientService';
+
+// Listar clientes
+const clients = await ClientService.getAll();
+
+// Criar cliente
+const result = await ClientService.create(clientData);
+
+// Buscar cliente
+const clients = await ClientService.search('João');
+```
+
+### 🐾 Controle de Pets
+
+- **Cadastro detalhado**
+- **Histórico médico completo**
+- **Cálculo automático de idade**
+- **Upload de fotos**
+- **Microchip tracking**
+
+### 🩺 Consultas Veterinárias
+
+```javascript
+// Registro de consulta
+const consultationData = {
+  clientId: 'uuid',
+  petId: 'uuid', 
+  type: 'Consulta de Rotina',
+  symptoms: 'Descrição dos sintomas',
+  diagnosis: 'Diagnóstico',
+  treatment: 'Tratamento realizado',
+  prescription: 'Medicamentos prescritos',
+  price: 80.00
+};
+```
+
+### 📅 Sistema de Agendamentos
+
+- **Calendário interativo**
+- **Visualização por dia/semana/mês**
+- **Status dos agendamentos**
+- **Notificações automáticas**
+- **Reagendamentos**
+
+---
+
+## 🎨 Design System
+
+### 🎨 Paleta de Cores
+
+```javascript
+// Cores principais
+const Colors = {
+  primary: '#2E7D32',        // Verde veterinário principal
+  primaryDark: '#1B5E20',    // Verde escuro
+  primaryLight: '#4CAF50',   // Verde claro
+  secondary: '#81C784',      // Verde secundário
+  accent: '#66BB6A',         // Verde destaque
+  
+  // Cores de superfície
+  background: '#F1F8E9',     // Fundo principal
+  surface: '#FFFFFF',        // Superfícies de cartões
+  
+  // Cores de status
+  error: '#F44336',          // Erro/perigo
+  warning: '#FF9800',        // Aviso
+  info: '#2196F3',          // Informação
+  success: '#4CAF50',       // Sucesso
+  
+  // Cores de texto
+  text: '#212121',          // Texto principal
+  textSecondary: '#757575', // Texto secundário
+  border: '#E0E0E0',        // Bordas
+};
+```
+
+### 🧩 Componentes
+
+#### Button Component
+```javascript
+<Button 
+  title="Salvar"
+  variant="primary"        // primary, secondary, outline, danger
+  size="medium"           // small, medium, large
+  loading={false}
+  onPress={handleSave}
+  icon={<Ionicons name="save" />}
+/>
+```
+
+#### Input Component
+```javascript
+<Input 
+  label="Nome"
+  placeholder="Digite o nome"
+  leftIcon="person"
+  error="Campo obrigatório"
+  required
+  multiline={false}
+/>
+```
+
+#### Card Component
+```javascript
+<Card style={customStyle}>
+  <Text>Conteúdo do cartão</Text>
+</Card>
+```
+
+### 📱 Responsividade
+
+O design se adapta automaticamente a diferentes tamanhos de tela:
+
+- **Smartphones**: 320px - 480px
+- **Tablets**: 768px - 1024px
+- **Layout flexível**: Componentes se reorganizam automaticamente
+
+---
+
+## 📘 Scripts Disponíveis
+
+### 🚀 Scripts de Desenvolvimento
+
+```bash
+# Iniciar servidor de desenvolvimento
+npm start
+
+# Executar no iOS Simulator
+npm run ios
+
+# Executar no Android Emulator
+npm run android
+
+# Executar na web
+npm run web
+
+# Setup inicial do projeto
+npm run setup
+
+# Resetar cache e dependências
+npm run reset
+
+# Gerar build para produção
+npm run prebuild
+```
+
+### 🏗️ Scripts de Build
+
+```bash
+# Build para Android
+npm run build:android
+
+# Build para iOS
+npm run build:ios
+
+# Build universal
+eas build --platform all
+```
+
+### 🧪 Scripts de Teste
+
+```bash
+# Executar testes
+npm test
+
+# Executar testes com coverage
+npm run test:coverage
+
+# Executar linter
+npm run lint
+
+# Corrigir problemas de lint automaticamente
+npm run lint:fix
+```
+
+### 📊 Scripts de Análise
+
+```bash
+# Analisar bundle size
+npm run analyze
+
+# Verificar dependências vulneráveis
+npm audit
+
+# Atualizar dependências
+npm update
+```
+
+---
+
+## 🔧 Configuração do Ambiente
+
+### 📱 Desenvolvimento iOS
+
+```bash
+# Instalar Xcode (Mac App Store)
+# Instalar iOS Simulator
+
+# Configurar ambiente
+npx @react-native-community/cli doctor
+
+# Executar no simulador
+npm run ios
+```
+
+### 🤖 Desenvolvimento Android
+
+```bash
+# Instalar Android Studio
+# Configurar Android SDK
+
+# Variáveis de ambiente (adicionar ao .bashrc/.zshrc)
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+# Executar no emulador
+npm run android
+```
+
+### ☁️ Configuração do Supabase
+
+#### 1. Configuração Inicial
+
+```javascript
+// src/config/supabase.js
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://seu-projeto.supabase.co';
+const supabaseAnonKey = 'sua-chave-publica';
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false,
+  },
+});
+```
+
+#### 2. Configuração de Políticas RLS
+
+```sql
+-- Habilitar RLS (Row Level Security)
+ALTER TABLE users_consultorio ENABLE ROW LEVEL SECURITY;
+ALTER TABLE clients_consultorio ENABLE ROW LEVEL SECURITY;
+ALTER TABLE pets_consultorio ENABLE ROW LEVEL SECURITY;
+ALTER TABLE consultations_consultorio ENABLE ROW LEVEL SECURITY;
+ALTER TABLE appointments_consultorio ENABLE ROW LEVEL SECURITY;
+
+-- Políticas de exemplo
+CREATE POLICY "Users can view own data" ON clients_consultorio
+  FOR SELECT USING (user_id = auth.uid());
+```
+
+---
+
+## 🗄️ Banco de Dados
+
+### 📊 Schema Principal
+
+```sql
+-- Usuários (Veterinários)
+CREATE TABLE users_consultorio (
+  id UUID PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  profession VARCHAR(100) DEFAULT 'Veterinário(a)',
+  clinic VARCHAR(255),
+  crmv VARCHAR(50),
+  phone VARCHAR(20),
+  photo_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Clientes
+CREATE TABLE clients_consultorio (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID NOT NULL REFERENCES users_consultorio(id),
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  cpf VARCHAR(14),
+  address TEXT,
+  city VARCHAR(100),
+  state VARCHAR(2),
+  zip_code VARCHAR(10),
+  notes TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Pets
+CREATE TABLE pets_consultorio (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  client_id UUID NOT NULL REFERENCES clients_consultorio(id),
+  name VARCHAR(255) NOT NULL,
+  species VARCHAR(50) NOT NULL,
+  breed VARCHAR(100),
+  gender VARCHAR(10) NOT NULL,
+  birth_date DATE,
+  weight DECIMAL(5,2),
+  color VARCHAR(100),
+  microchip VARCHAR(50),
+  photo_url TEXT,
+  notes TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Consultas
+CREATE TABLE consultations_consultorio (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  client_id UUID NOT NULL REFERENCES clients_consultorio(id),
+  pet_id UUID NOT NULL REFERENCES pets_consultorio(id),
+  user_id UUID NOT NULL REFERENCES users_consultorio(id),
+  type VARCHAR(100) NOT NULL,
+  date TIMESTAMP WITH TIME ZONE NOT NULL,
+  symptoms TEXT,
+  diagnosis TEXT,
+  treatment TEXT,
+  prescription TEXT,
+  observations TEXT,
+  follow_up_date TIMESTAMP WITH TIME ZONE,
+  weight DECIMAL(5,2),
+  temperature DECIMAL(4,1),
+  heart_rate INTEGER,
+  price DECIMAL(10,2) DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### 🔍 Índices para Performance
+
+```sql
+-- Índices otimizados
+CREATE INDEX clients_user_id_idx ON clients_consultorio(user_id);
+CREATE INDEX clients_email_idx ON clients_consultorio(email);
+CREATE INDEX pets_client_id_idx ON pets_consultorio(client_id);
+CREATE INDEX consultations_user_id_idx ON consultations_consultorio(user_id);
+CREATE INDEX consultations_date_idx ON consultations_consultorio(date);
+```
+
+### 📈 Métricas e Analytics
+
+```sql
+-- Queries úteis para relatórios
+-- Total de consultas por mês
+SELECT 
+  DATE_TRUNC('month', date) as month,
+  COUNT(*) as total_consultations,
+  SUM(price) as total_revenue
+FROM consultations_consultorio 
+WHERE user_id = $1
+GROUP BY month
+ORDER BY month DESC;
+
+-- Pets mais atendidos
+SELECT 
+  p.name,
+  p.species,
+  c.name as client_name,
+  COUNT(*) as consultation_count
+FROM consultations_consultorio co
+JOIN pets_consultorio p ON p.id = co.pet_id
+JOIN clients_consultorio c ON c.id = co.client_id
+WHERE co.user_id = $1
+GROUP BY p.id, p.name, p.species, c.name
+ORDER BY consultation_count DESC
+LIMIT 10;
+```
+
+---
+
+## 📈 Roadmap
+
+### 🎯 Versão 1.1.0 (Q2 2024)
+- [ ] 📧 **Sistema de notificações push**
+- [ ] 🔄 **Sincronização offline**
+- [ ] 📊 **Relatórios básicos em PDF**
+- [ ] 🔐 **Recuperação de senha**
+- [ ] 👤 **Perfil detalhado do veterinário**
+
+### 🎯 Versão 1.2.0 (Q3 2024)
+- [ ] 📅 **Agendamento online para clientes**
+- [ ] 🤖 **Lembretes automáticos (WhatsApp/SMS)**
+- [ ] 📱 **App dedicado para clientes**
+- [ ] 💳 **Integração com meios de pagamento**
+- [ ] 📋 **Templates de prescrição**
+
+### 🎯 Versão 1.3.0 (Q4 2024)
+- [ ] 🏥 **Suporte multi-clínica**
+- [ ] 👥 **Sistema de funcionários e permissões**
+- [ ] 📊 **Dashboard avançado com gráficos**
+- [ ] 🔄 **Integração com equipamentos médicos**
+- [ ] 📷 **Reconhecimento de texto em receitas**
+
+### 🎯 Versão 2.0.0 (Q1 2025)
+- [ ] 🤖 **Inteligência Artificial para diagnósticos**
+- [ ] 🌐 **API pública para integrações**
+- [ ] 📱 **Versão web completa**
+- [ ] 🌎 **Internacionalização (i18n)**
+- [ ] ☁️ **Backup automático em múltiplas nuvens**
+
+### 🔮 Futuro
+- [ ] 🏆 **Sistema de gamificação**
+- [ ] 📺 **Telemedicina veterinária**
+- [ ] 🔗 **Blockchain para registros médicos**
+- [ ] 🎯 **Machine Learning para previsões**
+
+---
+
+## 🤝 Contribuição
+
+Contribuições são sempre bem-vindas! Este projeto é open source e desenvolvido para a comunidade veterinária brasileira.
+
+### 🚀 Como Contribuir
+
+#### 1. 🍴 Fork do Projeto
+```bash
+# Fork no GitHub e clone
+git clone https://github.com/seu-usuario/petcare-pro.git
+cd petcare-pro
+```
+
+#### 2. 🌿 Criar Branch
+```bash
+# Criar branch para feature
+git checkout -b feature/nova-funcionalidade
+
+# Criar branch para bugfix
+git checkout -b bugfix/correcao-bug
+```
+
+#### 3. 💻 Desenvolvimento
+```bash
+# Instalar dependências
+npm install
+
+# Executar em modo desenvolvimento
+npm start
+
+# Executar testes
+npm test
+```
+
+#### 4. ✅ Commit e Push
+```bash
+# Adicionar arquivos
+git add .
+
+# Commit com mensagem descritiva
+git commit -m "feat: adiciona nova funcionalidade X"
+
+# Push para o GitHub
+git push origin feature/nova-funcionalidade
+```
+
+#### 5. 🔄 Pull Request
+1. Abra um Pull Request no GitHub
+2. Descreva as mudanças realizadas
+3. Aguarde review da equipe
+4. Realize ajustes se necessário
+
+### 📝 Padrões de Commit
+
+Seguimos o padrão [Conventional Commits](https://www.conventionalcommits.org/):
+
+```bash
+# Tipos de commit
+feat:     # Nova funcionalidade
+fix:      # Correção de bug
+docs:     # Documentação
+style:    # Formatação, sem mudança de código
+refactor: # Refatoração de código
+test:     # Adição ou correção de testes
+chore:    # Manutenção geral
+
+# Exemplos
+git commit -m "feat: adiciona validação de CPF"
+git commit -m "fix: corrige erro no login"
+git commit -m "docs: atualiza README com novas instruções"
+```
+
+### 🐛 Reportar Bugs
+
+Para reportar bugs, use o [GitHub Issues](https://github.com/seu-usuario/petcare-pro/issues):
+
+**Template de Bug Report:**
+```markdown
+## 🐛 Descrição do Bug
+Descrição clara do que está acontecendo.
+
+## 🔄 Passos para Reproduzir
+1. Vá para '...'
+2. Clique em '...'
+3. Veja o erro
+
+## ✅ Comportamento Esperado
+O que deveria acontecer.
+
+## 📱 Ambiente
+- Dispositivo: [ex: iPhone 12]
+- OS: [ex: iOS 15.1]
+- Versão do App: [ex: 1.0.0]
+```
+
+### 💡 Sugerir Funcionalidades
+
+Para sugerir novas funcionalidades:
+
+**Template de Feature Request:**
+```markdown
+## 🚀 Funcionalidade Solicitada
+Descrição clara da funcionalidade.
+
+## 🎯 Problema que Resolve
+Qual problema esta funcionalidade resolveria?
+
+## 💡 Solução Proposta
+Descrição detalhada da solução.
+
+## 🔄 Alternativas Consideradas
+Outras abordagens que você considerou.
+```
+
+### 👥 Equipe de Desenvolvimento
+
+- **Core Maintainers**: Responsáveis pela arquitetura e decisões técnicas
+- **Community Contributors**: Desenvolvedores da comunidade
+- **Veterinary Advisors**: Veterinários que fornecem feedback funcional
+
+---
+
+## 📄 Licença
+
+Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+### 📋 Resumo da Licença MIT
+
+✅ **Permitido:**
+- ✅ Uso comercial
+- ✅ Modificação
+- ✅ Distribuição
+- ✅ Uso privado
+
+❌ **Limitações:**
+- ❌ Responsabilidade
+- ❌ Garantia
+
+📝 **Condições:**
+- 📝 Incluir licença e copyright
+
+```
+MIT License
+
+Copyright (c) 2024 PetCare Pro
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## 👥 Equipe
+
+### 🚀 Core Team
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/avatar1.png" width="100px;" alt=""/>
+      <br />
+      <sub><b>João Silva</b></sub>
+      <br />
+      <sub>Tech Lead & Full Stack Developer</sub>
+      <br />
+      <a href="mailto:joao@petcarepro.com">📧</a>
+      <a href="https://linkedin.com/in/joao">💼</a>
+    </td>
+    <td align="center">
+      <img src="https://github.com/avatar2.png" width="100px;" alt=""/>
+      <br />
+      <sub><b>Maria Santos</b></sub>
+      <br />
+      <sub>UI/UX Designer & Frontend Developer</sub>
+      <br />
+      <a href="mailto:maria@petcarepro.com">📧</a>
+      <a href="https://linkedin.com/in/maria">💼</a>
+    </td>
+    <td align="center">
+      <img src="https://github.com/avatar3.png" width="100px;" alt=""/>
+      <br />
+      <sub><b>Dr. Carlos Mendes</b></sub>
+      <br />
+      <sub>Veterinary Advisor & Product Owner</sub>
+      <br />
+      <a href="mailto:carlos@petcarepro.com">📧</a>
+      <a href="https://linkedin.com/in/carlos">💼</a>
+    </td>
+  </tr>
+</table>
+
+### 🌟 Contributors
+
+Agradecemos a todos os contribuidores que ajudaram a fazer deste projeto uma realidade:
+
+<a href="https://github.com/petcare-pro/petcare-pro/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=petcare-pro/petcare-pro" />
+</a>
+
+### 🏆 Reconhecimentos Especiais
+
+- **🩺 Conselho Regional de Medicina Veterinária de São Paulo (CRMV-SP)** - Consultoria técnica
+- **🏥 Clínica Veterinária VetCare** - Testes e feedback funcional
+- **👨‍💻 React Native Community** - Suporte técnico e bibliotecas
+- **☁️ Supabase Team** - Plataforma backend robusta
+- **🎨 Expo Team** - Framework de desenvolvimento excepcional
+
+---
+
+## 📞 Suporte
+
+Precisando de ajuda? Temos várias opções de suporte:
+
+### 💬 Canais de Comunicação
+
+| Canal | Propósito | Tempo de Resposta |
+|-------|-----------|-------------------|
+| 📧 **Email** | Suporte geral e comercial | 24-48 horas |
+| 💬 **WhatsApp** | Suporte técnico urgente | 2-8 horas |
+| 🐛 **GitHub Issues** | Bugs e solicitações de funcionalidades | 1-3 dias |
+| 📱 **Telegram** | Comunidade de usuários | Tempo real |
+| 📺 **YouTube** | Tutoriais e novidades | Semanal |
+
+### 📧 Contatos Diretos
+
+- **🎯 Suporte Geral**: [suporte@petcarepro.com](mailto:suporte@petcarepro.com)
+- **🔧 Suporte Técnico**: [tech@petcarepro.com](mailto:tech@petcarepro.com)
+- **💼 Parcerias**: [parcerias@petcarepro.com](mailto:parcerias@petcarepro.com)
+- **📰 Imprensa**: [imprensa@petcarepro.com](mailto:imprensa@petcarepro.com)
+
+### 📱 Redes Sociais
+
+- **Instagram**: [@petcarepro.br](https://instagram.com/petcarepro.br)
+- **LinkedIn**: [PetCare Pro](https://linkedin.com/company/petcarepro)
+- **Facebook**: [PetCare Pro Brasil](https://facebook.com/petcareprobrasilr)
+- **Twitter**: [@petcarepro_br](https://twitter.com/petcarepro_br)
+
+### 🆘 Suporte Urgente
+
+Para situações críticas que impedem o funcionamento da clínica:
+
+📞 **Telefone de Emergência**: (11) 9999-8888
+💬 **WhatsApp**: [wa.me/5511999998888](https://wa.me/5511999998888)
+
+### 📚 Recursos de Ajuda
+
+#### 📖 Documentação
+- **📗 Manual do Usuário**: [docs.petcarepro.com/manual](https://docs.petcarepro.com/manual)
+- **🔧 Guia Técnico**: [docs.petcarepro.com/tech](https://docs.petcarepro.com/tech)
+- **❓ FAQ**: [docs.petcarepro.com/faq](https://docs.petcarepro.com/faq)
+
+#### 🎥 Tutoriais em Vídeo
+- **📺 Canal YouTube**: [youtube.com/petcarepro](https://youtube.com/petcarepro)
+- **🎬 Curso Completo**: [curso.petcarepro.com](https://curso.petcarepro.com)
+- **⚡ Quick Start**: [quickstart.petcarepro.com](https://quickstart.petcarepro.com)
+
+#### 👥 Comunidade
+- **💬 Grupo Telegram**: [t.me/petcarepro](https://t.me/petcarepro)
+- **📱 Grupo WhatsApp**: [Comunidade PetCare Pro](https://chat.whatsapp.com/petcarepro)
+- **💼 LinkedIn Groups**: [Veterinários PetCare Pro](https://linkedin.com/groups/petcarepro)
+
+### 🚀 Treinamentos e Workshops
+
+Oferecemos treinamentos gratuitos para maximizar o uso do sistema:
+
+#### 📅 Agenda de Treinamentos
+- **🟢 Básico**: Segundas-feiras às 19h (1h)
+- **🟡 Intermediário**: Quartas-feiras às 19h (1.5h)
+- **🔴 Avançado**: Sextas-feiras às 19h (2h)
+
+#### 📋 Tópicos Abordados
+- ✅ Primeiros passos no PetCare Pro
+- ✅ Gestão eficiente de clientes e pets
+- ✅ Registro de consultas e prescrições
+- ✅ Sistema de agendamentos
+- ✅ Relatórios e análises
+- ✅ Backup e segurança de dados
+- ✅ Dicas e truques avançados
+
+#### 📝 Inscrições
+**Link**: [treinamentos.petcarepro.com](https://treinamentos.petcarepro.com)
+**WhatsApp**: (11) 9999-7777
+
+---
+
+<div align="center">
+  
+  ### 🙏 Obrigado por escolher o PetCare Pro!
+  
+  <p>
+    <strong>Juntos, estamos revolucionando a medicina veterinária no Brasil</strong>
+  </p>
+  
+  <p>
+    Desenvolvido com ❤️ por veterinários, para veterinários
+  </p>
+  
+  ---
+  
+  <p>
+    <img src="https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge" alt="Made with Love">
+    <img src="https://img.shields.io/badge/Para-Veterinários%20🇧🇷-green?style=for-the-badge" alt="Para Veterinários Brasileiros">
+    <img src="https://img.shields.io/badge/Open%20Source-💪-blue?style=for-the-badge" alt="Open Source">
+  </p>
+  
+  <p><small>© 2024 PetCare Pro. Todos os direitos reservados.</small></p>
+  
+</div>
