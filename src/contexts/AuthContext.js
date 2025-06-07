@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getStorageData, setStorageData, removeStorageData } from '../utils/storage';
-import { StorageKeys } from '../constants/Storage';
+import { supabase } from '../config/supabase';
 
 const AuthContext = createContext({});
 
@@ -9,44 +8,68 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadUser();
+    // Verificar sessão inicial
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        loadUserProfile(session.user.id);
+      }
+      setLoading(false);
+    });
+
+    // Escutar mudanças de autenticação
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state changed:', event);
+      
+      if (event === 'SIGNED_IN' && session?.user) {
+        await loadUserProfile(session.user.id);
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const loadUser = async () => {
+  const loadUserProfile = async (userId) => {
     try {
-      const userData = await getStorageData(StorageKeys.USER);
-      if (userData) {
-        setUser(userData);
+      console.log('Carregando perfil para usuário:', userId);
+      
+      const { data, error } = await supabase
+        .from('users_consultorio')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Erro ao carregar perfil:', error);
+        return;
+      }
+
+      if (data) {
+        console.log('Perfil carregado com sucesso');
+        setUser(data);
       }
     } catch (error) {
       console.error('Erro ao carregar usuário:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
   const login = async (email, password) => {
     try {
-      // Simular autenticação - em produção, fazer chamada para API
-      if (email === 'admin@petcare.com' && password === '123456') {
-        const userData = {
-          id: Date.now().toString(),
-          email,
-          name: 'Dr. João Silva',
-          profession: 'Veterinário',
-          clinic: 'Clínica VetCare',
-          crmv: '12345-SP',
-          phone: '(11) 99999-9999',
-          photo: null,
-          loginDate: new Date().toISOString(),
-        };
+      console.log('Fazendo login...');
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.toLowerCase().trim(),
+        password: password,
+      });
 
-        await setStorageData(StorageKeys.USER, userData);
-        setUser(userData);
-        return { success: true };
-      } else {
-        return { success: false, error: 'Email ou senha inválidos' };
+      if (error) {
+        console.error('Erro no login:', error);
+        return { success: false, error: error.message };
       }
+
+      console.log('Login realizado com sucesso');
+      return { success: true, data };
     } catch (error) {
       console.error('Erro no login:', error);
       return { success: false, error: 'Erro interno do sistema' };
@@ -55,31 +78,97 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const newUser = {
-        id: Date.now().toString(),
-        ...userData,
-        registrationDate: new Date().toISOString(),
+      console.log('Iniciando registro...');
+      
+      const email = userData.email.toLowerCase().trim();
+      
+      // Primeiro, criar usuário na autenticação
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: email,
+        password: userData.password,
+      });
+
+      if (authError) {
+        console.error('Erro na autenticação:', authError);
+        return { success: false, error: authError.message };
+      }
+
+      if (!authData.user) {
+        return { success: false, error: 'Falha ao criar usuário' };
+      }
+
+      console.log('Usuário criado na auth, ID:', authData.user.id);
+
+      // Aguardar um momento
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Criar perfil na tabela users_consultorio
+      const profileData = {
+        id: authData.user.id,
+        email: email,
+        name: userData.name.trim(),
+        profession: userData.profession || 'Veterinário(a)',
+        clinic: userData.clinic.trim(),
+        crmv: userData.crmv.trim(),
+        phone: userData.phone.trim(),
       };
 
-      await setStorageData(StorageKeys.USER, newUser);
-      setUser(newUser);
-      return { success: true };
+      console.log('Criando perfil com dados:', profileData);
+
+      const { data: profileResult, error: profileError } = await supabase
+        .from('users_consultorio')
+        .insert([profileData])
+        .select()
+        .single();
+
+      if (profileError) {
+        console.error('Erro ao criar perfil:', profileError);
+        
+        // Tentar deletar usuário da auth se perfil falhou
+        try {
+          await supabase.auth.signOut();
+        } catch (e) {
+          console.error('Erro ao limpar após falha:', e);
+        }
+        
+        return { 
+          success: false, 
+          error: `Erro ao criar perfil: ${profileError.message}` 
+        };
+      }
+
+      console.log('Perfil criado com sucesso');
+      setUser(profileResult);
+      
+      return { success: true, data: authData };
+
     } catch (error) {
-      console.error('Erro no registro:', error);
+      console.error('Erro geral no registro:', error);
       return { success: false, error: 'Erro interno do sistema' };
     }
   };
 
   const updateProfile = async (updatedData) => {
     try {
-      const updatedUser = {
-        ...user,
-        ...updatedData,
-        updatedAt: new Date().toISOString(),
-      };
+      if (!user?.id) {
+        return { success: false, error: 'Usuário não encontrado' };
+      }
 
-      await setStorageData(StorageKeys.USER, updatedUser);
-      setUser(updatedUser);
+      const { data, error } = await supabase
+        .from('users_consultorio')
+        .update({
+          ...updatedData,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', user.id)
+        .select()
+        .single();
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      setUser(data);
       return { success: true };
     } catch (error) {
       console.error('Erro ao atualizar perfil:', error);
@@ -89,7 +178,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await removeStorageData(StorageKeys.USER);
+      await supabase.auth.signOut();
       setUser(null);
     } catch (error) {
       console.error('Erro no logout:', error);

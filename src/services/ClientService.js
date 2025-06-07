@@ -1,40 +1,73 @@
-import { getStorageData, setStorageData } from '../utils/storage';
-import { StorageKeys } from '../constants/Storage';
-import { generateId } from '../utils/helpers';
+import { supabase } from '../config/supabase';
 
 export const ClientService = {
   async getAll() {
-    return await getStorageData(StorageKeys.CLIENTS) || [];
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+
+      const { data, error } = await supabase
+        .from('clients_consultorio')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Erro ao buscar clientes:', error);
+      return [];
+    }
   },
 
   async getById(id) {
-    const clients = await this.getAll();
-    return clients.find(client => client.id === id);
+    try {
+      const { data, error } = await supabase
+        .from('clients_consultorio')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Erro ao buscar cliente:', error);
+      return null;
+    }
   },
 
   async create(clientData) {
     try {
-      const clients = await this.getAll();
-      
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return { success: false, error: 'Usuário não autenticado' };
+      }
+
       // Verificar se email já existe
-      const existingClient = clients.find(client => 
-        client.email.toLowerCase() === clientData.email.toLowerCase()
-      );
-      
+      const { data: existingClient } = await supabase
+        .from('clients_consultorio')
+        .select('id')
+        .eq('email', clientData.email)
+        .eq('user_id', user.id)
+        .single();
+
       if (existingClient) {
         return { success: false, error: 'Email já cadastrado' };
       }
 
-      const newClient = {
-        id: generateId(),
-        ...clientData,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+      const { data, error } = await supabase
+        .from('clients_consultorio')
+        .insert([
+          {
+            ...clientData,
+            user_id: user.id,
+          }
+        ])
+        .select()
+        .single();
 
-      clients.push(newClient);
-      await setStorageData(StorageKeys.CLIENTS, clients);
-      return { success: true, data: newClient };
+      if (error) throw error;
+      return { success: true, data };
     } catch (error) {
       console.error('Erro ao criar cliente:', error);
       return { success: false, error: 'Erro ao salvar cliente' };
@@ -43,30 +76,37 @@ export const ClientService = {
 
   async update(id, clientData) {
     try {
-      const clients = await this.getAll();
-      const index = clients.findIndex(client => client.id === id);
-      
-      if (index === -1) {
-        return { success: false, error: 'Cliente não encontrado' };
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return { success: false, error: 'Usuário não autenticado' };
       }
 
       // Verificar se email já existe em outro cliente
-      const existingClient = clients.find(client => 
-        client.id !== id && client.email.toLowerCase() === clientData.email.toLowerCase()
-      );
-      
+      const { data: existingClient } = await supabase
+        .from('clients_consultorio')
+        .select('id')
+        .eq('email', clientData.email)
+        .eq('user_id', user.id)
+        .neq('id', id)
+        .single();
+
       if (existingClient) {
         return { success: false, error: 'Email já cadastrado para outro cliente' };
       }
 
-      clients[index] = {
-        ...clients[index],
-        ...clientData,
-        updatedAt: new Date().toISOString(),
-      };
+      const { data, error } = await supabase
+        .from('clients_consultorio')
+        .update({
+          ...clientData,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .select()
+        .single();
 
-      await setStorageData(StorageKeys.CLIENTS, clients);
-      return { success: true, data: clients[index] };
+      if (error) throw error;
+      return { success: true, data };
     } catch (error) {
       console.error('Erro ao atualizar cliente:', error);
       return { success: false, error: 'Erro ao atualizar cliente' };
@@ -75,10 +115,18 @@ export const ClientService = {
 
   async delete(id) {
     try {
-      const clients = await this.getAll();
-      const filteredClients = clients.filter(client => client.id !== id);
-      
-      await setStorageData(StorageKeys.CLIENTS, filteredClients);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return { success: false, error: 'Usuário não autenticado' };
+      }
+
+      const { error } = await supabase
+        .from('clients_consultorio')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
       return { success: true };
     } catch (error) {
       console.error('Erro ao deletar cliente:', error);
@@ -87,36 +135,55 @@ export const ClientService = {
   },
 
   async search(query) {
-    const clients = await this.getAll();
-    if (!query || query.trim() === '') return clients;
-    
-    const lowerQuery = query.toLowerCase();
-    
-    return clients.filter(client => 
-      client.name.toLowerCase().includes(lowerQuery) ||
-      client.email.toLowerCase().includes(lowerQuery) ||
-      (client.phone && client.phone.includes(query)) ||
-      (client.cpf && client.cpf.includes(query)) ||
-      (client.address && client.address.toLowerCase().includes(lowerQuery))
-    );
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+
+      const { data, error } = await supabase
+        .from('clients_consultorio')
+        .select('*')
+        .eq('user_id', user.id)
+        .or(`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%,cpf.ilike.%${query}%`)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Erro na busca:', error);
+      return [];
+    }
   },
 
   async getStats() {
-    const clients = await this.getAll();
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-    
-    const thisMonth = clients.filter(client => {
-      const createdDate = new Date(client.createdAt);
-      return createdDate.getMonth() === currentMonth && 
-             createdDate.getFullYear() === currentYear;
-    });
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return { total: 0, thisMonth: 0, active: 0 };
 
-    return {
-      total: clients.length,
-      thisMonth: thisMonth.length,
-      active: clients.filter(client => !client.inactive).length,
-    };
+      const { data, error } = await supabase
+        .from('clients_consultorio')
+        .select('created_at')
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+
+      const thisMonth = data.filter(client => {
+        const createdDate = new Date(client.created_at);
+        return createdDate.getMonth() === currentMonth && 
+               createdDate.getFullYear() === currentYear;
+      });
+
+      return {
+        total: data.length,
+        thisMonth: thisMonth.length,
+        active: data.length, // Todos são considerados ativos por padrão
+      };
+    } catch (error) {
+      console.error('Erro ao buscar estatísticas:', error);
+      return { total: 0, thisMonth: 0, active: 0 };
+    }
   }
 };

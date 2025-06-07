@@ -7,13 +7,16 @@ import {
   TouchableOpacity,
   RefreshControl,
   Alert,
-  StyleSheet
+  StyleSheet,
+  Calendar
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Loading from '../../components/common/Loading';
+import { AppointmentService } from '../../services/AppointmentService';
 import { ConsultationService } from '../../services/ConsultationService';
 import { ClientService } from '../../services/ClientService';
 import { PetService } from '../../services/PetService';
@@ -22,56 +25,28 @@ import { Colors } from '../../constants/Colors';
 import { globalStyles } from '../../styles/globalStyles';
 
 const AgendaScreen = ({ navigation }) => {
+  const [appointments, setAppointments] = useState([]);
   const [consultations, setConsultations] = useState([]);
-  const [todayConsultations, setTodayConsultations] = useState([]);
-  const [upcomingConsultations, setUpcomingConsultations] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [viewMode, setViewMode] = useState('day'); // 'day', 'week', 'month'
 
   useFocusEffect(
     useCallback(() => {
-      loadConsultations();
-    }, [])
+      loadAgendaData();
+    }, [selectedDate])
   );
 
-  const loadConsultations = async () => {
+  const loadAgendaData = async () => {
     try {
-      const allConsultations = await ConsultationService.getAll();
-      
-      // Enriquecer consultas com dados do cliente e pet
-      const enrichedConsultations = await Promise.all(
-        allConsultations.map(async (consultation) => {
-          const [client, pet] = await Promise.all([
-            ClientService.getById(consultation.clientId),
-            PetService.getById(consultation.petId),
-          ]);
-          return { ...consultation, client, pet };
-        })
-      );
+      const [allAppointments, allConsultations] = await Promise.all([
+        AppointmentService.getAll(),
+        ConsultationService.getAll()
+      ]);
 
-      setConsultations(enrichedConsultations);
-      
-      // Filtrar consultas de hoje
-      const today = new Date().toDateString();
-      const todayItems = enrichedConsultations.filter(consultation => 
-        new Date(consultation.date).toDateString() === today
-      ).sort((a, b) => new Date(a.date) - new Date(b.date));
-      
-      setTodayConsultations(todayItems);
-
-      // Filtrar próximas consultas (próximos 7 dias, excluindo hoje)
-      const now = new Date();
-      const nextWeek = new Date();
-      nextWeek.setDate(now.getDate() + 7);
-      
-      const upcomingItems = enrichedConsultations.filter(consultation => {
-        const consultationDate = new Date(consultation.date);
-        return consultationDate > now && consultationDate <= nextWeek;
-      }).sort((a, b) => new Date(a.date) - new Date(b.date));
-      
-      setUpcomingConsultations(upcomingItems);
-
+      setAppointments(allAppointments);
+      setConsultations(allConsultations);
     } catch (error) {
       Alert.alert('Erro', 'Erro ao carregar agenda');
     } finally {
@@ -81,92 +56,310 @@ const AgendaScreen = ({ navigation }) => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await loadConsultations();
+    await loadAgendaData();
     setRefreshing(false);
   };
 
-  const getStatusColor = (consultation) => {
-    const consultationDate = new Date(consultation.date);
+  const getDateItems = (date) => {
+    const dateString = date.toDateString();
+    
+    const dayAppointments = appointments.filter(appointment => 
+      new Date(appointment.date).toDateString() === dateString
+    );
+    
+    const dayConsultations = consultations.filter(consultation => 
+      new Date(consultation.date).toDateString() === dateString
+    );
+
+    return [...dayAppointments, ...dayConsultations].sort((a, b) => 
+      new Date(a.date) - new Date(b.date)
+    );
+  };
+
+  const getWeekDates = (date) => {
+    const week = [];
+    const startOfWeek = new Date(date);
+    const day = startOfWeek.getDay();
+    const diff = startOfWeek.getDate() - day;
+    startOfWeek.setDate(diff);
+
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(startOfWeek);
+      day.setDate(startOfWeek.getDate() + i);
+      week.push(day);
+    }
+    return week;
+  };
+
+  const getStatusColor = (item) => {
+    const itemDate = new Date(item.date);
     const now = new Date();
     
-    if (consultationDate < now) {
+    if (itemDate < now) {
       return Colors.textSecondary; // Passado
-    } else if (consultationDate.toDateString() === now.toDateString()) {
+    } else if (itemDate.toDateString() === now.toDateString()) {
       return Colors.primary; // Hoje
     } else {
       return Colors.success; // Futuro
     }
   };
 
-  const getStatusText = (consultation) => {
-    const consultationDate = new Date(consultation.date);
-    const now = new Date();
-    
-    if (consultationDate < now) {
-      return 'Realizada';
-    } else if (consultationDate.toDateString() === now.toDateString()) {
-      return 'Hoje';
-    } else {
-      return 'Agendada';
+  const getItemIcon = (item) => {
+    if (item.type) { // É uma consulta
+      return 'medical';
+    } else { // É um agendamento
+      return 'calendar';
     }
   };
 
-  const ConsultationCard = ({ consultation, showDate = false }) => (
-    <Card style={styles.consultationCard}>
+  const AgendaItem = ({ item, showDate = false }) => (
+    <Card style={styles.agendaItem}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('ConsultationDetail', { 
-          consultationId: consultation.id 
-        })}
+        onPress={() => {
+          if (item.type) {
+            navigation.navigate('ConsultationDetail', { consultationId: item.id });
+          } else {
+            navigation.navigate('AppointmentDetail', { appointmentId: item.id });
+          }
+        }}
       >
-        <View style={styles.consultationHeader}>
-          <View style={styles.consultationTime}>
-            <Text style={styles.timeText}>
-              {showDate ? formatDateTime(consultation.date) : formatTime(consultation.date)}
+        <View style={styles.itemHeader}>
+          <View style={[styles.itemIcon, { backgroundColor: getStatusColor(item) }]}>
+            <Ionicons 
+              name={getItemIcon(item)} 
+              size={20} 
+              color={Colors.surface} 
+            />
+          </View>
+          
+          <View style={styles.itemContent}>
+            <Text style={styles.itemTitle}>
+              {item.title || item.type}
             </Text>
-            <View style={[styles.statusBadge, { backgroundColor: getStatusColor(consultation) }]}>
-              <Text style={styles.statusText}>{getStatusText(consultation)}</Text>
-            </View>
+            <Text style={styles.itemSubtitle}>
+              {item.client?.name} • {item.pet?.name}
+            </Text>
+            <Text style={styles.itemTime}>
+              {showDate ? formatDateTime(item.date) : formatTime(item.date)}
+            </Text>
+          </View>
+          
+          <View style={styles.itemActions}>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => {
+                if (item.type) {
+                  navigation.navigate('NewConsultation', { consultationId: item.id });
+                } else {
+                  navigation.navigate('NewAppointment', { appointmentId: item.id });
+                }
+              }}
+            >
+              <Ionicons name="create" size={16} color={Colors.primary} />
+            </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.consultationContent}>
-          <View style={styles.patientInfo}>
-            <View style={styles.petIcon}>
-              <Ionicons name="paw" size={20} color={Colors.primary} />
-            </View>
-            <View style={styles.patientDetails}>
-              <Text style={styles.petName}>
-                {consultation.pet?.name || 'Pet não encontrado'}
-              </Text>
-              <Text style={styles.clientName}>
-                {consultation.client?.name || 'Cliente não encontrado'}
-              </Text>
-              <Text style={styles.consultationType}>
-                {consultation.type}
-              </Text>
-            </View>
+        {item.description && (
+          <View style={styles.itemDescription}>
+            <Text style={styles.descriptionText}>{item.description}</Text>
           </View>
+        )}
 
-          {consultation.symptoms && (
-            <View style={styles.symptomsContainer}>
-              <Text style={styles.symptomsLabel}>Sintomas:</Text>
-              <Text style={styles.symptomsText} numberOfLines={2}>
-                {consultation.symptoms}
-              </Text>
-            </View>
-          )}
-        </View>
+        {item.symptoms && (
+          <View style={styles.itemSymptoms}>
+            <Text style={styles.symptomsLabel}>Sintomas:</Text>
+            <Text style={styles.symptomsText}>{item.symptoms}</Text>
+          </View>
+        )}
       </TouchableOpacity>
     </Card>
   );
 
-  const EmptyState = ({ title, subtitle, icon }) => (
-    <View style={styles.emptySection}>
-      <Ionicons name={icon} size={48} color={Colors.textSecondary} />
-      <Text style={styles.emptyTitle}>{title}</Text>
-      <Text style={styles.emptySubtitle}>{subtitle}</Text>
+  const DateNavigator = () => (
+    <View style={styles.dateNavigator}>
+      <TouchableOpacity
+        style={styles.navButton}
+        onPress={() => {
+          const newDate = new Date(selectedDate);
+          if (viewMode === 'day') {
+            newDate.setDate(newDate.getDate() - 1);
+          } else if (viewMode === 'week') {
+            newDate.setDate(newDate.getDate() - 7);
+          } else {
+            newDate.setMonth(newDate.getMonth() - 1);
+          }
+          setSelectedDate(newDate);
+        }}
+      >
+        <Ionicons name="chevron-back" size={24} color={Colors.primary} />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.dateButton}>
+        <Text style={styles.dateText}>
+          {viewMode === 'day' && formatDate(selectedDate)}
+          {viewMode === 'week' && `Semana de ${formatDate(getWeekDates(selectedDate)[0])}`}
+          {viewMode === 'month' && selectedDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.navButton}
+        onPress={() => {
+          const newDate = new Date(selectedDate);
+          if (viewMode === 'day') {
+            newDate.setDate(newDate.getDate() + 1);
+          } else if (viewMode === 'week') {
+            newDate.setDate(newDate.getDate() + 7);
+          } else {
+            newDate.setMonth(newDate.getMonth() + 1);
+          }
+          setSelectedDate(newDate);
+        }}
+      >
+        <Ionicons name="chevron-forward" size={24} color={Colors.primary} />
+      </TouchableOpacity>
     </View>
   );
+
+  const ViewModeSelector = () => (
+    <View style={styles.viewModeSelector}>
+      {['day', 'week', 'month'].map((mode) => (
+        <TouchableOpacity
+          key={mode}
+          style={[
+            styles.viewModeButton,
+            viewMode === mode && styles.viewModeButtonActive
+          ]}
+          onPress={() => setViewMode(mode)}
+        >
+          <Text style={[
+            styles.viewModeText,
+            viewMode === mode && styles.viewModeTextActive
+          ]}>
+            {mode === 'day' ? 'Dia' : mode === 'week' ? 'Semana' : 'Mês'}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+
+  const DayView = () => {
+    const dayItems = getDateItems(selectedDate);
+    
+    return (
+      <View style={styles.dayView}>
+        {dayItems.length === 0 ? (
+          <View style={styles.emptyDay}>
+            <Ionicons name="calendar-outline" size={48} color={Colors.textSecondary} />
+            <Text style={styles.emptyDayText}>Nenhum compromisso para este dia</Text>
+            <Button
+              title="Agendar Consulta"
+              onPress={() => navigation.navigate('NewAppointment', { 
+                selectedDate: selectedDate.toISOString() 
+              })}
+              style={styles.emptyDayButton}
+            />
+          </View>
+        ) : (
+          dayItems.map(item => (
+            <AgendaItem key={item.id} item={item} />
+          ))
+        )}
+      </View>
+    );
+  };
+
+  const WeekView = () => {
+    const weekDates = getWeekDates(selectedDate);
+    
+    return (
+      <View style={styles.weekView}>
+        <View style={styles.weekHeader}>
+          {weekDates.map((date, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.weekDayHeader,
+                date.toDateString() === new Date().toDateString() && styles.todayHeader
+              ]}
+              onPress={() => {
+                setSelectedDate(date);
+                setViewMode('day');
+              }}
+            >
+              <Text style={[
+                styles.weekDayName,
+                date.toDateString() === new Date().toDateString() && styles.todayText
+              ]}>
+                {date.toLocaleDateString('pt-BR', { weekday: 'short' })}
+              </Text>
+              <Text style={[
+                styles.weekDayNumber,
+                date.toDateString() === new Date().toDateString() && styles.todayText
+              ]}>
+                {date.getDate()}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        
+        <ScrollView style={styles.weekContent}>
+          {weekDates.map((date, index) => {
+            const dayItems = getDateItems(date);
+            if (dayItems.length === 0) return null;
+            
+            return (
+              <View key={index} style={styles.weekDay}>
+                <Text style={styles.weekDayTitle}>
+                  {date.toLocaleDateString('pt-BR', { 
+                    weekday: 'long', 
+                    day: 'numeric', 
+                    month: 'short' 
+                  })}
+                </Text>
+                {dayItems.map(item => (
+                  <AgendaItem key={item.id} item={item} />
+                ))}
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const MonthView = () => {
+    // Implementação simplificada do mês
+    const monthItems = appointments.concat(consultations).filter(item => {
+      const itemDate = new Date(item.date);
+      return itemDate.getMonth() === selectedDate.getMonth() &&
+             itemDate.getFullYear() === selectedDate.getFullYear();
+    });
+
+    return (
+      <View style={styles.monthView}>
+        <Text style={styles.monthTitle}>
+          {selectedDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+        </Text>
+        
+        <ScrollView style={styles.monthContent}>
+          {monthItems.length === 0 ? (
+            <View style={styles.emptyMonth}>
+              <Ionicons name="calendar-outline" size={48} color={Colors.textSecondary} />
+              <Text style={styles.emptyMonthText}>Nenhum compromisso neste mês</Text>
+            </View>
+          ) : (
+            monthItems
+              .sort((a, b) => new Date(a.date) - new Date(b.date))
+              .map(item => (
+                <AgendaItem key={item.id} item={item} showDate />
+              ))
+          )}
+        </ScrollView>
+      </View>
+    );
+  };
 
   if (loading) {
     return <Loading message="Carregando agenda..." />;
@@ -174,8 +367,28 @@ const AgendaScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <ScrollView 
-        contentContainerStyle={styles.scrollContainer}
+      {/* Header */}
+      <LinearGradient
+        colors={Colors.primaryGradient}
+        style={styles.header}
+      >
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>Agenda</Text>
+          <TouchableOpacity
+            style={styles.headerButton}
+            onPress={() => navigation.navigate('NewAppointment')}
+          >
+            <Ionicons name="add" size={24} color={Colors.surface} />
+          </TouchableOpacity>
+        </View>
+        
+        <DateNavigator />
+        <ViewModeSelector />
+      </LinearGradient>
+
+      {/* Content */}
+      <ScrollView
+        style={styles.content}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -184,122 +397,44 @@ const AgendaScreen = ({ navigation }) => {
             tintColor={Colors.primary}
           />
         }
-        showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.dateInfo}>
-            <Text style={styles.currentDate}>
-              {formatDate(new Date())}
-            </Text>
-            <Text style={styles.greeting}>
-              Sua agenda de hoje
-            </Text>
-          </View>
-          <Button
-            title="Nova Consulta"
-            onPress={() => navigation.navigate('NewConsultation')}
-            style={styles.newButton}
-            size="small"
-            icon={<Ionicons name="add" size={16} color={Colors.surface} />}
-          />
-        </View>
+        {viewMode === 'day' && <DayView />}
+        {viewMode === 'week' && <WeekView />}
+        {viewMode === 'month' && <MonthView />}
 
-        {/* Consultas de Hoje */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Ionicons name="calendar" size={20} color={Colors.primary} />
-            <Text style={styles.sectionTitle}>Hoje ({todayConsultations.length})</Text>
-          </View>
-
-          {todayConsultations.length === 0 ? (
-            <EmptyState
-              title="Nenhuma consulta hoje"
-              subtitle="Aproveite para organizar seus materiais ou estudar casos"
-              icon="calendar-outline"
-            />
-          ) : (
-            todayConsultations.map(consultation => (
-              <ConsultationCard 
-                key={consultation.id} 
-                consultation={consultation} 
-              />
-            ))
-          )}
-        </View>
-
-        {/* Próximas Consultas */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Ionicons name="time" size={20} color={Colors.success} />
-            <Text style={styles.sectionTitle}>
-              Próximos 7 dias ({upcomingConsultations.length})
-            </Text>
-          </View>
-
-          {upcomingConsultations.length === 0 ? (
-            <EmptyState
-              title="Nenhuma consulta agendada"
-              subtitle="Que tal entrar em contato com alguns clientes?"
-              icon="time-outline"
-            />
-          ) : (
-            upcomingConsultations.map(consultation => (
-              <ConsultationCard 
-                key={consultation.id} 
-                consultation={consultation} 
-                showDate={true}
-              />
-            ))
-          )}
-        </View>
-
-        {/* Ações Rápidas */}
-        <Card style={styles.actionsCard}>
-          <Text style={styles.actionsTitle}>Ações Rápidas</Text>
-          
-          <View style={styles.actionButtons}>
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={() => navigation.navigate('NewConsultation')}
-            >
-              <Ionicons name="add-circle" size={24} color={Colors.primary} />
-              <Text style={styles.actionButtonText}>Nova Consulta</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={() => navigation.navigate('ConsultationHistory')}
-            >
-              <Ionicons name="list" size={24} color={Colors.secondary} />
-              <Text style={styles.actionButtonText}>Histórico</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={() => navigation.navigate('VetLibrary')}
-            >
-              <Ionicons name="library" size={24} color={Colors.info} />
-              <Text style={styles.actionButtonText}>Biblioteca</Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
-
-        {/* Estatísticas Rápidas */}
+        {/* Estatísticas rápidas */}
         <Card style={styles.statsCard}>
-          <Text style={styles.statsTitle}>Resumo</Text>
+          <Text style={styles.statsTitle}>Resumo da Agenda</Text>
           <View style={styles.statsGrid}>
             <View style={styles.statItem}>
-              <Text style={styles.statNumber}>{todayConsultations.length}</Text>
+              <Text style={styles.statNumber}>
+                {appointments.filter(a => 
+                  new Date(a.date).toDateString() === new Date().toDateString()
+                ).length}
+              </Text>
               <Text style={styles.statLabel}>Hoje</Text>
             </View>
             <View style={styles.statItem}>
-              <Text style={styles.statNumber}>{upcomingConsultations.length}</Text>
-              <Text style={styles.statLabel}>Próximas</Text>
+              <Text style={styles.statNumber}>
+                {appointments.filter(a => {
+                  const date = new Date(a.date);
+                  const now = new Date();
+                  return date > now && date.getDate() === now.getDate() + 1;
+                }).length}
+              </Text>
+              <Text style={styles.statLabel}>Amanhã</Text>
             </View>
             <View style={styles.statItem}>
-              <Text style={styles.statNumber}>{consultations.length}</Text>
-              <Text style={styles.statLabel}>Total</Text>
+              <Text style={styles.statNumber}>
+                {appointments.filter(a => {
+                  const date = new Date(a.date);
+                  const now = new Date();
+                  const nextWeek = new Date();
+                  nextWeek.setDate(now.getDate() + 7);
+                  return date > now && date <= nextWeek;
+                }).length}
+              </Text>
+              <Text style={styles.statLabel}>Esta Semana</Text>
             </View>
           </View>
         </Card>
@@ -309,109 +444,157 @@ const AgendaScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    padding: 16,
-    paddingBottom: 32,
-  },
   header: {
+    paddingBottom: 16,
+  },
+  headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 24,
-  },
-  dateInfo: {
-    flex: 1,
-  },
-  currentDate: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: Colors.text,
-  },
-  greeting: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-    marginTop: 4,
-  },
-  newButton: {
-    paddingHorizontal: 16,
-  },
-  section: {
-    marginBottom: 24,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 16,
     marginBottom: 16,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.text,
-    marginLeft: 8,
-  },
-  consultationCard: {
-    marginBottom: 12,
-  },
-  consultationHeader: {
-    marginBottom: 12,
-  },
-  consultationTime: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  timeText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.primary,
-  },
-  statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  statusText: {
-    fontSize: 12,
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
     color: Colors.surface,
-    fontWeight: '500',
   },
-  consultationContent: {
-    marginTop: 8,
-  },
-  patientInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  petIcon: {
+  headerButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Colors.background,
+    backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
   },
-  patientDetails: {
+  dateNavigator: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginBottom: 16,
+  },
+  navButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.surface,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dateButton: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  dateText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: Colors.surface,
+  },
+  viewModeSelector: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 8,
+    padding: 4,
+    marginHorizontal: 20,
+  },
+  viewModeButton: {
+    flex: 1,
+    paddingVertical: 8,
+    alignItems: 'center',
+    borderRadius: 6,
+  },
+  viewModeButtonActive: {
+    backgroundColor: Colors.surface,
+  },
+  viewModeText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: Colors.surface,
+  },
+  viewModeTextActive: {
+    color: Colors.primary,
+  },
+  content: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
+  dayView: {
+    padding: 16,
+  },
+  emptyDay: {
+    alignItems: 'center',
+    paddingVertical: 64,
+  },
+  emptyDayText: {
+    fontSize: 16,
+    color: Colors.textSecondary,
+    marginTop: 16,
+    marginBottom: 24,
+    textAlign: 'center',
+  },
+  emptyDayButton: {
+    paddingHorizontal: 24,
+  },
+  agendaItem: {
+    marginBottom: 12,
+  },
+  itemHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  itemContent: {
     flex: 1,
   },
-  petName: {
+  itemTitle: {
     fontSize: 16,
     fontWeight: '600',
     color: Colors.text,
   },
-  clientName: {
+  itemSubtitle: {
     fontSize: 14,
     color: Colors.textSecondary,
     marginTop: 2,
   },
-  consultationType: {
-    fontSize: 12,
+  itemTime: {
+    fontSize: 14,
     color: Colors.primary,
-    marginTop: 2,
+    marginTop: 4,
     fontWeight: '500',
   },
-  symptomsContainer: {
+  itemActions: {
+    flexDirection: 'row',
+  },
+  actionButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: Colors.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+  itemDescription: {
+    marginTop: 12,
+    paddingLeft: 60,
+  },
+  descriptionText: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    lineHeight: 18,
+  },
+  itemSymptoms: {
+    marginTop: 12,
+    paddingLeft: 60,
     backgroundColor: Colors.background,
     padding: 12,
     borderRadius: 8,
@@ -429,48 +612,75 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     lineHeight: 18,
   },
-  emptySection: {
-    alignItems: 'center',
-    paddingVertical: 32,
+  weekView: {
+    padding: 16,
   },
-  emptyTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-    marginTop: 12,
-    textAlign: 'center',
-  },
-  emptySubtitle: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    marginTop: 4,
-    textAlign: 'center',
-  },
-  actionsCard: {
-    marginBottom: 16,
-  },
-  actionsTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-    marginBottom: 16,
-  },
-  actionButtons: {
+  weekHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    marginBottom: 16,
   },
-  actionButton: {
+  weekDayHeader: {
+    flex: 1,
     alignItems: 'center',
-    padding: 12,
+    paddingVertical: 12,
+    borderRadius: 8,
   },
-  actionButtonText: {
+  todayHeader: {
+    backgroundColor: Colors.primary,
+  },
+  weekDayName: {
     fontSize: 12,
+    color: Colors.textSecondary,
+    textTransform: 'uppercase',
+  },
+  weekDayNumber: {
+    fontSize: 18,
+    fontWeight: 'bold',
     color: Colors.text,
-    marginTop: 8,
+    marginTop: 4,
+  },
+  todayText: {
+    color: Colors.surface,
+  },
+  weekContent: {
+    flex: 1,
+  },
+  weekDay: {
+    marginBottom: 24,
+  },
+  weekDayTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.text,
+    marginBottom: 12,
+    textTransform: 'capitalize',
+  },
+  monthView: {
+    padding: 16,
+  },
+  monthTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: Colors.text,
+    marginBottom: 16,
+    textAlign: 'center',
+    textTransform: 'capitalize',
+  },
+  monthContent: {
+    flex: 1,
+  },
+  emptyMonth: {
+    alignItems: 'center',
+    paddingVertical: 64,
+  },
+  emptyMonthText: {
+    fontSize: 16,
+    color: Colors.textSecondary,
+    marginTop: 16,
     textAlign: 'center',
   },
   statsCard: {
-    marginBottom: 16,
+    margin: 16,
   },
   statsTitle: {
     fontSize: 16,

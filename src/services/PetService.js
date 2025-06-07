@@ -1,35 +1,73 @@
-import { getStorageData, setStorageData } from '../utils/storage';
-import { StorageKeys } from '../constants/Storage';
-import { generateId } from '../utils/helpers';
+import { supabase } from '../config/supabase';
 
 export const PetService = {
   async getAll() {
-    return await getStorageData(StorageKeys.PETS) || [];
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+
+      const { data, error } = await supabase
+        .from('pets_consultorio')
+        .select(`
+          *,
+          client:clients_consultorio!inner(id, name, user_id)
+        `)
+        .eq('client.user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Erro ao buscar pets:', error);
+      return [];
+    }
   },
 
   async getById(id) {
-    const pets = await this.getAll();
-    return pets.find(pet => pet.id === id);
+    try {
+      const { data, error } = await supabase
+        .from('pets_consultorio')
+        .select(`
+          *,
+          client:clients_consultorio(*)
+        `)
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Erro ao buscar pet:', error);
+      return null;
+    }
   },
 
   async getByClientId(clientId) {
-    const pets = await this.getAll();
-    return pets.filter(pet => pet.clientId === clientId);
+    try {
+      const { data, error } = await supabase
+        .from('pets_consultorio')
+        .select('*')
+        .eq('client_id', clientId)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Erro ao buscar pets do cliente:', error);
+      return [];
+    }
   },
 
   async create(petData) {
     try {
-      const pets = await this.getAll();
-      const newPet = {
-        id: generateId(),
-        ...petData,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+      const { data, error } = await supabase
+        .from('pets_consultorio')
+        .insert([petData])
+        .select()
+        .single();
 
-      pets.push(newPet);
-      await setStorageData(StorageKeys.PETS, pets);
-      return { success: true, data: newPet };
+      if (error) throw error;
+      return { success: true, data };
     } catch (error) {
       console.error('Erro ao criar pet:', error);
       return { success: false, error: 'Erro ao salvar pet' };
@@ -38,21 +76,18 @@ export const PetService = {
 
   async update(id, petData) {
     try {
-      const pets = await this.getAll();
-      const index = pets.findIndex(pet => pet.id === id);
-      
-      if (index === -1) {
-        return { success: false, error: 'Pet não encontrado' };
-      }
+      const { data, error } = await supabase
+        .from('pets_consultorio')
+        .update({
+          ...petData,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', id)
+        .select()
+        .single();
 
-      pets[index] = {
-        ...pets[index],
-        ...petData,
-        updatedAt: new Date().toISOString(),
-      };
-
-      await setStorageData(StorageKeys.PETS, pets);
-      return { success: true, data: pets[index] };
+      if (error) throw error;
+      return { success: true, data };
     } catch (error) {
       console.error('Erro ao atualizar pet:', error);
       return { success: false, error: 'Erro ao atualizar pet' };
@@ -61,10 +96,12 @@ export const PetService = {
 
   async delete(id) {
     try {
-      const pets = await this.getAll();
-      const filteredPets = pets.filter(pet => pet.id !== id);
-      
-      await setStorageData(StorageKeys.PETS, filteredPets);
+      const { error } = await supabase
+        .from('pets_consultorio')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
       return { success: true };
     } catch (error) {
       console.error('Erro ao deletar pet:', error);
@@ -73,43 +110,108 @@ export const PetService = {
   },
 
   async search(query, clientId = null) {
-    const pets = await this.getAll();
-    let filteredPets = clientId ? pets.filter(pet => pet.clientId === clientId) : pets;
-    
-    if (!query || query.trim() === '') return filteredPets;
-    
-    const lowerQuery = query.toLowerCase();
-    
-    return filteredPets.filter(pet => 
-      pet.name.toLowerCase().includes(lowerQuery) ||
-      pet.species.toLowerCase().includes(lowerQuery) ||
-      (pet.breed && pet.breed.toLowerCase().includes(lowerQuery)) ||
-      (pet.microchip && pet.microchip.includes(query))
-    );
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+
+      let queryBuilder = supabase
+        .from('pets_consultorio')
+        .select(`
+          *,
+          client:clients_consultorio!inner(id, name, user_id)
+        `)
+        .eq('client.user_id', user.id);
+
+      if (clientId) {
+        queryBuilder = queryBuilder.eq('client_id', clientId);
+      }
+
+      const { data, error } = await queryBuilder
+        .or(`name.ilike.%${query}%,species.ilike.%${query}%,breed.ilike.%${query}%,microchip.ilike.%${query}%`)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Erro na busca:', error);
+      return [];
+    }
   },
 
   async getStats() {
-    const pets = await this.getAll();
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-    
-    const thisMonth = pets.filter(pet => {
-      const createdDate = new Date(pet.createdAt);
-      return createdDate.getMonth() === currentMonth && 
-             createdDate.getFullYear() === currentYear;
-    });
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return { total: 0, thisMonth: 0, bySpecies: {}, active: 0 };
 
-    const bySpecies = pets.reduce((acc, pet) => {
-      acc[pet.species] = (acc[pet.species] || 0) + 1;
-      return acc;
-    }, {});
+      const { data, error } = await supabase
+        .from('pets_consultorio')
+        .select(`
+          created_at,
+          species,
+          client:clients_consultorio!inner(user_id)
+        `)
+        .eq('client.user_id', user.id);
 
-    return {
-      total: pets.length,
-      thisMonth: thisMonth.length,
-      bySpecies,
-      active: pets.filter(pet => !pet.deceased).length,
-    };
+      if (error) throw error;
+
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+
+      const thisMonth = data.filter(pet => {
+        const createdDate = new Date(pet.created_at);
+        return createdDate.getMonth() === currentMonth && 
+               createdDate.getFullYear() === currentYear;
+      });
+
+      const bySpecies = data.reduce((acc, pet) => {
+        acc[pet.species] = (acc[pet.species] || 0) + 1;
+        return acc;
+      }, {});
+
+      return {
+        total: data.length,
+        thisMonth: thisMonth.length,
+        bySpecies,
+        active: data.length,
+      };
+    } catch (error) {
+      console.error('Erro ao buscar estatísticas:', error);
+      return { total: 0, thisMonth: 0, bySpecies: {}, active: 0 };
+    }
+  },
+
+  async uploadPhoto(petId, photoUri) {
+    try {
+      const fileExt = photoUri.split('.').pop();
+      const fileName = `${petId}-${Date.now()}.${fileExt}`;
+      const filePath = `pets/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('photos')
+        .upload(filePath, {
+          uri: photoUri,
+          type: `image/${fileExt}`,
+          name: fileName,
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('photos')
+        .getPublicUrl(filePath);
+
+      const { error: updateError } = await supabase
+        .from('pets_consultorio')
+        .update({ photo_url: data.publicUrl })
+        .eq('id', petId);
+
+      if (updateError) throw updateError;
+
+      return { success: true, url: data.publicUrl };
+    } catch (error) {
+      console.error('Erro ao fazer upload da foto:', error);
+      return { success: false, error: 'Erro ao fazer upload da foto' };
+    }
   }
 };

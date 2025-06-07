@@ -1,42 +1,109 @@
-import { getStorageData, setStorageData } from '../utils/storage';
-import { StorageKeys } from '../constants/Storage';
-import { generateId } from '../utils/helpers';
+import { supabase } from '../config/supabase';
 
 export const ConsultationService = {
   async getAll() {
-    return await getStorageData(StorageKeys.CONSULTATIONS) || [];
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+
+      const { data, error } = await supabase
+        .from('consultations_consultorio')
+        .select(`
+          *,
+          client:clients_consultorio(*),
+          pet:pets_consultorio(*)
+        `)
+        .eq('user_id', user.id)
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Erro ao buscar consultas:', error);
+      return [];
+    }
   },
 
   async getById(id) {
-    const consultations = await this.getAll();
-    return consultations.find(consultation => consultation.id === id);
+    try {
+      const { data, error } = await supabase
+        .from('consultations_consultorio')
+        .select(`
+          *,
+          client:clients_consultorio(*),
+          pet:pets_consultorio(*)
+        `)
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Erro ao buscar consulta:', error);
+      return null;
+    }
   },
 
   async getByPetId(petId) {
-    const consultations = await this.getAll();
-    return consultations.filter(consultation => consultation.petId === petId)
-                      .sort((a, b) => new Date(b.date) - new Date(a.date));
+    try {
+      const { data, error } = await supabase
+        .from('consultations_consultorio')
+        .select(`
+          *,
+          client:clients_consultorio(*),
+          pet:pets_consultorio(*)
+        `)
+        .eq('pet_id', petId)
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Erro ao buscar consultas do pet:', error);
+      return [];
+    }
   },
 
   async getByClientId(clientId) {
-    const consultations = await this.getAll();
-    return consultations.filter(consultation => consultation.clientId === clientId)
-                      .sort((a, b) => new Date(b.date) - new Date(a.date));
+    try {
+      const { data, error } = await supabase
+        .from('consultations_consultorio')
+        .select(`
+          *,
+          client:clients_consultorio(*),
+          pet:pets_consultorio(*)
+        `)
+        .eq('client_id', clientId)
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Erro ao buscar consultas do cliente:', error);
+      return [];
+    }
   },
 
   async create(consultationData) {
     try {
-      const consultations = await this.getAll();
-      const newConsultation = {
-        id: generateId(),
-        ...consultationData,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return { success: false, error: 'Usuário não autenticado' };
+      }
 
-      consultations.push(newConsultation);
-      await setStorageData(StorageKeys.CONSULTATIONS, consultations);
-      return { success: true, data: newConsultation };
+      const { data, error } = await supabase
+        .from('consultations_consultorio')
+        .insert([
+          {
+            ...consultationData,
+            user_id: user.id,
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, data };
     } catch (error) {
       console.error('Erro ao criar consulta:', error);
       return { success: false, error: 'Erro ao salvar consulta' };
@@ -45,21 +112,24 @@ export const ConsultationService = {
 
   async update(id, consultationData) {
     try {
-      const consultations = await this.getAll();
-      const index = consultations.findIndex(consultation => consultation.id === id);
-      
-      if (index === -1) {
-        return { success: false, error: 'Consulta não encontrada' };
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return { success: false, error: 'Usuário não autenticado' };
       }
 
-      consultations[index] = {
-        ...consultations[index],
-        ...consultationData,
-        updatedAt: new Date().toISOString(),
-      };
+      const { data, error } = await supabase
+        .from('consultations_consultorio')
+        .update({
+          ...consultationData,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .select()
+        .single();
 
-      await setStorageData(StorageKeys.CONSULTATIONS, consultations);
-      return { success: true, data: consultations[index] };
+      if (error) throw error;
+      return { success: true, data };
     } catch (error) {
       console.error('Erro ao atualizar consulta:', error);
       return { success: false, error: 'Erro ao atualizar consulta' };
@@ -68,10 +138,18 @@ export const ConsultationService = {
 
   async delete(id) {
     try {
-      const consultations = await this.getAll();
-      const filteredConsultations = consultations.filter(consultation => consultation.id !== id);
-      
-      await setStorageData(StorageKeys.CONSULTATIONS, filteredConsultations);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return { success: false, error: 'Usuário não autenticado' };
+      }
+
+      const { error } = await supabase
+        .from('consultations_consultorio')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
       return { success: true };
     } catch (error) {
       console.error('Erro ao deletar consulta:', error);
@@ -80,32 +158,46 @@ export const ConsultationService = {
   },
 
   async getStats() {
-    const consultations = await this.getAll();
-    const currentDate = new Date();
-    const today = currentDate.toDateString();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-    
-    const todayConsultations = consultations.filter(consultation => 
-      new Date(consultation.date).toDateString() === today
-    );
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return { total: 0, today: 0, thisMonth: 0, byType: {} };
 
-    const thisMonth = consultations.filter(consultation => {
-      const consultationDate = new Date(consultation.date);
-      return consultationDate.getMonth() === currentMonth && 
-             consultationDate.getFullYear() === currentYear;
-    });
+      const { data, error } = await supabase
+        .from('consultations_consultorio')
+        .select('date, type')
+        .eq('user_id', user.id);
 
-    const byType = consultations.reduce((acc, consultation) => {
-      acc[consultation.type] = (acc[consultation.type] || 0) + 1;
-      return acc;
-    }, {});
+      if (error) throw error;
 
-    return {
-      total: consultations.length,
-      today: todayConsultations.length,
-      thisMonth: thisMonth.length,
-      byType,
-    };
+      const currentDate = new Date();
+      const today = currentDate.toDateString();
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+
+      const todayConsultations = data.filter(consultation => 
+        new Date(consultation.date).toDateString() === today
+      );
+
+      const thisMonth = data.filter(consultation => {
+        const consultationDate = new Date(consultation.date);
+        return consultationDate.getMonth() === currentMonth && 
+               consultationDate.getFullYear() === currentYear;
+      });
+
+      const byType = data.reduce((acc, consultation) => {
+        acc[consultation.type] = (acc[consultation.type] || 0) + 1;
+        return acc;
+      }, {});
+
+      return {
+        total: data.length,
+        today: todayConsultations.length,
+        thisMonth: thisMonth.length,
+        byType,
+      };
+    } catch (error) {
+      console.error('Erro ao buscar estatísticas:', error);
+      return { total: 0, today: 0, thisMonth: 0, byType: {} };
+    }
   }
 };
