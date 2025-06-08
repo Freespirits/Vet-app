@@ -147,7 +147,12 @@ const VetLibraryScreen = ({ navigation }) => {
   });
 
   const handleMedicationPress = (medication) => {
-    navigation.navigate('MedicationDetail', { medication });
+    Alert.alert(
+      medication.name,
+      `Princípio Ativo: ${medication.activeIngredient}\n\nDescrição: ${medication.description}\n\nDosagem: ${medication.dosage}\nFrequência: ${medication.frequency}\nVia: ${medication.administration}\n\nEspécies: ${medication.species.join(', ')}\n\nContraindicações: ${medication.contraindications}`,
+      [{ text: 'OK' }],
+      { cancelable: true }
+    );
   };
 
   const handleAddMedication = () => {
@@ -157,7 +162,7 @@ const VetLibraryScreen = ({ navigation }) => {
       [
         {
           text: 'Formulário Completo',
-          onPress: () => navigation.navigate('NewMedication')
+          onPress: () => Alert.alert('Em breve', 'Formulário completo será implementado em breve!')
         },
         {
           text: 'Busca Online',
@@ -241,13 +246,6 @@ const VetLibraryScreen = ({ navigation }) => {
         style={styles.header}
       >
         <View style={styles.headerContent}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.backButton}
-          >
-            <Ionicons name="arrow-back" size={24} color={Colors.surface} />
-          </TouchableOpacity>
-          
           <View style={styles.headerTitleContainer}>
             <View style={styles.headerIconContainer}>
               <Ionicons name="library" size={28} color={Colors.surface} />
@@ -389,15 +387,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-  },
-  backButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
   },
   headerTitleContainer: {
     flex: 1,
