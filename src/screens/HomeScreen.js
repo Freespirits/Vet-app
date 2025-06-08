@@ -170,7 +170,7 @@ const HomeScreen = ({ navigation }) => {
       subtitle: 'Cadastrar pet',
       icon: 'add-circle-outline',
       color: Colors.success,
-      onPress: () => navigation.navigate('NewPatient'),
+      onPress: () => navigation.navigate('NewPet'),
     },
     {
       id: 'library',
@@ -180,14 +180,14 @@ const HomeScreen = ({ navigation }) => {
       color: Colors.info,
       onPress: () => navigation.navigate('VetLibrary'),
     },
-    {
-      id: 'emergency',
-      title: 'Emergência',
-      subtitle: 'Consulta urgente',
-      icon: 'medical-outline',
-      color: Colors.error,
-      onPress: () => navigation.navigate('Emergency'),
-    },
+    // {
+    //   id: 'emergency',
+    //   title: 'Emergência',
+    //   subtitle: 'Consulta urgente',
+    //   icon: 'medical-outline',
+    //   color: Colors.error,
+    //   onPress: () => navigation.navigate('Emergency'),
+    // },
   ];
 
   const statsCards = [
