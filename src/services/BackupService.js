@@ -1,97 +1,51 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
-import * as DocumentPicker from 'expo-document-picker';
 import { Alert } from 'react-native';
-import { AppointmentService } from './AppointmentService';
-import { PatientService } from './PatientService';
-import { LibraryService } from './LibraryService';
 
 class BackupServiceClass {
   constructor() {
     this.BACKUP_PREFIX = 'VetApp_Backup_';
     this.BACKUP_EXTENSION = '.json';
-    this.BACKUP_DIRECTORY = `${FileSystem.documentDirectory}backups/`;
-  }
-
-  // Criar diretório de backup se não existir
-  async ensureBackupDirectory() {
-    try {
-      const dirInfo = await FileSystem.getInfoAsync(this.BACKUP_DIRECTORY);
-      if (!dirInfo.exists) {
-        await FileSystem.makeDirectoryAsync(this.BACKUP_DIRECTORY, { intermediates: true });
-      }
-    } catch (error) {
-      console.error('Erro ao criar diretório:', error);
-    }
+    this.STORAGE_KEY = '@VetApp:backups_info';
   }
 
   // Criar backup completo
   async createBackup() {
     try {
-      await this.ensureBackupDirectory();
-
-      // Coletar todos os dados
-      const [appointments, patients, library, settings] = await Promise.all([
-        AppointmentService.getAll(),
-        PatientService.getAll(),
-        LibraryService.getAll(),
-        this.getAllSettings(),
-      ]);
-
+      const timestamp = new Date().toISOString();
+      
+      // Coletar todos os dados do AsyncStorage
+      const allData = await this.getAllStorageData();
+      
       // Estruturar dados do backup
       const backupData = {
         version: '1.0.0',
-        timestamp: new Date().toISOString(),
+        timestamp,
         platform: 'mobile',
-        data: {
-          appointments: appointments || [],
-          patients: patients || [],
-          library: library || [],
-          settings: settings || {},
-        },
+        data: allData,
         metadata: {
-          appointmentsCount: appointments?.length || 0,
-          patientsCount: patients?.length || 0,
-          libraryCount: library?.length || 0,
-          totalSize: 0,
+          totalItems: Object.keys(allData).length,
+          totalSize: JSON.stringify(allData).length,
         },
       };
 
-      // Calcular tamanho aproximado
-      const dataString = JSON.stringify(backupData);
-      backupData.metadata.totalSize = new Blob([dataString]).size;
-
-      // Gerar nome do arquivo
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-      const filename = `${this.BACKUP_PREFIX}${timestamp}${this.BACKUP_EXTENSION}`;
-      const filepath = `${this.BACKUP_DIRECTORY}${filename}`;
-
-      // Salvar arquivo
-      await FileSystem.writeAsStringAsync(filepath, dataString);
+      // Gerar informações do backup
+      const backupInfo = {
+        id: timestamp.replace(/[:.]/g, '-').slice(0, 19),
+        filename: `${this.BACKUP_PREFIX}${timestamp.replace(/[:.]/g, '-').slice(0, 19)}${this.BACKUP_EXTENSION}`,
+        date: timestamp,
+        size: this.formatFileSize(JSON.stringify(backupData).length),
+        itemsCount: backupData.metadata.totalItems,
+        data: JSON.stringify(backupData), // Armazenar os dados do backup
+      };
 
       // Salvar informações do backup
-      await this.saveBackupInfo({
-        id: timestamp,
-        filename,
-        filepath,
-        date: new Date().toISOString(),
-        size: this.formatFileSize(dataString.length),
-        itemsCount: backupData.metadata.appointmentsCount + 
-                   backupData.metadata.patientsCount + 
-                   backupData.metadata.libraryCount,
-        appointments: backupData.metadata.appointmentsCount,
-        patients: backupData.metadata.patientsCount,
-        library: backupData.metadata.libraryCount,
-      });
+      await this.saveBackupInfo(backupInfo);
 
       return {
         success: true,
-        filename,
-        size: this.formatFileSize(dataString.length),
-        itemsCount: backupData.metadata.appointmentsCount + 
-                   backupData.metadata.patientsCount + 
-                   backupData.metadata.libraryCount,
+        filename: backupInfo.filename,
+        size: backupInfo.size,
+        itemsCount: backupInfo.itemsCount,
       };
     } catch (error) {
       console.error('Erro ao criar backup:', error);
@@ -109,49 +63,28 @@ class BackupServiceClass {
         return { success: false, error: 'Backup não encontrado' };
       }
 
-      // Ler arquivo de backup
-      const backupContent = await FileSystem.readAsStringAsync(backup.filepath);
-      const backupData = JSON.parse(backupContent);
-
-      // Validar estrutura do backup
+      // Parse dos dados do backup
+      const backupData = JSON.parse(backup.data);
+      
       if (!backupData.data) {
         return { success: false, error: 'Arquivo de backup inválido' };
       }
 
-      // Limpar dados existentes
+      // Limpar dados existentes (exceto backups)
       await this.clearAllData();
 
       // Restaurar dados
-      const { appointments, patients, library, settings } = backupData.data;
-
-      // Restaurar cada categoria de dados
-      if (patients?.length > 0) {
-        for (const patient of patients) {
-          await PatientService.create(patient);
+      let restoredCount = 0;
+      for (const [key, value] of Object.entries(backupData.data)) {
+        if (!key.includes('backups_info')) { // Não restaurar informações de backup
+          await AsyncStorage.setItem(key, value);
+          restoredCount++;
         }
-      }
-
-      if (appointments?.length > 0) {
-        for (const appointment of appointments) {
-          await AppointmentService.create(appointment);
-        }
-      }
-
-      if (library?.length > 0) {
-        for (const item of library) {
-          await LibraryService.create(item);
-        }
-      }
-
-      if (settings) {
-        await this.restoreSettings(settings);
       }
 
       return {
         success: true,
-        itemsRestored: (appointments?.length || 0) + 
-                      (patients?.length || 0) + 
-                      (library?.length || 0),
+        itemsRestored: restoredCount,
       };
     } catch (error) {
       console.error('Erro ao restaurar backup:', error);
@@ -162,7 +95,7 @@ class BackupServiceClass {
   // Listar backups disponíveis
   async listBackups() {
     try {
-      const backupsInfo = await AsyncStorage.getItem('@VetApp:backups_info');
+      const backupsInfo = await AsyncStorage.getItem(this.STORAGE_KEY);
       return backupsInfo ? JSON.parse(backupsInfo) : [];
     } catch (error) {
       console.error('Erro ao listar backups:', error);
@@ -174,22 +107,8 @@ class BackupServiceClass {
   async deleteBackup(backupId) {
     try {
       const backups = await this.listBackups();
-      const backup = backups.find(b => b.id === backupId);
-      
-      if (!backup) {
-        return { success: false, error: 'Backup não encontrado' };
-      }
-
-      // Excluir arquivo
-      const fileInfo = await FileSystem.getInfoAsync(backup.filepath);
-      if (fileInfo.exists) {
-        await FileSystem.deleteAsync(backup.filepath);
-      }
-
-      // Remover da lista
       const updatedBackups = backups.filter(b => b.id !== backupId);
-      await AsyncStorage.setItem('@VetApp:backups_info', JSON.stringify(updatedBackups));
-
+      await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedBackups));
       return { success: true };
     } catch (error) {
       console.error('Erro ao excluir backup:', error);
@@ -197,7 +116,7 @@ class BackupServiceClass {
     }
   }
 
-  // Exportar backup para compartilhar
+  // Exportar backup (versão simplificada - mostra dados)
   async exportBackup(backupId) {
     try {
       const backups = await this.listBackups();
@@ -207,70 +126,25 @@ class BackupServiceClass {
         return { success: false, error: 'Backup não encontrado' };
       }
 
-      const canShare = await Sharing.isAvailableAsync();
-      if (!canShare) {
-        return { success: false, error: 'Compartilhamento não disponível' };
-      }
-
-      await Sharing.shareAsync(backup.filepath, {
-        mimeType: 'application/json',
-        dialogTitle: 'Exportar Backup VetApp',
-      });
+      // Por enquanto, apenas mostra os dados em um alert
+      Alert.alert(
+        'Dados do Backup',
+        `Backup: ${backup.filename}\nTamanho: ${backup.size}\nData: ${new Date(backup.date).toLocaleDateString('pt-BR')}`,
+        [
+          { text: 'OK' },
+          { 
+            text: 'Copiar Dados', 
+            onPress: () => {
+              // Em uma implementação futura, poderia copiar para clipboard
+              console.log('Dados do backup:', backup.data);
+            }
+          }
+        ]
+      );
 
       return { success: true };
     } catch (error) {
       console.error('Erro ao exportar backup:', error);
-      return { success: false, error: error.message };
-    }
-  }
-
-  // Importar backup de arquivo externo
-  async importBackup() {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: 'application/json',
-        copyToCacheDirectory: true,
-      });
-
-      if (result.type === 'cancel') {
-        return { success: false, error: 'Importação cancelada' };
-      }
-
-      // Ler e validar arquivo
-      const content = await FileSystem.readAsStringAsync(result.uri);
-      const backupData = JSON.parse(content);
-
-      if (!backupData.data || !backupData.version) {
-        return { success: false, error: 'Arquivo de backup inválido' };
-      }
-
-      // Copiar para diretório de backups
-      await this.ensureBackupDirectory();
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-      const filename = `${this.BACKUP_PREFIX}imported_${timestamp}${this.BACKUP_EXTENSION}`;
-      const filepath = `${this.BACKUP_DIRECTORY}${filename}`;
-
-      await FileSystem.copyAsync({
-        from: result.uri,
-        to: filepath,
-      });
-
-      // Salvar informações do backup
-      await this.saveBackupInfo({
-        id: `imported_${timestamp}`,
-        filename,
-        filepath,
-        date: new Date().toISOString(),
-        size: this.formatFileSize(content.length),
-        itemsCount: (backupData.data.appointments?.length || 0) + 
-                   (backupData.data.patients?.length || 0) + 
-                   (backupData.data.library?.length || 0),
-        imported: true,
-      });
-
-      return { success: true, filename };
-    } catch (error) {
-      console.error('Erro ao importar backup:', error);
       return { success: false, error: error.message };
     }
   }
@@ -280,60 +154,51 @@ class BackupServiceClass {
     try {
       const backups = await this.listBackups();
       backups.push(backupInfo);
+      
       // Manter apenas os 10 backups mais recentes
       const sortedBackups = backups
         .sort((a, b) => new Date(b.date) - new Date(a.date))
         .slice(0, 10);
       
-      await AsyncStorage.setItem('@VetApp:backups_info', JSON.stringify(sortedBackups));
+      await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify(sortedBackups));
     } catch (error) {
       console.error('Erro ao salvar info do backup:', error);
     }
   }
 
-  // Obter todas as configurações
-  async getAllSettings() {
+  // Obter todos os dados do AsyncStorage
+  async getAllStorageData() {
     try {
       const keys = await AsyncStorage.getAllKeys();
-      const settingsKeys = keys.filter(key => key.startsWith('@VetApp:'));
-      const settings = {};
+      const stores = await AsyncStorage.multiGet(keys);
+      const data = {};
       
-      for (const key of settingsKeys) {
-        const value = await AsyncStorage.getItem(key);
-        settings[key] = value;
-      }
+      stores.forEach(([key, value]) => {
+        if (key !== this.STORAGE_KEY) { // Não incluir informações de backup no backup
+          data[key] = value;
+        }
+      });
       
-      return settings;
+      return data;
     } catch (error) {
-      console.error('Erro ao obter configurações:', error);
+      console.error('Erro ao obter dados do storage:', error);
       return {};
     }
   }
 
-  // Restaurar configurações
-  async restoreSettings(settings) {
-    try {
-      for (const [key, value] of Object.entries(settings)) {
-        if (value !== null) {
-          await AsyncStorage.setItem(key, value);
-        }
-      }
-    } catch (error) {
-      console.error('Erro ao restaurar configurações:', error);
-    }
-  }
-
-  // Limpar todos os dados
+  // Limpar todos os dados (exceto backups)
   async clearAllData() {
     try {
-      // Limpar AsyncStorage (mantendo apenas configurações críticas)
       const keys = await AsyncStorage.getAllKeys();
       const keysToRemove = keys.filter(key => 
-        !key.includes('auth_token') && 
-        !key.includes('user_preferences')
+        key !== this.STORAGE_KEY && // Manter informações de backup
+        !key.includes('auth_token') && // Manter token de auth
+        !key.includes('user_session') // Manter sessão
       );
       
-      await AsyncStorage.multiRemove(keysToRemove);
+      if (keysToRemove.length > 0) {
+        await AsyncStorage.multiRemove(keysToRemove);
+      }
     } catch (error) {
       console.error('Erro ao limpar dados:', error);
     }
@@ -360,13 +225,11 @@ class BackupServiceClass {
         return { success: false, error: 'Backup não encontrado' };
       }
 
-      const fileInfo = await FileSystem.getInfoAsync(backup.filepath);
-      if (!fileInfo.exists) {
-        return { success: false, error: 'Arquivo de backup não existe' };
+      if (!backup.data) {
+        return { success: false, error: 'Dados do backup não encontrados' };
       }
 
-      const content = await FileSystem.readAsStringAsync(backup.filepath);
-      const backupData = JSON.parse(content);
+      const backupData = JSON.parse(backup.data);
 
       // Verificar estrutura básica
       const isValid = backupData.version && 
@@ -377,6 +240,54 @@ class BackupServiceClass {
       return { success: isValid, valid: isValid };
     } catch (error) {
       console.error('Erro ao verificar backup:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  // Obter estatísticas dos backups
+  async getBackupStats() {
+    try {
+      const backups = await this.listBackups();
+      
+      if (backups.length === 0) {
+        return {
+          total: 0,
+          totalSize: '0 Bytes',
+          lastBackup: null,
+          oldestBackup: null,
+        };
+      }
+
+      const sortedByDate = backups.sort((a, b) => new Date(b.date) - new Date(a.date));
+      const totalSizeBytes = backups.reduce((sum, backup) => {
+        return sum + (backup.data ? backup.data.length : 0);
+      }, 0);
+
+      return {
+        total: backups.length,
+        totalSize: this.formatFileSize(totalSizeBytes),
+        lastBackup: sortedByDate[0],
+        oldestBackup: sortedByDate[sortedByDate.length - 1],
+      };
+    } catch (error) {
+      console.error('Erro ao obter estatísticas:', error);
+      return {
+        total: 0,
+        totalSize: '0 Bytes',
+        lastBackup: null,
+        oldestBackup: null,
+      };
+    }
+  }
+
+  // Backup automático (para uso futuro)
+  async scheduleAutoBackup() {
+    try {
+      // Implementação futura - por enquanto apenas log
+      console.log('Backup automático agendado');
+      return { success: true };
+    } catch (error) {
+      console.error('Erro ao agendar backup automático:', error);
       return { success: false, error: error.message };
     }
   }
