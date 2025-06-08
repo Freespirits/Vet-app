@@ -13,30 +13,19 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants/Colors';
+import { useAuth } from '../../contexts/AuthContext';
 import { AuthService } from '../../services/AuthService';
 import { NotificationService } from '../../services/NotificationService';
 import { BackupService } from '../../services/BackupService';
 
 const ProfileScreen = ({ navigation }) => {
-  const [user, setUser] = useState(null);
+  const { user, logout } = useAuth();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    loadUserData();
     loadNotificationSettings();
   }, []);
-
-  const loadUserData = async () => {
-    try {
-      const userData = await AuthService.getCurrentUser();
-      setUser(userData);
-    } catch (error) {
-      console.error('Erro ao carregar dados do usuário:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const loadNotificationSettings = async () => {
     try {
@@ -112,7 +101,7 @@ const ProfileScreen = ({ navigation }) => {
         {
           text: 'Restaurar',
           style: 'destructive',
-          onPress: () => navigation.navigate('RestoreBackup')
+          onPress: () => navigation.navigate('BackupSettings')
         }
       ]
     );
@@ -129,11 +118,7 @@ const ProfileScreen = ({ navigation }) => {
           style: 'destructive',
           onPress: async () => {
             try {
-              await AuthService.logout();
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'Login' }],
-              });
+              await logout();
             } catch (error) {
               console.error('Erro ao fazer logout:', error);
               Alert.alert('Erro', 'Erro ao sair da conta');
@@ -153,14 +138,14 @@ const ProfileScreen = ({ navigation }) => {
           title: 'Editar Perfil',
           subtitle: 'Nome, email e informações pessoais',
           icon: 'person-outline',
-          onPress: () => navigation.navigate('EditProfile'),
+          onPress: () => Alert.alert('Em breve', 'Funcionalidade em desenvolvimento'),
         },
         {
           id: 'change-password',
           title: 'Alterar Senha',
           subtitle: 'Atualizar senha de acesso',
           icon: 'lock-closed-outline',
-          onPress: () => navigation.navigate('ChangePassword'),
+          onPress: () => Alert.alert('Em breve', 'Funcionalidade em desenvolvimento'),
         },
       ],
     },
@@ -330,12 +315,12 @@ const ProfileScreen = ({ navigation }) => {
                 {user?.email || 'veterinario@email.com'}
               </Text>
               <Text style={styles.userRole}>
-                Médico Veterinário
+                {user?.profession || 'Médico Veterinário'}
               </Text>
             </View>
             <TouchableOpacity
               style={styles.editButton}
-              onPress={() => navigation.navigate('EditProfile')}
+              onPress={() => Alert.alert('Em breve', 'Funcionalidade em desenvolvimento')}
             >
               <Ionicons name="create-outline" size={20} color={Colors.primary} />
             </TouchableOpacity>
