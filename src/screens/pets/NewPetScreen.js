@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  SafeAreaView, 
-  ScrollView, 
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
   KeyboardAvoidingView,
   Platform,
   Alert,
@@ -44,7 +44,7 @@ const NewPetScreen = ({ navigation, route }) => {
     microchip: '',
     notes: ''
   });
-  
+
   const [clients, setClients] = useState([]);
   const [availableBreeds, setAvailableBreeds] = useState([]);
   const [errors, setErrors] = useState({});
@@ -111,7 +111,7 @@ const NewPetScreen = ({ navigation, route }) => {
         breeds = ['SRD (Sem Raça Definida)', 'Outros'];
     }
     setAvailableBreeds(breeds);
-    
+
     if (formData.breed && !breeds.includes(formData.breed)) {
       setFormData(prev => ({ ...prev, breed: '' }));
     }
@@ -141,7 +141,16 @@ const NewPetScreen = ({ navigation, route }) => {
   };
 
   const handleSave = async () => {
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios');
+      return;
+    }
+
+    // Verificar se o cliente foi selecionado
+    if (!formData.clientId) {
+      Alert.alert('Erro', 'Por favor, selecione um cliente para o pet');
+      return;
+    }
 
     setLoading(true);
     try {
@@ -149,14 +158,16 @@ const NewPetScreen = ({ navigation, route }) => {
         name: formData.name.trim(),
         client_id: formData.clientId,
         species: formData.species,
-        breed: formData.breed,
+        breed: formData.breed || null,
         gender: formData.gender,
         birth_date: formData.birthDate || null,
         weight: formData.weight ? parseFloat(formData.weight) : null,
-        color: formData.color.trim(),
-        microchip: formData.microchip.trim(),
-        notes: formData.notes.trim()
+        color: formData.color.trim() || null,
+        microchip: formData.microchip.trim() || null,
+        notes: formData.notes.trim() || null
       };
+
+      console.log('Dados do pet a serem salvos:', petData); // Debug
 
       let result;
       if (isEditing) {
@@ -167,16 +178,16 @@ const NewPetScreen = ({ navigation, route }) => {
 
       if (result.success) {
         Alert.alert(
-          'Sucesso', 
+          'Sucesso',
           `Pet ${isEditing ? 'atualizado' : 'cadastrado'} com sucesso!`,
           [{ text: 'OK', onPress: () => navigation.goBack() }]
         );
       } else {
-        Alert.alert('Erro', result.error);
+        Alert.alert('Erro', result.error || 'Erro ao salvar pet');
       }
     } catch (error) {
       console.error('Erro ao salvar pet:', error);
-      Alert.alert('Erro', 'Erro interno do sistema');
+      Alert.alert('Erro', 'Erro interno do sistema. Verifique os dados e tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -184,7 +195,7 @@ const NewPetScreen = ({ navigation, route }) => {
 
   const updateField = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    
+
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: null }));
     }
@@ -253,7 +264,7 @@ const NewPetScreen = ({ navigation, route }) => {
           >
             <Ionicons name="arrow-back" size={24} color={Colors.surface} />
           </TouchableOpacity>
-          
+
           <View style={styles.headerTitleContainer}>
             <View style={styles.petIconContainer}>
               <Ionicons name="paw" size={28} color={Colors.surface} />
@@ -270,12 +281,12 @@ const NewPetScreen = ({ navigation, route }) => {
         </View>
       </LinearGradient>
 
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
-        <ScrollView 
+        <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
@@ -296,7 +307,7 @@ const NewPetScreen = ({ navigation, route }) => {
                 </LinearGradient>
                 <Text style={styles.sectionTitle}>Informações Básicas</Text>
               </View>
-              
+
               <View style={styles.inputContainer}>
                 <Input
                   label="Nome do Pet"
@@ -333,10 +344,10 @@ const NewPetScreen = ({ navigation, route }) => {
                     >
                       <Picker.Item label="Selecione o proprietário..." value="" />
                       {clients.map(client => (
-                        <Picker.Item 
-                          key={client.id} 
-                          label={client.name} 
-                          value={client.id} 
+                        <Picker.Item
+                          key={client.id}
+                          label={client.name}
+                          value={client.id}
                         />
                       ))}
                     </Picker>
@@ -373,16 +384,16 @@ const NewPetScreen = ({ navigation, route }) => {
                       }}
                     >
                       <LinearGradient
-                        colors={formData.species === especie ? 
-                          [getSpeciesColor(especie), `${getSpeciesColor(especie)}CC`] : 
+                        colors={formData.species === especie ?
+                          [getSpeciesColor(especie), `${getSpeciesColor(especie)}CC`] :
                           ['transparent', 'transparent']
                         }
                         style={styles.speciesOptionGradient}
                       >
-                        <Ionicons 
-                          name={getSpeciesIcon(especie)} 
-                          size={24} 
-                          color={formData.species === especie ? Colors.surface : getSpeciesColor(especie)} 
+                        <Ionicons
+                          name={getSpeciesIcon(especie)}
+                          size={24}
+                          color={formData.species === especie ? Colors.surface : getSpeciesColor(especie)}
                         />
                         <Text style={[
                           styles.speciesOptionText,
@@ -405,11 +416,11 @@ const NewPetScreen = ({ navigation, route }) => {
                     colors={formData.species ? ['#F8F9FA', '#FFFFFF'] : ['#F5F5F5', '#F0F0F0']}
                     style={styles.pickerGradient}
                   >
-                    <Ionicons 
-                      name="paw" 
-                      size={20} 
-                      color={formData.species ? Colors.primary : Colors.textSecondary} 
-                      style={styles.pickerIcon} 
+                    <Ionicons
+                      name="paw"
+                      size={20}
+                      color={formData.species ? Colors.primary : Colors.textSecondary}
+                      style={styles.pickerIcon}
                     />
                     <Picker
                       selectedValue={formData.breed}
@@ -443,16 +454,16 @@ const NewPetScreen = ({ navigation, route }) => {
                     onPress={() => updateField('gender', 'Macho')}
                   >
                     <LinearGradient
-                      colors={formData.gender === 'Macho' ? 
-                        [Colors.info, `${Colors.info}CC`] : 
+                      colors={formData.gender === 'Macho' ?
+                        [Colors.info, `${Colors.info}CC`] :
                         ['transparent', 'transparent']
                       }
                       style={styles.genderOptionGradient}
                     >
-                      <Ionicons 
-                        name="male" 
-                        size={24} 
-                        color={formData.gender === 'Macho' ? Colors.surface : Colors.info} 
+                      <Ionicons
+                        name="male"
+                        size={24}
+                        color={formData.gender === 'Macho' ? Colors.surface : Colors.info}
                       />
                       <Text style={[
                         styles.genderOptionText,
@@ -472,16 +483,16 @@ const NewPetScreen = ({ navigation, route }) => {
                     onPress={() => updateField('gender', 'Fêmea')}
                   >
                     <LinearGradient
-                      colors={formData.gender === 'Fêmea' ? 
-                        [Colors.warning, `${Colors.warning}CC`] : 
+                      colors={formData.gender === 'Fêmea' ?
+                        [Colors.warning, `${Colors.warning}CC`] :
                         ['transparent', 'transparent']
                       }
                       style={styles.genderOptionGradient}
                     >
-                      <Ionicons 
-                        name="female" 
-                        size={24} 
-                        color={formData.gender === 'Fêmea' ? Colors.surface : Colors.warning} 
+                      <Ionicons
+                        name="female"
+                        size={24}
+                        color={formData.gender === 'Fêmea' ? Colors.surface : Colors.warning}
                       />
                       <Text style={[
                         styles.genderOptionText,
@@ -507,7 +518,7 @@ const NewPetScreen = ({ navigation, route }) => {
                 </LinearGradient>
                 <Text style={styles.sectionTitle}>Detalhes Físicos</Text>
               </View>
-              
+
               <Input
                 label="Data de Nascimento"
                 value={formData.birthDate}
@@ -587,7 +598,7 @@ const NewPetScreen = ({ navigation, route }) => {
                 </LinearGradient>
                 <Text style={styles.sectionTitle}>Observações</Text>
               </View>
-              
+
               <Input
                 label="Observações Especiais"
                 value={formData.notes}
@@ -604,7 +615,7 @@ const NewPetScreen = ({ navigation, route }) => {
             </View>
           </View>
         </ScrollView>
-        
+
         {/* Botões de Ação Fixos */}
         <LinearGradient
           colors={[Colors.surface, `${Colors.surface}F0`]}

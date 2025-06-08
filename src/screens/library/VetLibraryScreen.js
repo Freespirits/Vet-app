@@ -5,212 +5,215 @@ import {
   SafeAreaView, 
   ScrollView, 
   TouchableOpacity, 
+  Alert,
   StyleSheet,
   Dimensions,
-  Alert
+  RefreshControl
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import SearchBar from '../../components/common/SearchBar';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
-import SearchBar from '../../components/common/SearchBar';
-import { MedicineService } from '../../services/MedicineService';
 import { Colors } from '../../constants/Colors';
-import { globalStyles } from '../../styles/globalStyles';
 
 const { width } = Dimensions.get('window');
 
 const VetLibraryScreen = ({ navigation }) => {
-  const [medicines, setMedicines] = useState([]);
-  const [filteredMedicines, setFilteredMedicines] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState('all');
   const [refreshing, setRefreshing] = useState(false);
+  const [medications, setMedications] = useState([]);
 
-  const libraryCategories = [
+  // Dados simulados de medicamentos
+  const mockMedications = [
     {
-      id: 'medicines',
-      title: 'Medicamentos',
-      description: 'Biblioteca de medicamentos veterinários',
-      icon: 'medical',
-      color: Colors.primary,
-      gradient: [Colors.primary, Colors.primaryDark],
-      count: medicines.length,
-      onPress: () => {} // Já estamos na tela de medicamentos
+      id: 1,
+      name: 'Carprofeno',
+      category: 'anti-inflamatorio',
+      description: 'Anti-inflamatório não esteroidal para cães',
+      dosage: '2-4 mg/kg',
+      frequency: 'A cada 12 horas',
+      administration: 'Via oral',
+      contraindications: 'Gestação, lactação, insuficiência renal',
+      sideEffects: 'Vômito, diarreia, perda de apetite',
+      species: ['Cão'],
+      activeIngredient: 'Carprofeno'
     },
     {
-      id: 'treatments',
-      title: 'Tratamentos',
-      description: 'Protocolos e procedimentos',
-      icon: 'heart',
-      color: Colors.secondary,
-      gradient: [Colors.secondary, Colors.accent],
-      count: 0,
-      onPress: () => Alert.alert('Em Desenvolvimento', 'Funcionalidade em desenvolvimento')
+      id: 2,
+      name: 'Meloxicam',
+      category: 'anti-inflamatorio',
+      description: 'Anti-inflamatório para cães e gatos',
+      dosage: '0,1-0,2 mg/kg',
+      frequency: 'Uma vez ao dia',
+      administration: 'Via oral ou injetável',
+      contraindications: 'Desidratação, problemas renais',
+      sideEffects: 'Vômito, diarreia, letargia',
+      species: ['Cão', 'Gato'],
+      activeIngredient: 'Meloxicam'
     },
     {
-      id: 'diseases',
-      title: 'Doenças',
-      description: 'Banco de dados de doenças',
-      icon: 'bug',
-      color: Colors.warning,
-      gradient: [Colors.warning, '#F57C00'],
-      count: 0,
-      onPress: () => Alert.alert('Em Desenvolvimento', 'Funcionalidade em desenvolvimento')
+      id: 3,
+      name: 'Tramadol',
+      category: 'analgesico',
+      description: 'Analgésico opioide para dor moderada a severa',
+      dosage: '2-5 mg/kg',
+      frequency: 'A cada 6-8 horas',
+      administration: 'Via oral',
+      contraindications: 'Epilepsia, depressão respiratória',
+      sideEffects: 'Sedação, constipação, vômito',
+      species: ['Cão', 'Gato'],
+      activeIngredient: 'Cloridrato de Tramadol'
     },
     {
-      id: 'exams',
-      title: 'Exames',
-      description: 'Tipos de exames e interpretação',
-      icon: 'search',
-      color: Colors.info,
-      gradient: [Colors.info, '#1976D2'],
-      count: 0,
-      onPress: () => Alert.alert('Em Desenvolvimento', 'Funcionalidade em desenvolvimento')
+      id: 4,
+      name: 'Amoxicilina',
+      category: 'antibiotico',
+      description: 'Antibiótico de amplo espectro',
+      dosage: '10-20 mg/kg',
+      frequency: 'A cada 8-12 horas',
+      administration: 'Via oral',
+      contraindications: 'Alergia a penicilinas',
+      sideEffects: 'Diarreia, vômito, reações alérgicas',
+      species: ['Cão', 'Gato', 'Aves'],
+      activeIngredient: 'Amoxicilina triidratada'
+    },
+    {
+      id: 5,
+      name: 'Ivermectina',
+      category: 'antiparasitario',
+      description: 'Antiparasitário de amplo espectro',
+      dosage: '0,2-0,4 mg/kg',
+      frequency: 'Dose única ou conforme prescrição',
+      administration: 'Via oral ou injetável',
+      contraindications: 'Raças sensíveis (Collie, Pastor Alemão)',
+      sideEffects: 'Ataxia, tremores, depressão',
+      species: ['Cão', 'Gato', 'Bovinos'],
+      activeIngredient: 'Ivermectina'
+    },
+    {
+      id: 6,
+      name: 'Dexametasona',
+      category: 'corticoide',
+      description: 'Corticosteroide anti-inflamatório',
+      dosage: '0,1-0,3 mg/kg',
+      frequency: 'Uma vez ao dia',
+      administration: 'Via oral ou injetável',
+      contraindications: 'Infecções virais, diabetes',
+      sideEffects: 'Poliúria, polidipsia, ganho de peso',
+      species: ['Cão', 'Gato'],
+      activeIngredient: 'Fosfato sódico de dexametasona'
     }
   ];
 
+  const categories = [
+    { id: 'all', name: 'Todos', icon: 'medical', color: Colors.primary },
+    { id: 'antibiotico', name: 'Antibióticos', icon: 'shield', color: Colors.success },
+    { id: 'anti-inflamatorio', name: 'Anti-inflamatórios', icon: 'fitness', color: Colors.warning },
+    { id: 'analgesico', name: 'Analgésicos', icon: 'heart', color: Colors.error },
+    { id: 'antiparasitario', name: 'Antiparasitários', icon: 'bug', color: Colors.info },
+    { id: 'corticoide', name: 'Corticoides', icon: 'flash', color: Colors.secondary },
+  ];
+
   useEffect(() => {
-    loadMedicines();
+    loadMedications();
   }, []);
 
-  useEffect(() => {
-    filterMedicines();
-  }, [searchQuery, medicines]);
-
-  const loadMedicines = async () => {
+  const loadMedications = async () => {
     try {
-      setLoading(true);
-      const medicineList = await MedicineService.getAll();
-      setMedicines(medicineList || []);
+      // Simular carregamento de dados
+      setMedications(mockMedications);
     } catch (error) {
       console.error('Erro ao carregar medicamentos:', error);
-      Alert.alert('Erro', 'Erro ao carregar biblioteca de medicamentos');
-    } finally {
-      setLoading(false);
+      Alert.alert('Erro', 'Erro ao carregar a biblioteca de medicamentos');
     }
   };
 
-  const handleRefresh = async () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    await loadMedicines();
+    await loadMedications();
     setRefreshing(false);
   };
 
-  const filterMedicines = () => {
-    if (!searchQuery.trim()) {
-      setFilteredMedicines(medicines);
-      return;
-    }
-
-    const filtered = medicines.filter(medicine => 
-      medicine.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      medicine.active_ingredient?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      medicine.activeIngredient?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      medicine.indication?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      medicine.manufacturer?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  const filteredMedications = medications.filter(med => {
+    const matchesSearch = med.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         med.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         med.activeIngredient.toLowerCase().includes(searchQuery.toLowerCase());
     
-    setFilteredMedicines(filtered);
+    const matchesCategory = activeCategory === 'all' || med.category === activeCategory;
+    
+    return matchesSearch && matchesCategory;
+  });
+
+  const handleMedicationPress = (medication) => {
+    navigation.navigate('MedicationDetail', { medication });
   };
 
-  const handleEditMedicine = (medicine) => {
-    navigation.navigate('NewMedicine', { 
-      medicineId: medicine.id,
-      medicine: medicine 
-    });
+  const handleAddMedication = () => {
+    navigation.navigate('NewMedication');
   };
 
-  const handleDeleteMedicine = (medicine) => {
-    Alert.alert(
-      'Confirmar Exclusão',
-      `Tem certeza que deseja excluir o medicamento "${medicine.name}"?`,
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { 
-          text: 'Excluir', 
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const result = await MedicineService.delete(medicine.id);
-              if (result.success) {
-                Alert.alert('Sucesso', 'Medicamento excluído com sucesso');
-                loadMedicines();
-              } else {
-                Alert.alert('Erro', result.error);
-              }
-            } catch (error) {
-              Alert.alert('Erro', 'Erro ao excluir medicamento');
-            }
-          }
-        }
-      ]
-    );
+  const getCategoryColor = (category) => {
+    const categoryConfig = categories.find(cat => cat.id === category);
+    return categoryConfig ? categoryConfig.color : Colors.textSecondary;
   };
 
-  const renderMedicineCard = (medicine) => (
-    <Card key={medicine.id} style={styles.medicineCard}>
-      <View style={styles.medicineHeader}>
-        <View style={styles.medicineInfo}>
-          <Text style={styles.medicineName}>{medicine.name}</Text>
-          <Text style={styles.medicineIngredient}>
-            {medicine.active_ingredient || medicine.activeIngredient}
-          </Text>
-          {medicine.concentration && (
-            <Text style={styles.medicineConcentration}>
-              {medicine.concentration}
-            </Text>
-          )}
+  const getCategoryIcon = (category) => {
+    const categoryConfig = categories.find(cat => cat.id === category);
+    return categoryConfig ? categoryConfig.icon : 'medical';
+  };
+
+  const renderMedicationCard = (medication) => (
+    <TouchableOpacity
+      key={medication.id}
+      style={styles.medicationCard}
+      onPress={() => handleMedicationPress(medication)}
+      activeOpacity={0.7}
+    >
+      <LinearGradient
+        colors={[Colors.surface, '#FAFAFA']}
+        style={styles.medicationGradient}
+      >
+        <View style={styles.medicationHeader}>
+          <View style={[styles.categoryBadge, { backgroundColor: `${getCategoryColor(medication.category)}20` }]}>
+            <Ionicons 
+              name={getCategoryIcon(medication.category)} 
+              size={16} 
+              color={getCategoryColor(medication.category)} 
+            />
+          </View>
+          <View style={styles.medicationInfo}>
+            <Text style={styles.medicationName}>{medication.name}</Text>
+            <Text style={styles.medicationIngredient}>{medication.activeIngredient}</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color={Colors.textSecondary} />
         </View>
         
-        <View style={styles.medicineForm}>
-          <LinearGradient
-            colors={[Colors.primary, Colors.primaryDark]}
-            style={styles.formBadge}
-          >
-            <Ionicons name="medical" size={16} color={Colors.surface} />
-            <Text style={styles.formText}>{medicine.form}</Text>
-          </LinearGradient>
+        <Text style={styles.medicationDescription} numberOfLines={2}>
+          {medication.description}
+        </Text>
+        
+        <View style={styles.medicationDetails}>
+          <View style={styles.detailItem}>
+            <Ionicons name="scale" size={14} color={Colors.primary} />
+            <Text style={styles.detailText}>{medication.dosage}</Text>
+          </View>
+          <View style={styles.detailItem}>
+            <Ionicons name="time" size={14} color={Colors.primary} />
+            <Text style={styles.detailText}>{medication.frequency}</Text>
+          </View>
         </View>
-      </View>
-
-      {medicine.indication && (
-        <View style={styles.medicineIndication}>
-          <Ionicons name="information-circle" size={14} color={Colors.info} />
-          <Text style={styles.indicationText} numberOfLines={2}>
-            {medicine.indication}
-          </Text>
+        
+        <View style={styles.speciesContainer}>
+          {medication.species.map((species, index) => (
+            <View key={index} style={styles.speciesBadge}>
+              <Text style={styles.speciesText}>{species}</Text>
+            </View>
+          ))}
         </View>
-      )}
-
-      <View style={styles.medicineFooter}>
-        <View style={styles.medicineDetails}>
-          {medicine.manufacturer && (
-            <Text style={styles.manufacturer}>{medicine.manufacturer}</Text>
-          )}
-          {medicine.expiration_date && (
-            <Text style={styles.expirationDate}>
-              Validade: {medicine.expiration_date}
-            </Text>
-          )}
-        </View>
-
-        <View style={styles.medicineActions}>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => handleEditMedicine(medicine)}
-          >
-            <Ionicons name="create" size={18} color={Colors.primary} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.actionButton, styles.deleteButton]}
-            onPress={() => handleDeleteMedicine(medicine)}
-          >
-            <Ionicons name="trash" size={18} color={Colors.error} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Card>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 
   return (
@@ -221,121 +224,121 @@ const VetLibraryScreen = ({ navigation }) => {
         style={styles.header}
       >
         <View style={styles.headerContent}>
-          <View style={styles.headerTitle}>
-            <Ionicons name="library" size={32} color={Colors.surface} />
-            <Text style={styles.headerText}>Biblioteca Veterinária</Text>
-          </View>
           <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => navigation.navigate('NewMedicine')}
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
           >
-            <Ionicons name="add" size={24} color={Colors.surface} />
+            <Ionicons name="arrow-back" size={24} color={Colors.surface} />
           </TouchableOpacity>
+          
+          <View style={styles.headerTitleContainer}>
+            <View style={styles.headerIconContainer}>
+              <Ionicons name="library" size={28} color={Colors.surface} />
+            </View>
+            <View>
+              <Text style={styles.headerTitle}>Biblioteca Veterinária</Text>
+              <Text style={styles.headerSubtitle}>Medicamentos e protocolos</Text>
+            </View>
+          </View>
         </View>
       </LinearGradient>
 
-      <ScrollView 
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContainer}
+      {/* Search and Filter */}
+      <View style={styles.searchContainer}>
+        <SearchBar
+          placeholder="Buscar medicamento..."
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          onClear={() => setSearchQuery('')}
+          style={styles.searchBar}
+        />
+        
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.categoriesScroll}
+          contentContainerStyle={styles.categoriesContainer}
+        >
+          {categories.map(category => (
+            <TouchableOpacity
+              key={category.id}
+              style={[
+                styles.categoryButton,
+                activeCategory === category.id && styles.categoryButtonActive
+              ]}
+              onPress={() => setActiveCategory(category.id)}
+            >
+              <LinearGradient
+                colors={activeCategory === category.id ? 
+                  [category.color, `${category.color}CC`] : 
+                  ['transparent', 'transparent']
+                }
+                style={styles.categoryGradient}
+              >
+                <Ionicons 
+                  name={category.icon} 
+                  size={16} 
+                  color={activeCategory === category.id ? Colors.surface : category.color} 
+                />
+                <Text style={[
+                  styles.categoryText,
+                  activeCategory === category.id && styles.categoryTextActive
+                ]}>
+                  {category.name}
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+
+      {/* Medications List */}
+      <ScrollView
+        style={styles.content}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-            colors={[Colors.primary]}
-            tintColor={Colors.primary}
-          />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {/* Categorias da Biblioteca */}
-        <View style={styles.categoriesSection}>
-          <Text style={styles.sectionTitle}>Categorias</Text>
-          <View style={styles.categoriesGrid}>
-            {libraryCategories.map(category => (
-              <TouchableOpacity
-                key={category.id}
-                style={styles.categoryCard}
-                onPress={category.onPress}
-              >
-                <LinearGradient
-                  colors={category.gradient}
-                  style={styles.categoryGradient}
-                >
-                  <View style={styles.categoryIcon}>
-                    <Ionicons name={category.icon} size={28} color={Colors.surface} />
-                  </View>
-                  <View style={styles.categoryContent}>
-                    <Text style={styles.categoryTitle}>{category.title}</Text>
-                    <Text style={styles.categoryDescription} numberOfLines={2}>
-                      {category.description}
-                    </Text>
-                    <View style={styles.categoryCount}>
-                      <Text style={styles.countText}>{category.count} itens</Text>
-                    </View>
-                  </View>
-                </LinearGradient>
-              </TouchableOpacity>
-            ))}
-          </View>
+        <View style={styles.resultsHeader}>
+          <Text style={styles.resultsCount}>
+            {filteredMedications.length} medicamento{filteredMedications.length !== 1 ? 's' : ''} encontrado{filteredMedications.length !== 1 ? 's' : ''}
+          </Text>
         </View>
 
-        {/* Seção de Medicamentos */}
-        <View style={styles.medicinesSection}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Medicamentos</Text>
-            <TouchableOpacity
-              style={styles.addMedicineButton}
-              onPress={() => navigation.navigate('NewMedicine')}
+        {filteredMedications.length === 0 ? (
+          <View style={styles.emptyState}>
+            <LinearGradient
+              colors={[`${Colors.textSecondary}10`, 'transparent']}
+              style={styles.emptyGradient}
             >
-              <Ionicons name="add-circle" size={24} color={Colors.primary} />
-              <Text style={styles.addMedicineText}>Adicionar</Text>
-            </TouchableOpacity>
+              <Ionicons name="search" size={64} color={Colors.textSecondary} />
+              <Text style={styles.emptyTitle}>Nenhum medicamento encontrado</Text>
+              <Text style={styles.emptyDescription}>
+                Tente ajustar os filtros ou termos de busca
+              </Text>
+            </LinearGradient>
           </View>
-
-          <SearchBar
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholder="Buscar medicamentos..."
-            style={styles.searchBar}
-          />
-
-          {loading ? (
-            <View style={styles.loadingContainer}>
-              <Text style={styles.loadingText}>Carregando medicamentos...</Text>
-            </View>
-          ) : filteredMedicines.length > 0 ? (
-            <View style={styles.medicinesList}>
-              {filteredMedicines.map(renderMedicineCard)}
-            </View>
-          ) : (
-            <View style={styles.emptyContainer}>
-              <LinearGradient
-                colors={[`${Colors.primary}10`, `${Colors.primary}05`]}
-                style={styles.emptyGradient}
-              >
-                <Ionicons name="medical" size={64} color={Colors.primary} />
-                <Text style={styles.emptyTitle}>
-                  {searchQuery ? 'Nenhum medicamento encontrado' : 'Nenhum medicamento cadastrado'}
-                </Text>
-                <Text style={styles.emptyDescription}>
-                  {searchQuery 
-                    ? 'Tente buscar com outros termos'
-                    : 'Comece adicionando medicamentos à sua biblioteca'
-                  }
-                </Text>
-                {!searchQuery && (
-                  <Button
-                    title="Adicionar Primeiro Medicamento"
-                    onPress={() => navigation.navigate('NewMedicine')}
-                    style={styles.emptyButton}
-                    icon={<Ionicons name="add" size={16} color={Colors.surface} />}
-                  />
-                )}
-              </LinearGradient>
-            </View>
-          )}
-        </View>
+        ) : (
+          <View style={styles.medicationsList}>
+            {filteredMedications.map(renderMedicationCard)}
+          </View>
+        )}
       </ScrollView>
+
+      {/* Floating Action Button */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={handleAddMedication}
+        activeOpacity={0.8}
+      >
+        <LinearGradient
+          colors={[Colors.primary, Colors.primaryDark]}
+          style={styles.fabGradient}
+        >
+          <Ionicons name="add" size={24} color={Colors.surface} />
+        </LinearGradient>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -358,240 +361,220 @@ const styles = StyleSheet.create({
   },
   headerContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  headerTitle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: Colors.surface,
-    marginLeft: 12,
-  },
-  addButton: {
+  backButton: {
     width: 44,
     height: 44,
     borderRadius: 22,
     backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: 16,
   },
-  scrollView: {
+  headerTitleContainer: {
     flex: 1,
-  },
-  scrollContainer: {
-    paddingBottom: 20,
-  },
-  categoriesSection: {
-    padding: 16,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: Colors.text,
-    marginBottom: 16,
-  },
-  categoriesGrid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
+    alignItems: 'center',
   },
-  categoryCard: {
-    width: (width - 44) / 2,
-    height: 120,
-    borderRadius: 16,
-    overflow: 'hidden',
+  headerIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
   },
-  categoryGradient: {
-    flex: 1,
-    padding: 16,
-    justifyContent: 'space-between',
-  },
-  categoryIcon: {
-    alignSelf: 'flex-start',
-  },
-  categoryContent: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  categoryTitle: {
-    fontSize: 16,
-    fontWeight: '600',
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
     color: Colors.surface,
-    marginBottom: 4,
   },
-  categoryDescription: {
-    fontSize: 12,
+  headerSubtitle: {
+    fontSize: 14,
     color: Colors.surface,
     opacity: 0.9,
-    marginBottom: 8,
+    marginTop: 2,
   },
-  categoryCount: {
-    alignSelf: 'flex-start',
-  },
-  countText: {
-    fontSize: 11,
-    color: Colors.surface,
-    fontWeight: '500',
-    opacity: 0.8,
-  },
-  medicinesSection: {
+  searchContainer: {
     padding: 16,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  addMedicineButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: `${Colors.primary}15`,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-  },
-  addMedicineText: {
-    fontSize: 14,
-    color: Colors.primary,
-    fontWeight: '500',
-    marginLeft: 4,
+    backgroundColor: Colors.surface,
+    borderBottomWidth: 1,
+    borderBottomColor: `${Colors.border}30`,
   },
   searchBar: {
     marginBottom: 16,
   },
-  loadingContainer: {
-    padding: 40,
-    alignItems: 'center',
+  categoriesScroll: {
+    flexGrow: 0,
   },
-  loadingText: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-  },
-  medicinesList: {
+  categoriesContainer: {
     gap: 12,
   },
-  medicineCard: {
+  categoryButton: {
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    overflow: 'hidden',
+  },
+  categoryButtonActive: {
+    borderColor: 'transparent',
+    transform: [{ scale: 1.05 }],
+  },
+  categoryGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  categoryText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: Colors.text,
+    marginLeft: 6,
+  },
+  categoryTextActive: {
+    color: Colors.surface,
+    fontWeight: '600',
+  },
+  content: {
+    flex: 1,
+  },
+  resultsHeader: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: Colors.surface,
+  },
+  resultsCount: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    fontWeight: '500',
+  },
+  medicationsList: {
+    padding: 16,
+    gap: 12,
+  },
+  medicationCard: {
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  medicationGradient: {
     padding: 16,
   },
-  medicineHeader: {
+  medicationHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginBottom: 12,
   },
-  medicineInfo: {
-    flex: 1,
+  categoryBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
-  medicineName: {
+  medicationInfo: {
+    flex: 1,
+  },
+  medicationName: {
     fontSize: 16,
     fontWeight: '600',
     color: Colors.text,
-    marginBottom: 4,
   },
-  medicineIngredient: {
+  medicationIngredient: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+    marginTop: 2,
+  },
+  medicationDescription: {
     fontSize: 14,
     color: Colors.textSecondary,
-    marginBottom: 2,
+    lineHeight: 20,
+    marginBottom: 12,
   },
-  medicineConcentration: {
-    fontSize: 12,
-    color: Colors.primary,
-    fontWeight: '500',
+  medicationDetails: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: 12,
   },
-  medicineForm: {
-    alignSelf: 'flex-start',
-  },
-  formBadge: {
+  detailItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
+    flex: 1,
   },
-  formText: {
-    fontSize: 11,
-    color: Colors.surface,
-    fontWeight: '500',
-    marginLeft: 4,
-  },
-  medicineIndication: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 12,
-    padding: 8,
-    backgroundColor: `${Colors.info}10`,
-    borderRadius: 8,
-  },
-  indicationText: {
+  detailText: {
     fontSize: 12,
     color: Colors.text,
-    marginLeft: 6,
-    flex: 1,
-  },
-  medicineFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-  },
-  medicineDetails: {
-    flex: 1,
-  },
-  manufacturer: {
-    fontSize: 12,
-    color: Colors.textSecondary,
-    marginBottom: 2,
-  },
-  expirationDate: {
-    fontSize: 11,
-    color: Colors.warning,
+    marginLeft: 4,
     fontWeight: '500',
   },
-  medicineActions: {
+  speciesContainer: {
     flexDirection: 'row',
     gap: 8,
   },
-  actionButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  speciesBadge: {
     backgroundColor: `${Colors.primary}15`,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
-  deleteButton: {
-    backgroundColor: `${Colors.error}15`,
+  speciesText: {
+    fontSize: 10,
+    color: Colors.primary,
+    fontWeight: '600',
   },
-  emptyContainer: {
-    marginTop: 20,
+  emptyState: {
+    flex: 1,
+    margin: 16,
+    borderRadius: 20,
+    overflow: 'hidden',
   },
   emptyGradient: {
-    padding: 40,
-    borderRadius: 16,
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
+    padding: 40,
   },
   emptyTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: Colors.text,
+    color: Colors.textSecondary,
     marginTop: 16,
     marginBottom: 8,
-    textAlign: 'center',
   },
   emptyDescription: {
     fontSize: 14,
     color: Colors.textSecondary,
     textAlign: 'center',
-    marginBottom: 24,
+    lineHeight: 20,
   },
-  emptyButton: {
-    alignSelf: 'center',
+  fab: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  fabGradient: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
