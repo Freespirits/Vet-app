@@ -151,7 +151,24 @@ const VetLibraryScreen = ({ navigation }) => {
   };
 
   const handleAddMedication = () => {
-    navigation.navigate('NewMedication');
+    Alert.alert(
+      'Adicionar Medicamento',
+      'Escolha como deseja adicionar um novo medicamento:',
+      [
+        {
+          text: 'Formulário Completo',
+          onPress: () => navigation.navigate('NewMedication')
+        },
+        {
+          text: 'Busca Online',
+          onPress: () => Alert.alert('Em breve', 'Funcionalidade de busca online será implementada em breve!')
+        },
+        {
+          text: 'Cancelar',
+          style: 'cancel'
+        }
+      ]
+    );
   };
 
   const getCategoryColor = (category) => {
@@ -317,6 +334,12 @@ const VetLibraryScreen = ({ navigation }) => {
               <Text style={styles.emptyDescription}>
                 Tente ajustar os filtros ou termos de busca
               </Text>
+              <Button
+                title="Adicionar Medicamento"
+                onPress={handleAddMedication}
+                style={styles.addButton}
+                icon={<Ionicons name="add" size={16} color={Colors.surface} />}
+              />
             </LinearGradient>
           </View>
         ) : (
@@ -326,19 +349,22 @@ const VetLibraryScreen = ({ navigation }) => {
         )}
       </ScrollView>
 
-      {/* Floating Action Button */}
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={handleAddMedication}
-        activeOpacity={0.8}
-      >
-        <LinearGradient
-          colors={[Colors.primary, Colors.primaryDark]}
-          style={styles.fabGradient}
+      {/* Enhanced Floating Action Button */}
+      <View style={styles.fabContainer}>
+        <TouchableOpacity
+          style={styles.fab}
+          onPress={handleAddMedication}
+          activeOpacity={0.8}
         >
-          <Ionicons name="add" size={24} color={Colors.surface} />
-        </LinearGradient>
-      </TouchableOpacity>
+          <LinearGradient
+            colors={[Colors.primary, Colors.primaryDark]}
+            style={styles.fabGradient}
+          >
+            <Ionicons name="add" size={24} color={Colors.surface} />
+          </LinearGradient>
+        </TouchableOpacity>
+        <Text style={styles.fabLabel}>Adicionar</Text>
+      </View>
     </SafeAreaView>
   );
 };
@@ -555,11 +581,18 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     textAlign: 'center',
     lineHeight: 20,
+    marginBottom: 24,
   },
-  fab: {
+  addButton: {
+    paddingHorizontal: 24,
+  },
+  fabContainer: {
     position: 'absolute',
     bottom: 20,
     right: 20,
+    alignItems: 'center',
+  },
+  fab: {
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -575,6 +608,13 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  fabLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: Colors.primary,
+    marginTop: 8,
+    textAlign: 'center',
   },
 });
 

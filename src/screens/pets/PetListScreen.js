@@ -21,7 +21,8 @@ import { calculateAge } from '../../utils/helpers';
 import { Colors } from '../../constants/Colors';
 import { globalStyles } from '../../styles/globalStyles';
 
-const PetListScreen = ({ navigation }) => {
+const PetListScreen = ({ navigation, route }) => {
+  const clientIdFromRoute = route?.params?.clientId;
   const [pets, setPets] = useState([]);
   const [filteredPets, setFilteredPets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,21 +32,39 @@ const PetListScreen = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       loadPets();
-    }, [])
+    }, [clientIdFromRoute])
   );
 
   const loadPets = async () => {
     try {
-      const petList = await PetService.getAll();
-      const petsWithOwners = await Promise.all(
-        petList.map(async (pet) => {
-          const owner = await ClientService.getById(pet.clientId);
-          return { ...pet, owner };
-        })
-      );
-      setPets(petsWithOwners);
-      setFilteredPets(petsWithOwners);
+      let petList;
+      if (clientIdFromRoute) {
+        // Se um clientId foi fornecido, buscar apenas pets desse cliente
+        petList = await PetService.getByClientId(clientIdFromRoute);
+        // Buscar dados do cliente para cada pet
+        const petsWithOwners = await Promise.all(
+          petList.map(async (pet) => {
+            const owner = await ClientService.getById(pet.clientId || pet.client_id);
+            return { ...pet, owner };
+          })
+        );
+        petList = petsWithOwners;
+      } else {
+        // Buscar todos os pets
+        petList = await PetService.getAll();
+        const petsWithOwners = await Promise.all(
+          petList.map(async (pet) => {
+            const owner = await ClientService.getById(pet.clientId || pet.client_id);
+            return { ...pet, owner };
+          })
+        );
+        petList = petsWithOwners;
+      }
+      
+      setPets(petList);
+      setFilteredPets(petList);
     } catch (error) {
+      console.error('Erro ao carregar pets:', error);
       Alert.alert('Erro', 'Erro ao carregar pets');
     } finally {
       setLoading(false);
@@ -63,10 +82,10 @@ const PetListScreen = ({ navigation }) => {
     if (query.trim() === '') {
       setFilteredPets(pets);
     } else {
-      const filtered = await PetService.search(query);
+      const filtered = await PetService.search(query, clientIdFromRoute);
       const filteredWithOwners = await Promise.all(
         filtered.map(async (pet) => {
-          const owner = await ClientService.getById(pet.clientId);
+          const owner = await ClientService.getById(pet.clientId || pet.client_id);
           return { ...pet, owner };
         })
       );
@@ -103,6 +122,21 @@ const PetListScreen = ({ navigation }) => {
     }
   };
 
+  const handlePetPress = (pet) => {
+    Alert.alert(
+      pet.name,
+      `Espécie: ${pet.species}\nRaça: ${pet.breed || 'Não informada'}\nIdade: ${pet.birth_date ? calculateAge(pet.birth_date) : 'Não informada'}\nProprietário: ${pet.owner?.name || 'Não encontrado'}`,
+      [
+        { text: 'OK' },
+        { text: 'Editar', onPress: () => navigation.navigate('NewPet', { petId: pet.id }) },
+        { text: 'Nova Consulta', onPress: () => navigation.navigate('NewConsultation', { 
+          petId: pet.id, 
+          clientId: pet.clientId || pet.client_id 
+        }) }
+      ]
+    );
+  };
+
   const getSpeciesIcon = (species) => {
     switch (species) {
       case 'Cão': return 'paw';
@@ -124,7 +158,7 @@ const PetListScreen = ({ navigation }) => {
   const renderPetItem = ({ item }) => (
     <Card style={styles.petCard}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('PetDetail', { petId: item.id })}
+        onPress={() => handlePetPress(item)}
         style={styles.petContent}
       >
         <View style={styles.petHeader}>
@@ -150,9 +184,9 @@ const PetListScreen = ({ navigation }) => {
             <Text style={styles.petOwner}>
               🏠 {item.owner?.name || 'Proprietário não encontrado'}
             </Text>
-            {item.birthDate && (
+            {item.birth_date && (
               <Text style={styles.petAge}>
-                🎂 {calculateAge(item.birthDate)}
+                🎂 {calculateAge(item.birth_date)}
               </Text>
             )}
           </View>
@@ -187,7 +221,10 @@ const PetListScreen = ({ navigation }) => {
         
         <TouchableOpacity
           style={[styles.actionButton, styles.consultaButton]}
-          onPress={() => navigation.navigate('NewConsultation', { petId: item.id })}
+          onPress={() => navigation.navigate('NewConsultation', { 
+            petId: item.id, 
+            clientId: item.clientId || item.client_id 
+          })}
         >
           <Ionicons name="medical" size={16} color={Colors.success} />
           <Text style={styles.consultaButtonText}>Consulta</Text>
@@ -213,7 +250,7 @@ const PetListScreen = ({ navigation }) => {
         style={globalStyles.emptyStateIcon}
       />
       <Text style={globalStyles.emptyStateTitle}>
-        Nenhum pet encontrado
+        {clientIdFromRoute ? 'Nenhum pet cadastrado para este cliente' : 'Nenhum pet encontrado'}
       </Text>
       <Text style={globalStyles.emptyStateText}>
         {searchQuery ? 'Tente uma busca diferente' : 'Cadastre o primeiro pet para começar'}
@@ -221,7 +258,7 @@ const PetListScreen = ({ navigation }) => {
       {!searchQuery && (
         <Button
           title="Cadastrar Pet"
-          onPress={() => navigation.navigate('NewPet')}
+          onPress={() => navigation.navigate('NewPet', clientIdFromRoute ? { clientId: clientIdFromRoute } : {})}
           style={globalStyles.emptyStateButton}
         />
       )}
@@ -244,11 +281,22 @@ const PetListScreen = ({ navigation }) => {
         />
         <Button
           title="Novo"
-          onPress={() => navigation.navigate('NewPet')}
+          onPress={() => navigation.navigate('NewPet', clientIdFromRoute ? { clientId: clientIdFromRoute } : {})}
           style={styles.newButton}
           icon={<Ionicons name="add" size={16} color={Colors.surface} />}
         />
       </View>
+
+      {clientIdFromRoute && (
+        <View style={styles.filterInfo}>
+          <Text style={styles.filterText}>
+            Mostrando pets de um cliente específico
+          </Text>
+          <TouchableOpacity onPress={() => navigation.setParams({ clientId: null })}>
+            <Text style={styles.clearFilterText}>Ver todos os pets</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       <FlatList
         data={filteredPets}
@@ -287,6 +335,26 @@ const styles = StyleSheet.create({
   },
   newButton: {
     paddingHorizontal: 16,
+  },
+  filterInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: `${Colors.info}20`,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  filterText: {
+    fontSize: 14,
+    color: Colors.info,
+    fontWeight: '500',
+  },
+  clearFilterText: {
+    fontSize: 14,
+    color: Colors.primary,
+    fontWeight: '600',
   },
   listContainer: {
     padding: 16,

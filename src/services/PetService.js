@@ -16,7 +16,14 @@ export const PetService = {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data || [];
+      
+      // Adicionar clientId para compatibilidade
+      const petsWithClientId = (data || []).map(pet => ({
+        ...pet,
+        clientId: pet.client_id || pet.client?.id
+      }));
+      
+      return petsWithClientId;
     } catch (error) {
       console.error('Erro ao buscar pets:', error);
       return [];
@@ -25,6 +32,11 @@ export const PetService = {
 
   async getById(id) {
     try {
+      if (!id) {
+        console.error('ID do pet não fornecido');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('pets_consultorio')
         .select(`
@@ -34,8 +46,15 @@ export const PetService = {
         .eq('id', id)
         .single();
 
-      if (error) throw error;
-      return data;
+      if (error && error.code !== 'PGRST116') {
+        console.error('Erro ao buscar pet por ID:', error);
+        throw error;
+      }
+
+      return data ? {
+        ...data,
+        clientId: data.client_id || data.client?.id
+      } : null;
     } catch (error) {
       console.error('Erro ao buscar pet:', error);
       return null;
@@ -44,6 +63,11 @@ export const PetService = {
 
   async getByClientId(clientId) {
     try {
+      if (!clientId) {
+        console.error('ID do cliente não fornecido');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('pets_consultorio')
         .select('*')
@@ -51,7 +75,14 @@ export const PetService = {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data || [];
+      
+      // Adicionar clientId para compatibilidade
+      const petsWithClientId = (data || []).map(pet => ({
+        ...pet,
+        clientId: pet.client_id || clientId
+      }));
+      
+      return petsWithClientId;
     } catch (error) {
       console.error('Erro ao buscar pets do cliente:', error);
       return [];
@@ -60,22 +91,41 @@ export const PetService = {
 
   async create(petData) {
     try {
+      console.log('Criando pet com dados:', petData);
+      
+      // Validação básica
+      if (!petData.name || !petData.client_id) {
+        return { success: false, error: 'Nome e cliente são obrigatórios' };
+      }
+
       const { data, error } = await supabase
         .from('pets_consultorio')
         .insert([petData])
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erro ao inserir pet:', error);
+        return { success: false, error: `Erro ao salvar pet: ${error.message}` };
+      }
+
+      console.log('Pet criado com sucesso:', data);
       return { success: true, data };
     } catch (error) {
       console.error('Erro ao criar pet:', error);
-      return { success: false, error: 'Erro ao salvar pet' };
+      return { success: false, error: 'Erro interno do sistema' };
     }
   },
 
   async update(id, petData) {
     try {
+      console.log('Atualizando pet:', id, petData);
+      
+      // Validação básica
+      if (!petData.name || !petData.client_id) {
+        return { success: false, error: 'Nome e cliente são obrigatórios' };
+      }
+
       const { data, error } = await supabase
         .from('pets_consultorio')
         .update({
@@ -86,11 +136,16 @@ export const PetService = {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erro ao atualizar pet:', error);
+        return { success: false, error: `Erro ao atualizar pet: ${error.message}` };
+      }
+
+      console.log('Pet atualizado com sucesso:', data);
       return { success: true, data };
     } catch (error) {
       console.error('Erro ao atualizar pet:', error);
-      return { success: false, error: 'Erro ao atualizar pet' };
+      return { success: false, error: 'Erro interno do sistema' };
     }
   },
 
@@ -131,7 +186,14 @@ export const PetService = {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data || [];
+      
+      // Adicionar clientId para compatibilidade
+      const petsWithClientId = (data || []).map(pet => ({
+        ...pet,
+        clientId: pet.client_id || pet.client?.id
+      }));
+      
+      return petsWithClientId;
     } catch (error) {
       console.error('Erro na busca:', error);
       return [];
@@ -149,7 +211,7 @@ export const PetService = {
           created_at,
           species,
           client:clients_consultorio!inner(user_id)
-        `)
+          `)
         .eq('client.user_id', user.id);
 
       if (error) throw error;

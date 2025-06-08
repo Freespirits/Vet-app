@@ -5,9 +5,6 @@ import { useAuth } from '../contexts/AuthContext';
 import AuthNavigator from './AuthNavigator';
 import MainNavigator from './MainNavigator';
 import Loading from '../components/common/Loading';
-import VetLibraryScreen from '../screens/library/VetLibraryScreen';
-import MedicationDetailScreen from '../screens/library/MedicationDetailScreen';
-import NewMedicationScreen from '../screens/library/NewMedicationScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,21 +18,6 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen 
-  name="VetLibrary" 
-  component={VetLibraryScreen}
-  options={{ headerShown: false }}
-/>
-<Stack.Screen 
-  name="MedicationDetail" 
-  component={MedicationDetailScreen}
-  options={{ headerShown: false }}
-/>
-<Stack.Screen 
-  name="NewMedication" 
-  component={NewMedicationScreen}
-  options={{ headerShown: false }}
-/>
         {user ? (
           <Stack.Screen name="Main" component={MainNavigator} />
         ) : (

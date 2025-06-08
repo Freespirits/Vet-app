@@ -247,7 +247,7 @@ const HomeScreen = ({ navigation }) => {
               icon="card"
               color={Colors.success}
               subtitle={`Total: ${formatCurrency(stats.revenue)}`}
-              onPress={() => navigation.navigate('Reports')}
+              onPress={() => Alert.alert('Relatórios', 'Funcionalidade de relatórios financeiros será implementada em breve!')}
             />
           </View>
         </View>
@@ -297,11 +297,27 @@ const HomeScreen = ({ navigation }) => {
             />
             
             <QuickActionCard
+              title="Cadastrar Pet"
+              description="Adicionar pet"
+              icon="paw"
+              color={Colors.accent}
+              onPress={() => navigation.navigate('NewPet')}
+            />
+            
+            <QuickActionCard
               title="Biblioteca"
               description="Consultar medicamentos"
               icon="library"
-              color={Colors.accent}
-              onPress={() => navigation.navigate('Library')}
+              color={Colors.warning}
+              onPress={() => navigation.navigate('VetLibrary')}
+            />
+            
+            <QuickActionCard
+              title="Ver Clientes"
+              description="Lista de clientes"
+              icon="people"
+              color="#9C27B0"
+              onPress={() => navigation.navigate('Clients')}
             />
           </View>
         </Card>

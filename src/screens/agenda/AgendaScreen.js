@@ -112,17 +112,39 @@ const AgendaScreen = ({ navigation }) => {
     }
   };
 
+  const handleItemPress = (item) => {
+    if (item.type) {
+      // É uma consulta - mostrar detalhes
+      Alert.alert(
+        'Consulta',
+        `Tipo: ${item.type}\nCliente: ${item.client?.name}\nPet: ${item.pet?.name}\nData: ${formatDateTime(item.date)}`,
+        [
+          { text: 'OK' },
+          { 
+            text: 'Editar', 
+            onPress: () => navigation.navigate('NewConsultation', { consultationId: item.id })
+          }
+        ]
+      );
+    } else {
+      // É um agendamento - mostrar detalhes
+      Alert.alert(
+        'Agendamento',
+        `Título: ${item.title}\nCliente: ${item.client?.name}\nPet: ${item.pet?.name}\nData: ${formatDateTime(item.date)}`,
+        [
+          { text: 'OK' },
+          { 
+            text: 'Editar', 
+            onPress: () => navigation.navigate('NewAppointment', { appointmentId: item.id })
+          }
+        ]
+      );
+    }
+  };
+
   const AgendaItem = ({ item, showDate = false }) => (
     <Card style={styles.agendaItem}>
-      <TouchableOpacity
-        onPress={() => {
-          if (item.type) {
-            navigation.navigate('ConsultationDetail', { consultationId: item.id });
-          } else {
-            navigation.navigate('AppointmentDetail', { appointmentId: item.id });
-          }
-        }}
-      >
+      <TouchableOpacity onPress={() => handleItemPress(item)}>
         <View style={styles.itemHeader}>
           <View style={[styles.itemIcon, { backgroundColor: getStatusColor(item) }]}>
             <Ionicons 

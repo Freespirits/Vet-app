@@ -103,10 +103,25 @@ const ClientListScreen = ({ navigation }) => {
     }
   };
 
+  const handleClientPress = (client) => {
+    Alert.alert(
+      'Cliente',
+      `Nome: ${client.name}\nEmail: ${client.email}\nTelefone: ${formatPhone(client.phone)}\nPets: ${client.petsCount}`,
+      [
+        { text: 'OK' },
+        { text: 'Editar', onPress: () => navigation.navigate('NewClient', { clientId: client.id }) },
+        { text: 'Ver Pets', onPress: () => navigation.navigate('Pets', { 
+          screen: 'PetListMain',
+          params: { clientId: client.id }
+        }) }
+      ]
+    );
+  };
+
   const renderClientItem = ({ item }) => (
     <Card style={styles.clientCard}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('ClientDetail', { clientId: item.id })}
+        onPress={() => handleClientPress(item)}
         style={styles.clientContent}
       >
         <View style={styles.clientHeader}>
@@ -134,6 +149,14 @@ const ClientListScreen = ({ navigation }) => {
         >
           <Ionicons name="create" size={16} color={Colors.primary} />
           <Text style={styles.editButtonText}>Editar</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          style={[styles.actionButton, styles.petsButton]}
+          onPress={() => navigation.navigate('NewPet', { clientId: item.id })}
+        >
+          <Ionicons name="add" size={16} color={Colors.secondary} />
+          <Text style={styles.petsButtonText}>+ Pet</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
@@ -307,6 +330,15 @@ const styles = StyleSheet.create({
   },
   editButtonText: {
     color: Colors.primary,
+    fontSize: 14,
+    fontWeight: '500',
+    marginLeft: 4,
+  },
+  petsButton: {
+    backgroundColor: Colors.background,
+  },
+  petsButtonText: {
+    color: Colors.secondary,
     fontSize: 14,
     fontWeight: '500',
     marginLeft: 4,

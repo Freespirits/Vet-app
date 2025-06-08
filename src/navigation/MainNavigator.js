@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Alert, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,25 +20,6 @@ import { globalStyles } from '../styles/globalStyles';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
-const PlaceholderScreen = ({ route, navigation }) => {
-  return (
-    <View style={[globalStyles.container, globalStyles.justifyCenter, globalStyles.alignCenter]}>
-      <Ionicons 
-        name="construct" 
-        size={64} 
-        color={Colors.textSecondary} 
-        style={{ marginBottom: 16 }}
-      />
-      <Text style={[globalStyles.textLarge, globalStyles.textCenter]}>
-        {route.name}
-      </Text>
-      <Text style={[globalStyles.textRegular, globalStyles.textCenter, { marginTop: 8 }]}>
-        Em desenvolvimento
-      </Text>
-    </View>
-  );
-};
 
 // Componente de header personalizado para o Profile
 const ProfileHeader = ({ navigation, user }) => (
@@ -145,20 +126,10 @@ const HomeStackNavigator = () => {
         }}
       />
       <Stack.Screen 
-        name="ConsultationHistory" 
-        component={PlaceholderScreen}
+        name="VetLibrary" 
+        component={VetLibraryScreen}
         options={{
-          title: 'Histórico de Consultas',
-          headerStyle: { backgroundColor: Colors.primary },
-          headerTintColor: Colors.surface,
-          headerTitleStyle: { fontWeight: 'bold' }
-        }}
-      />
-      <Stack.Screen 
-        name="ConsultationDetail" 
-        component={PlaceholderScreen}
-        options={{
-          title: 'Detalhes da Consulta',
+          title: 'Biblioteca Veterinária',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: Colors.surface,
           headerTitleStyle: { fontWeight: 'bold' }
@@ -181,16 +152,6 @@ const ClientsStackNavigator = () => (
       component={NewClientScreen}
       options={{
         title: 'Novo Cliente',
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: Colors.surface,
-        headerTitleStyle: { fontWeight: 'bold' }
-      }}
-    />
-    <Stack.Screen 
-      name="ClientDetail" 
-      component={PlaceholderScreen}
-      options={{
-        title: 'Detalhes do Cliente',
         headerStyle: { backgroundColor: Colors.primary },
         headerTintColor: Colors.surface,
         headerTitleStyle: { fontWeight: 'bold' }
@@ -227,16 +188,6 @@ const PetsStackNavigator = () => (
         headerTitleStyle: { fontWeight: 'bold' }
       }}
     />
-    <Stack.Screen 
-      name="PetDetail" 
-      component={PlaceholderScreen}
-      options={{
-        title: 'Detalhes do Pet',
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: Colors.surface,
-        headerTitleStyle: { fontWeight: 'bold' }
-      }}
-    />
   </Stack.Navigator>
 );
 
@@ -263,16 +214,6 @@ const AgendaStackNavigator = () => (
       component={NewAppointmentScreen}
       options={{
         title: 'Novo Agendamento',
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: Colors.surface,
-        headerTitleStyle: { fontWeight: 'bold' }
-      }}
-    />
-    <Stack.Screen 
-      name="ConsultationHistory" 
-      component={PlaceholderScreen}
-      options={{
-        title: 'Histórico de Consultas',
         headerStyle: { backgroundColor: Colors.primary },
         headerTintColor: Colors.surface,
         headerTitleStyle: { fontWeight: 'bold' }
