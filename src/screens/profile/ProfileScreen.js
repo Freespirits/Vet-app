@@ -276,56 +276,8 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <LinearGradient
-        colors={[Colors.primary, Colors.primaryDark]}
-        style={styles.header}
-      >
-        <View style={styles.headerContent}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons name="arrow-back" size={24} color={Colors.surface} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Perfil</Text>
-          <View style={styles.headerSpacer} />
-        </View>
-      </LinearGradient>
-
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* User Info */}
-        <View style={styles.userSection}>
-          <LinearGradient
-            colors={[Colors.surface, '#FAFAFA']}
-            style={styles.userCard}
-          >
-            <View style={styles.userAvatar}>
-              <LinearGradient
-                colors={[Colors.primary, Colors.primaryDark]}
-                style={styles.avatarGradient}
-              >
-                <Ionicons name="person" size={32} color={Colors.surface} />
-              </LinearGradient>
-            </View>
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>
-                {user?.name || 'Dr. Veterinário'}
-              </Text>
-              <Text style={styles.userEmail}>
-                {user?.email || 'veterinario@email.com'}
-              </Text>
-              <Text style={styles.userRole}>
-                {user?.profession || 'Médico Veterinário'}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => Alert.alert('Em breve', 'Funcionalidade em desenvolvimento')}
-            >
-              <Ionicons name="create-outline" size={20} color={Colors.primary} />
-            </TouchableOpacity>
-          </LinearGradient>
-        </View>
 
         {/* Profile Sections */}
         <View style={styles.sectionsContainer}>
