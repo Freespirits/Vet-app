@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -7,31 +7,117 @@ import {
   TouchableOpacity,
   Alert,
   StyleSheet,
-  Image
+  Image,
+  Dimensions
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '../../contexts/AuthContext';
+import { ClientService } from '../../services/ClientService';
+import { PetService } from '../../services/PetService';
+import { ConsultationService } from '../../services/ConsultationService';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
+import Loading from '../../components/common/Loading';
 import { Colors } from '../../constants/Colors';
-import { formatPhone } from '../../utils/helpers';
+import { formatPhone, formatCurrency } from '../../utils/helpers';
+import { validateEmail, validatePhone } from '../../utils/validators';
 import { globalStyles } from '../../styles/globalStyles';
+
+const { width } = Dimensions.get('window');
 
 const ProfileScreen = ({ navigation }) => {
   const { user, updateProfile, logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalClients: 0,
+    totalPets: 0,
+    totalConsultations: 0,
+    monthlyRevenue: 0
+  });
+  
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
-    profession: user?.profession || '',
+    profession: user?.profession || 'Veterinário(a)',
     clinic: user?.clinic || '',
     crmv: user?.crmv || '',
     phone: user?.phone || '',
   });
+
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    loadStats();
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        email: user.email || '',
+        profession: user.profession || 'Veterinário(a)',
+        clinic: user.clinic || '',
+        crmv: user.crmv || '',
+        phone: user.phone || '',
+      });
+    }
+  }, [user]);
+
+  const loadStats = async () => {
+    try {
+      setStatsLoading(true);
+      const [clientStats, petStats, consultationStats, allConsultations] = await Promise.all([
+        ClientService.getStats(),
+        PetService.getStats(),
+        ConsultationService.getStats(),
+        ConsultationService.getAll()
+      ]);
+
+      // Calcular receita mensal
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const monthlyRevenue = allConsultations
+        .filter(consultation => {
+          const date = new Date(consultation.date);
+          return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+        })
+        .reduce((sum, consultation) => sum + (consultation.price || 0), 0);
+
+      setStats({
+        totalClients: clientStats.total,
+        totalPets: petStats.total,
+        totalConsultations: consultationStats.total,
+        monthlyRevenue: monthlyRevenue
+      });
+    } catch (error) {
+      console.error('Erro ao carregar estatísticas:', error);
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Nome é obrigatório';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email é obrigatório';
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Email inválido';
+    }
+
+    if (formData.phone && !validatePhone(formData.phone)) {
+      newErrors.phone = 'Telefone inválido';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleEditToggle = () => {
     if (isEditing) {
@@ -39,16 +125,19 @@ const ProfileScreen = ({ navigation }) => {
       setFormData({
         name: user?.name || '',
         email: user?.email || '',
-        profession: user?.profession || '',
+        profession: user?.profession || 'Veterinário(a)',
         clinic: user?.clinic || '',
         crmv: user?.crmv || '',
         phone: user?.phone || '',
       });
+      setErrors({});
     }
     setIsEditing(!isEditing);
   };
 
   const handleSaveProfile = async () => {
+    if (!validateForm()) return;
+
     setLoading(true);
     try {
       const result = await updateProfile(formData);
@@ -81,7 +170,6 @@ const ProfileScreen = ({ navigation }) => {
       });
 
       if (!result.canceled) {
-        // Aqui você implementaria o upload da imagem
         Alert.alert('Funcionalidade em desenvolvimento', 'Upload de foto será implementado em breve!');
       }
     } catch (error) {
@@ -102,6 +190,9 @@ const ProfileScreen = ({ navigation }) => {
 
   const updateField = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: null }));
+    }
   };
 
   const ProfileInfoItem = ({ icon, label, value, onPress }) => (
@@ -119,12 +210,13 @@ const ProfileScreen = ({ navigation }) => {
     </TouchableOpacity>
   );
 
-  const StatCard = ({ title, value, icon, color }) => (
+  const StatCard = ({ title, value, icon, color, subtitle }) => (
     <View style={[styles.statCard, { borderLeftColor: color }]}>
       <View style={styles.statContent}>
         <View style={styles.statInfo}>
           <Text style={styles.statValue}>{value}</Text>
           <Text style={styles.statTitle}>{title}</Text>
+          {subtitle && <Text style={styles.statSubtitle}>{subtitle}</Text>}
         </View>
         <View style={[styles.statIcon, { backgroundColor: color }]}>
           <Ionicons name={icon} size={20} color={Colors.surface} />
@@ -133,70 +225,47 @@ const ProfileScreen = ({ navigation }) => {
     </View>
   );
 
+  if (statsLoading) {
+    return <Loading message="Carregando perfil..." />;
+  }
+
   return (
     <SafeAreaView style={globalStyles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Header com foto e informações básicas */}
-        <LinearGradient
-          colors={Colors.primaryGradient}
-          style={styles.headerGradient}
-        >
-          <View style={styles.profileHeader}>
-            <TouchableOpacity 
-              style={styles.photoContainer}
-              onPress={handleImagePicker}
-            >
-              {user?.photo_url ? (
-                <Image source={{ uri: user.photo_url }} style={styles.profilePhoto} />
-              ) : (
-                <View style={styles.defaultPhoto}>
-                  <Ionicons name="person" size={48} color={Colors.primary} />
-                </View>
-              )}
-              <View style={styles.photoEditIcon}>
-                <Ionicons name="camera" size={16} color={Colors.surface} />
-              </View>
-            </TouchableOpacity>
-            
-            <View style={styles.profileInfo}>
-              <Text style={styles.profileName}>{user?.name || 'Nome não informado'}</Text>
-              <Text style={styles.profileProfession}>{user?.profession || 'Profissão'}</Text>
-              <Text style={styles.profileClinic}>📍 {user?.clinic || 'Clínica'}</Text>
-            </View>
-
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={handleEditToggle}
-            >
-              <Ionicons 
-                name={isEditing ? 'close' : 'create'} 
-                size={20} 
-                color={Colors.surface} 
-              />
-            </TouchableOpacity>
-          </View>
-        </LinearGradient>
-
+      <ScrollView 
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Estatísticas rápidas */}
         <View style={styles.statsContainer}>
+          <Text style={styles.sectionTitle}>Resumo da Clínica</Text>
           <View style={styles.statsGrid}>
             <StatCard
               title="Clientes"
-              value="125"
+              value={stats.totalClients}
               icon="people"
               color={Colors.primary}
             />
             <StatCard
               title="Pets"
-              value="89"
+              value={stats.totalPets}
               icon="paw"
               color={Colors.secondary}
             />
+          </View>
+          <View style={styles.statsGrid}>
             <StatCard
               title="Consultas"
-              value="456"
+              value={stats.totalConsultations}
               icon="medical"
               color={Colors.info}
+              subtitle="Total realizadas"
+            />
+            <StatCard
+              title="Receita Mensal"
+              value={formatCurrency(stats.monthlyRevenue)}
+              icon="card"
+              color={Colors.success}
+              subtitle="Mês atual"
             />
           </View>
         </View>
@@ -205,6 +274,16 @@ const ProfileScreen = ({ navigation }) => {
         <Card style={styles.profileCard}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>Informações Pessoais</Text>
+            <TouchableOpacity
+              onPress={handleEditToggle}
+              style={styles.editIconButton}
+            >
+              <Ionicons 
+                name={isEditing ? 'close' : 'create'} 
+                size={20} 
+                color={Colors.primary} 
+              />
+            </TouchableOpacity>
           </View>
 
           {isEditing ? (
@@ -215,6 +294,11 @@ const ProfileScreen = ({ navigation }) => {
                 onChangeText={(value) => updateField('name', value)}
                 placeholder="Seu nome completo"
                 leftIcon="person"
+                error={errors.name}
+                required
+                autoCapitalize="words"
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               <Input
@@ -223,16 +307,24 @@ const ProfileScreen = ({ navigation }) => {
                 onChangeText={(value) => updateField('email', value)}
                 placeholder="seu@email.com"
                 keyboardType="email-address"
+                autoCapitalize="none"
                 leftIcon="mail"
+                error={errors.email}
+                required
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               <Input
                 label="Telefone"
                 value={formData.phone}
-                onChangeText={(value) => updateField('phone', value)}
+                onChangeText={(value) => updateField('phone', formatPhone(value))}
                 placeholder="(11) 99999-9999"
                 keyboardType="phone-pad"
                 leftIcon="call"
+                error={errors.phone}
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               <Input
@@ -241,6 +333,9 @@ const ProfileScreen = ({ navigation }) => {
                 onChangeText={(value) => updateField('profession', value)}
                 placeholder="Veterinário(a)"
                 leftIcon="medical"
+                autoCapitalize="words"
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               <Input
@@ -249,14 +344,20 @@ const ProfileScreen = ({ navigation }) => {
                 onChangeText={(value) => updateField('clinic', value)}
                 placeholder="Nome da clínica"
                 leftIcon="business"
+                autoCapitalize="words"
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               <Input
                 label="CRMV"
                 value={formData.crmv}
-                onChangeText={(value) => updateField('crmv', value)}
+                onChangeText={(value) => updateField('crmv', value.toUpperCase())}
                 placeholder="12345-UF"
                 leftIcon="card"
+                autoCapitalize="characters"
+                returnKeyType="done"
+                blurOnSubmit={true}
               />
 
               <View style={styles.editButtons}>
@@ -265,6 +366,7 @@ const ProfileScreen = ({ navigation }) => {
                   variant="outline"
                   onPress={handleEditToggle}
                   style={styles.cancelButton}
+                  disabled={loading}
                 />
                 <Button
                   title="Salvar"
@@ -368,6 +470,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
           
           <View style={styles.appInfoContent}>
+            <Ionicons name="paw" size={48} color={Colors.primary} style={styles.appIcon} />
             <Text style={styles.appVersion}>PetCare Pro v1.0.0</Text>
             <Text style={styles.appDescription}>
               Sistema completo para gestão de clínicas veterinárias e petshops.
@@ -398,97 +501,33 @@ const styles = StyleSheet.create({
   scrollContainer: {
     paddingBottom: 32,
   },
-  headerGradient: {
-    marginBottom: 24,
-  },
-  profileHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    paddingTop: 16,
-  },
-  photoContainer: {
-    position: 'relative',
-    marginRight: 16,
-  },
-  profilePhoto: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 3,
-    borderColor: Colors.surface,
-  },
-  defaultPhoto: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: Colors.surface,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 3,
-    borderColor: Colors.surface,
-  },
-  photoEditIcon: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: Colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: Colors.surface,
-  },
-  profileInfo: {
-    flex: 1,
-  },
-  profileName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.surface,
-  },
-  profileProfession: {
-    fontSize: 16,
-    color: Colors.surface,
-    opacity: 0.9,
-    marginTop: 2,
-  },
-  profileClinic: {
-    fontSize: 14,
-    color: Colors.surface,
-    opacity: 0.8,
-    marginTop: 4,
-  },
-  editButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   statsContainer: {
     paddingHorizontal: 16,
     marginBottom: 24,
   },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: Colors.text,
+    marginBottom: 16,
+  },
   statsGrid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 12,
   },
   statCard: {
-    flex: 1,
+    width: (width - 48) / 2,
     backgroundColor: Colors.surface,
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
     marginHorizontal: 4,
     borderLeftWidth: 4,
     shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   statContent: {
     flexDirection: 'row',
@@ -504,14 +543,19 @@ const styles = StyleSheet.create({
     color: Colors.text,
   },
   statTitle: {
-    fontSize: 12,
+    fontSize: 13,
+    color: Colors.textSecondary,
+    marginTop: 4,
+  },
+  statSubtitle: {
+    fontSize: 11,
     color: Colors.textSecondary,
     marginTop: 2,
   },
   statIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -520,12 +564,23 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 16,
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: '600',
     color: Colors.text,
+  },
+  editIconButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: Colors.background,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   editForm: {
     gap: 16,
@@ -544,12 +599,12 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   infoList: {
-    gap: 16,
+    gap: 0,
   },
   infoItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
@@ -616,6 +671,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 16,
   },
+  appIcon: {
+    marginBottom: 12,
+  },
   appVersion: {
     fontSize: 18,
     fontWeight: '600',
@@ -628,6 +686,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
     marginBottom: 16,
+    paddingHorizontal: 16,
   },
   appFooter: {
     fontSize: 12,

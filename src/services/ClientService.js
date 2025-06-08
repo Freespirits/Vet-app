@@ -43,12 +43,12 @@ export const ClientService = {
         .eq('id', id)
         .single();
 
-      if (error) {
+      if (error && error.code !== 'PGRST116') {
         console.error('Erro ao buscar cliente por ID:', error);
         throw error;
       }
 
-      return data;
+      return data || null;
     } catch (error) {
       console.error('Erro ao buscar cliente:', error);
       return null;
@@ -68,6 +68,11 @@ export const ClientService = {
       console.log('Usuário autenticado:', user.id);
       console.log('Dados do cliente:', clientData);
 
+      // Validação básica
+      if (!clientData.name || !clientData.email || !clientData.phone) {
+        return { success: false, error: 'Nome, email e telefone são obrigatórios' };
+      }
+
       // Verificar se email já existe para este usuário
       const { data: existingClient } = await supabase
         .from('clients_consultorio')
@@ -78,7 +83,7 @@ export const ClientService = {
 
       if (existingClient) {
         console.log('Email já cadastrado:', clientData.email);
-        return { success: false, error: 'Email já cadastrado' };
+        return { success: false, error: 'Email já cadastrado para este usuário' };
       }
 
       // Preparar dados para inserção
@@ -93,6 +98,8 @@ export const ClientService = {
         state: clientData.state?.trim() || null,
         zip_code: clientData.zipCode?.trim() || null,
         notes: clientData.notes?.trim() || null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
 
       console.log('Dados preparados para inserção:', insertData);
@@ -105,7 +112,16 @@ export const ClientService = {
 
       if (error) {
         console.error('Erro ao inserir cliente:', error);
-        throw error;
+        
+        // Tratar erros específicos
+        if (error.code === '23505') {
+          return { success: false, error: 'Este email já está cadastrado' };
+        }
+        
+        return { 
+          success: false, 
+          error: `Erro ao salvar cliente: ${error.message}` 
+        };
       }
 
       console.log('Cliente criado com sucesso:', data);
@@ -114,7 +130,7 @@ export const ClientService = {
       console.error('Erro ao criar cliente:', error);
       return { 
         success: false, 
-        error: error.message || 'Erro ao salvar cliente' 
+        error: 'Erro interno do sistema. Tente novamente.' 
       };
     }
   },
@@ -127,6 +143,11 @@ export const ClientService = {
       if (!user) {
         console.error('Usuário não autenticado para atualizar cliente');
         return { success: false, error: 'Usuário não autenticado' };
+      }
+
+      // Validação básica
+      if (!clientData.name || !clientData.email || !clientData.phone) {
+        return { success: false, error: 'Nome, email e telefone são obrigatórios' };
       }
 
       // Verificar se email já existe em outro cliente
@@ -169,7 +190,19 @@ export const ClientService = {
 
       if (error) {
         console.error('Erro ao atualizar cliente:', error);
-        throw error;
+        
+        if (error.code === '23505') {
+          return { success: false, error: 'Este email já está cadastrado' };
+        }
+        
+        return { 
+          success: false, 
+          error: `Erro ao atualizar cliente: ${error.message}` 
+        };
+      }
+
+      if (!data) {
+        return { success: false, error: 'Cliente não encontrado ou sem permissão para editar' };
       }
 
       console.log('Cliente atualizado com sucesso:', data);
@@ -178,7 +211,7 @@ export const ClientService = {
       console.error('Erro ao atualizar cliente:', error);
       return { 
         success: false, 
-        error: error.message || 'Erro ao atualizar cliente' 
+        error: 'Erro interno do sistema. Tente novamente.' 
       };
     }
   },
@@ -193,6 +226,19 @@ export const ClientService = {
         return { success: false, error: 'Usuário não autenticado' };
       }
 
+      // Verificar se existem pets vinculados ao cliente
+      const { data: pets } = await supabase
+        .from('pets_consultorio')
+        .select('id')
+        .eq('client_id', id);
+
+      if (pets && pets.length > 0) {
+        return { 
+          success: false, 
+          error: 'Não é possível excluir cliente com pets cadastrados. Exclua os pets primeiro.' 
+        };
+      }
+
       const { error } = await supabase
         .from('clients_consultorio')
         .delete()
@@ -201,7 +247,10 @@ export const ClientService = {
 
       if (error) {
         console.error('Erro ao deletar cliente:', error);
-        throw error;
+        return { 
+          success: false, 
+          error: `Erro ao excluir cliente: ${error.message}` 
+        };
       }
 
       console.log('Cliente deletado com sucesso');
@@ -210,7 +259,7 @@ export const ClientService = {
       console.error('Erro ao deletar cliente:', error);
       return { 
         success: false, 
-        error: error.message || 'Erro ao deletar cliente' 
+        error: 'Erro interno do sistema. Tente novamente.' 
       };
     }
   },
@@ -270,7 +319,7 @@ export const ClientService = {
       return {
         total: data.length,
         thisMonth: thisMonth.length,
-        active: data.length, // Todos são considerados ativos por padrão
+        active: data.length,
       };
     } catch (error) {
       console.error('Erro ao buscar estatísticas:', error);

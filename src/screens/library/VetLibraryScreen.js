@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { 
   View, 
   Text, 
@@ -41,7 +41,7 @@ const VetLibraryScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
 
-  // Estado do formulário para adicionar/editar - ESTÁVEL
+  // Estado do formulário - REMOVIDO useCallback para evitar re-renderizações
   const [formData, setFormData] = useState({
     category: '',
     name: '',
@@ -65,7 +65,7 @@ const VetLibraryScreen = ({ navigation }) => {
     }, [])
   );
 
-  const loadCustomItems = async () => {
+  const loadCustomItems = useCallback(async () => {
     setLoading(true);
     try {
       const items = await LibraryService.getAll();
@@ -75,15 +75,16 @@ const VetLibraryScreen = ({ navigation }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await loadCustomItems();
     setRefreshing(false);
-  }, []);
+  }, [loadCustomItems]);
 
-  const getFilteredData = useCallback(() => {
+  // Memoização dos dados filtrados para evitar re-renderizações desnecessárias
+  const filteredData = useMemo(() => {
     let defaultData = [];
     let customData = [];
 
@@ -117,6 +118,13 @@ const VetLibraryScreen = ({ navigation }) => {
       (item.description && item.description.toLowerCase().includes(lowerQuery))
     );
   }, [activeTab, customItems, searchQuery]);
+
+  // Contadores memoizados
+  const itemCounts = useMemo(() => ({
+    medicamentosCount: MEDICAMENTOS.length + customItems.filter(i => i.category === 'medicamento').length,
+    vacinasCount: VACINAS.length + customItems.filter(i => i.category === 'vacina').length,
+    procedimentosCount: PROCEDIMENTOS.length + customItems.filter(i => i.category === 'procedimento').length,
+  }), [customItems]);
 
   const openItemDetail = useCallback((item) => {
     setSelectedItem(item);
@@ -175,12 +183,13 @@ const VetLibraryScreen = ({ navigation }) => {
     setFormErrors({});
   }, []);
 
-  const updateFormField = useCallback((field, value) => {
+  // Função simplificada para atualizar campos do formulário
+  const updateFormField = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (formErrors[field]) {
       setFormErrors(prev => ({ ...prev, [field]: null }));
     }
-  }, [formErrors]);
+  };
 
   const validateForm = useCallback(() => {
     const errors = {};
@@ -289,7 +298,8 @@ const VetLibraryScreen = ({ navigation }) => {
     );
   };
 
-  const TabButton = ({ id, title, icon, active, onPress, count }) => (
+  // Componente Tab otimizado
+  const TabButton = React.memo(({ id, title, icon, active, onPress, count }) => (
     <TouchableOpacity
       style={[styles.tabButton, active && styles.tabButtonActive]}
       onPress={onPress}
@@ -315,9 +325,10 @@ const VetLibraryScreen = ({ navigation }) => {
         )}
       </LinearGradient>
     </TouchableOpacity>
-  );
+  ));
 
-  const MedicamentoCard = ({ item }) => (
+  // Componentes de card otimizados com React.memo
+  const MedicamentoCard = React.memo(({ item }) => (
     <Card style={styles.itemCard}>
       <TouchableOpacity onPress={() => openItemDetail(item)}>
         <LinearGradient
@@ -351,9 +362,9 @@ const VetLibraryScreen = ({ navigation }) => {
         </LinearGradient>
       </TouchableOpacity>
     </Card>
-  );
+  ));
 
-  const VacinaCard = ({ item }) => (
+  const VacinaCard = React.memo(({ item }) => (
     <Card style={styles.itemCard}>
       <TouchableOpacity onPress={() => openItemDetail(item)}>
         <LinearGradient
@@ -387,9 +398,9 @@ const VetLibraryScreen = ({ navigation }) => {
         </LinearGradient>
       </TouchableOpacity>
     </Card>
-  );
+  ));
 
-  const ProcedimentoCard = ({ item }) => (
+  const ProcedimentoCard = React.memo(({ item }) => (
     <Card style={styles.itemCard}>
       <TouchableOpacity onPress={() => openItemDetail(item)}>
         <LinearGradient
@@ -414,7 +425,7 @@ const VetLibraryScreen = ({ navigation }) => {
         </LinearGradient>
       </TouchableOpacity>
     </Card>
-  );
+  ));
 
   const ItemDetailModal = () => {
     if (!selectedItem) return null;
@@ -572,6 +583,8 @@ const VetLibraryScreen = ({ navigation }) => {
             style={styles.formContent} 
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
+            nestedScrollEnabled={true}
+            removeClippedSubviews={false}
           >
             <Input
               label="Nome"
@@ -580,8 +593,9 @@ const VetLibraryScreen = ({ navigation }) => {
               placeholder="Nome do item"
               error={formErrors.name}
               required
-              editable={true}
               autoCapitalize="words"
+              returnKeyType="next"
+              blurOnSubmit={false}
             />
 
             <Input
@@ -591,8 +605,9 @@ const VetLibraryScreen = ({ navigation }) => {
               placeholder="Descrição do item"
               multiline
               numberOfLines={3}
-              editable={true}
               autoCapitalize="sentences"
+              returnKeyType="next"
+              blurOnSubmit={false}
             />
 
             {formData.category === 'medicamento' && (
@@ -604,7 +619,8 @@ const VetLibraryScreen = ({ navigation }) => {
                   placeholder="Ex: 25mg/kg"
                   error={formErrors.dosage}
                   required
-                  editable={true}
+                  returnKeyType="next"
+                  blurOnSubmit={false}
                 />
                 <Input
                   label="Frequência"
@@ -613,7 +629,8 @@ const VetLibraryScreen = ({ navigation }) => {
                   placeholder="Ex: A cada 8 horas"
                   error={formErrors.frequency}
                   required
-                  editable={true}
+                  returnKeyType="next"
+                  blurOnSubmit={false}
                 />
                 <Input
                   label="Contraindicações"
@@ -622,8 +639,9 @@ const VetLibraryScreen = ({ navigation }) => {
                   placeholder="Contraindicações conhecidas"
                   multiline
                   numberOfLines={3}
-                  editable={true}
                   autoCapitalize="sentences"
+                  returnKeyType="next"
+                  blurOnSubmit={false}
                 />
                 <Input
                   label="Observações"
@@ -632,8 +650,9 @@ const VetLibraryScreen = ({ navigation }) => {
                   placeholder="Observações importantes"
                   multiline
                   numberOfLines={3}
-                  editable={true}
                   autoCapitalize="sentences"
+                  returnKeyType="done"
+                  blurOnSubmit={true}
                 />
               </>
             )}
@@ -647,8 +666,9 @@ const VetLibraryScreen = ({ navigation }) => {
                   placeholder="Ex: Cão/Gato"
                   error={formErrors.species}
                   required
-                  editable={true}
                   autoCapitalize="words"
+                  returnKeyType="next"
+                  blurOnSubmit={false}
                 />
                 <Input
                   label="Doenças Prevenidas"
@@ -659,8 +679,9 @@ const VetLibraryScreen = ({ navigation }) => {
                   numberOfLines={3}
                   error={formErrors.diseases}
                   required
-                  editable={true}
                   autoCapitalize="words"
+                  returnKeyType="next"
+                  blurOnSubmit={false}
                 />
                 <Input
                   label="Protocolo de Vacinação"
@@ -669,15 +690,17 @@ const VetLibraryScreen = ({ navigation }) => {
                   placeholder="Ex: 6-8 semanas, 10-12 semanas"
                   multiline
                   numberOfLines={2}
-                  editable={true}
+                  returnKeyType="next"
+                  blurOnSubmit={false}
                 />
                 <Input
                   label="Reforço"
                   value={formData.booster}
                   onChangeText={(value) => updateFormField('booster', value)}
                   placeholder="Ex: Anual"
-                  editable={true}
                   autoCapitalize="words"
+                  returnKeyType="done"
+                  blurOnSubmit={true}
                 />
               </>
             )}
@@ -692,7 +715,8 @@ const VetLibraryScreen = ({ navigation }) => {
                   keyboardType="numeric"
                   error={formErrors.duration}
                   required
-                  editable={true}
+                  returnKeyType="next"
+                  blurOnSubmit={false}
                 />
                 <Input
                   label="Preço (R$)"
@@ -700,7 +724,8 @@ const VetLibraryScreen = ({ navigation }) => {
                   onChangeText={(value) => updateFormField('price', value)}
                   placeholder="Ex: 80.00"
                   keyboardType="decimal-pad"
-                  editable={true}
+                  returnKeyType="done"
+                  blurOnSubmit={true}
                 />
               </>
             )}
@@ -730,11 +755,6 @@ const VetLibraryScreen = ({ navigation }) => {
     return <Loading message="Carregando biblioteca..." />;
   }
 
-  const filteredData = getFilteredData();
-  const medicamentosCount = MEDICAMENTOS.length + customItems.filter(i => i.category === 'medicamento').length;
-  const vacinasCount = VACINAS.length + customItems.filter(i => i.category === 'vacina').length;
-  const procedimentosCount = PROCEDIMENTOS.length + customItems.filter(i => i.category === 'procedimento').length;
-
   return (
     <SafeAreaView style={globalStyles.container}>
       {/* Header elegante */}
@@ -756,7 +776,8 @@ const VetLibraryScreen = ({ navigation }) => {
             placeholder="Buscar na biblioteca..."
             leftIcon="search"
             style={styles.searchInput}
-            editable={true}
+            returnKeyType="search"
+            blurOnSubmit={false}
           />
         </View>
       </LinearGradient>
@@ -770,7 +791,7 @@ const VetLibraryScreen = ({ navigation }) => {
             icon="medical"
             active={activeTab === 'medicamentos'}
             onPress={() => setActiveTab('medicamentos')}
-            count={medicamentosCount}
+            count={itemCounts.medicamentosCount}
           />
           <TabButton
             id="vacinas"
@@ -778,7 +799,7 @@ const VetLibraryScreen = ({ navigation }) => {
             icon="shield-checkmark"
             active={activeTab === 'vacinas'}
             onPress={() => setActiveTab('vacinas')}
-            count={vacinasCount}
+            count={itemCounts.vacinasCount}
           />
           <TabButton
             id="procedimentos"
@@ -786,7 +807,7 @@ const VetLibraryScreen = ({ navigation }) => {
             icon="fitness"
             active={activeTab === 'procedimentos'}
             onPress={() => setActiveTab('procedimentos')}
-            count={procedimentosCount}
+            count={itemCounts.procedimentosCount}
           />
         </ScrollView>
         
@@ -860,19 +881,19 @@ const VetLibraryScreen = ({ navigation }) => {
             <View style={styles.itemsGrid}>
               {activeTab === 'medicamentos' && 
                 filteredData.map((item, index) => (
-                  <MedicamentoCard key={item.id || index} item={item} />
+                  <MedicamentoCard key={item.id || `med-${index}`} item={item} />
                 ))
               }
 
               {activeTab === 'vacinas' && 
                 filteredData.map((item, index) => (
-                  <VacinaCard key={item.id || index} item={item} />
+                  <VacinaCard key={item.id || `vac-${index}`} item={item} />
                 ))
               }
 
               {activeTab === 'procedimentos' && 
                 filteredData.map((item, index) => (
-                  <ProcedimentoCard key={item.id || index} item={item} />
+                  <ProcedimentoCard key={item.id || `proc-${index}`} item={item} />
                 ))
               }
             </View>
@@ -894,6 +915,7 @@ const VetLibraryScreen = ({ navigation }) => {
   );
 };
 
+// Styles mantêm-se os mesmos...
 const styles = StyleSheet.create({
   header: {
     paddingBottom: 16,

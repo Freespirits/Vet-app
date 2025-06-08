@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, Alert, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import HomeScreen from '../screens/HomeScreen';
 import ClientListScreen from '../screens/clients/ClientListScreen';
 import NewClientScreen from '../screens/clients/NewClientScreen';
@@ -12,6 +13,7 @@ import NewConsultationScreen from '../screens/consultations/NewConsultationScree
 import VetLibraryScreen from '../screens/library/VetLibraryScreen';
 import AgendaScreen from '../screens/agenda/AgendaScreen';
 import NewAppointmentScreen from '../screens/agenda/NewAppointmentScreen';
+import ProfileScreen from '../screens/profile/ProfileScreen';
 import { useAuth } from '../contexts/AuthContext';
 import { Colors } from '../constants/Colors';
 import { globalStyles } from '../styles/globalStyles';
@@ -38,130 +40,133 @@ const PlaceholderScreen = ({ route, navigation }) => {
   );
 };
 
-// Componente Profile temporário
-const ProfileScreen = () => {
-  const { user, logout } = useAuth();
-  
-  return (
-    <View style={[globalStyles.container, globalStyles.justifyCenter, globalStyles.alignCenter]}>
-      <Ionicons 
-        name="person-circle" 
-        size={100} 
-        color={Colors.primary} 
-        style={{ marginBottom: 20 }}
-      />
-      <Text style={[globalStyles.textLarge, { marginBottom: 10 }]}>
-        {user?.name || 'Usuário'}
-      </Text>
-      <Text style={[globalStyles.textRegular, { marginBottom: 30 }]}>
-        {user?.email}
-      </Text>
-      <TouchableOpacity
-        style={{
-          backgroundColor: Colors.error,
-          paddingHorizontal: 30,
-          paddingVertical: 15,
-          borderRadius: 8
-        }}
-        onPress={() => {
-          Alert.alert(
-            'Sair',
-            'Deseja realmente sair do aplicativo?',
-            [
-              { text: 'Cancelar', style: 'cancel' },
-              { text: 'Sair', onPress: logout, style: 'destructive' }
-            ]
-          );
-        }}
+// Componente de header personalizado para o Profile
+const ProfileHeader = ({ navigation, user }) => (
+  <LinearGradient
+    colors={Colors.primaryGradient}
+    style={styles.profileHeaderGradient}
+  >
+    <View style={styles.profileHeaderContent}>
+      <TouchableOpacity 
+        onPress={() => navigation.goBack()}
+        style={styles.backButton}
       >
-        <Text style={{ color: Colors.surface, fontWeight: 'bold' }}>
-          Sair
-        </Text>
+        <Ionicons name="arrow-back" size={24} color={Colors.surface} />
+      </TouchableOpacity>
+      
+      <View style={styles.profileHeaderInfo}>
+        <View style={styles.profilePhotoContainer}>
+          {user?.photo_url ? (
+            <Image source={{ uri: user.photo_url }} style={styles.profileHeaderPhoto} />
+          ) : (
+            <View style={styles.defaultProfilePhoto}>
+              <Ionicons name="person" size={32} color={Colors.primary} />
+            </View>
+          )}
+        </View>
+        
+        <View style={styles.profileHeaderText}>
+          <Text style={styles.profileHeaderName}>
+            {user?.name || 'Usuário'}
+          </Text>
+          <Text style={styles.profileHeaderProfession}>
+            {user?.profession || 'Veterinário(a)'}
+          </Text>
+          <Text style={styles.profileHeaderClinic}>
+            📍 {user?.clinic || 'Clínica Veterinária'}
+          </Text>
+        </View>
+      </View>
+      
+      <TouchableOpacity style={styles.headerActionButton}>
+        <Ionicons name="settings" size={24} color={Colors.surface} />
       </TouchableOpacity>
     </View>
-  );
-};
+  </LinearGradient>
+);
 
 // Stack Navigator para Home com telas relacionadas
-const HomeStackNavigator = () => (
-  <Stack.Navigator>
-    <Stack.Screen 
-      name="HomeMain" 
-      component={HomeScreen} 
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen 
-      name="Profile" 
-      component={ProfileScreen}
-      options={{
-        title: 'Perfil',
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: Colors.surface,
-        headerTitleStyle: { fontWeight: 'bold' }
-      }}
-    />
-    <Stack.Screen 
-      name="NewConsultation" 
-      component={NewConsultationScreen}
-      options={{
-        title: 'Nova Consulta',
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: Colors.surface,
-        headerTitleStyle: { fontWeight: 'bold' }
-      }}
-    />
-    <Stack.Screen 
-      name="NewClient" 
-      component={NewClientScreen}
-      options={{
-        title: 'Novo Cliente',
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: Colors.surface,
-        headerTitleStyle: { fontWeight: 'bold' }
-      }}
-    />
-    <Stack.Screen 
-      name="NewPet" 
-      component={NewPetScreen}
-      options={{
-        title: 'Novo Pet',
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: Colors.surface,
-        headerTitleStyle: { fontWeight: 'bold' }
-      }}
-    />
-    <Stack.Screen 
-      name="NewAppointment" 
-      component={NewAppointmentScreen}
-      options={{
-        title: 'Novo Agendamento',
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: Colors.surface,
-        headerTitleStyle: { fontWeight: 'bold' }
-      }}
-    />
-    <Stack.Screen 
-      name="ConsultationHistory" 
-      component={PlaceholderScreen}
-      options={{
-        title: 'Histórico de Consultas',
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: Colors.surface,
-        headerTitleStyle: { fontWeight: 'bold' }
-      }}
-    />
-    <Stack.Screen 
-      name="ConsultationDetail" 
-      component={PlaceholderScreen}
-      options={{
-        title: 'Detalhes da Consulta',
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: Colors.surface,
-        headerTitleStyle: { fontWeight: 'bold' }
-      }}
-    />
-  </Stack.Navigator>
-);
+const HomeStackNavigator = () => {
+  const { user } = useAuth();
+  
+  return (
+    <Stack.Navigator>
+      <Stack.Screen 
+        name="HomeMain" 
+        component={HomeScreen} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="Profile" 
+        component={ProfileScreen}
+        options={({ navigation }) => ({
+          headerShown: true,
+          header: () => <ProfileHeader navigation={navigation} user={user} />
+        })}
+      />
+      <Stack.Screen 
+        name="NewConsultation" 
+        component={NewConsultationScreen}
+        options={{
+          title: 'Nova Consulta',
+          headerStyle: { backgroundColor: Colors.primary },
+          headerTintColor: Colors.surface,
+          headerTitleStyle: { fontWeight: 'bold' }
+        }}
+      />
+      <Stack.Screen 
+        name="NewClient" 
+        component={NewClientScreen}
+        options={{
+          title: 'Novo Cliente',
+          headerStyle: { backgroundColor: Colors.primary },
+          headerTintColor: Colors.surface,
+          headerTitleStyle: { fontWeight: 'bold' }
+        }}
+      />
+      <Stack.Screen 
+        name="NewPet" 
+        component={NewPetScreen}
+        options={{
+          title: 'Novo Pet',
+          headerStyle: { backgroundColor: Colors.primary },
+          headerTintColor: Colors.surface,
+          headerTitleStyle: { fontWeight: 'bold' }
+        }}
+      />
+      <Stack.Screen 
+        name="NewAppointment" 
+        component={NewAppointmentScreen}
+        options={{
+          title: 'Novo Agendamento',
+          headerStyle: { backgroundColor: Colors.primary },
+          headerTintColor: Colors.surface,
+          headerTitleStyle: { fontWeight: 'bold' }
+        }}
+      />
+      <Stack.Screen 
+        name="ConsultationHistory" 
+        component={PlaceholderScreen}
+        options={{
+          title: 'Histórico de Consultas',
+          headerStyle: { backgroundColor: Colors.primary },
+          headerTintColor: Colors.surface,
+          headerTitleStyle: { fontWeight: 'bold' }
+        }}
+      />
+      <Stack.Screen 
+        name="ConsultationDetail" 
+        component={PlaceholderScreen}
+        options={{
+          title: 'Detalhes da Consulta',
+          headerStyle: { backgroundColor: Colors.primary },
+          headerTintColor: Colors.surface,
+          headerTitleStyle: { fontWeight: 'bold' }
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
 
 // Stack Navigator para Clientes
 const ClientsStackNavigator = () => (
@@ -381,5 +386,81 @@ const MainNavigator = () => (
     />
   </Tab.Navigator>
 );
+
+const styles = StyleSheet.create({
+  profileHeaderGradient: {
+    paddingTop: 50,
+    paddingBottom: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  profileHeaderContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  profileHeaderInfo: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  profilePhotoContainer: {
+    marginRight: 16,
+  },
+  profileHeaderPhoto: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderWidth: 3,
+    borderColor: Colors.surface,
+  },
+  defaultProfilePhoto: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: Colors.surface,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: Colors.surface,
+  },
+  profileHeaderText: {
+    flex: 1,
+  },
+  profileHeaderName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: Colors.surface,
+  },
+  profileHeaderProfession: {
+    fontSize: 14,
+    color: Colors.surface,
+    opacity: 0.9,
+    marginTop: 2,
+  },
+  profileHeaderClinic: {
+    fontSize: 12,
+    color: Colors.surface,
+    opacity: 0.8,
+    marginTop: 4,
+  },
+  headerActionButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default MainNavigator;

@@ -215,13 +215,15 @@ const NewAppointmentScreen = ({ navigation, route }) => {
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
       >
         <ScrollView 
+          style={{ flex: 1 }}
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
           nestedScrollEnabled={true}
+          removeClippedSubviews={false}
         >
           <Card>
             <View style={styles.header}>
@@ -242,8 +244,9 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 leftIcon="bookmark"
                 error={errors.title}
                 required
-                editable={true}
                 autoCapitalize="words"
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               <Input
@@ -254,8 +257,9 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 multiline
                 numberOfLines={3}
                 leftIcon="document-text"
-                editable={true}
                 autoCapitalize="sentences"
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
             </View>
 
@@ -274,7 +278,8 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                       updateField('petId', '');
                     }}
                     style={styles.picker}
-                    enabled={true}
+                    mode="dropdown"
+                    dropdownIconColor={Colors.primary}
                   >
                     <Picker.Item label="Selecione o cliente..." value="" />
                     {clients.map(client => (
@@ -304,6 +309,8 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                     onValueChange={(value) => updateField('petId', value)}
                     style={styles.picker}
                     enabled={formData.clientId !== ''}
+                    mode="dropdown"
+                    dropdownIconColor={Colors.primary}
                   >
                     <Picker.Item label="Selecione o pet..." value="" />
                     {availablePets.map(pet => (
@@ -330,14 +337,15 @@ const NewAppointmentScreen = ({ navigation, route }) => {
               <Input
                 label="Data e Hora"
                 value={formatDateTime(formData.date)}
-                onChangeText={(value) => updateField('date', formatDateTimeInput(value))}
+                onChangeText={(value) => updateField('date', value)}
                 placeholder="DD/MM/AAAA HH:MM"
                 keyboardType="numeric"
                 leftIcon="calendar"
                 error={errors.date}
                 required
                 maxLength={16}
-                editable={true}
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               <View style={styles.pickerContainer}>
@@ -347,7 +355,8 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                     selectedValue={formData.duration}
                     onValueChange={(value) => updateField('duration', value)}
                     style={styles.picker}
-                    enabled={true}
+                    mode="dropdown"
+                    dropdownIconColor={Colors.primary}
                   >
                     <Picker.Item label="15 minutos" value="15" />
                     <Picker.Item label="30 minutos" value="30" />
@@ -366,7 +375,8 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                     selectedValue={formData.status}
                     onValueChange={(value) => updateField('status', value)}
                     style={styles.picker}
-                    enabled={true}
+                    mode="dropdown"
+                    dropdownIconColor={Colors.primary}
                   >
                     <Picker.Item label="Agendado" value="scheduled" />
                     <Picker.Item label="Confirmado" value="confirmed" />
@@ -377,24 +387,26 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 </View>
               </View>
             </View>
-
-            <View style={styles.buttonContainer}>
-              <Button
-                title="Cancelar"
-                variant="outline"
-                onPress={() => navigation.goBack()}
-                style={styles.cancelButton}
-                disabled={loading}
-              />
-              <Button
-                title={isEditing ? 'Atualizar' : 'Agendar'}
-                onPress={handleSave}
-                loading={loading}
-                style={styles.saveButton}
-              />
-            </View>
           </Card>
         </ScrollView>
+        
+        <View style={styles.fixedButtonContainer}>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Cancelar"
+              variant="outline"
+              onPress={() => navigation.goBack()}
+              style={styles.cancelButton}
+              disabled={loading}
+            />
+            <Button
+              title={isEditing ? 'Atualizar' : 'Agendar'}
+              onPress={handleSave}
+              loading={loading}
+              style={styles.saveButton}
+            />
+          </View>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -402,8 +414,9 @@ const NewAppointmentScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    padding: 16,
-    paddingBottom: 32,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 100,
   },
   header: {
     flexDirection: 'row',
@@ -471,10 +484,26 @@ const styles = StyleSheet.create({
     marginTop: 4,
     paddingLeft: 8,
   },
+  fixedButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: Colors.surface,
+    paddingTop: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 32,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 24,
   },
   cancelButton: {
     flex: 1,

@@ -94,19 +94,21 @@ const NewPetScreen = ({ navigation, route }) => {
   };
 
   const updateAvailableBreeds = () => {
+    let breeds = [];
     switch (formData.species) {
       case 'Cão':
-        setAvailableBreeds(RACAS_CAES);
+        breeds = RACAS_CAES;
         break;
       case 'Gato':
-        setAvailableBreeds(RACAS_GATOS);
+        breeds = RACAS_GATOS;
         break;
       default:
-        setAvailableBreeds(['SRD (Sem Raça Definida)', 'Outros']);
+        breeds = ['SRD (Sem Raça Definida)', 'Outros'];
     }
+    setAvailableBreeds(breeds);
     
     // Reset breed if not compatible with new species
-    if (formData.breed && !availableBreeds.includes(formData.breed)) {
+    if (formData.breed && !breeds.includes(formData.breed)) {
       setFormData(prev => ({ ...prev, breed: '' }));
     }
   };
@@ -211,12 +213,16 @@ const NewPetScreen = ({ navigation, route }) => {
     <SafeAreaView style={globalStyles.container}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={globalStyles.keyboardView}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
       >
         <ScrollView 
-          contentContainerStyle={globalStyles.scrollContainer}
+          style={{ flex: 1 }}
+          contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
+          nestedScrollEnabled={true}
+          removeClippedSubviews={false}
         >
           <Card>
             <View style={styles.header}>
@@ -237,8 +243,9 @@ const NewPetScreen = ({ navigation, route }) => {
                 leftIcon="heart"
                 error={errors.name}
                 required
-                editable={true}
                 autoCapitalize="words"
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               <View style={styles.pickerContainer}>
@@ -250,7 +257,8 @@ const NewPetScreen = ({ navigation, route }) => {
                     selectedValue={formData.clientId}
                     onValueChange={(value) => updateField('clientId', value)}
                     style={styles.picker}
-                    enabled={true}
+                    mode="dropdown"
+                    dropdownIconColor={Colors.primary}
                   >
                     <Picker.Item label="Selecione o cliente..." value="" />
                     {clients.map(client => (
@@ -279,10 +287,11 @@ const NewPetScreen = ({ navigation, route }) => {
                     selectedValue={formData.species}
                     onValueChange={(value) => {
                       updateField('species', value);
-                      updateField('breed', ''); // Reset breed when species changes
+                      updateField('breed', '');
                     }}
                     style={styles.picker}
-                    enabled={true}
+                    mode="dropdown"
+                    dropdownIconColor={Colors.primary}
                   >
                     <Picker.Item label="Selecione a espécie..." value="" />
                     {ESPECIES.map(especie => (
@@ -301,6 +310,8 @@ const NewPetScreen = ({ navigation, route }) => {
                     onValueChange={(value) => updateField('breed', value)}
                     style={styles.picker}
                     enabled={formData.species !== ''}
+                    mode="dropdown"
+                    dropdownIconColor={Colors.primary}
                   >
                     <Picker.Item label="Selecione a raça..." value="" />
                     {availableBreeds.map(raca => (
@@ -319,7 +330,8 @@ const NewPetScreen = ({ navigation, route }) => {
                     selectedValue={formData.gender}
                     onValueChange={(value) => updateField('gender', value)}
                     style={styles.picker}
-                    enabled={true}
+                    mode="dropdown"
+                    dropdownIconColor={Colors.primary}
                   >
                     <Picker.Item label="Selecione o sexo..." value="" />
                     <Picker.Item label="Macho" value="Macho" />
@@ -341,7 +353,8 @@ const NewPetScreen = ({ navigation, route }) => {
                 keyboardType="numeric"
                 leftIcon="calendar"
                 maxLength={10}
-                editable={true}
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               {formData.birthDate && formData.birthDate.length === 10 && (
@@ -357,7 +370,8 @@ const NewPetScreen = ({ navigation, route }) => {
                 placeholder="Ex: 5.2"
                 keyboardType="decimal-pad"
                 leftIcon="fitness"
-                editable={true}
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               <Input
@@ -366,8 +380,9 @@ const NewPetScreen = ({ navigation, route }) => {
                 onChangeText={(value) => updateField('color', value)}
                 placeholder="Cor predominante"
                 leftIcon="color-palette"
-                editable={true}
                 autoCapitalize="words"
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
 
               <Input
@@ -376,7 +391,8 @@ const NewPetScreen = ({ navigation, route }) => {
                 onChangeText={(value) => updateField('microchip', value)}
                 placeholder="Número do microchip"
                 leftIcon="radio"
-                editable={true}
+                returnKeyType="next"
+                blurOnSubmit={false}
               />
             </View>
 
@@ -391,34 +407,42 @@ const NewPetScreen = ({ navigation, route }) => {
                 multiline
                 numberOfLines={3}
                 maxLength={500}
-                editable={true}
                 autoCapitalize="sentences"
-              />
-            </View>
-
-            <View style={styles.buttonContainer}>
-              <Button
-                title="Cancelar"
-                variant="outline"
-                onPress={() => navigation.goBack()}
-                style={styles.cancelButton}
-                disabled={loading}
-              />
-              <Button
-                title={isEditing ? 'Atualizar' : 'Cadastrar'}
-                onPress={handleSave}
-                loading={loading}
-                style={styles.saveButton}
+                returnKeyType="done"
+                blurOnSubmit={true}
               />
             </View>
           </Card>
         </ScrollView>
+        
+        <View style={styles.fixedButtonContainer}>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Cancelar"
+              variant="outline"
+              onPress={() => navigation.goBack()}
+              style={styles.cancelButton}
+              disabled={loading}
+            />
+            <Button
+              title={isEditing ? 'Atualizar' : 'Cadastrar'}
+              onPress={handleSave}
+              loading={loading}
+              style={styles.saveButton}
+            />
+          </View>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 100,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -490,10 +514,26 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 6,
   },
+  fixedButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: Colors.surface,
+    paddingTop: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 32,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 24,
   },
   cancelButton: {
     flex: 1,
