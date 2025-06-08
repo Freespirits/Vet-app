@@ -63,6 +63,14 @@ const VetLibraryScreen = ({ navigation }) => {
     { id: 'tratamento', name: 'Tratamentos', icon: 'fitness', color: Colors.secondary },
   ];
 
+  const categoryOptions = [
+    { value: 'medicamento', label: 'Medicamento', icon: 'medical', color: Colors.success },
+    { value: 'vacina', label: 'Vacina', icon: 'shield-checkmark', color: Colors.info },
+    { value: 'procedimento', label: 'Procedimento', icon: 'cut', color: Colors.warning },
+    { value: 'exame', label: 'Exame', icon: 'search', color: Colors.error },
+    { value: 'tratamento', label: 'Tratamento', icon: 'fitness', color: Colors.secondary },
+  ];
+
   const speciesOptions = ['Cão', 'Gato', 'Aves', 'Bovinos', 'Equinos', 'Suínos', 'Todos'];
 
   useEffect(() => {
@@ -205,10 +213,10 @@ const VetLibraryScreen = ({ navigation }) => {
         await loadMedications();
         Alert.alert(
           'Sucesso',
-          `${editingMedication ? 'Medicamento atualizado' : 'Medicamento adicionado'} com sucesso!`
+          `${editingMedication ? 'Item atualizado' : 'Item adicionado'} com sucesso!`
         );
       } else {
-        Alert.alert('Erro', result.error || 'Erro ao salvar medicamento');
+        Alert.alert('Erro', result.error || 'Erro ao salvar item');
       }
     } catch (error) {
       console.error('Erro ao salvar medicamento:', error);
@@ -232,9 +240,9 @@ const VetLibraryScreen = ({ navigation }) => {
               const result = await LibraryService.delete(medication.id);
               if (result.success) {
                 await loadMedications();
-                Alert.alert('Sucesso', 'Medicamento excluído com sucesso');
+                Alert.alert('Sucesso', 'Item excluído com sucesso');
               } else {
-                Alert.alert('Erro', result.error || 'Erro ao excluir medicamento');
+                Alert.alert('Erro', result.error || 'Erro ao excluir item');
               }
             } catch (error) {
               console.error('Erro ao excluir medicamento:', error);
@@ -482,6 +490,7 @@ const VetLibraryScreen = ({ navigation }) => {
           >
             <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
               <View style={styles.formContainer}>
+                {/* Nome */}
                 <Input
                   label="Nome"
                   value={formData.name}
@@ -491,23 +500,47 @@ const VetLibraryScreen = ({ navigation }) => {
                   autoCapitalize="words"
                 />
 
-                <View style={styles.pickerContainer}>
-                  <Text style={styles.pickerLabel}>Categoria</Text>
-                  <View style={styles.pickerWrapper}>
-                    <Picker
-                      selectedValue={formData.category}
-                      onValueChange={(value) => updateField('category', value)}
-                      style={styles.picker}
-                    >
-                      <Picker.Item label="Medicamento" value="medicamento" />
-                      <Picker.Item label="Vacina" value="vacina" />
-                      <Picker.Item label="Procedimento" value="procedimento" />
-                      <Picker.Item label="Exame" value="exame" />
-                      <Picker.Item label="Tratamento" value="tratamento" />
-                    </Picker>
+                {/* Categoria com botões visuais */}
+                <View style={styles.categorySection}>
+                  <Text style={styles.sectionLabel}>
+                    Categoria <Text style={styles.required}>*</Text>
+                  </Text>
+                  <View style={styles.categoryGrid}>
+                    {categoryOptions.map(option => (
+                      <TouchableOpacity
+                        key={option.value}
+                        style={[
+                          styles.categoryOptionButton,
+                          formData.category === option.value && styles.categoryOptionButtonActive,
+                          { borderColor: option.color }
+                        ]}
+                        onPress={() => updateField('category', option.value)}
+                      >
+                        <LinearGradient
+                          colors={formData.category === option.value ? 
+                            [option.color, `${option.color}CC`] : 
+                            ['transparent', 'transparent']
+                          }
+                          style={styles.categoryOptionGradient}
+                        >
+                          <Ionicons 
+                            name={option.icon} 
+                            size={20} 
+                            color={formData.category === option.value ? Colors.surface : option.color} 
+                          />
+                          <Text style={[
+                            styles.categoryOptionText,
+                            formData.category === option.value && styles.categoryOptionTextActive
+                          ]}>
+                            {option.label}
+                          </Text>
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    ))}
                   </View>
                 </View>
 
+                {/* Descrição */}
                 <Input
                   label="Descrição"
                   value={formData.description}
@@ -518,20 +551,27 @@ const VetLibraryScreen = ({ navigation }) => {
                   autoCapitalize="sentences"
                 />
 
-                <Input
-                  label="Dosagem"
-                  value={formData.dosage}
-                  onChangeText={(value) => updateField('dosage', value)}
-                  placeholder="Ex: 2-4 mg/kg, 1 comprimido"
-                />
+                {/* Dosagem e Frequência */}
+                <View style={styles.rowInputs}>
+                  <View style={styles.halfInput}>
+                    <Input
+                      label="Dosagem"
+                      value={formData.dosage}
+                      onChangeText={(value) => updateField('dosage', value)}
+                      placeholder="Ex: 2-4 mg/kg"
+                    />
+                  </View>
+                  <View style={styles.halfInput}>
+                    <Input
+                      label="Frequência"
+                      value={formData.frequency}
+                      onChangeText={(value) => updateField('frequency', value)}
+                      placeholder="Ex: 12/12h"
+                    />
+                  </View>
+                </View>
 
-                <Input
-                  label="Frequência"
-                  value={formData.frequency}
-                  onChangeText={(value) => updateField('frequency', value)}
-                  placeholder="Ex: A cada 12 horas, Uma vez ao dia"
-                />
-
+                {/* Espécies */}
                 <Input
                   label="Espécies"
                   value={formData.species}
@@ -539,6 +579,7 @@ const VetLibraryScreen = ({ navigation }) => {
                   placeholder="Ex: Cão, Gato, Aves"
                 />
 
+                {/* Doenças/Indicações */}
                 <Input
                   label="Doenças/Indicações"
                   value={formData.diseases}
@@ -548,6 +589,7 @@ const VetLibraryScreen = ({ navigation }) => {
                   numberOfLines={2}
                 />
 
+                {/* Contraindicações */}
                 <Input
                   label="Contraindicações"
                   value={formData.contraindications}
@@ -557,20 +599,27 @@ const VetLibraryScreen = ({ navigation }) => {
                   numberOfLines={3}
                 />
 
-                <Input
-                  label="Cronograma/Protocolo"
-                  value={formData.schedule}
-                  onChangeText={(value) => updateField('schedule', value)}
-                  placeholder="Ex: 6-8 semanas, 10-12 semanas"
-                />
+                {/* Cronograma e Reforço */}
+                <View style={styles.rowInputs}>
+                  <View style={styles.halfInput}>
+                    <Input
+                      label="Cronograma"
+                      value={formData.schedule}
+                      onChangeText={(value) => updateField('schedule', value)}
+                      placeholder="Ex: 6-8 semanas"
+                    />
+                  </View>
+                  <View style={styles.halfInput}>
+                    <Input
+                      label="Reforço"
+                      value={formData.booster}
+                      onChangeText={(value) => updateField('booster', value)}
+                      placeholder="Ex: Anual"
+                    />
+                  </View>
+                </View>
 
-                <Input
-                  label="Reforço"
-                  value={formData.booster}
-                  onChangeText={(value) => updateField('booster', value)}
-                  placeholder="Ex: Anual, Semestral"
-                />
-
+                {/* Duração e Preço */}
                 <View style={styles.rowInputs}>
                   <View style={styles.halfInput}>
                     <Input
@@ -592,6 +641,7 @@ const VetLibraryScreen = ({ navigation }) => {
                   </View>
                 </View>
 
+                {/* Observações */}
                 <Input
                   label="Observações"
                   value={formData.observations}
@@ -928,25 +978,50 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 100,
   },
-  pickerContainer: {
-    marginBottom: 16,
+  // Category Selection Styles
+  categorySection: {
+    marginBottom: 20,
   },
-  pickerLabel: {
+  sectionLabel: {
     fontSize: 14,
     fontWeight: '500',
     color: Colors.text,
-    marginBottom: 8,
+    marginBottom: 12,
   },
-  pickerWrapper: {
-    borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: 8,
-    backgroundColor: Colors.surface,
-    minHeight: 48,
+  required: {
+    color: Colors.error,
   },
-  picker: {
-    height: 48,
+  categoryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  categoryOptionButton: {
+    width: (width - 80) / 2,
+    height: 70,
+    borderRadius: 12,
+    borderWidth: 2,
+    overflow: 'hidden',
+  },
+  categoryOptionButtonActive: {
+    transform: [{ scale: 1.02 }],
+  },
+  categoryOptionGradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 12,
+  },
+  categoryOptionText: {
+    fontSize: 12,
+    fontWeight: '500',
     color: Colors.text,
+    marginTop: 6,
+    textAlign: 'center',
+  },
+  categoryOptionTextActive: {
+    color: Colors.surface,
+    fontWeight: '600',
   },
   rowInputs: {
     flexDirection: 'row',
