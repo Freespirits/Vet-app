@@ -1,700 +1,506 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  SafeAreaView, 
-  ScrollView, 
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
   TouchableOpacity,
   Alert,
   StyleSheet,
-  Image,
-  Dimensions
+  Switch,
+  Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useAuth } from '../../contexts/AuthContext';
-import { ClientService } from '../../services/ClientService';
-import { PetService } from '../../services/PetService';
-import { ConsultationService } from '../../services/ConsultationService';
-import Card from '../../components/common/Card';
-import Button from '../../components/common/Button';
-import Input from '../../components/common/Input';
-import Loading from '../../components/common/Loading';
 import { Colors } from '../../constants/Colors';
-import { formatPhone, formatCurrency } from '../../utils/helpers';
-import { validateEmail, validatePhone } from '../../utils/validators';
-import { globalStyles } from '../../styles/globalStyles';
-
-const { width } = Dimensions.get('window');
+import { AuthService } from '../../services/AuthService';
+import { NotificationService } from '../../services/NotificationService';
+import { BackupService } from '../../services/BackupService';
 
 const ProfileScreen = ({ navigation }) => {
-  const { user, updateProfile, logout } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [statsLoading, setStatsLoading] = useState(true);
-  const [stats, setStats] = useState({
-    totalClients: 0,
-    totalPets: 0,
-    totalConsultations: 0,
-    monthlyRevenue: 0
-  });
-  
-  const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    profession: user?.profession || 'Veterinário(a)',
-    clinic: user?.clinic || '',
-    crmv: user?.crmv || '',
-    phone: user?.phone || '',
-  });
-
-  const [errors, setErrors] = useState({});
+  const [user, setUser] = useState(null);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadStats();
-    if (user) {
-      setFormData({
-        name: user.name || '',
-        email: user.email || '',
-        profession: user.profession || 'Veterinário(a)',
-        clinic: user.clinic || '',
-        crmv: user.crmv || '',
-        phone: user.phone || '',
-      });
-    }
-  }, [user]);
+    loadUserData();
+    loadNotificationSettings();
+  }, []);
 
-  const loadStats = async () => {
+  const loadUserData = async () => {
     try {
-      setStatsLoading(true);
-      const [clientStats, petStats, consultationStats, allConsultations] = await Promise.all([
-        ClientService.getStats(),
-        PetService.getStats(),
-        ConsultationService.getStats(),
-        ConsultationService.getAll()
-      ]);
-
-      // Calcular receita mensal
-      const currentMonth = new Date().getMonth();
-      const currentYear = new Date().getFullYear();
-      const monthlyRevenue = allConsultations
-        .filter(consultation => {
-          const date = new Date(consultation.date);
-          return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
-        })
-        .reduce((sum, consultation) => sum + (consultation.price || 0), 0);
-
-      setStats({
-        totalClients: clientStats.total,
-        totalPets: petStats.total,
-        totalConsultations: consultationStats.total,
-        monthlyRevenue: monthlyRevenue
-      });
+      const userData = await AuthService.getCurrentUser();
+      setUser(userData);
     } catch (error) {
-      console.error('Erro ao carregar estatísticas:', error);
-    } finally {
-      setStatsLoading(false);
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = 'Nome é obrigatório';
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email é obrigatório';
-    } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Email inválido';
-    }
-
-    if (formData.phone && !validatePhone(formData.phone)) {
-      newErrors.phone = 'Telefone inválido';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleEditToggle = () => {
-    if (isEditing) {
-      // Cancelar edição - restaurar dados originais
-      setFormData({
-        name: user?.name || '',
-        email: user?.email || '',
-        profession: user?.profession || 'Veterinário(a)',
-        clinic: user?.clinic || '',
-        crmv: user?.crmv || '',
-        phone: user?.phone || '',
-      });
-      setErrors({});
-    }
-    setIsEditing(!isEditing);
-  };
-
-  const handleSaveProfile = async () => {
-    if (!validateForm()) return;
-
-    setLoading(true);
-    try {
-      const result = await updateProfile(formData);
-      if (result.success) {
-        setIsEditing(false);
-        Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
-      } else {
-        Alert.alert('Erro', result.error);
-      }
-    } catch (error) {
-      Alert.alert('Erro', 'Erro ao atualizar perfil');
+      console.error('Erro ao carregar dados do usuário:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleImagePicker = async () => {
+  const loadNotificationSettings = async () => {
     try {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permissão necessária', 'Precisamos de acesso à galeria para alterar a foto.');
-        return;
-      }
+      const enabled = await NotificationService.isEnabled();
+      setNotificationsEnabled(enabled);
+    } catch (error) {
+      console.error('Erro ao carregar configurações de notificação:', error);
+    }
+  };
 
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 0.8,
-      });
-
-      if (!result.canceled) {
-        Alert.alert('Funcionalidade em desenvolvimento', 'Upload de foto será implementado em breve!');
+  const handleNotificationToggle = async (value) => {
+    try {
+      if (value) {
+        const permission = await NotificationService.requestPermission();
+        if (permission) {
+          await NotificationService.enable();
+          setNotificationsEnabled(true);
+        } else {
+          Alert.alert(
+            'Permissão Negada',
+            'Para receber notificações, ative-as nas configurações do seu dispositivo.',
+            [
+              { text: 'OK' },
+              { text: 'Configurações', onPress: () => Linking.openSettings() }
+            ]
+          );
+        }
+      } else {
+        await NotificationService.disable();
+        setNotificationsEnabled(false);
       }
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao selecionar imagem');
+      console.error('Erro ao alterar configurações de notificação:', error);
+      Alert.alert('Erro', 'Não foi possível alterar as configurações de notificação');
     }
+  };
+
+  const handleBackup = async () => {
+    Alert.alert(
+      'Backup dos Dados',
+      'Deseja fazer backup de todos os seus dados? Isso incluirá consultas, pacientes e configurações.',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Fazer Backup',
+          onPress: async () => {
+            try {
+              const result = await BackupService.createBackup();
+              if (result.success) {
+                Alert.alert(
+                  'Backup Concluído',
+                  `Backup criado com sucesso!\nArquivo: ${result.filename}\nTamanho: ${result.size}`
+                );
+              } else {
+                Alert.alert('Erro', result.error || 'Erro ao criar backup');
+              }
+            } catch (error) {
+              console.error('Erro ao fazer backup:', error);
+              Alert.alert('Erro', 'Erro interno ao criar backup');
+            }
+          }
+        }
+      ]
+    );
+  };
+
+  const handleRestore = async () => {
+    Alert.alert(
+      'Restaurar Backup',
+      'Deseja restaurar dados de um backup? Isso substituirá todos os dados atuais.',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Restaurar',
+          style: 'destructive',
+          onPress: () => navigation.navigate('RestoreBackup')
+        }
+      ]
+    );
   };
 
   const handleLogout = () => {
     Alert.alert(
       'Sair',
-      'Deseja realmente sair do aplicativo?',
+      'Tem certeza que deseja sair da sua conta?',
       [
         { text: 'Cancelar', style: 'cancel' },
-        { text: 'Sair', onPress: logout, style: 'destructive' }
+        {
+          text: 'Sair',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await AuthService.logout();
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            } catch (error) {
+              console.error('Erro ao fazer logout:', error);
+              Alert.alert('Erro', 'Erro ao sair da conta');
+            }
+          }
+        }
       ]
     );
   };
 
-  const updateField = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: null }));
-    }
-  };
+  const profileSections = [
+    {
+      title: 'Conta',
+      items: [
+        {
+          id: 'edit-profile',
+          title: 'Editar Perfil',
+          subtitle: 'Nome, email e informações pessoais',
+          icon: 'person-outline',
+          onPress: () => navigation.navigate('EditProfile'),
+        },
+        {
+          id: 'change-password',
+          title: 'Alterar Senha',
+          subtitle: 'Atualizar senha de acesso',
+          icon: 'lock-closed-outline',
+          onPress: () => navigation.navigate('ChangePassword'),
+        },
+      ],
+    },
+    {
+      title: 'Configurações',
+      items: [
+        {
+          id: 'notifications',
+          title: 'Notificações',
+          subtitle: 'Lembretes e alertas',
+          icon: 'notifications-outline',
+          showSwitch: true,
+          switchValue: notificationsEnabled,
+          onSwitchChange: handleNotificationToggle,
+          onPress: () => navigation.navigate('NotificationSettings'),
+        },
+        {
+          id: 'backup',
+          title: 'Backup e Restauração',
+          subtitle: 'Proteger seus dados',
+          icon: 'cloud-outline',
+          onPress: () => navigation.navigate('BackupSettings'),
+        },
+      ],
+    },
+    {
+      title: 'Suporte',
+      items: [
+        {
+          id: 'help',
+          title: 'Ajuda e Suporte',
+          subtitle: 'Central de ajuda e contato',
+          icon: 'help-circle-outline',
+          onPress: () => navigation.navigate('HelpSupport'),
+        },
+        {
+          id: 'about',
+          title: 'Sobre',
+          subtitle: 'FAQ e informações',
+          icon: 'information-circle-outline',
+          onPress: () => navigation.navigate('About'),
+        },
+        {
+          id: 'privacy',
+          title: 'Privacidade',
+          subtitle: 'Política de privacidade',
+          icon: 'shield-outline',
+          onPress: () => navigation.navigate('Privacy'),
+        },
+        {
+          id: 'version',
+          title: 'Versão',
+          subtitle: 'Changelog e atualizações',
+          icon: 'code-outline',
+          onPress: () => navigation.navigate('VersionInfo'),
+        },
+      ],
+    },
+    {
+      title: 'Conta',
+      items: [
+        {
+          id: 'logout',
+          title: 'Sair',
+          subtitle: 'Desconectar da conta',
+          icon: 'log-out-outline',
+          onPress: handleLogout,
+          danger: true,
+        },
+      ],
+    },
+  ];
 
-  const ProfileInfoItem = ({ icon, label, value, onPress }) => (
-    <TouchableOpacity style={styles.infoItem} onPress={onPress} disabled={!onPress}>
-      <View style={styles.infoIcon}>
-        <Ionicons name={icon} size={20} color={Colors.primary} />
+  const renderProfileItem = (item) => (
+    <TouchableOpacity
+      key={item.id}
+      style={[styles.profileItem, item.danger && styles.profileItemDanger]}
+      onPress={item.onPress}
+      activeOpacity={0.7}
+    >
+      <View style={styles.profileItemContent}>
+        <View style={[
+          styles.profileItemIcon,
+          { backgroundColor: item.danger ? `${Colors.error}15` : `${Colors.primary}15` }
+        ]}>
+          <Ionicons
+            name={item.icon}
+            size={20}
+            color={item.danger ? Colors.error : Colors.primary}
+          />
+        </View>
+        <View style={styles.profileItemInfo}>
+          <Text style={[
+            styles.profileItemTitle,
+            item.danger && { color: Colors.error }
+          ]}>
+            {item.title}
+          </Text>
+          <Text style={styles.profileItemSubtitle}>{item.subtitle}</Text>
+        </View>
+        {item.showSwitch ? (
+          <Switch
+            value={item.switchValue}
+            onValueChange={item.onSwitchChange}
+            trackColor={{ false: Colors.border, true: `${Colors.primary}40` }}
+            thumbColor={item.switchValue ? Colors.primary : Colors.textSecondary}
+          />
+        ) : (
+          <Ionicons
+            name="chevron-forward"
+            size={20}
+            color={Colors.textSecondary}
+          />
+        )}
       </View>
-      <View style={styles.infoContent}>
-        <Text style={styles.infoLabel}>{label}</Text>
-        <Text style={styles.infoValue}>{value || 'Não informado'}</Text>
-      </View>
-      {onPress && (
-        <Ionicons name="chevron-forward" size={16} color={Colors.textSecondary} />
-      )}
     </TouchableOpacity>
   );
 
-  const StatCard = ({ title, value, icon, color, subtitle }) => (
-    <View style={[styles.statCard, { borderLeftColor: color }]}>
-      <View style={styles.statContent}>
-        <View style={styles.statInfo}>
-          <Text style={styles.statValue}>{value}</Text>
-          <Text style={styles.statTitle}>{title}</Text>
-          {subtitle && <Text style={styles.statSubtitle}>{subtitle}</Text>}
-        </View>
-        <View style={[styles.statIcon, { backgroundColor: color }]}>
-          <Ionicons name={icon} size={20} color={Colors.surface} />
-        </View>
+  const renderSection = (section) => (
+    <View key={section.title} style={styles.section}>
+      <Text style={styles.sectionTitle}>{section.title}</Text>
+      <View style={styles.sectionItems}>
+        {section.items.map(renderProfileItem)}
       </View>
     </View>
   );
 
-  if (statsLoading) {
-    return <Loading message="Carregando perfil..." />;
-  }
-
   return (
-    <SafeAreaView style={globalStyles.container}>
-      <ScrollView 
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <LinearGradient
+        colors={[Colors.primary, Colors.primaryDark]}
+        style={styles.header}
       >
-        {/* Estatísticas rápidas */}
-        <View style={styles.statsContainer}>
-          <Text style={styles.sectionTitle}>Resumo da Clínica</Text>
-          <View style={styles.statsGrid}>
-            <StatCard
-              title="Clientes"
-              value={stats.totalClients}
-              icon="people"
-              color={Colors.primary}
-            />
-            <StatCard
-              title="Pets"
-              value={stats.totalPets}
-              icon="paw"
-              color={Colors.secondary}
-            />
-          </View>
-          <View style={styles.statsGrid}>
-            <StatCard
-              title="Consultas"
-              value={stats.totalConsultations}
-              icon="medical"
-              color={Colors.info}
-              subtitle="Total realizadas"
-            />
-            <StatCard
-              title="Receita Mensal"
-              value={formatCurrency(stats.monthlyRevenue)}
-              icon="card"
-              color={Colors.success}
-              subtitle="Mês atual"
-            />
-          </View>
+        <View style={styles.headerContent}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={24} color={Colors.surface} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Perfil</Text>
+          <View style={styles.headerSpacer} />
         </View>
+      </LinearGradient>
 
-        {/* Informações do perfil */}
-        <Card style={styles.profileCard}>
-          <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Informações Pessoais</Text>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* User Info */}
+        <View style={styles.userSection}>
+          <LinearGradient
+            colors={[Colors.surface, '#FAFAFA']}
+            style={styles.userCard}
+          >
+            <View style={styles.userAvatar}>
+              <LinearGradient
+                colors={[Colors.primary, Colors.primaryDark]}
+                style={styles.avatarGradient}
+              >
+                <Ionicons name="person" size={32} color={Colors.surface} />
+              </LinearGradient>
+            </View>
+            <View style={styles.userInfo}>
+              <Text style={styles.userName}>
+                {user?.name || 'Dr. Veterinário'}
+              </Text>
+              <Text style={styles.userEmail}>
+                {user?.email || 'veterinario@email.com'}
+              </Text>
+              <Text style={styles.userRole}>
+                Médico Veterinário
+              </Text>
+            </View>
             <TouchableOpacity
-              onPress={handleEditToggle}
-              style={styles.editIconButton}
+              style={styles.editButton}
+              onPress={() => navigation.navigate('EditProfile')}
             >
-              <Ionicons 
-                name={isEditing ? 'close' : 'create'} 
-                size={20} 
-                color={Colors.primary} 
-              />
+              <Ionicons name="create-outline" size={20} color={Colors.primary} />
             </TouchableOpacity>
-          </View>
-
-          {isEditing ? (
-            <View style={styles.editForm}>
-              <Input
-                label="Nome Completo"
-                value={formData.name}
-                onChangeText={(value) => updateField('name', value)}
-                placeholder="Seu nome completo"
-                leftIcon="person"
-                error={errors.name}
-                required
-                autoCapitalize="words"
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
-
-              <Input
-                label="Email"
-                value={formData.email}
-                onChangeText={(value) => updateField('email', value)}
-                placeholder="seu@email.com"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                leftIcon="mail"
-                error={errors.email}
-                required
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
-
-              <Input
-                label="Telefone"
-                value={formData.phone}
-                onChangeText={(value) => updateField('phone', formatPhone(value))}
-                placeholder="(11) 99999-9999"
-                keyboardType="phone-pad"
-                leftIcon="call"
-                error={errors.phone}
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
-
-              <Input
-                label="Profissão"
-                value={formData.profession}
-                onChangeText={(value) => updateField('profession', value)}
-                placeholder="Veterinário(a)"
-                leftIcon="medical"
-                autoCapitalize="words"
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
-
-              <Input
-                label="Clínica/Hospital"
-                value={formData.clinic}
-                onChangeText={(value) => updateField('clinic', value)}
-                placeholder="Nome da clínica"
-                leftIcon="business"
-                autoCapitalize="words"
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
-
-              <Input
-                label="CRMV"
-                value={formData.crmv}
-                onChangeText={(value) => updateField('crmv', value.toUpperCase())}
-                placeholder="12345-UF"
-                leftIcon="card"
-                autoCapitalize="characters"
-                returnKeyType="done"
-                blurOnSubmit={true}
-              />
-
-              <View style={styles.editButtons}>
-                <Button
-                  title="Cancelar"
-                  variant="outline"
-                  onPress={handleEditToggle}
-                  style={styles.cancelButton}
-                  disabled={loading}
-                />
-                <Button
-                  title="Salvar"
-                  onPress={handleSaveProfile}
-                  loading={loading}
-                  style={styles.saveButton}
-                />
-              </View>
-            </View>
-          ) : (
-            <View style={styles.infoList}>
-              <ProfileInfoItem
-                icon="person"
-                label="Nome"
-                value={user?.name}
-              />
-              <ProfileInfoItem
-                icon="mail"
-                label="Email"
-                value={user?.email}
-              />
-              <ProfileInfoItem
-                icon="call"
-                label="Telefone"
-                value={formatPhone(user?.phone)}
-              />
-              <ProfileInfoItem
-                icon="medical"
-                label="Profissão"
-                value={user?.profession}
-              />
-              <ProfileInfoItem
-                icon="business"
-                label="Clínica/Hospital"
-                value={user?.clinic}
-              />
-              <ProfileInfoItem
-                icon="card"
-                label="CRMV"
-                value={user?.crmv}
-              />
-            </View>
-          )}
-        </Card>
-
-        {/* Configurações */}
-        <Card style={styles.settingsCard}>
-          <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Configurações</Text>
-          </View>
-
-          <TouchableOpacity style={styles.settingItem}>
-            <View style={styles.settingIcon}>
-              <Ionicons name="notifications" size={20} color={Colors.primary} />
-            </View>
-            <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Notificações</Text>
-              <Text style={styles.settingSubtitle}>Gerenciar alertas e lembretes</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={Colors.textSecondary} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.settingItem}>
-            <View style={styles.settingIcon}>
-              <Ionicons name="shield-checkmark" size={20} color={Colors.success} />
-            </View>
-            <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Privacidade</Text>
-              <Text style={styles.settingSubtitle}>Configurações de segurança</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={Colors.textSecondary} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.settingItem}>
-            <View style={styles.settingIcon}>
-              <Ionicons name="cloud" size={20} color={Colors.info} />
-            </View>
-            <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Backup</Text>
-              <Text style={styles.settingSubtitle}>Sincronização de dados</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={Colors.textSecondary} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.settingItem}>
-            <View style={styles.settingIcon}>
-              <Ionicons name="help-circle" size={20} color={Colors.warning} />
-            </View>
-            <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Ajuda e Suporte</Text>
-              <Text style={styles.settingSubtitle}>Central de ajuda e contato</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={Colors.textSecondary} />
-          </TouchableOpacity>
-        </Card>
-
-        {/* Informações do app */}
-        <Card style={styles.appInfoCard}>
-          <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Sobre o App</Text>
-          </View>
-          
-          <View style={styles.appInfoContent}>
-            <Ionicons name="paw" size={48} color={Colors.primary} style={styles.appIcon} />
-            <Text style={styles.appVersion}>PetCare Pro v1.0.0</Text>
-            <Text style={styles.appDescription}>
-              Sistema completo para gestão de clínicas veterinárias e petshops.
-              Desenvolvido com React Native e Expo.
-            </Text>
-            <Text style={styles.appFooter}>
-              © 2024 PetCare Pro - Desenvolvido com ❤️ para veterinários brasileiros
-            </Text>
-          </View>
-        </Card>
-
-        {/* Botão de logout */}
-        <View style={styles.logoutContainer}>
-          <Button
-            title="Sair da Conta"
-            variant="danger"
-            onPress={handleLogout}
-            icon={<Ionicons name="log-out" size={16} color={Colors.surface} />}
-            fullWidth
-          />
+          </LinearGradient>
         </View>
+
+        {/* Profile Sections */}
+        <View style={styles.sectionsContainer}>
+          {profileSections.map(renderSection)}
+        </View>
+
+        <View style={styles.bottomPadding} />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    paddingBottom: 32,
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
   },
-  statsContainer: {
-    paddingHorizontal: 16,
-    marginBottom: 24,
+  header: {
+    paddingTop: 50,
+    paddingBottom: 20,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
   },
-  sectionTitle: {
+  headerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: Colors.text,
-    marginBottom: 16,
+    color: Colors.surface,
   },
-  statsGrid: {
+  headerSpacer: {
+    width: 40,
+  },
+  content: {
+    flex: 1,
+  },
+  // User Section
+  userSection: {
+    padding: 20,
+    paddingBottom: 10,
+  },
+  userCard: {
+    borderRadius: 20,
+    padding: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  statCard: {
-    width: (width - 48) / 2,
-    backgroundColor: Colors.surface,
-    borderRadius: 16,
-    padding: 16,
-    marginHorizontal: 4,
-    borderLeftWidth: 4,
+    alignItems: 'center',
     shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
   },
-  statContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  userAvatar: {
+    marginRight: 16,
+  },
+  avatarGradient: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  statInfo: {
+  userInfo: {
     flex: 1,
   },
-  statValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  userName: {
+    fontSize: 18,
+    fontWeight: '600',
     color: Colors.text,
   },
-  statTitle: {
-    fontSize: 13,
+  userEmail: {
+    fontSize: 14,
     color: Colors.textSecondary,
     marginTop: 4,
   },
-  statSubtitle: {
-    fontSize: 11,
-    color: Colors.textSecondary,
-    marginTop: 2,
-  },
-  statIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  profileCard: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.text,
-  },
-  editIconButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: Colors.background,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  editForm: {
-    gap: 16,
-  },
-  editButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16,
-  },
-  cancelButton: {
-    flex: 1,
-    marginRight: 8,
-  },
-  saveButton: {
-    flex: 1,
-    marginLeft: 8,
-  },
-  infoList: {
-    gap: 0,
-  },
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  infoIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.background,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  infoContent: {
-    flex: 1,
-  },
-  infoLabel: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    marginBottom: 2,
-  },
-  infoValue: {
-    fontSize: 16,
-    color: Colors.text,
-    fontWeight: '500',
-  },
-  settingsCard: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-  },
-  settingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  settingIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.background,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  settingContent: {
-    flex: 1,
-  },
-  settingTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: Colors.text,
-  },
-  settingSubtitle: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    marginTop: 2,
-  },
-  appInfoCard: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-  },
-  appInfoContent: {
-    alignItems: 'center',
-    paddingVertical: 16,
-  },
-  appIcon: {
-    marginBottom: 12,
-  },
-  appVersion: {
-    fontSize: 18,
-    fontWeight: '600',
+  userRole: {
+    fontSize: 12,
     color: Colors.primary,
-    marginBottom: 8,
+    fontWeight: '500',
+    marginTop: 4,
   },
-  appDescription: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    lineHeight: 20,
-    marginBottom: 16,
-    paddingHorizontal: 16,
+  editButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: `${Colors.primary}15`,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  appFooter: {
+  // Sections
+  sectionsContainer: {
+    paddingHorizontal: 20,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.text,
+    marginBottom: 12,
+    marginLeft: 4,
+  },
+  sectionItems: {
+    backgroundColor: Colors.surface,
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  profileItem: {
+    borderBottomWidth: 1,
+    borderBottomColor: `${Colors.border}30`,
+  },
+  profileItemDanger: {
+    backgroundColor: `${Colors.error}05`,
+  },
+  profileItemContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+  },
+  profileItemIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  profileItemInfo: {
+    flex: 1,
+  },
+  profileItemTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: Colors.text,
+  },
+  profileItemSubtitle: {
     fontSize: 12,
     color: Colors.textSecondary,
-    textAlign: 'center',
+    marginTop: 2,
   },
-  logoutContainer: {
-    paddingHorizontal: 16,
+  bottomPadding: {
+    height: 40,
   },
 });
 

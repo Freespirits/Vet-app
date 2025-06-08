@@ -1,105 +1,131 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  View, 
-  Text, 
-  SafeAreaView, 
-  ScrollView, 
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
   TouchableOpacity,
-  RefreshControl,
-  StyleSheet,
   Alert,
-  Dimensions
+  StyleSheet,
+  Dimensions,
+  RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useAuth } from '../contexts/AuthContext';
-import { ClientService } from '../services/ClientService';
-import { PetService } from '../services/PetService';
-import { ConsultationService } from '../services/ConsultationService';
-import { AppointmentService } from '../services/AppointmentService';
-import Card from '../components/common/Card';
-import Loading from '../components/common/Loading';
-import { Colors } from '../constants/Colors';
-import { formatDate, formatTime, formatCurrency } from '../utils/helpers';
-import { globalStyles } from '../styles/globalStyles';
+import { Colors } from '../../constants/Colors';
 
 const { width } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }) => {
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [stats, setStats] = useState({
-    totalClients: 0,
-    totalPets: 0,
-    totalConsultations: 0,
-    todayConsultations: 0,
-    todayAppointments: 0,
-    revenue: 0,
-    monthlyRevenue: 0,
-  });
   const [todayAppointments, setTodayAppointments] = useState([]);
-  const [recentConsultations, setRecentConsultations] = useState([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [recentPatients, setRecentPatients] = useState([]);
+  const [stats, setStats] = useState({
+    todayTotal: 5,
+    weekTotal: 23,
+    pendingTotal: 3,
+    totalPatients: 127,
+  });
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  useFocusEffect(
-    useCallback(() => {
-      loadData();
-    }, [])
-  );
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
 
-  const loadData = async () => {
+  // Dados mockados para demonstração
+  const mockTodayAppointments = [
+    {
+      id: 1,
+      patient: { name: 'Rex', owner: 'João Silva' },
+      dateTime: new Date().toISOString(),
+      type: 'Consulta de rotina'
+    },
+    {
+      id: 2,
+      patient: { name: 'Mia', owner: 'Maria Santos' },
+      dateTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+      type: 'Vacinação'
+    },
+    {
+      id: 3,
+      patient: { name: 'Luna', owner: 'Pedro Costa' },
+      dateTime: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
+      type: 'Castração'
+    }
+  ];
+
+  const mockUpcomingAppointments = [
+    {
+      id: 4,
+      patient: { name: 'Thor', owner: 'Ana Lima' },
+      dateTime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      type: 'Retorno'
+    },
+    {
+      id: 5,
+      patient: { name: 'Bella', owner: 'Carlos Oliveira' },
+      dateTime: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
+      type: 'Consulta de emergência'
+    }
+  ];
+
+  const mockRecentPatients = [
+    { id: 1, name: 'Rex', owner: 'João Silva', species: 'Cão', breed: 'Golden Retriever' },
+    { id: 2, name: 'Mia', owner: 'Maria Santos', species: 'Gato', breed: 'Persa' },
+    { id: 3, name: 'Luna', owner: 'Pedro Costa', species: 'Cão', breed: 'Labrador' },
+    { id: 4, name: 'Thor', owner: 'Ana Lima', species: 'Cão', breed: 'Pastor Alemão' },
+    { id: 5, name: 'Bella', owner: 'Carlos Oliveira', species: 'Gato', breed: 'Siamês' }
+  ];
+
+  // Funções auxiliares para datas
+  const formatDate = (date, format = 'full') => {
+    const d = new Date(date);
+    const days = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+    const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    
+    switch (format) {
+      case 'full':
+        return `${days[d.getDay()]}, ${d.getDate()} de ${months[d.getMonth()]}`;
+      case 'short':
+        return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+      case 'time':
+        return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+      default:
+        return d.toLocaleDateString('pt-BR');
+    }
+  };
+
+  const isToday = (date) => {
+    const today = new Date();
+    const checkDate = new Date(date);
+    return today.toDateString() === checkDate.toDateString();
+  };
+
+  const isTomorrow = (date) => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const checkDate = new Date(date);
+    return tomorrow.toDateString() === checkDate.toDateString();
+  };
+
+  const addDays = (date, days) => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
+
+  const loadDashboardData = async () => {
     try {
-      const [
-        clientStats, 
-        petStats, 
-        consultationStats,
-        todayAppts,
-        upcomingAppts,
-        allConsultations
-      ] = await Promise.all([
-        ClientService.getStats(),
-        PetService.getStats(),
-        ConsultationService.getStats(),
-        AppointmentService.getTodayAppointments(),
-        AppointmentService.getUpcomingAppointments(7),
-        ConsultationService.getAll()
-      ]);
-
-      // Calcular receita
-      const totalRevenue = allConsultations.reduce((sum, consultation) => 
-        sum + (consultation.price || 0), 0
-      );
-
-      const currentMonth = new Date().getMonth();
-      const currentYear = new Date().getFullYear();
-      const monthlyRevenue = allConsultations
-        .filter(consultation => {
-          const date = new Date(consultation.date);
-          return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
-        })
-        .reduce((sum, consultation) => sum + (consultation.price || 0), 0);
-
-      setStats({
-        totalClients: clientStats.total,
-        totalPets: petStats.total,
-        totalConsultations: consultationStats.total,
-        todayConsultations: consultationStats.today,
-        todayAppointments: todayAppts.length,
-        revenue: totalRevenue,
-        monthlyRevenue: monthlyRevenue,
-      });
-
-      setTodayAppointments(todayAppts);
-      setUpcomingAppointments(upcomingAppts);
+      setLoading(true);
+      // Simular carregamento de dados
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Consultas recentes (últimas 5)
-      setRecentConsultations(allConsultations.slice(0, 5));
-
+      setTodayAppointments(mockTodayAppointments);
+      setUpcomingAppointments(mockUpcomingAppointments);
+      setRecentPatients(mockRecentPatients);
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
-      Alert.alert('Erro', 'Erro ao carregar dados da dashboard');
     } finally {
       setLoading(false);
     }
@@ -107,342 +133,350 @@ const HomeScreen = ({ navigation }) => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await loadData();
+    await loadDashboardData();
     setRefreshing(false);
   };
 
-  const StatCard = ({ title, value, icon, color, onPress, subtitle }) => (
-    <TouchableOpacity 
-      onPress={onPress} 
-      style={[styles.statCard, { borderLeftColor: color }]}
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Bom dia';
+    if (hour < 18) return 'Boa tarde';
+    return 'Boa noite';
+  };
+
+  const formatAppointmentTime = (dateTime) => {
+    return formatDate(dateTime, 'time');
+  };
+
+  const getDateLabel = (date) => {
+    const appointmentDate = new Date(date);
+    if (isToday(appointmentDate)) return 'Hoje';
+    if (isTomorrow(appointmentDate)) return 'Amanhã';
+    return formatDate(appointmentDate, 'short');
+  };
+
+  const quickActions = [
+    {
+      id: 'new-appointment',
+      title: 'Nova Consulta',
+      subtitle: 'Agendar consulta',
+      icon: 'calendar-outline',
+      color: Colors.primary,
+      onPress: () => navigation.navigate('NewAppointment'),
+    },
+    {
+      id: 'new-patient',
+      title: 'Novo Paciente',
+      subtitle: 'Cadastrar pet',
+      icon: 'add-circle-outline',
+      color: Colors.success,
+      onPress: () => navigation.navigate('NewPatient'),
+    },
+    {
+      id: 'library',
+      title: 'Biblioteca',
+      subtitle: 'Medicamentos',
+      icon: 'library-outline',
+      color: Colors.info,
+      onPress: () => navigation.navigate('VetLibrary'),
+    },
+    {
+      id: 'emergency',
+      title: 'Emergência',
+      subtitle: 'Consulta urgente',
+      icon: 'medical-outline',
+      color: Colors.error,
+      onPress: () => navigation.navigate('Emergency'),
+    },
+  ];
+
+  const statsCards = [
+    {
+      title: 'Hoje',
+      value: stats.todayTotal,
+      icon: 'today-outline',
+      color: Colors.primary,
+      subtitle: 'consultas',
+    },
+    {
+      title: 'Semana',
+      value: stats.weekTotal,
+      icon: 'calendar-outline',
+      color: Colors.success,
+      subtitle: 'consultas',
+    },
+    {
+      title: 'Pendentes',
+      value: stats.pendingTotal,
+      icon: 'hourglass-outline',
+      color: Colors.warning,
+      subtitle: 'retornos',
+    },
+    {
+      title: 'Pacientes',
+      value: stats.totalPatients,
+      icon: 'paw-outline',
+      color: Colors.info,
+      subtitle: 'cadastrados',
+    },
+  ];
+
+  const renderQuickAction = (action) => (
+    <TouchableOpacity
+      key={action.id}
+      style={styles.quickActionCard}
+      onPress={action.onPress}
+      activeOpacity={0.8}
+    >
+      <LinearGradient
+        colors={[action.color, `${action.color}CC`]}
+        style={styles.quickActionGradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        <View style={styles.quickActionIconContainer}>
+          <Ionicons name={action.icon} size={24} color={Colors.surface} />
+        </View>
+        <View style={styles.quickActionInfo}>
+          <Text style={styles.quickActionTitle}>{action.title}</Text>
+          <Text style={styles.quickActionSubtitle}>{action.subtitle}</Text>
+        </View>
+        <Ionicons name="chevron-forward" size={20} color={Colors.surface} />
+      </LinearGradient>
+    </TouchableOpacity>
+  );
+
+  const renderStatCard = (stat) => (
+    <View key={stat.title} style={styles.statCard}>
+      <LinearGradient
+        colors={[`${stat.color}15`, `${stat.color}05`]}
+        style={styles.statGradient}
+      >
+        <View style={[styles.statIconContainer, { backgroundColor: `${stat.color}20` }]}>
+          <Ionicons name={stat.icon} size={20} color={stat.color} />
+        </View>
+        <Text style={styles.statValue}>{stat.value}</Text>
+        <Text style={styles.statTitle}>{stat.title}</Text>
+        <Text style={styles.statSubtitle}>{stat.subtitle}</Text>
+      </LinearGradient>
+    </View>
+  );
+
+  const renderAppointmentCard = (appointment, showDate = false) => (
+    <TouchableOpacity
+      key={appointment.id}
+      style={styles.appointmentCard}
+      onPress={() => navigation.navigate('AppointmentDetails', { appointmentId: appointment.id })}
       activeOpacity={0.7}
     >
-      <View style={styles.statContent}>
-        <View style={styles.statInfo}>
-          <Text style={styles.statValue}>{value}</Text>
-          <Text style={styles.statTitle}>{title}</Text>
-          {subtitle && <Text style={styles.statSubtitle}>{subtitle}</Text>}
+      <View style={styles.appointmentInfo}>
+        <View style={styles.appointmentHeader}>
+          <Text style={styles.patientName}>{appointment.patient?.name || 'Paciente'}</Text>
+          <Text style={styles.appointmentTime}>
+            {showDate && `${getDateLabel(appointment.dateTime)} • `}
+            {formatAppointmentTime(appointment.dateTime)}
+          </Text>
         </View>
-        <View style={[styles.statIcon, { backgroundColor: color }]}>
-          <Ionicons name={icon} size={24} color={Colors.surface} />
-        </View>
+        <Text style={styles.ownerName}>{appointment.patient?.owner || 'Proprietário'}</Text>
+        <Text style={styles.appointmentType}>{appointment.type || 'Consulta'}</Text>
+      </View>
+      <View style={[styles.statusBadge, { backgroundColor: `${Colors.primary}20` }]}>
+        <Ionicons name="time-outline" size={12} color={Colors.primary} />
       </View>
     </TouchableOpacity>
   );
 
-  const QuickActionCard = ({ title, description, icon, color, onPress }) => (
-    <TouchableOpacity onPress={onPress} style={styles.quickActionCard} activeOpacity={0.7}>
-      <LinearGradient
-        colors={[color, `${color}80`]}
-        style={styles.quickActionGradient}
-      >
-        <Ionicons name={icon} size={28} color={Colors.surface} />
-      </LinearGradient>
-      <View style={styles.quickActionContent}>
-        <Text style={styles.quickActionTitle}>{title}</Text>
-        <Text style={styles.quickActionDescription}>{description}</Text>
+  const renderPatientCard = (patient) => (
+    <TouchableOpacity
+      key={patient.id}
+      style={styles.patientCard}
+      onPress={() => navigation.navigate('PatientDetails', { patientId: patient.id })}
+      activeOpacity={0.7}
+    >
+      <View style={[styles.patientAvatar, { backgroundColor: `${Colors.primary}20` }]}>
+        <Ionicons name="paw" size={16} color={Colors.primary} />
       </View>
-      <Ionicons name="chevron-forward" size={20} color={Colors.textSecondary} />
-    </TouchableOpacity>
-  );
-
-  const AppointmentItem = ({ appointment }) => (
-    <TouchableOpacity style={styles.appointmentItem} activeOpacity={0.7}>
-      <View style={styles.appointmentTime}>
-        <Text style={styles.timeText}>{formatTime(appointment.date)}</Text>
-      </View>
-      <View style={styles.appointmentContent}>
-        <Text style={styles.appointmentTitle}>{appointment.title}</Text>
-        <Text style={styles.appointmentClient}>
-          {appointment.client?.name} • {appointment.pet?.name}
-        </Text>
-      </View>
-      <View style={[styles.appointmentStatus, { backgroundColor: Colors.success }]}>
-        <Ionicons name="time" size={16} color={Colors.surface} />
+      <View style={styles.patientInfo}>
+        <Text style={styles.patientName}>{patient.name}</Text>
+        <Text style={styles.patientOwner}>{patient.owner}</Text>
+        <Text style={styles.patientDetails}>{patient.species} • {patient.breed}</Text>
       </View>
     </TouchableOpacity>
   );
-
-  if (loading) {
-    return <Loading message="Carregando dashboard..." />;
-  }
-
-  const currentHour = new Date().getHours();
-  const greeting = currentHour < 12 ? 'Bom dia' : currentHour < 18 ? 'Boa tarde' : 'Boa noite';
 
   return (
-    <SafeAreaView style={globalStyles.container}>
-      <ScrollView 
-        contentContainerStyle={styles.scrollContainer}
-        refreshControl={
-          <RefreshControl 
-            refreshing={refreshing} 
-            onRefresh={onRefresh}
-            colors={[Colors.primary]}
-            tintColor={Colors.primary}
-          />
-        }
-        showsVerticalScrollIndicator={false}
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <LinearGradient
+        colors={[Colors.primary, Colors.primaryDark]}
+        style={styles.header}
       >
-        {/* Header Personalizado */}
-        <LinearGradient
-          colors={Colors.primaryGradient}
-          style={styles.headerGradient}
-        >
-          <View style={styles.header}>
-            <View style={styles.headerInfo}>
-              <Text style={styles.greeting}>
-                {greeting}, {user?.name?.split(' ')[0] || 'Doutor(a)'} 👋
-              </Text>
-              <Text style={styles.subGreeting}>
-                {new Date().toLocaleDateString('pt-BR', { 
-                  weekday: 'long', 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}
-              </Text>
-              <Text style={styles.clinicInfo}>
-                📍 {user?.clinic || 'Clínica Veterinária'}
-              </Text>
-            </View>
-            <TouchableOpacity 
-              onPress={() => navigation.navigate('Profile')}
-              style={styles.profileButton}
-            >
-              <Ionicons name="person" size={24} color={Colors.primary} />
-            </TouchableOpacity>
+        <View style={styles.headerContent}>
+          <View style={styles.greetingContainer}>
+            <Text style={styles.greeting}>{getGreeting()}, Dr.</Text>
+            <Text style={styles.doctorName}>Veterinário</Text>
+            <Text style={styles.headerDate}>
+              {formatDate(new Date(), 'full')}
+            </Text>
           </View>
-        </LinearGradient>
+          <TouchableOpacity
+            style={styles.profileButton}
+            onPress={() => navigation.navigate('Profile')}
+          >
+            <View style={styles.profileAvatar}>
+              <Ionicons name="person" size={24} color={Colors.primary} />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
 
-        {/* Statistics Grid */}
-        <View style={styles.statsContainer}>
-          <Text style={styles.sectionTitle}>Visão Geral</Text>
+      <ScrollView
+        style={styles.content}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {/* Stats Cards */}
+        <View style={styles.statsSection}>
+          <Text style={styles.sectionTitle}>Resumo</Text>
           <View style={styles.statsGrid}>
-            <StatCard
-              title="Clientes"
-              value={stats.totalClients}
-              icon="people"
-              color={Colors.primary}
-              onPress={() => navigation.navigate('Clients')}
-            />
-            <StatCard
-              title="Pets"
-              value={stats.totalPets}
-              icon="paw"
-              color={Colors.secondary}
-              onPress={() => navigation.navigate('Pets')}
-            />
-            <StatCard
-              title="Consultas Hoje"
-              value={stats.todayConsultations}
-              icon="medical"
-              color={Colors.info}
-              subtitle={`${stats.todayAppointments} agendadas`}
-              onPress={() => navigation.navigate('Agenda')}
-            />
-            <StatCard
-              title="Receita do Mês"
-              value={formatCurrency(stats.monthlyRevenue)}
-              icon="card"
-              color={Colors.success}
-              subtitle={`Total: ${formatCurrency(stats.revenue)}`}
-              onPress={() => Alert.alert('Relatórios', 'Funcionalidade de relatórios financeiros será implementada em breve!')}
-            />
+            {statsCards.map(renderStatCard)}
           </View>
         </View>
 
-        {/* Agenda de Hoje */}
-        {todayAppointments.length > 0 && (
-          <Card style={styles.agendaCard}>
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Agenda de Hoje</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Agenda')}>
-                <Text style={styles.seeAllText}>Ver agenda completa</Text>
-              </TouchableOpacity>
-            </View>
-            {todayAppointments.slice(0, 3).map((appointment) => (
-              <AppointmentItem key={appointment.id} appointment={appointment} />
-            ))}
-          </Card>
-        )}
-
         {/* Quick Actions */}
-        <Card style={styles.quickActionsCard}>
+        <View style={styles.quickActionsSection}>
           <Text style={styles.sectionTitle}>Ações Rápidas</Text>
-          
           <View style={styles.quickActionsGrid}>
-            <QuickActionCard
-              title="Nova Consulta"
-              description="Registrar atendimento"
-              icon="add-circle"
-              color={Colors.primary}
-              onPress={() => navigation.navigate('NewConsultation')}
-            />
-            
-            <QuickActionCard
-              title="Agendar"
-              description="Novo agendamento"
-              icon="calendar"
-              color={Colors.info}
-              onPress={() => navigation.navigate('NewAppointment')}
-            />
-            
-            <QuickActionCard
-              title="Novo Cliente"
-              description="Cadastrar cliente"
-              icon="person-add"
-              color={Colors.secondary}
-              onPress={() => navigation.navigate('NewClient')}
-            />
-            
-            <QuickActionCard
-              title="Cadastrar Pet"
-              description="Adicionar pet"
-              icon="paw"
-              color={Colors.accent}
-              onPress={() => navigation.navigate('NewPet')}
-            />
-            
-            <QuickActionCard
-              title="Biblioteca"
-              description="Consultar medicamentos"
-              icon="library"
-              color={Colors.warning}
-              onPress={() => navigation.navigate('VetLibrary')}
-            />
-            
-            <QuickActionCard
-              title="Ver Clientes"
-              description="Lista de clientes"
-              icon="people"
-              color="#9C27B0"
-              onPress={() => navigation.navigate('Clients')}
-            />
+            {quickActions.map(renderQuickAction)}
           </View>
-        </Card>
+        </View>
 
-        {/* Próximos Agendamentos */}
-        {upcomingAppointments.length > 0 && (
-          <Card style={styles.upcomingCard}>
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Próximos Agendamentos</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Agenda')}>
-                <Text style={styles.seeAllText}>Ver todos</Text>
-              </TouchableOpacity>
-            </View>
-            {upcomingAppointments.slice(0, 3).map((appointment) => (
-              <View key={appointment.id} style={styles.upcomingItem}>
-                <View style={styles.upcomingDate}>
-                  <Text style={styles.upcomingDay}>
-                    {new Date(appointment.date).getDate()}
-                  </Text>
-                  <Text style={styles.upcomingMonth}>
-                    {new Date(appointment.date).toLocaleDateString('pt-BR', { month: 'short' })}
-                  </Text>
-                </View>
-                <View style={styles.upcomingContent}>
-                  <Text style={styles.upcomingTitle}>{appointment.title}</Text>
-                  <Text style={styles.upcomingDetails}>
-                    {appointment.client?.name} • {formatTime(appointment.date)}
-                  </Text>
-                </View>
-              </View>
-            ))}
-          </Card>
-        )}
-
-        {/* Estatísticas Detalhadas */}
-        <Card style={styles.detailedStatsCard}>
-          <Text style={styles.sectionTitle}>Estatísticas Detalhadas</Text>
-          <View style={styles.detailedStatsGrid}>
-            <View style={styles.detailedStatItem}>
-              <Text style={styles.detailedStatNumber}>{stats.totalConsultations}</Text>
-              <Text style={styles.detailedStatLabel}>Total de Consultas</Text>
-            </View>
-            <View style={styles.detailedStatItem}>
-              <Text style={styles.detailedStatNumber}>
-                {stats.totalConsultations > 0 ? (stats.revenue / stats.totalConsultations).toFixed(0) : 0}
-              </Text>
-              <Text style={styles.detailedStatLabel}>Ticket Médio</Text>
-            </View>
-            <View style={styles.detailedStatItem}>
-              <Text style={styles.detailedStatNumber}>
-                {(stats.totalPets / Math.max(stats.totalClients, 1)).toFixed(1)}
-              </Text>
-              <Text style={styles.detailedStatLabel}>Pets por Cliente</Text>
-            </View>
-          </View>
-        </Card>
-
-        {/* Empty State para usuários novos */}
-        {stats.totalClients === 0 && (
-          <Card style={styles.welcomeCard}>
-            <LinearGradient
-              colors={[Colors.primary, Colors.secondary]}
-              style={styles.welcomeGradient}
+        {/* Today's Appointments */}
+        <View style={styles.appointmentsSection}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Consultas de Hoje</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Appointments')}
+              style={styles.seeAllButton}
             >
-              <Ionicons name="paw" size={64} color={Colors.surface} style={styles.welcomeIcon} />
-              <Text style={styles.welcomeTitle}>
-                Bem-vindo ao PetCare Pro!
-              </Text>
-              <Text style={styles.welcomeText}>
-                Comece cadastrando seu primeiro cliente para começar a gerenciar sua clínica veterinária de forma profissional.
-              </Text>
+              <Text style={styles.seeAllText}>Ver todas</Text>
+              <Ionicons name="chevron-forward" size={16} color={Colors.primary} />
+            </TouchableOpacity>
+          </View>
+          
+          {todayAppointments.length > 0 ? (
+            <View style={styles.appointmentsList}>
+              {todayAppointments.map(appointment => renderAppointmentCard(appointment))}
+            </View>
+          ) : (
+            <View style={styles.emptyState}>
+              <Ionicons name="calendar-outline" size={48} color={Colors.textSecondary} />
+              <Text style={styles.emptyTitle}>Nenhuma consulta hoje</Text>
+              <Text style={styles.emptySubtitle}>Que tal agendar uma nova consulta?</Text>
+            </View>
+          )}
+        </View>
+
+        {/* Upcoming Appointments */}
+        {upcomingAppointments.length > 0 && (
+          <View style={styles.appointmentsSection}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Próximas Consultas</Text>
               <TouchableOpacity
-                style={styles.welcomeButton}
-                onPress={() => navigation.navigate('NewClient')}
+                onPress={() => navigation.navigate('Appointments')}
+                style={styles.seeAllButton}
               >
-                <Text style={styles.welcomeButtonText}>
-                  Cadastrar Primeiro Cliente
-                </Text>
+                <Text style={styles.seeAllText}>Ver todas</Text>
+                <Ionicons name="chevron-forward" size={16} color={Colors.primary} />
               </TouchableOpacity>
-            </LinearGradient>
-          </Card>
+            </View>
+            
+            <View style={styles.appointmentsList}>
+              {upcomingAppointments.map(appointment => renderAppointmentCard(appointment, true))}
+            </View>
+          </View>
         )}
+
+        {/* Recent Patients */}
+        {recentPatients.length > 0 && (
+          <View style={styles.patientsSection}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Pacientes Recentes</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Patients')}
+                style={styles.seeAllButton}
+              >
+                <Text style={styles.seeAllText}>Ver todos</Text>
+                <Ionicons name="chevron-forward" size={16} color={Colors.primary} />
+              </TouchableOpacity>
+            </View>
+            
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.patientsScroll}
+              contentContainerStyle={styles.patientsScrollContent}
+            >
+              {recentPatients.map(renderPatientCard)}
+            </ScrollView>
+          </View>
+        )}
+
+        <View style={styles.bottomPadding} />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    paddingBottom: 32,
-  },
-  headerGradient: {
-    marginBottom: 24,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    paddingTop: 16,
+    paddingTop: 50,
+    paddingBottom: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
   },
-  headerInfo: {
+  headerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+  greetingContainer: {
     flex: 1,
   },
   greeting: {
+    fontSize: 16,
+    color: Colors.surface,
+    opacity: 0.9,
+  },
+  doctorName: {
     fontSize: 24,
     fontWeight: 'bold',
     color: Colors.surface,
-  },
-  subGreeting: {
-    fontSize: 14,
-    color: Colors.surface,
-    opacity: 0.9,
     marginTop: 4,
-    textTransform: 'capitalize',
   },
-  clinicInfo: {
+  headerDate: {
     fontSize: 14,
     color: Colors.surface,
     opacity: 0.8,
     marginTop: 4,
+    textTransform: 'capitalize',
   },
   profileButton: {
+    marginLeft: 16,
+  },
+  profileAvatar: {
     width: 48,
     height: 48,
     borderRadius: 24,
@@ -455,41 +489,47 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  statsContainer: {
-    paddingHorizontal: 16,
-    marginBottom: 24,
+  content: {
+    flex: 1,
+  },
+  // Stats Section
+  statsSection: {
+    padding: 20,
+    paddingBottom: 10,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 16,
   },
   statsGrid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
+    gap: 12,
   },
   statCard: {
-    width: (width - 48) / 2,
-    backgroundColor: Colors.surface,
+    flex: 1,
     borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
-    borderLeftWidth: 4,
+    overflow: 'hidden',
     shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
   },
-  statContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  statGradient: {
+    padding: 16,
     alignItems: 'center',
+    backgroundColor: Colors.surface,
   },
-  statInfo: {
-    flex: 1,
+  statIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
   },
   statValue: {
     fontSize: 24,
@@ -497,215 +537,204 @@ const styles = StyleSheet.create({
     color: Colors.text,
   },
   statTitle: {
-    fontSize: 13,
+    fontSize: 12,
+    fontWeight: '600',
     color: Colors.textSecondary,
     marginTop: 4,
   },
   statSubtitle: {
-    fontSize: 11,
+    fontSize: 10,
     color: Colors.textSecondary,
     marginTop: 2,
   },
-  statIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+  // Quick Actions Section
+  quickActionsSection: {
+    padding: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  quickActionsGrid: {
+    gap: 12,
+  },
+  quickActionCard: {
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  quickActionGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+  },
+  quickActionIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-  agendaCard: {
-    marginHorizontal: 16,
-    marginBottom: 24,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  seeAllText: {
-    fontSize: 14,
-    color: Colors.primary,
-    fontWeight: '600',
-  },
-  appointmentItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  appointmentTime: {
-    width: 60,
     alignItems: 'center',
     marginRight: 16,
   },
-  timeText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.primary,
-  },
-  appointmentContent: {
+  quickActionInfo: {
     flex: 1,
   },
-  appointmentTitle: {
+  quickActionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.surface,
+  },
+  quickActionSubtitle: {
+    fontSize: 12,
+    color: Colors.surface,
+    opacity: 0.9,
+    marginTop: 2,
+  },
+  // Appointments Section
+  appointmentsSection: {
+    padding: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  seeAllButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  seeAllText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: Colors.primary,
+  },
+  appointmentsList: {
+    gap: 12,
+  },
+  appointmentCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: 12,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  appointmentInfo: {
+    flex: 1,
+  },
+  appointmentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  patientName: {
     fontSize: 16,
     fontWeight: '600',
     color: Colors.text,
+    flex: 1,
   },
-  appointmentClient: {
+  appointmentTime: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: Colors.primary,
+  },
+  ownerName: {
     fontSize: 14,
     color: Colors.textSecondary,
-    marginTop: 2,
+    marginBottom: 2,
   },
-  appointmentStatus: {
+  appointmentType: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+  },
+  statusBadge: {
     width: 32,
     height: 32,
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 12,
   },
-  quickActionsCard: {
-    marginHorizontal: 16,
-    marginBottom: 24,
+  // Patients Section
+  patientsSection: {
+    paddingVertical: 10,
+    paddingLeft: 20,
   },
-  quickActionsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+  patientsScroll: {
+    flexGrow: 0,
   },
-  quickActionCard: {
-    width: (width - 56) / 2,
+  patientsScrollContent: {
+    paddingRight: 20,
+    gap: 12,
+  },
+  patientCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: 12,
+    padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 12,
-    marginBottom: 12,
-    borderRadius: 12,
-    backgroundColor: Colors.background,
-    borderWidth: 1,
-    borderColor: Colors.border,
+    width: 200,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  quickActionGradient: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+  patientAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
-  quickActionContent: {
+  patientInfo: {
     flex: 1,
   },
-  quickActionTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.text,
-  },
-  quickActionDescription: {
+  patientOwner: {
     fontSize: 12,
     color: Colors.textSecondary,
     marginTop: 2,
   },
-  upcomingCard: {
-    marginHorizontal: 16,
-    marginBottom: 24,
-  },
-  upcomingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  upcomingDate: {
-    width: 50,
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  upcomingDay: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.primary,
-  },
-  upcomingMonth: {
-    fontSize: 12,
-    color: Colors.textSecondary,
-    textTransform: 'uppercase',
-  },
-  upcomingContent: {
-    flex: 1,
-  },
-  upcomingTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-  },
-  upcomingDetails: {
-    fontSize: 14,
+  patientDetails: {
+    fontSize: 10,
     color: Colors.textSecondary,
     marginTop: 2,
   },
-  detailedStatsCard: {
-    marginHorizontal: 16,
-    marginBottom: 24,
-  },
-  detailedStatsGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  detailedStatItem: {
+  // Empty State
+  emptyState: {
     alignItems: 'center',
-  },
-  detailedStatNumber: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: Colors.primary,
-  },
-  detailedStatLabel: {
-    fontSize: 12,
-    color: Colors.textSecondary,
-    marginTop: 4,
-    textAlign: 'center',
-  },
-  welcomeCard: {
-    marginHorizontal: 16,
-    marginBottom: 24,
-    overflow: 'hidden',
-    padding: 0,
-  },
-  welcomeGradient: {
     padding: 32,
-    alignItems: 'center',
-  },
-  welcomeIcon: {
-    marginBottom: 16,
-  },
-  welcomeTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: Colors.surface,
-    textAlign: 'center',
-    marginBottom: 12,
-  },
-  welcomeText: {
-    fontSize: 16,
-    color: Colors.surface,
-    textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 24,
-    opacity: 0.9,
-  },
-  welcomeButton: {
     backgroundColor: Colors.surface,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 25,
+    borderRadius: 16,
+    marginVertical: 8,
   },
-  welcomeButtonText: {
-    color: Colors.primary,
+  emptyTitle: {
     fontSize: 16,
     fontWeight: '600',
+    color: Colors.textSecondary,
+    marginTop: 12,
+    marginBottom: 4,
+  },
+  emptySubtitle: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+  },
+  bottomPadding: {
+    height: 20,
   },
 });
 
