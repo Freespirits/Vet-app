@@ -16,7 +16,6 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Picker } from '@react-native-picker/picker';
 import Input from '../../components/common/Input';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
@@ -42,7 +41,7 @@ const VetLibraryScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
 
-  // Estado do formulário para adicionar/editar
+  // Estado do formulário para adicionar/editar - ESTÁVEL
   const [formData, setFormData] = useState({
     category: '',
     name: '',
@@ -78,13 +77,13 @@ const VetLibraryScreen = ({ navigation }) => {
     }
   };
 
-  const onRefresh = async () => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await loadCustomItems();
     setRefreshing(false);
-  };
+  }, []);
 
-  const getFilteredData = () => {
+  const getFilteredData = useCallback(() => {
     let defaultData = [];
     let customData = [];
 
@@ -117,47 +116,19 @@ const VetLibraryScreen = ({ navigation }) => {
       (item.species && item.species.toLowerCase().includes(lowerQuery)) ||
       (item.description && item.description.toLowerCase().includes(lowerQuery))
     );
-  };
+  }, [activeTab, customItems, searchQuery]);
 
-  const openItemDetail = (item) => {
+  const openItemDetail = useCallback((item) => {
     setSelectedItem(item);
     setModalVisible(true);
-  };
+  }, []);
 
-  const openAddModal = () => {
-    resetForm();
+  const openAddModal = useCallback(() => {
+    const category = activeTab === 'medicamentos' ? 'medicamento' : 
+                    activeTab === 'vacinas' ? 'vacina' : 'procedimento';
+    
     setFormData({
-      ...formData,
-      category: activeTab === 'medicamentos' ? 'medicamento' : 
-               activeTab === 'vacinas' ? 'vacina' : 'procedimento'
-    });
-    setAddModalVisible(true);
-  };
-
-  const openEditModal = (item) => {
-    setFormData({
-      category: item.category,
-      name: item.name,
-      description: item.description || '',
-      dosage: item.dosage || '',
-      frequency: item.frequency || '',
-      contraindications: item.contraindications || '',
-      observations: item.observations || '',
-      species: item.species || '',
-      diseases: Array.isArray(item.diseases) ? item.diseases.join(', ') : item.diseases || '',
-      schedule: item.schedule || '',
-      booster: item.booster || '',
-      duration: item.duration?.toString() || '',
-      price: item.price?.toString() || '',
-    });
-    setSelectedItem(item);
-    setModalVisible(false);
-    setEditModalVisible(true);
-  };
-
-  const resetForm = () => {
-    setFormData({
-      category: '',
+      category,
       name: '',
       description: '',
       dosage: '',
@@ -172,9 +143,46 @@ const VetLibraryScreen = ({ navigation }) => {
       price: '',
     });
     setFormErrors({});
-  };
+    setAddModalVisible(true);
+  }, [activeTab]);
 
-  const validateForm = () => {
+  const openEditModal = useCallback((item) => {
+    setFormData({
+      category: item.category || '',
+      name: item.name || '',
+      description: item.description || '',
+      dosage: item.dosage || '',
+      frequency: item.frequency || '',
+      contraindications: item.contraindications || '',
+      observations: item.observations || '',
+      species: item.species || '',
+      diseases: Array.isArray(item.diseases) ? item.diseases.join(', ') : item.diseases || '',
+      schedule: item.schedule || '',
+      booster: item.booster || '',
+      duration: item.duration?.toString() || '',
+      price: item.price?.toString() || '',
+    });
+    setFormErrors({});
+    setSelectedItem(item);
+    setModalVisible(false);
+    setEditModalVisible(true);
+  }, []);
+
+  const closeModals = useCallback(() => {
+    setAddModalVisible(false);
+    setEditModalVisible(false);
+    setModalVisible(false);
+    setFormErrors({});
+  }, []);
+
+  const updateFormField = useCallback((field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (formErrors[field]) {
+      setFormErrors(prev => ({ ...prev, [field]: null }));
+    }
+  }, [formErrors]);
+
+  const validateForm = useCallback(() => {
     const errors = {};
 
     if (!validateRequired(formData.name)) {
@@ -207,7 +215,7 @@ const VetLibraryScreen = ({ navigation }) => {
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
-  };
+  }, [formData]);
 
   const handleSaveItem = async () => {
     if (!validateForm()) return;
@@ -216,16 +224,16 @@ const VetLibraryScreen = ({ navigation }) => {
     try {
       const itemData = {
         category: formData.category,
-        name: formData.name,
-        description: formData.description,
-        dosage: formData.dosage,
-        frequency: formData.frequency,
-        contraindications: formData.contraindications,
-        observations: formData.observations,
-        species: formData.species,
-        diseases: formData.diseases ? formData.diseases.split(',').map(d => d.trim()) : [],
-        schedule: formData.schedule,
-        booster: formData.booster,
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        dosage: formData.dosage.trim(),
+        frequency: formData.frequency.trim(),
+        contraindications: formData.contraindications.trim(),
+        observations: formData.observations.trim(),
+        species: formData.species.trim(),
+        diseases: formData.diseases ? formData.diseases.split(',').map(d => d.trim()).filter(d => d) : [],
+        schedule: formData.schedule.trim(),
+        booster: formData.booster.trim(),
         duration: formData.duration ? parseInt(formData.duration) : null,
         price: formData.price ? parseFloat(formData.price) : null,
       };
@@ -239,14 +247,13 @@ const VetLibraryScreen = ({ navigation }) => {
 
       if (result.success) {
         await loadCustomItems();
-        setAddModalVisible(false);
-        setEditModalVisible(false);
-        resetForm();
+        closeModals();
         Alert.alert('Sucesso', `Item ${editModalVisible ? 'atualizado' : 'adicionado'} com sucesso!`);
       } else {
         Alert.alert('Erro', result.error);
       }
     } catch (error) {
+      console.error('Erro ao salvar item:', error);
       Alert.alert('Erro', 'Erro interno do sistema');
     } finally {
       setFormLoading(false);
@@ -494,20 +501,6 @@ const VetLibraryScreen = ({ navigation }) => {
                 )}
               </View>
             )}
-
-            {selectedItem.custom_fields && (
-              <View style={styles.customFieldsSection}>
-                <Text style={styles.customFieldsTitle}>Campos Personalizados</Text>
-                {Object.entries(selectedItem.custom_fields).map(([key, value]) => (
-                  <DetailSection 
-                    key={key}
-                    label={key} 
-                    value={value} 
-                    icon="construct" 
-                  />
-                ))}
-              </View>
-            )}
           </ScrollView>
 
           <View style={styles.modalActions}>
@@ -575,23 +568,31 @@ const VetLibraryScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
 
-          <ScrollView style={styles.formContent} showsVerticalScrollIndicator={false}>
+          <ScrollView 
+            style={styles.formContent} 
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
             <Input
               label="Nome"
               value={formData.name}
-              onChangeText={(value) => setFormData(prev => ({ ...prev, name: value }))}
+              onChangeText={(value) => updateFormField('name', value)}
               placeholder="Nome do item"
               error={formErrors.name}
               required
+              editable={true}
+              autoCapitalize="words"
             />
 
             <Input
               label="Descrição"
               value={formData.description}
-              onChangeText={(value) => setFormData(prev => ({ ...prev, description: value }))}
+              onChangeText={(value) => updateFormField('description', value)}
               placeholder="Descrição do item"
               multiline
               numberOfLines={3}
+              editable={true}
+              autoCapitalize="sentences"
             />
 
             {formData.category === 'medicamento' && (
@@ -599,34 +600,40 @@ const VetLibraryScreen = ({ navigation }) => {
                 <Input
                   label="Dosagem"
                   value={formData.dosage}
-                  onChangeText={(value) => setFormData(prev => ({ ...prev, dosage: value }))}
+                  onChangeText={(value) => updateFormField('dosage', value)}
                   placeholder="Ex: 25mg/kg"
                   error={formErrors.dosage}
                   required
+                  editable={true}
                 />
                 <Input
                   label="Frequência"
                   value={formData.frequency}
-                  onChangeText={(value) => setFormData(prev => ({ ...prev, frequency: value }))}
+                  onChangeText={(value) => updateFormField('frequency', value)}
                   placeholder="Ex: A cada 8 horas"
                   error={formErrors.frequency}
                   required
+                  editable={true}
                 />
                 <Input
                   label="Contraindicações"
                   value={formData.contraindications}
-                  onChangeText={(value) => setFormData(prev => ({ ...prev, contraindications: value }))}
+                  onChangeText={(value) => updateFormField('contraindications', value)}
                   placeholder="Contraindicações conhecidas"
                   multiline
                   numberOfLines={3}
+                  editable={true}
+                  autoCapitalize="sentences"
                 />
                 <Input
                   label="Observações"
                   value={formData.observations}
-                  onChangeText={(value) => setFormData(prev => ({ ...prev, observations: value }))}
+                  onChangeText={(value) => updateFormField('observations', value)}
                   placeholder="Observações importantes"
                   multiline
                   numberOfLines={3}
+                  editable={true}
+                  autoCapitalize="sentences"
                 />
               </>
             )}
@@ -636,34 +643,41 @@ const VetLibraryScreen = ({ navigation }) => {
                 <Input
                   label="Espécie"
                   value={formData.species}
-                  onChangeText={(value) => setFormData(prev => ({ ...prev, species: value }))}
+                  onChangeText={(value) => updateFormField('species', value)}
                   placeholder="Ex: Cão/Gato"
                   error={formErrors.species}
                   required
+                  editable={true}
+                  autoCapitalize="words"
                 />
                 <Input
                   label="Doenças Prevenidas"
                   value={formData.diseases}
-                  onChangeText={(value) => setFormData(prev => ({ ...prev, diseases: value }))}
+                  onChangeText={(value) => updateFormField('diseases', value)}
                   placeholder="Separe por vírgula: Cinomose, Hepatite..."
                   multiline
                   numberOfLines={3}
                   error={formErrors.diseases}
                   required
+                  editable={true}
+                  autoCapitalize="words"
                 />
                 <Input
                   label="Protocolo de Vacinação"
                   value={formData.schedule}
-                  onChangeText={(value) => setFormData(prev => ({ ...prev, schedule: value }))}
+                  onChangeText={(value) => updateFormField('schedule', value)}
                   placeholder="Ex: 6-8 semanas, 10-12 semanas"
                   multiline
                   numberOfLines={2}
+                  editable={true}
                 />
                 <Input
                   label="Reforço"
                   value={formData.booster}
-                  onChangeText={(value) => setFormData(prev => ({ ...prev, booster: value }))}
+                  onChangeText={(value) => updateFormField('booster', value)}
                   placeholder="Ex: Anual"
+                  editable={true}
+                  autoCapitalize="words"
                 />
               </>
             )}
@@ -673,18 +687,20 @@ const VetLibraryScreen = ({ navigation }) => {
                 <Input
                   label="Duração (minutos)"
                   value={formData.duration}
-                  onChangeText={(value) => setFormData(prev => ({ ...prev, duration: value }))}
+                  onChangeText={(value) => updateFormField('duration', value)}
                   placeholder="Ex: 30"
                   keyboardType="numeric"
                   error={formErrors.duration}
                   required
+                  editable={true}
                 />
                 <Input
                   label="Preço (R$)"
                   value={formData.price}
-                  onChangeText={(value) => setFormData(prev => ({ ...prev, price: value }))}
+                  onChangeText={(value) => updateFormField('price', value)}
                   placeholder="Ex: 80.00"
                   keyboardType="decimal-pad"
+                  editable={true}
                 />
               </>
             )}
@@ -696,6 +712,7 @@ const VetLibraryScreen = ({ navigation }) => {
               variant="outline"
               onPress={onClose}
               style={styles.formCancelButton}
+              disabled={formLoading}
             />
             <Button
               title={isEdit ? 'Atualizar' : 'Adicionar'}
@@ -739,6 +756,7 @@ const VetLibraryScreen = ({ navigation }) => {
             placeholder="Buscar na biblioteca..."
             leftIcon="search"
             style={styles.searchInput}
+            editable={true}
           />
         </View>
       </LinearGradient>
@@ -841,20 +859,20 @@ const VetLibraryScreen = ({ navigation }) => {
 
             <View style={styles.itemsGrid}>
               {activeTab === 'medicamentos' && 
-                filteredData.map(item => (
-                  <MedicamentoCard key={item.id} item={item} />
+                filteredData.map((item, index) => (
+                  <MedicamentoCard key={item.id || index} item={item} />
                 ))
               }
 
               {activeTab === 'vacinas' && 
-                filteredData.map(item => (
-                  <VacinaCard key={item.id} item={item} />
+                filteredData.map((item, index) => (
+                  <VacinaCard key={item.id || index} item={item} />
                 ))
               }
 
               {activeTab === 'procedimentos' && 
-                filteredData.map(item => (
-                  <ProcedimentoCard key={item.id} item={item} />
+                filteredData.map((item, index) => (
+                  <ProcedimentoCard key={item.id || index} item={item} />
                 ))
               }
             </View>
@@ -865,17 +883,11 @@ const VetLibraryScreen = ({ navigation }) => {
       <ItemDetailModal />
       <AddEditModal 
         visible={addModalVisible} 
-        onClose={() => {
-          setAddModalVisible(false);
-          resetForm();
-        }} 
+        onClose={closeModals} 
       />
       <AddEditModal 
         visible={editModalVisible} 
-        onClose={() => {
-          setEditModalVisible(false);
-          resetForm();
-        }} 
+        onClose={closeModals} 
         isEdit={true}
       />
     </SafeAreaView>
@@ -1164,15 +1176,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.textSecondary,
     lineHeight: 22,
-  },
-  customFieldsSection: {
-    marginTop: 16,
-  },
-  customFieldsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: Colors.text,
-    marginBottom: 16,
   },
   modalActions: {
     flexDirection: 'row',

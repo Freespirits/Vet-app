@@ -37,6 +37,7 @@ const NewClientScreen = ({ navigation, route }) => {
   
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
 
   React.useEffect(() => {
     if (isEditing) {
@@ -46,12 +47,26 @@ const NewClientScreen = ({ navigation, route }) => {
 
   const loadClient = async () => {
     try {
+      setLoadingData(true);
       const client = await ClientService.getById(clientId);
       if (client) {
-        setFormData(client);
+        setFormData({
+          name: client.name || '',
+          email: client.email || '',
+          phone: client.phone || '',
+          cpf: client.cpf || '',
+          address: client.address || '',
+          city: client.city || '',
+          state: client.state || '',
+          zipCode: client.zip_code || client.zipCode || '',
+          notes: client.notes || ''
+        });
       }
     } catch (error) {
+      console.error('Erro ao carregar cliente:', error);
       Alert.alert('Erro', 'Erro ao carregar dados do cliente');
+    } finally {
+      setLoadingData(false);
     }
   };
 
@@ -87,12 +102,16 @@ const NewClientScreen = ({ navigation, route }) => {
 
     setLoading(true);
     try {
+      console.log('Salvando cliente:', formData);
+      
       let result;
       if (isEditing) {
         result = await ClientService.update(clientId, formData);
       } else {
         result = await ClientService.create(formData);
       }
+
+      console.log('Resultado do salvamento:', result);
 
       if (result.success) {
         Alert.alert(
@@ -101,9 +120,10 @@ const NewClientScreen = ({ navigation, route }) => {
           [{ text: 'OK', onPress: () => navigation.goBack() }]
         );
       } else {
-        Alert.alert('Erro', result.error);
+        Alert.alert('Erro', result.error || 'Erro desconhecido');
       }
     } catch (error) {
+      console.error('Erro ao salvar cliente:', error);
       Alert.alert('Erro', 'Erro interno do sistema');
     } finally {
       setLoading(false);
@@ -117,6 +137,10 @@ const NewClientScreen = ({ navigation, route }) => {
       formattedValue = formatCPF(value);
     } else if (field === 'phone') {
       formattedValue = formatPhone(value);
+    } else if (field === 'email') {
+      formattedValue = value.toLowerCase().trim();
+    } else if (field === 'state') {
+      formattedValue = value.toUpperCase();
     }
     
     setFormData(prev => ({ ...prev, [field]: formattedValue }));
@@ -126,13 +150,28 @@ const NewClientScreen = ({ navigation, route }) => {
     }
   };
 
+  if (loadingData) {
+    return (
+      <SafeAreaView style={globalStyles.container}>
+        <View style={[globalStyles.container, globalStyles.justifyCenter, globalStyles.alignCenter]}>
+          <Text style={globalStyles.textRegular}>Carregando dados do cliente...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={globalStyles.container}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={globalStyles.keyboardView}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
-        <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
+        <ScrollView 
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
           <Card>
             <View style={styles.header}>
               <Ionicons name="person-add" size={24} color={Colors.primary} />
@@ -152,6 +191,8 @@ const NewClientScreen = ({ navigation, route }) => {
                 leftIcon="person"
                 error={errors.name}
                 required
+                editable={true}
+                autoCapitalize="words"
               />
 
               <Input
@@ -161,9 +202,11 @@ const NewClientScreen = ({ navigation, route }) => {
                 placeholder="email@exemplo.com"
                 keyboardType="email-address"
                 autoCapitalize="none"
+                autoCorrect={false}
                 leftIcon="mail"
                 error={errors.email}
                 required
+                editable={true}
               />
 
               <Input
@@ -175,6 +218,7 @@ const NewClientScreen = ({ navigation, route }) => {
                 leftIcon="call"
                 error={errors.phone}
                 required
+                editable={true}
               />
 
               <Input
@@ -186,6 +230,7 @@ const NewClientScreen = ({ navigation, route }) => {
                 leftIcon="card"
                 error={errors.cpf}
                 maxLength={14}
+                editable={true}
               />
             </View>
 
@@ -198,6 +243,8 @@ const NewClientScreen = ({ navigation, route }) => {
                 onChangeText={(value) => updateField('address', value)}
                 placeholder="Rua, número, bairro"
                 leftIcon="location"
+                editable={true}
+                autoCapitalize="words"
               />
 
               <View style={styles.row}>
@@ -207,6 +254,8 @@ const NewClientScreen = ({ navigation, route }) => {
                     value={formData.city}
                     onChangeText={(value) => updateField('city', value)}
                     placeholder="Cidade"
+                    editable={true}
+                    autoCapitalize="words"
                   />
                 </View>
                 <View style={styles.stateContainer}>
@@ -217,6 +266,7 @@ const NewClientScreen = ({ navigation, route }) => {
                     placeholder="UF"
                     maxLength={2}
                     autoCapitalize="characters"
+                    editable={true}
                   />
                 </View>
               </View>
@@ -228,6 +278,7 @@ const NewClientScreen = ({ navigation, route }) => {
                 placeholder="00000-000"
                 keyboardType="numeric"
                 maxLength={9}
+                editable={true}
               />
             </View>
 
@@ -242,6 +293,8 @@ const NewClientScreen = ({ navigation, route }) => {
                 multiline
                 numberOfLines={3}
                 maxLength={500}
+                editable={true}
+                autoCapitalize="sentences"
               />
             </View>
 
@@ -251,6 +304,7 @@ const NewClientScreen = ({ navigation, route }) => {
                 variant="outline"
                 onPress={() => navigation.goBack()}
                 style={styles.cancelButton}
+                disabled={loading}
               />
               <Button
                 title={isEditing ? 'Atualizar' : 'Cadastrar'}
@@ -267,6 +321,10 @@ const NewClientScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    padding: 16,
+    paddingBottom: 32,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',

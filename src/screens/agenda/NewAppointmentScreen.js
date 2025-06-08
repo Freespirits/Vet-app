@@ -7,7 +7,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
@@ -44,11 +45,14 @@ const NewAppointmentScreen = ({ navigation, route }) => {
   const [availablePets, setAvailablePets] = useState([]);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
     loadInitialData();
     if (isEditing) {
       loadAppointment();
+    } else {
+      setLoadingData(false);
     }
   }, [appointmentId]);
 
@@ -88,12 +92,23 @@ const NewAppointmentScreen = ({ navigation, route }) => {
 
   const loadAppointment = async () => {
     try {
+      setLoadingData(true);
       const appointment = await AppointmentService.getById(appointmentId);
       if (appointment) {
-        setFormData(appointment);
+        setFormData({
+          clientId: appointment.client_id || appointment.clientId || '',
+          petId: appointment.pet_id || appointment.petId || '',
+          title: appointment.title || '',
+          description: appointment.description || '',
+          date: appointment.date || '',
+          duration: appointment.duration?.toString() || '30',
+          status: appointment.status || 'scheduled'
+        });
       }
     } catch (error) {
       Alert.alert('Erro', 'Erro ao carregar dados do agendamento');
+    } finally {
+      setLoadingData(false);
     }
   };
 
@@ -126,8 +141,13 @@ const NewAppointmentScreen = ({ navigation, route }) => {
     setLoading(true);
     try {
       const appointmentData = {
-        ...formData,
+        client_id: formData.clientId,
+        pet_id: formData.petId,
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        date: formData.date,
         duration: parseInt(formData.duration),
+        status: formData.status,
       };
 
       let result;
@@ -147,6 +167,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
         Alert.alert('Erro', result.error);
       }
     } catch (error) {
+      console.error('Erro ao salvar agendamento:', error);
       Alert.alert('Erro', 'Erro interno do sistema');
     } finally {
       setLoading(false);
@@ -179,13 +200,29 @@ const NewAppointmentScreen = ({ navigation, route }) => {
   const selectedClient = clients.find(client => client.id === formData.clientId);
   const selectedPet = pets.find(pet => pet.id === formData.petId);
 
+  if (loadingData) {
+    return (
+      <SafeAreaView style={globalStyles.container}>
+        <View style={[globalStyles.container, globalStyles.justifyCenter, globalStyles.alignCenter]}>
+          <Text style={globalStyles.textRegular}>Carregando dados...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={globalStyles.container}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={globalStyles.keyboardView}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
-        <ScrollView contentContainerStyle={globalStyles.scrollContainer}>
+        <ScrollView 
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          nestedScrollEnabled={true}
+        >
           <Card>
             <View style={styles.header}>
               <Ionicons name="calendar" size={24} color={Colors.primary} />
@@ -205,6 +242,8 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 leftIcon="bookmark"
                 error={errors.title}
                 required
+                editable={true}
+                autoCapitalize="words"
               />
 
               <Input
@@ -215,6 +254,8 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 multiline
                 numberOfLines={3}
                 leftIcon="document-text"
+                editable={true}
+                autoCapitalize="sentences"
               />
             </View>
 
@@ -233,6 +274,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                       updateField('petId', '');
                     }}
                     style={styles.picker}
+                    enabled={true}
                   >
                     <Picker.Item label="Selecione o cliente..." value="" />
                     {clients.map(client => (
@@ -295,6 +337,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 error={errors.date}
                 required
                 maxLength={16}
+                editable={true}
               />
 
               <View style={styles.pickerContainer}>
@@ -304,6 +347,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                     selectedValue={formData.duration}
                     onValueChange={(value) => updateField('duration', value)}
                     style={styles.picker}
+                    enabled={true}
                   >
                     <Picker.Item label="15 minutos" value="15" />
                     <Picker.Item label="30 minutos" value="30" />
@@ -322,6 +366,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                     selectedValue={formData.status}
                     onValueChange={(value) => updateField('status', value)}
                     style={styles.picker}
+                    enabled={true}
                   >
                     <Picker.Item label="Agendado" value="scheduled" />
                     <Picker.Item label="Confirmado" value="confirmed" />
@@ -339,6 +384,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 variant="outline"
                 onPress={() => navigation.goBack()}
                 style={styles.cancelButton}
+                disabled={loading}
               />
               <Button
                 title={isEditing ? 'Atualizar' : 'Agendar'}
@@ -355,6 +401,10 @@ const NewAppointmentScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    padding: 16,
+    paddingBottom: 32,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
