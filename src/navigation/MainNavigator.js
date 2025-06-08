@@ -73,7 +73,7 @@ const HomeStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen 
-        name="HomeMain" 
+        name="Inicio" 
         component={HomeScreen} 
         options={{ headerShown: false }}
       />
@@ -143,7 +143,7 @@ const HomeStackNavigator = () => {
 const ClientsStackNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen 
-      name="ClientListMain" 
+      name="Voltar" 
       component={ClientListScreen} 
       options={{ headerShown: false }}
     />
@@ -164,7 +164,7 @@ const ClientsStackNavigator = () => (
 const PetsStackNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen 
-      name="PetListMain" 
+      name="Voltar" 
       component={PetListScreen} 
       options={{ headerShown: false }}
     />
@@ -195,7 +195,7 @@ const PetsStackNavigator = () => (
 const AgendaStackNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen 
-      name="AgendaMain" 
+      name="Voltar" 
       component={AgendaScreen} 
       options={{ headerShown: false }}
     />

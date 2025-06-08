@@ -111,7 +111,7 @@ const ClientListScreen = ({ navigation }) => {
         { text: 'OK' },
         { text: 'Editar', onPress: () => navigation.navigate('NewClient', { clientId: client.id }) },
         { text: 'Ver Pets', onPress: () => navigation.navigate('Pets', { 
-          screen: 'PetListMain',
+          screen: 'Voltar',
           params: { clientId: client.id }
         }) }
       ]
