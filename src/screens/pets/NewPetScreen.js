@@ -7,10 +7,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import Card from '../../components/common/Card';
@@ -21,6 +24,8 @@ import { formatDate, calculateAge } from '../../utils/helpers';
 import { ESPECIES, RACAS_CAES, RACAS_GATOS } from '../../constants/Data';
 import { Colors } from '../../constants/Colors';
 import { globalStyles } from '../../styles/globalStyles';
+
+const { width } = Dimensions.get('window');
 
 const NewPetScreen = ({ navigation, route }) => {
   const petId = route?.params?.petId;
@@ -107,7 +112,6 @@ const NewPetScreen = ({ navigation, route }) => {
     }
     setAvailableBreeds(breeds);
     
-    // Reset breed if not compatible with new species
     if (formData.breed && !breeds.includes(formData.breed)) {
       setFormData(prev => ({ ...prev, breed: '' }));
     }
@@ -199,6 +203,32 @@ const NewPetScreen = ({ navigation, route }) => {
 
   const selectedClient = clients.find(client => client.id === formData.clientId);
 
+  const getSpeciesIcon = (species) => {
+    switch (species) {
+      case 'Cão': return 'paw';
+      case 'Gato': return 'paw';
+      case 'Pássaro': return 'airplane';
+      case 'Peixe': return 'fish';
+      case 'Hamster': return 'ellipse';
+      case 'Coelho': return 'ellipse';
+      case 'Réptil': return 'bug';
+      default: return 'heart';
+    }
+  };
+
+  const getSpeciesColor = (species) => {
+    switch (species) {
+      case 'Cão': return Colors.primary;
+      case 'Gato': return Colors.secondary;
+      case 'Pássaro': return Colors.info;
+      case 'Peixe': return '#00BCD4';
+      case 'Hamster': return '#FF9800';
+      case 'Coelho': return '#795548';
+      case 'Réptil': return Colors.success;
+      default: return Colors.textSecondary;
+    }
+  };
+
   if (loadingData) {
     return (
       <SafeAreaView style={globalStyles.container}>
@@ -210,140 +240,273 @@ const NewPetScreen = ({ navigation, route }) => {
   }
 
   return (
-    <SafeAreaView style={globalStyles.container}>
+    <SafeAreaView style={styles.container}>
+      {/* Header Gradiente */}
+      <LinearGradient
+        colors={[Colors.secondary, Colors.accent]}
+        style={styles.headerGradient}
+      >
+        <View style={styles.headerContent}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <Ionicons name="arrow-back" size={24} color={Colors.surface} />
+          </TouchableOpacity>
+          
+          <View style={styles.headerTitleContainer}>
+            <View style={styles.petIconContainer}>
+              <Ionicons name="paw" size={28} color={Colors.surface} />
+            </View>
+            <View>
+              <Text style={styles.headerTitle}>
+                {isEditing ? 'Editar Pet' : 'Novo Pet'}
+              </Text>
+              <Text style={styles.headerSubtitle}>
+                {isEditing ? 'Atualize as informações do pet' : 'Cadastre um novo amiguinho'}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </LinearGradient>
+
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
         <ScrollView 
-          style={{ flex: 1 }}
+          style={styles.scrollView}
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
           nestedScrollEnabled={true}
           removeClippedSubviews={false}
         >
-          <Card>
-            <View style={styles.header}>
-              <Ionicons name="paw" size={24} color={Colors.primary} />
-              <Text style={styles.title}>
-                {isEditing ? 'Editar Pet' : 'Novo Pet'}
-              </Text>
-            </View>
-
+          {/* Card Principal */}
+          <View style={styles.mainCard}>
+            {/* Seção: Informações Básicas */}
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Informações Básicas</Text>
+              <View style={styles.sectionHeader}>
+                <LinearGradient
+                  colors={[Colors.primary, Colors.primaryDark]}
+                  style={styles.sectionIconGradient}
+                >
+                  <Ionicons name="heart" size={20} color={Colors.surface} />
+                </LinearGradient>
+                <Text style={styles.sectionTitle}>Informações Básicas</Text>
+              </View>
               
-              <Input
-                label="Nome do Pet"
-                value={formData.name}
-                onChangeText={(value) => updateField('name', value)}
-                placeholder="Nome do animal"
-                leftIcon="heart"
-                error={errors.name}
-                required
-                autoCapitalize="words"
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
+              <View style={styles.inputContainer}>
+                <Input
+                  label="Nome do Pet"
+                  value={formData.name}
+                  onChangeText={(value) => updateField('name', value)}
+                  placeholder="Como o pet se chama?"
+                  leftIcon="heart"
+                  error={errors.name}
+                  required
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                  blurOnSubmit={false}
+                  style={styles.inputField}
+                />
+              </View>
 
-              <View style={styles.pickerContainer}>
+              {/* Cliente Selector com design melhorado */}
+              <View style={styles.pickerSection}>
                 <Text style={styles.pickerLabel}>
-                  Cliente <Text style={styles.required}>*</Text>
+                  Proprietário <Text style={styles.required}>*</Text>
                 </Text>
-                <View style={[styles.pickerWrapper, errors.clientId && styles.pickerWrapperError]}>
-                  <Picker
-                    selectedValue={formData.clientId}
-                    onValueChange={(value) => updateField('clientId', value)}
-                    style={styles.picker}
-                    mode="dropdown"
-                    dropdownIconColor={Colors.primary}
+                <View style={[styles.pickerContainer, errors.clientId && styles.pickerError]}>
+                  <LinearGradient
+                    colors={['#F8F9FA', '#FFFFFF']}
+                    style={styles.pickerGradient}
                   >
-                    <Picker.Item label="Selecione o cliente..." value="" />
-                    {clients.map(client => (
-                      <Picker.Item 
-                        key={client.id} 
-                        label={client.name} 
-                        value={client.id} 
-                      />
-                    ))}
-                  </Picker>
+                    <Ionicons name="person" size={20} color={Colors.primary} style={styles.pickerIcon} />
+                    <Picker
+                      selectedValue={formData.clientId}
+                      onValueChange={(value) => updateField('clientId', value)}
+                      style={styles.picker}
+                      mode="dropdown"
+                      dropdownIconColor={Colors.primary}
+                    >
+                      <Picker.Item label="Selecione o proprietário..." value="" />
+                      {clients.map(client => (
+                        <Picker.Item 
+                          key={client.id} 
+                          label={client.name} 
+                          value={client.id} 
+                        />
+                      ))}
+                    </Picker>
+                  </LinearGradient>
                 </View>
                 {errors.clientId && <Text style={styles.errorText}>{errors.clientId}</Text>}
                 {selectedClient && (
-                  <Text style={styles.clientInfo}>
-                    📧 {selectedClient.email} • 📞 {selectedClient.phone}
-                  </Text>
+                  <View style={styles.selectedClientInfo}>
+                    <Ionicons name="checkmark-circle" size={16} color={Colors.success} />
+                    <Text style={styles.clientInfoText}>
+                      {selectedClient.email} • {selectedClient.phone}
+                    </Text>
+                  </View>
                 )}
               </View>
 
-              <View style={styles.pickerContainer}>
+              {/* Espécie com ícones visuais */}
+              <View style={styles.pickerSection}>
                 <Text style={styles.pickerLabel}>
                   Espécie <Text style={styles.required}>*</Text>
                 </Text>
-                <View style={[styles.pickerWrapper, errors.species && styles.pickerWrapperError]}>
-                  <Picker
-                    selectedValue={formData.species}
-                    onValueChange={(value) => {
-                      updateField('species', value);
-                      updateField('breed', '');
-                    }}
-                    style={styles.picker}
-                    mode="dropdown"
-                    dropdownIconColor={Colors.primary}
-                  >
-                    <Picker.Item label="Selecione a espécie..." value="" />
-                    {ESPECIES.map(especie => (
-                      <Picker.Item key={especie} label={especie} value={especie} />
-                    ))}
-                  </Picker>
+                <View style={[styles.speciesContainer, errors.species && styles.pickerError]}>
+                  {ESPECIES.map(especie => (
+                    <TouchableOpacity
+                      key={especie}
+                      style={[
+                        styles.speciesOption,
+                        formData.species === especie && styles.speciesOptionSelected,
+                        { borderColor: getSpeciesColor(especie) }
+                      ]}
+                      onPress={() => {
+                        updateField('species', especie);
+                        updateField('breed', '');
+                      }}
+                    >
+                      <LinearGradient
+                        colors={formData.species === especie ? 
+                          [getSpeciesColor(especie), `${getSpeciesColor(especie)}CC`] : 
+                          ['transparent', 'transparent']
+                        }
+                        style={styles.speciesOptionGradient}
+                      >
+                        <Ionicons 
+                          name={getSpeciesIcon(especie)} 
+                          size={24} 
+                          color={formData.species === especie ? Colors.surface : getSpeciesColor(especie)} 
+                        />
+                        <Text style={[
+                          styles.speciesOptionText,
+                          formData.species === especie && styles.speciesOptionTextSelected
+                        ]}>
+                          {especie}
+                        </Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
                 </View>
                 {errors.species && <Text style={styles.errorText}>{errors.species}</Text>}
               </View>
 
-              <View style={styles.pickerContainer}>
+              {/* Raça */}
+              <View style={styles.pickerSection}>
                 <Text style={styles.pickerLabel}>Raça</Text>
-                <View style={styles.pickerWrapper}>
-                  <Picker
-                    selectedValue={formData.breed}
-                    onValueChange={(value) => updateField('breed', value)}
-                    style={styles.picker}
-                    enabled={formData.species !== ''}
-                    mode="dropdown"
-                    dropdownIconColor={Colors.primary}
+                <View style={[styles.pickerContainer, !formData.species && styles.pickerDisabled]}>
+                  <LinearGradient
+                    colors={formData.species ? ['#F8F9FA', '#FFFFFF'] : ['#F5F5F5', '#F0F0F0']}
+                    style={styles.pickerGradient}
                   >
-                    <Picker.Item label="Selecione a raça..." value="" />
-                    {availableBreeds.map(raca => (
-                      <Picker.Item key={raca} label={raca} value={raca} />
-                    ))}
-                  </Picker>
+                    <Ionicons 
+                      name="paw" 
+                      size={20} 
+                      color={formData.species ? Colors.primary : Colors.textSecondary} 
+                      style={styles.pickerIcon} 
+                    />
+                    <Picker
+                      selectedValue={formData.breed}
+                      onValueChange={(value) => updateField('breed', value)}
+                      style={styles.picker}
+                      enabled={formData.species !== ''}
+                      mode="dropdown"
+                      dropdownIconColor={formData.species ? Colors.primary : Colors.textSecondary}
+                    >
+                      <Picker.Item label="Selecione a raça..." value="" />
+                      {availableBreeds.map(raca => (
+                        <Picker.Item key={raca} label={raca} value={raca} />
+                      ))}
+                    </Picker>
+                  </LinearGradient>
                 </View>
               </View>
 
-              <View style={styles.pickerContainer}>
+              {/* Sexo com botões visuais */}
+              <View style={styles.pickerSection}>
                 <Text style={styles.pickerLabel}>
                   Sexo <Text style={styles.required}>*</Text>
                 </Text>
-                <View style={[styles.pickerWrapper, errors.gender && styles.pickerWrapperError]}>
-                  <Picker
-                    selectedValue={formData.gender}
-                    onValueChange={(value) => updateField('gender', value)}
-                    style={styles.picker}
-                    mode="dropdown"
-                    dropdownIconColor={Colors.primary}
+                <View style={styles.genderContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.genderOption,
+                      formData.gender === 'Macho' && styles.genderOptionSelected,
+                      { borderColor: Colors.info }
+                    ]}
+                    onPress={() => updateField('gender', 'Macho')}
                   >
-                    <Picker.Item label="Selecione o sexo..." value="" />
-                    <Picker.Item label="Macho" value="Macho" />
-                    <Picker.Item label="Fêmea" value="Fêmea" />
-                  </Picker>
+                    <LinearGradient
+                      colors={formData.gender === 'Macho' ? 
+                        [Colors.info, `${Colors.info}CC`] : 
+                        ['transparent', 'transparent']
+                      }
+                      style={styles.genderOptionGradient}
+                    >
+                      <Ionicons 
+                        name="male" 
+                        size={24} 
+                        color={formData.gender === 'Macho' ? Colors.surface : Colors.info} 
+                      />
+                      <Text style={[
+                        styles.genderOptionText,
+                        formData.gender === 'Macho' && styles.genderOptionTextSelected
+                      ]}>
+                        Macho
+                      </Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={[
+                      styles.genderOption,
+                      formData.gender === 'Fêmea' && styles.genderOptionSelected,
+                      { borderColor: Colors.warning }
+                    ]}
+                    onPress={() => updateField('gender', 'Fêmea')}
+                  >
+                    <LinearGradient
+                      colors={formData.gender === 'Fêmea' ? 
+                        [Colors.warning, `${Colors.warning}CC`] : 
+                        ['transparent', 'transparent']
+                      }
+                      style={styles.genderOptionGradient}
+                    >
+                      <Ionicons 
+                        name="female" 
+                        size={24} 
+                        color={formData.gender === 'Fêmea' ? Colors.surface : Colors.warning} 
+                      />
+                      <Text style={[
+                        styles.genderOptionText,
+                        formData.gender === 'Fêmea' && styles.genderOptionTextSelected
+                      ]}>
+                        Fêmea
+                      </Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
                 </View>
                 {errors.gender && <Text style={styles.errorText}>{errors.gender}</Text>}
               </View>
             </View>
 
+            {/* Seção: Detalhes Físicos */}
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Detalhes Físicos</Text>
+              <View style={styles.sectionHeader}>
+                <LinearGradient
+                  colors={[Colors.secondary, Colors.accent]}
+                  style={styles.sectionIconGradient}
+                >
+                  <Ionicons name="fitness" size={20} color={Colors.surface} />
+                </LinearGradient>
+                <Text style={styles.sectionTitle}>Detalhes Físicos</Text>
+              </View>
               
               <Input
                 label="Data de Nascimento"
@@ -355,193 +518,388 @@ const NewPetScreen = ({ navigation, route }) => {
                 maxLength={10}
                 returnKeyType="next"
                 blurOnSubmit={false}
+                style={styles.inputField}
               />
 
               {formData.birthDate && formData.birthDate.length === 10 && (
-                <Text style={styles.ageInfo}>
-                  Idade: {calculateAge(formData.birthDate)}
-                </Text>
+                <View style={styles.ageDisplay}>
+                  <LinearGradient
+                    colors={[Colors.success, `${Colors.success}20`]}
+                    style={styles.ageGradient}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                  >
+                    <Ionicons name="time" size={16} color={Colors.surface} />
+                    <Text style={styles.ageText}>
+                      Idade: {calculateAge(formData.birthDate)}
+                    </Text>
+                  </LinearGradient>
+                </View>
               )}
 
-              <Input
-                label="Peso (kg)"
-                value={formData.weight}
-                onChangeText={(value) => updateField('weight', value)}
-                placeholder="Ex: 5.2"
-                keyboardType="decimal-pad"
-                leftIcon="fitness"
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
-
-              <Input
-                label="Cor"
-                value={formData.color}
-                onChangeText={(value) => updateField('color', value)}
-                placeholder="Cor predominante"
-                leftIcon="color-palette"
-                autoCapitalize="words"
-                returnKeyType="next"
-                blurOnSubmit={false}
-              />
+              <View style={styles.rowInputs}>
+                <View style={styles.halfInput}>
+                  <Input
+                    label="Peso (kg)"
+                    value={formData.weight}
+                    onChangeText={(value) => updateField('weight', value)}
+                    placeholder="5.2"
+                    keyboardType="decimal-pad"
+                    leftIcon="fitness"
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                  />
+                </View>
+                <View style={styles.halfInput}>
+                  <Input
+                    label="Cor Principal"
+                    value={formData.color}
+                    onChangeText={(value) => updateField('color', value)}
+                    placeholder="Dourado"
+                    leftIcon="color-palette"
+                    autoCapitalize="words"
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                  />
+                </View>
+              </View>
 
               <Input
                 label="Microchip"
                 value={formData.microchip}
                 onChangeText={(value) => updateField('microchip', value)}
-                placeholder="Número do microchip"
+                placeholder="Número do microchip (opcional)"
                 leftIcon="radio"
                 returnKeyType="next"
                 blurOnSubmit={false}
+                style={styles.inputField}
               />
             </View>
 
+            {/* Seção: Observações */}
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Observações</Text>
+              <View style={styles.sectionHeader}>
+                <LinearGradient
+                  colors={[Colors.info, `${Colors.info}CC`]}
+                  style={styles.sectionIconGradient}
+                >
+                  <Ionicons name="document-text" size={20} color={Colors.surface} />
+                </LinearGradient>
+                <Text style={styles.sectionTitle}>Observações</Text>
+              </View>
               
               <Input
-                label="Observações"
+                label="Observações Especiais"
                 value={formData.notes}
                 onChangeText={(value) => updateField('notes', value)}
-                placeholder="Observações sobre o pet (temperamento, alergias, etc.)"
+                placeholder="Temperamento, alergias, medicamentos contínuos..."
                 multiline
-                numberOfLines={3}
+                numberOfLines={4}
                 maxLength={500}
                 autoCapitalize="sentences"
                 returnKeyType="done"
                 blurOnSubmit={true}
+                style={styles.textAreaField}
               />
             </View>
-          </Card>
+          </View>
         </ScrollView>
         
-        <View style={styles.fixedButtonContainer}>
-          <View style={styles.buttonContainer}>
+        {/* Botões de Ação Fixos */}
+        <LinearGradient
+          colors={[Colors.surface, `${Colors.surface}F0`]}
+          style={styles.actionContainer}
+        >
+          <View style={styles.actionButtons}>
             <Button
               title="Cancelar"
               variant="outline"
               onPress={() => navigation.goBack()}
               style={styles.cancelButton}
               disabled={loading}
+              icon={<Ionicons name="close" size={16} color={Colors.textSecondary} />}
             />
             <Button
-              title={isEditing ? 'Atualizar' : 'Cadastrar'}
+              title={isEditing ? 'Atualizar Pet' : 'Cadastrar Pet'}
               onPress={handleSave}
               loading={loading}
               style={styles.saveButton}
+              icon={<Ionicons name={isEditing ? "checkmark" : "add"} size={16} color={Colors.surface} />}
             />
           </View>
-        </View>
+        </LinearGradient>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 100,
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
   },
-  header: {
+  headerGradient: {
+    paddingTop: 50,
+    paddingBottom: 20,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 24,
+    paddingHorizontal: 20,
   },
-  title: {
-    fontSize: 20,
+  backButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  headerTitleContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  petIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  headerTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: Colors.text,
-    marginLeft: 12,
+    color: Colors.surface,
+  },
+  headerSubtitle: {
+    fontSize: 14,
+    color: Colors.surface,
+    opacity: 0.9,
+    marginTop: 2,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContainer: {
+    paddingBottom: 120,
+  },
+  mainCard: {
+    backgroundColor: Colors.surface,
+    margin: 16,
+    borderRadius: 20,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 10,
+    overflow: 'hidden',
   },
   section: {
-    marginBottom: 24,
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: `${Colors.border}50`,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  sectionIconGradient: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
     color: Colors.text,
-    marginBottom: 16,
-    paddingBottom: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
   },
-  pickerContainer: {
+  inputContainer: {
     marginBottom: 16,
+  },
+  inputField: {
+    marginBottom: 0,
+  },
+  pickerSection: {
+    marginBottom: 20,
   },
   pickerLabel: {
     fontSize: 14,
     fontWeight: '500',
     color: Colors.text,
-    marginBottom: 8,
+    marginBottom: 12,
   },
   required: {
     color: Colors.error,
   },
-  pickerWrapper: {
+  pickerContainer: {
+    borderRadius: 12,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: Colors.border,
-    borderRadius: 8,
-    backgroundColor: Colors.surface,
-    minHeight: 48,
   },
-  pickerWrapperError: {
+  pickerError: {
     borderColor: Colors.error,
   },
+  pickerDisabled: {
+    opacity: 0.6,
+  },
+  pickerGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: 48,
+  },
+  pickerIcon: {
+    marginLeft: 16,
+    marginRight: 8,
+  },
   picker: {
-    height: 48,
+    flex: 1,
     color: Colors.text,
   },
   errorText: {
     fontSize: 12,
     color: Colors.error,
-    marginTop: 4,
+    marginTop: 6,
+    marginLeft: 4,
   },
-  clientInfo: {
+  selectedClientInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    padding: 8,
+    backgroundColor: `${Colors.success}15`,
+    borderRadius: 8,
+  },
+  clientInfoText: {
     fontSize: 12,
     color: Colors.textSecondary,
-    marginTop: 4,
-    paddingLeft: 8,
+    marginLeft: 6,
   },
-  ageInfo: {
-    fontSize: 14,
-    color: Colors.primary,
+  speciesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  speciesOption: {
+    width: (width - 88) / 3,
+    height: 80,
+    borderRadius: 12,
+    borderWidth: 2,
+    overflow: 'hidden',
+  },
+  speciesOptionSelected: {
+    transform: [{ scale: 1.05 }],
+  },
+  speciesOptionGradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 8,
+  },
+  speciesOptionText: {
+    fontSize: 11,
     fontWeight: '500',
+    color: Colors.text,
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  speciesOptionTextSelected: {
+    color: Colors.surface,
+    fontWeight: '600',
+  },
+  genderContainer: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  genderOption: {
+    flex: 1,
+    height: 60,
+    borderRadius: 12,
+    borderWidth: 2,
+    overflow: 'hidden',
+  },
+  genderOptionSelected: {
+    transform: [{ scale: 1.02 }],
+  },
+  genderOptionGradient: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 12,
+  },
+  genderOptionText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: Colors.text,
+    marginLeft: 8,
+  },
+  genderOptionTextSelected: {
+    color: Colors.surface,
+    fontWeight: '600',
+  },
+  ageDisplay: {
     marginTop: -8,
     marginBottom: 16,
-    textAlign: 'center',
-    backgroundColor: Colors.background,
-    padding: 8,
-    borderRadius: 6,
+    overflow: 'hidden',
+    borderRadius: 8,
   },
-  fixedButtonContainer: {
+  ageGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+  },
+  ageText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.surface,
+    marginLeft: 8,
+  },
+  rowInputs: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  halfInput: {
+    flex: 1,
+  },
+  textAreaField: {
+    marginBottom: 0,
+  },
+  actionContainer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: Colors.surface,
     paddingTop: 16,
     paddingHorizontal: 16,
     paddingBottom: 32,
     borderTopWidth: 1,
-    borderTopColor: Colors.border,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
+    borderTopColor: `${Colors.border}30`,
   },
-  buttonContainer: {
+  actionButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 12,
   },
   cancelButton: {
     flex: 1,
-    marginRight: 12,
   },
   saveButton: {
-    flex: 1,
-    marginLeft: 12,
+    flex: 2,
   },
 });
 
