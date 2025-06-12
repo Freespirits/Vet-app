@@ -147,12 +147,8 @@ function createRequiredAssets() {
 }
 
 // Criar um ícone padrão (PNG base64 1024x1024)
-function createDefaultIcon() {
-  // PNG base64 de um ícone simples 1024x1024 - azul com bordas arredondadas
-  // Esta é uma versão comentada para reduzir o tamanho do código
-  // Em produção, substitua por um ícone real do seu app
-  
-  // Retorna um buffer de um ícone simples - substitua pela sua implementação
+function createDefaultSplash() {
+  console.log('⚠️  Criando splash placeholder simples. Para produção, substitua por um splash real.');
   return Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 }
 
