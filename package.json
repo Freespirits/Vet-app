@@ -21,8 +21,10 @@
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
     "@supabase/supabase-js": "^2.39.0",
+    "date-fns": "^4.1.0",
     "expo": "~53.0.9",
     "expo-image-picker": "~15.0.7",
+    "expo-linear-gradient": "~14.1.4",
     "expo-splash-screen": "~0.29.9",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
@@ -31,7 +33,6 @@
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.10.0",
-    "expo-linear-gradient": "~14.1.4",
     "react-native-url-polyfill": "^2.0.0"
   },
   "devDependencies": {

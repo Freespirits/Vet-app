@@ -4,6 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+
+// Main Screens
 import HomeScreen from '../screens/HomeScreen';
 import ClientListScreen from '../screens/clients/ClientListScreen';
 import NewClientScreen from '../screens/clients/NewClientScreen';
@@ -14,6 +16,19 @@ import VetLibraryScreen from '../screens/library/VetLibraryScreen';
 import AgendaScreen from '../screens/agenda/AgendaScreen';
 import NewAppointmentScreen from '../screens/agenda/NewAppointmentScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
+
+// Detail Screens
+import AppointmentDetailsScreen from '../screens/AppointmentDetailsScreen';
+import PatientDetailsScreen from '../screens/PatientDetailsScreen';
+
+// Profile Screens
+import NotificationSettingsScreen from '../screens/profile/NotificationSettingsScreen';
+import BackupSettingsScreen from '../screens/profile/BackupSettingsScreen';
+import HelpSupportScreen from '../screens/profile/HelpSupportScreen';
+import AboutScreen from '../screens/profile/AboutScreen';
+import PrivacyScreen from '../screens/profile/PrivacyScreen';
+import VersionInfoScreen from '../screens/profile/VersionInfoScreen';
+
 import { useAuth } from '../contexts/AuthContext';
 import { Colors } from '../constants/Colors';
 import { globalStyles } from '../styles/globalStyles';
@@ -134,6 +149,47 @@ const HomeStackNavigator = () => {
           headerTintColor: Colors.surface,
           headerTitleStyle: { fontWeight: 'bold' }
         }}
+      />
+      <Stack.Screen 
+        name="AppointmentDetails" 
+        component={AppointmentDetailsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="PatientDetails" 
+        component={PatientDetailsScreen}
+        options={{ headerShown: false }}
+      />
+      {/* Profile Screens */}
+      <Stack.Screen 
+        name="NotificationSettings" 
+        component={NotificationSettingsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="BackupSettings" 
+        component={BackupSettingsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="HelpSupport" 
+        component={HelpSupportScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="About" 
+        component={AboutScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="Privacy" 
+        component={PrivacyScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="VersionInfo" 
+        component={VersionInfoScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

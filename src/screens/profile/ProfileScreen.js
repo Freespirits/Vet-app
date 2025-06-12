@@ -205,7 +205,7 @@ const ProfileScreen = ({ navigation }) => {
       ],
     },
     {
-      title: 'Conta',
+      title: 'Sessão',
       items: [
         {
           id: 'logout',
@@ -275,10 +275,7 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* User Info */}
-
         {/* Profile Sections */}
         <View style={styles.sectionsContainer}>
           {profileSections.map(renderSection)}
@@ -295,93 +292,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  header: {
-    paddingTop: 50,
-    paddingBottom: 20,
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
-  },
-  headerContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.surface,
-  },
-  headerSpacer: {
-    width: 40,
-  },
   content: {
     flex: 1,
   },
-  // User Section
-  userSection: {
-    padding: 20,
-    paddingBottom: 10,
-  },
-  userCard: {
-    borderRadius: 20,
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  userAvatar: {
-    marginRight: 16,
-  },
-  avatarGradient: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  userInfo: {
-    flex: 1,
-  },
-  userName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.text,
-  },
-  userEmail: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    marginTop: 4,
-  },
-  userRole: {
-    fontSize: 12,
-    color: Colors.primary,
-    fontWeight: '500',
-    marginTop: 4,
-  },
-  editButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: `${Colors.primary}15`,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  // Sections
   sectionsContainer: {
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
   section: {
     marginBottom: 24,
