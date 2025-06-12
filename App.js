@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar, View, Image, StyleSheet } from 'react-native';
+import { StatusBar, View, Text, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as SplashScreen from 'expo-splash-screen';
 import { AuthProvider } from './src/contexts/AuthContext';
@@ -36,11 +36,10 @@ export default function App() {
   if (!appIsReady) {
     return (
       <View style={styles.splashContainer}>
-        <Image 
-          source={require('./assets/icon.png')} 
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <View style={styles.logoPlaceholder}>
+          <Text style={styles.logoText}>🐾</Text>
+          <Text style={styles.appName}>PetCare Pro</Text>
+        </View>
         <StatusBar style="light" backgroundColor={Colors.primary} />
       </View>
     );
@@ -63,8 +62,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  logo: {
-    width: 200,
-    height: 200,
+  logoPlaceholder: {
+    alignItems: 'center',
+  },
+  logoText: {
+    fontSize: 80,
+    marginBottom: 16,
+  },
+  appName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: Colors.surface,
   },
 });

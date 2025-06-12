@@ -17,7 +17,8 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.petcarepro.app",
-      "icon": "./assets/icon.png"
+      "icon": "./assets/icon.png",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,7 +27,11 @@
       },
       "package": "com.petcarepro.app",
       "versionCode": 1,
-      "icon": "./assets/icon.png"
+      "icon": "./assets/icon.png",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -40,6 +45,8 @@
         "projectId": "5acfcab5-fc10-403a-9b2f-9a9782cfa0ac"
       }
     },
-    "owner": "estevam5s"
+    "owner": "estevam5s",
+    "platforms": ["ios", "android", "web"],
+    "sdkVersion": "53.0.0"
   }
 }

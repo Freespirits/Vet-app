@@ -8,7 +8,6 @@ import {
   Platform,
   Alert,
   StyleSheet,
-  Image,
   TouchableOpacity
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -200,11 +199,9 @@ const LoginScreen = ({ navigation }) => {
             {/* Logo and Header */}
             <View style={styles.header}>
               <View style={styles.logoContainer}>
-                <Image 
-                  source={require('../../../assets/logo.png')} 
-                  style={styles.logo}
-                  resizeMode="contain"
-                />
+                <View style={styles.logoPlaceholder}>
+                  <Text style={styles.logoEmoji}>🐾</Text>
+                </View>
               </View>
               <Text style={styles.appTitle}>PetCare Pro</Text>
               <Text style={styles.appSubtitle}>
@@ -427,10 +424,16 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 8,
   },
-  logo: {
+  logoPlaceholder: {
     width: 100,
     height: 100,
     borderRadius: 50,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoEmoji: {
+    fontSize: 50,
   },
   appTitle: {
     fontSize: 32,
