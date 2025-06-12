@@ -4,10 +4,10 @@
     "slug": "petcare-pro",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/logo.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#2E7D32"
     },
@@ -16,18 +16,20 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.petcarepro.app"
+      "bundleIdentifier": "com.petcarepro.app",
+      "icon": "./assets/icon.png"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#2E7D32"
       },
       "package": "com.petcarepro.app",
-      "versionCode": 1
+      "versionCode": 1,
+      "icon": "./assets/icon.png"
     },
     "web": {
-      "favicon": "./assets/logo.png",
+      "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
     "plugins": [

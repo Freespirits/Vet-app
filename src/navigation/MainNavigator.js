@@ -22,6 +22,8 @@ import AppointmentDetailsScreen from '../screens/AppointmentDetailsScreen';
 import PatientDetailsScreen from '../screens/PatientDetailsScreen';
 
 // Profile Screens
+import EditProfileScreen from '../screens/profile/EditProfileScreen';
+import ChangePasswordScreen from '../screens/profile/ChangePasswordScreen';
 import NotificationSettingsScreen from '../screens/profile/NotificationSettingsScreen';
 import BackupSettingsScreen from '../screens/profile/BackupSettingsScreen';
 import HelpSupportScreen from '../screens/profile/HelpSupportScreen';
@@ -99,6 +101,16 @@ const HomeStackNavigator = () => {
           headerShown: true,
           header: () => <ProfileHeader navigation={navigation} user={user} />
         })}
+      />
+      <Stack.Screen 
+        name="EditProfile" 
+        component={EditProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="ChangePassword" 
+        component={ChangePasswordScreen}
+        options={{ headerShown: false }}
       />
       <Stack.Screen 
         name="NewConsultation" 

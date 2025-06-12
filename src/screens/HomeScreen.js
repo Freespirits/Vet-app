@@ -13,6 +13,10 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../constants/Colors';
+import { AppointmentService } from '../services/AppointmentService';
+import { ConsultationService } from '../services/ConsultationService';
+import { ClientService } from '../services/ClientService';
+import { PetService } from '../services/PetService';
 
 const { width } = Dimensions.get('window');
 
@@ -21,10 +25,10 @@ const HomeScreen = ({ navigation }) => {
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [recentPatients, setRecentPatients] = useState([]);
   const [stats, setStats] = useState({
-    todayTotal: 5,
-    weekTotal: 23,
-    pendingTotal: 3,
-    totalPatients: 127,
+    todayTotal: 0,
+    weekTotal: 0,
+    pendingTotal: 0,
+    totalPatients: 0,
   });
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -33,52 +37,86 @@ const HomeScreen = ({ navigation }) => {
     loadDashboardData();
   }, []);
 
-  // Dados mockados para demonstração
-  const mockTodayAppointments = [
-    {
-      id: 1,
-      patient: { name: 'Rex', owner: 'João Silva' },
-      dateTime: new Date().toISOString(),
-      type: 'Consulta de rotina'
-    },
-    {
-      id: 2,
-      patient: { name: 'Mia', owner: 'Maria Santos' },
-      dateTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
-      type: 'Vacinação'
-    },
-    {
-      id: 3,
-      patient: { name: 'Luna', owner: 'Pedro Costa' },
-      dateTime: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
-      type: 'Castração'
+  const loadDashboardData = async () => {
+    try {
+      setLoading(true);
+      
+      // Carregar dados reais do Supabase
+      const [
+        allAppointments,
+        allConsultations,
+        allClients,
+        allPets
+      ] = await Promise.all([
+        AppointmentService.getAll(),
+        ConsultationService.getAll(),
+        ClientService.getAll(),
+        PetService.getAll()
+      ]);
+
+      // Filtrar agendamentos de hoje
+      const today = new Date();
+      const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+
+      const todayItems = allAppointments.filter(appointment => {
+        const appointmentDate = new Date(appointment.date);
+        return appointmentDate >= todayStart && appointmentDate < todayEnd;
+      });
+
+      // Filtrar próximos agendamentos (próximos 7 dias, excluindo hoje)
+      const nextWeek = new Date();
+      nextWeek.setDate(today.getDate() + 7);
+
+      const upcomingItems = allAppointments.filter(appointment => {
+        const appointmentDate = new Date(appointment.date);
+        return appointmentDate >= todayEnd && appointmentDate <= nextWeek;
+      });
+
+      // Pacientes recentes (últimos 5 pets cadastrados)
+      const sortedPets = allPets
+        .sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt))
+        .slice(0, 5);
+
+      // Calcular estatísticas
+      const weekStart = new Date();
+      weekStart.setDate(today.getDate() - 7);
+      
+      const weekItems = allAppointments.filter(appointment => {
+        const appointmentDate = new Date(appointment.date);
+        return appointmentDate >= weekStart;
+      });
+
+      setTodayAppointments(todayItems);
+      setUpcomingAppointments(upcomingItems);
+      setRecentPatients(sortedPets);
+      setStats({
+        todayTotal: todayItems.length,
+        weekTotal: weekItems.length,
+        pendingTotal: allAppointments.filter(a => a.status === 'scheduled').length,
+        totalPatients: allPets.length,
+      });
+
+    } catch (error) {
+      console.error('Erro ao carregar dados:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const mockUpcomingAppointments = [
-    {
-      id: 4,
-      patient: { name: 'Thor', owner: 'Ana Lima' },
-      dateTime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-      type: 'Retorno'
-    },
-    {
-      id: 5,
-      patient: { name: 'Bella', owner: 'Carlos Oliveira' },
-      dateTime: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
-      type: 'Consulta de emergência'
-    }
-  ];
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadDashboardData();
+    setRefreshing(false);
+  };
 
-  const mockRecentPatients = [
-    { id: 1, name: 'Rex', owner: 'João Silva', species: 'Cão', breed: 'Golden Retriever' },
-    { id: 2, name: 'Mia', owner: 'Maria Santos', species: 'Gato', breed: 'Persa' },
-    { id: 3, name: 'Luna', owner: 'Pedro Costa', species: 'Cão', breed: 'Labrador' },
-    { id: 4, name: 'Thor', owner: 'Ana Lima', species: 'Cão', breed: 'Pastor Alemão' },
-    { id: 5, name: 'Bella', owner: 'Carlos Oliveira', species: 'Gato', breed: 'Siamês' }
-  ];
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Bom dia';
+    if (hour < 18) return 'Boa tarde';
+    return 'Boa noite';
+  };
 
-  // Funções auxiliares para datas
   const formatDate = (date, format = 'full') => {
     const d = new Date(date);
     const days = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
@@ -107,41 +145,6 @@ const HomeScreen = ({ navigation }) => {
     tomorrow.setDate(tomorrow.getDate() + 1);
     const checkDate = new Date(date);
     return tomorrow.toDateString() === checkDate.toDateString();
-  };
-
-  const addDays = (date, days) => {
-    const result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-  };
-
-  const loadDashboardData = async () => {
-    try {
-      setLoading(true);
-      // Simular carregamento de dados
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setTodayAppointments(mockTodayAppointments);
-      setUpcomingAppointments(mockUpcomingAppointments);
-      setRecentPatients(mockRecentPatients);
-    } catch (error) {
-      console.error('Erro ao carregar dados:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await loadDashboardData();
-    setRefreshing(false);
-  };
-
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'Bom dia';
-    if (hour < 18) return 'Boa tarde';
-    return 'Boa noite';
   };
 
   const formatAppointmentTime = (dateTime) => {
@@ -180,14 +183,6 @@ const HomeScreen = ({ navigation }) => {
       color: Colors.info,
       onPress: () => navigation.navigate('VetLibrary'),
     },
-    // {
-    //   id: 'emergency',
-    //   title: 'Emergência',
-    //   subtitle: 'Consulta urgente',
-    //   icon: 'medical-outline',
-    //   color: Colors.error,
-    //   onPress: () => navigation.navigate('Emergency'),
-    // },
   ];
 
   const statsCards = [
@@ -262,47 +257,71 @@ const HomeScreen = ({ navigation }) => {
     </View>
   );
 
-  const renderAppointmentCard = (appointment, showDate = false) => (
-    <TouchableOpacity
-      key={appointment.id}
-      style={styles.appointmentCard}
-      onPress={() => navigation.navigate('AppointmentDetails', { appointmentId: appointment.id })}
-      activeOpacity={0.7}
-    >
-      <View style={styles.appointmentInfo}>
-        <View style={styles.appointmentHeader}>
-          <Text style={styles.patientName}>{appointment.patient?.name || 'Paciente'}</Text>
-          <Text style={styles.appointmentTime}>
-            {showDate && `${getDateLabel(appointment.dateTime)} • `}
-            {formatAppointmentTime(appointment.dateTime)}
-          </Text>
-        </View>
-        <Text style={styles.ownerName}>{appointment.patient?.owner || 'Proprietário'}</Text>
-        <Text style={styles.appointmentType}>{appointment.type || 'Consulta'}</Text>
-      </View>
-      <View style={[styles.statusBadge, { backgroundColor: `${Colors.primary}20` }]}>
-        <Ionicons name="time-outline" size={12} color={Colors.primary} />
-      </View>
-    </TouchableOpacity>
-  );
+  const renderAppointmentCard = (appointment, showDate = false) => {
+    // Verificar se tem dados válidos antes de renderizar
+    if (!appointment || !appointment.id) return null;
 
-  const renderPatientCard = (patient) => (
-    <TouchableOpacity
-      key={patient.id}
-      style={styles.patientCard}
-      onPress={() => navigation.navigate('PatientDetails', { patientId: patient.id })}
-      activeOpacity={0.7}
-    >
-      <View style={[styles.patientAvatar, { backgroundColor: `${Colors.primary}20` }]}>
-        <Ionicons name="paw" size={16} color={Colors.primary} />
-      </View>
-      <View style={styles.patientInfo}>
-        <Text style={styles.patientName}>{patient.name}</Text>
-        <Text style={styles.patientOwner}>{patient.owner}</Text>
-        <Text style={styles.patientDetails}>{patient.species} • {patient.breed}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+    return (
+      <TouchableOpacity
+        key={appointment.id}
+        style={styles.appointmentCard}
+        onPress={() => {
+          // Navegar apenas se tiver ID válido
+          if (appointment.id && typeof appointment.id === 'string' && appointment.id.length > 10) {
+            navigation.navigate('AppointmentDetails', { appointmentId: appointment.id });
+          } else {
+            Alert.alert('Informação', `Consulta: ${appointment.title || 'Sem título'}\nCliente: ${appointment.client?.name || 'N/A'}\nPet: ${appointment.pet?.name || 'N/A'}`);
+          }
+        }}
+        activeOpacity={0.7}
+      >
+        <View style={styles.appointmentInfo}>
+          <View style={styles.appointmentHeader}>
+            <Text style={styles.patientName}>{appointment.pet?.name || appointment.title || 'Paciente'}</Text>
+            <Text style={styles.appointmentTime}>
+              {showDate && `${getDateLabel(appointment.date)} • `}
+              {formatAppointmentTime(appointment.date)}
+            </Text>
+          </View>
+          <Text style={styles.ownerName}>{appointment.client?.name || 'Proprietário'}</Text>
+          <Text style={styles.appointmentType}>{appointment.title || appointment.type || 'Consulta'}</Text>
+        </View>
+        <View style={[styles.statusBadge, { backgroundColor: `${Colors.primary}20` }]}>
+          <Ionicons name="time-outline" size={12} color={Colors.primary} />
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderPatientCard = (patient) => {
+    // Verificar se tem dados válidos antes de renderizar
+    if (!patient || !patient.id) return null;
+
+    return (
+      <TouchableOpacity
+        key={patient.id}
+        style={styles.patientCard}
+        onPress={() => {
+          // Navegar apenas se tiver ID válido
+          if (patient.id && typeof patient.id === 'string' && patient.id.length > 10) {
+            navigation.navigate('PatientDetails', { patientId: patient.id });
+          } else {
+            Alert.alert('Informação', `Pet: ${patient.name}\nProprietário: ${patient.client?.name || 'N/A'}\nEspécie: ${patient.species || 'N/A'}`);
+          }
+        }}
+        activeOpacity={0.7}
+      >
+        <View style={[styles.patientAvatar, { backgroundColor: `${Colors.primary}20` }]}>
+          <Ionicons name="paw" size={16} color={Colors.primary} />
+        </View>
+        <View style={styles.patientInfo}>
+          <Text style={styles.patientName}>{patient.name}</Text>
+          <Text style={styles.patientOwner}>{patient.client?.name || 'Proprietário'}</Text>
+          <Text style={styles.patientDetails}>{patient.species} • {patient.breed || 'SRD'}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -358,7 +377,7 @@ const HomeScreen = ({ navigation }) => {
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Consultas de Hoje</Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Appointments')}
+              onPress={() => navigation.navigate('Agenda')}
               style={styles.seeAllButton}
             >
               <Text style={styles.seeAllText}>Ver todas</Text>
@@ -385,7 +404,7 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Próximas Consultas</Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Appointments')}
+                onPress={() => navigation.navigate('Agenda')}
                 style={styles.seeAllButton}
               >
                 <Text style={styles.seeAllText}>Ver todas</Text>
@@ -405,7 +424,7 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Pacientes Recentes</Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Patients')}
+                onPress={() => navigation.navigate('Pets')}
                 style={styles.seeAllButton}
               >
                 <Text style={styles.seeAllText}>Ver todos</Text>
