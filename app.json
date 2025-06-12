@@ -23,7 +23,8 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#2E7D32"
       },
-      "package": "com.petcarepro.app"
+      "package": "com.petcarepro.app",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/logo.png",
@@ -31,6 +32,12 @@
     },
     "plugins": [
       "expo-splash-screen"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "5acfcab5-fc10-403a-9b2f-9a9782cfa0ac"
+      }
+    },
+    "owner": "estevam5s"
   }
 }
