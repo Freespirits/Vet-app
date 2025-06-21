@@ -1,5 +1,3 @@
-🚀 **Projetos da Organização**
-
 🏥 **Saúde e Medicina Veterinária**
 
 🐾 **PetCare Pro - React Native**
