@@ -16,26 +16,3 @@
 * ☁️ **Sincronização em nuvem** com backup automático
 * 🔄 **Funcionamento offline** com sincronização posterior
 * 📈 **Relatórios e analytics** para gestão da clínica
-
-**🛠️ Stack Tecnológica:**
-- **Frontend Mobile:** React Native 0.79.2 + Expo SDK 53
-- **Backend:** Supabase (PostgreSQL + Auth + Storage)
-- **Navegação:** React Navigation v6
-- **UI/UX:** Linear Gradient + Vector Icons + Gesture Handler
-- **Armazenamento:** AsyncStorage + Supabase Database
-- **Autenticação:** JWT + OAuth via Supabase
-
-**📱 Funcionalidades Principais:**
-- ✅ Gestão completa de clientes e pets
-- ✅ Sistema de agendamentos com notificações
-- ✅ Registro detalhado de consultas médicas
-- ✅ Biblioteca de medicamentos e protocolos
-- ✅ Dashboard com estatísticas da clínica
-- ✅ Backup e restauração de dados
-- ✅ Perfil personalizado do veterinário
-- ✅ Busca avançada e filtros inteligentes
-
-**🎯 Público Alvo:**
-Veterinários, clínicas veterinárias, petshops e profissionais da saúde animal no Brasil
-
-**📊 Status:** ✅ Funcional - Versão 1.0.0 em produção
