@@ -16,3 +16,5 @@
 * ☁️ **Sincronização em nuvem** com backup automático
 * 🔄 **Funcionamento offline** com sincronização posterior
 * 📈 **Relatórios e analytics** para gestão da clínica
+
+https://github.com/PetCareAi/consultorio-app
