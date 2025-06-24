@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/logo.png" alt="PetCare Pro Logo" width="200" height="200" style="border-radius: 50%; box-shadow: 0 10px 30px rgba(46, 125, 50, 0.3);">
+  <img src="https://github.com/PetCareAi/.github/blob/main/imagens/mobile.png?raw=true" alt="PetCare Pro Logo" width="120" height="120" style="border-radius: 50%; box-shadow: 0 10px 30px rgba(46, 125, 50, 0.3);">
   
   <h1 style="color: #2E7D32; margin-top: 20px;">🐾 PetCare Pro</h1>
   
