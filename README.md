@@ -1218,5 +1218,4 @@ Oferecemos treinamentos gratuitos para maximizar o uso do sistema:
   </p>
   
   <p><small>© 2024 PetCare Pro. Todos os direitos reservados.</small></p>
-  
 </div>
