@@ -16,14 +16,14 @@ const VersionInfoScreen = ({ navigation }) => {
   const currentVersion = {
     version: '1.0.0',
     build: '100',
-    releaseDate: '01/01/2024',
+    releaseDate: '01/07/2025',
     size: '25.4 MB',
   };
 
   const changelog = [
     {
       version: '1.0.0',
-      date: '01/01/2024',
+      date: '01/07/2025',
       type: 'major',
       changes: [
         'Lançamento inicial do VetApp',
@@ -123,7 +123,7 @@ const VersionInfoScreen = ({ navigation }) => {
     // Link para a loja de aplicativos
     const appStoreUrl = 'https://apps.apple.com/app/vetapp';
     const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.vetapp';
-    
+
     // Detectar plataforma e abrir a loja apropriada
     Linking.openURL(Platform.OS === 'ios' ? appStoreUrl : playStoreUrl);
   };
@@ -182,7 +182,7 @@ const VersionInfoScreen = ({ navigation }) => {
         </View>
         <Text style={styles.changelogDate}>{item.date}</Text>
       </View>
-      
+
       <View style={styles.changesList}>
         {item.changes.map((change, index) => (
           <View key={index} style={styles.changeItem}>
@@ -258,7 +258,7 @@ const VersionInfoScreen = ({ navigation }) => {
             <View style={styles.infoContent}>
               <Text style={styles.infoTitle}>Atualizações Automáticas</Text>
               <Text style={styles.infoText}>
-                Mantenha seu app sempre atualizado para ter acesso às últimas funcionalidades 
+                Mantenha seu app sempre atualizado para ter acesso às últimas funcionalidades
                 e correções de segurança. Ative as atualizações automáticas na sua loja de aplicativos.
               </Text>
             </View>

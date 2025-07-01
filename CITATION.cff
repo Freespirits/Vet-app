@@ -1,0 +1,72 @@
+cff-version: 1.2.0
+message: "Se você usar este software, por favor cite-o usando os metadados deste arquivo."
+type: software
+title: "PetCare Pro - Sistema Completo para Gestão Veterinária"
+abstract: "Sistema mobile completo para gestão de clínicas veterinárias, desenvolvido em React Native com Expo. Inclui agendamento de consultas, gestão de pacientes, histórico médico, biblioteca veterinária e sistema de backup."
+authors:
+  - family-names: "PetCare AI Team"
+    given-names: "Desenvolvimento"
+    orcid: ""
+    affiliation: "PetCare AI Solutions"
+    email: "dev@petcare.ai"
+identifiers:
+  - type: url
+    value: "https://github.com/PetCareAi/consultorio-app"
+    description: "Repositório principal no GitHub"
+repository-code: "https://github.com/PetCareAi/consultorio-app"
+url: "https://petcare.ai"
+license: MIT
+version: "1.0.0"
+date-released: "2024-01-01"
+keywords:
+  - veterinária
+  - medicina-veterinária
+  - gestão-clínica
+  - react-native
+  - expo
+  - mobile-app
+  - supabase
+  - petcare
+  - agendamento
+  - prontuário-digital
+  - pets
+  - animais
+  - clínica
+  - hospital-veterinário
+preferred-citation:
+  type: software
+  title: "PetCare Pro: Sistema Mobile para Gestão Veterinária"
+  authors:
+    - family-names: "PetCare AI Team"
+      given-names: "Desenvolvimento"
+  version: "1.0.0"
+  date-released: "2024-01-01"
+  url: "https://github.com/PetCareAi/consultorio-app"
+  license: MIT
+  abstract: "Aplicativo mobile desenvolvido em React Native para gestão completa de clínicas veterinárias, incluindo agendamento de consultas, cadastro de pacientes, histórico médico digital e biblioteca de medicamentos veterinários."
+references:
+  - type: software
+    title: "React Native"
+    authors:
+      - name: "Meta Platforms, Inc."
+    url: "https://reactnative.dev"
+    version: "0.73.x"
+  - type: software
+    title: "Expo SDK"
+    authors:
+      - name: "Expo Team"
+    url: "https://expo.dev"
+    version: "50.x"
+  - type: software
+    title: "Supabase"
+    authors:
+      - name: "Supabase Inc."
+    url: "https://supabase.com"
+    notes: "Backend as a Service utilizado para autenticação e banco de dados"
+contact:
+  - email: "contato@petcare.ai"
+    name: "Equipe PetCare AI"
+    affiliation: "PetCare AI Solutions"
+repository-artifact: "https://github.com/PetCareAi/consultorio-app/releases"
+commit: ""
+doi: ""

@@ -861,21 +861,21 @@ LIMIT 10;
 
 ## 📈 Roadmap
 
-### 🎯 Versão 1.1.0 (Q2 2024)
+### 🎯 Versão 1.1.0 (Q2 2025)
 - [ ] 📧 **Sistema de notificações push**
 - [ ] 🔄 **Sincronização offline**
 - [ ] 📊 **Relatórios básicos em PDF**
 - [ ] 🔐 **Recuperação de senha**
 - [ ] 👤 **Perfil detalhado do veterinário**
 
-### 🎯 Versão 1.2.0 (Q3 2024)
+### 🎯 Versão 1.2.0 (Q3 2025)
 - [ ] 📅 **Agendamento online para clientes**
 - [ ] 🤖 **Lembretes automáticos (WhatsApp/SMS)**
 - [ ] 📱 **App dedicado para clientes**
 - [ ] 💳 **Integração com meios de pagamento**
 - [ ] 📋 **Templates de prescrição**
 
-### 🎯 Versão 1.3.0 (Q4 2024)
+### 🎯 Versão 1.3.0 (Q4 2025)
 - [ ] 🏥 **Suporte multi-clínica**
 - [ ] 👥 **Sistema de funcionários e permissões**
 - [ ] 📊 **Dashboard avançado com gráficos**
@@ -1041,7 +1041,7 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 ```
 MIT License
 
-Copyright (c) 2024 PetCare Pro
+Copyright (c) 2025 PetCare Pro
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1217,6 +1217,6 @@ Oferecemos treinamentos gratuitos para maximizar o uso do sistema:
     <img src="https://img.shields.io/badge/Open%20Source-💪-blue?style=for-the-badge" alt="Open Source">
   </p>
   
-  <p><small>© 2024 PetCare Pro. Todos os direitos reservados.</small></p>
+  <p><small>© 2025 PetCare Pro. Todos os direitos reservados.</small></p>
   
 </div>

@@ -1,0 +1,158 @@
+COPYRIGHT NOTICE
+
+PetCare Pro - Sistema de Gestão Veterinária
+Copyright (c) 2024 PetCare AI Solutions
+
+Todos os direitos reservados.
+
+================================================================================
+
+AVISO DE COPYRIGHT
+
+Este software e documentação associada (o "Software") são propriedade da
+PetCare AI Solutions e estão protegidos por leis de direitos autorais
+brasileiras e internacionais.
+
+TERMOS DE USO
+
+1. LICENÇA LIMITADA
+   Este software é licenciado, não vendido. A PetCare AI Solutions concede
+   a você uma licença limitada, não exclusiva e intransferível para usar o
+   Software de acordo com os termos estabelecidos na licença MIT incluída
+   neste projeto.
+
+2. RESTRIÇÕES
+   Você não pode:
+   - Remover ou alterar avisos de copyright
+   - Reverse engineer, descompilar ou desmontar o Software
+   - Usar o Software para fins ilegais ou não autorizados
+   - Redistribuir o Software sem autorização expressa
+
+3. PROPRIEDADE INTELECTUAL
+   O Software contém informações proprietárias e confidenciais da PetCare AI
+   Solutions. Todos os direitos não expressamente concedidos são reservados.
+
+COMPONENTES DE TERCEIROS
+
+Este software inclui componentes de código aberto com suas próprias licenças:
+
+- React Native (MIT License)
+- Expo SDK (MIT License)
+- Supabase Client (MIT License)
+- React Navigation (MIT License)
+- Date-fns (MIT License)
+- Ionicons (MIT License)
+
+Ver arquivo LICENSES-THIRD-PARTY.txt para detalhes completos.
+
+ASSETS E CONTEÚDO
+
+- Ícones e imagens: Criados pela equipe PetCare Pro ou licenciados adequadamente
+- Dados de medicamentos: Baseados em fontes públicas e literatura veterinária
+- Interface e design: Copyright PetCare AI Solutions
+- Documentação: Copyright PetCare AI Solutions
+
+MARCAS REGISTRADAS
+
+"PetCare Pro" é uma marca da PetCare AI Solutions. Todas as outras marcas
+mencionadas são propriedades de seus respectivos proprietários.
+
+DADOS E PRIVACIDADE
+
+Este software processa dados médicos veterinários. O uso deve estar em
+conformidade com:
+- Lei Geral de Proteção de Dados (LGPD) - Brasil
+- Regulamentações do Conselho Federal de Medicina Veterinária (CFMV)
+- Normas de privacidade e segurança aplicáveis
+
+RESPONSABILIDADE
+
+O Software é fornecido "como está", sem garantias de qualquer tipo. A
+PetCare AI Solutions não se responsabiliza por danos diretos, indiretos,
+incidentais ou consequenciais resultantes do uso do Software.
+
+JURISDIÇÃO
+
+Este aviso de copyright é regido pelas leis do Brasil. Quaisquer disputas
+serão resolvidas nos tribunais competentes de São Paulo, SP.
+
+CONTATO
+
+Para questões relacionadas a copyright ou licenciamento:
+
+PetCare AI Solutions
+Email: legal@petcare.pro
+Telefone: +55 11 9999-9999
+Endereço: São Paulo, SP - Brasil
+
+================================================================================
+
+DETALHES TÉCNICOS DO COPYRIGHT
+
+Arquivos cobertos por este copyright:
+- Todo código fonte em /src/
+- Documentação em arquivos .md
+- Configurações do projeto
+- Assets e recursos visuais
+- Scripts de build e deploy
+
+Exclusões:
+- Dependências de terceiros em node_modules/
+- Arquivos de configuração padrão do React Native/Expo
+- Templates e boilerplates públicos utilizados
+
+HISTÓRICO DE COPYRIGHT
+
+2024-07-01: Copyright inicial estabelecido
+2024-07-01: Primeira versão pública (v1.0.0) lançada
+2024-07-01: Licença MIT aplicada para componentes open source
+
+RECONHECIMENTOS
+
+Agradecemos a comunidade open source cujas ferramentas e bibliotecas
+tornaram este projeto possível:
+- Meta (React Native)
+- Expo Team
+- Supabase Team
+- React Navigation Contributors
+- Toda a comunidade JavaScript/TypeScript
+
+================================================================================
+
+ANEXO A - DEFINIÇÕES
+
+"Software": Refere-se ao aplicativo PetCare Pro, incluindo todo código fonte,
+documentação, assets e recursos relacionados.
+
+"Uso Comercial": Qualquer uso do Software em ambiente de produção para
+atividades comerciais ou profissionais.
+
+"Modificação": Qualquer alteração, adição ou remoção do código fonte original
+do Software.
+
+"Distribuição": Ato de fornecer cópias do Software a terceiros por qualquer
+meio (download, mídia física, etc.).
+
+ANEXO B - LICENÇAS DE COMPONENTES
+
+Para uma lista completa das licenças de componentes de terceiros utilizados
+neste projeto, consulte o arquivo LICENSES-THIRD-PARTY.txt.
+
+ANEXO C - CONFORMIDADE REGULATÓRIA
+
+Este software foi desenvolvido considerando:
+- Boas práticas de desenvolvimento seguro
+- Padrões de segurança da informação
+- Regulamentações específicas da área veterinária
+- Requisitos de proteção de dados pessoais
+
+================================================================================
+
+Esta é uma versão traduzida e adaptada para o contexto brasileiro. Em caso
+de conflito entre versões, a versão em português prevalece para usuários
+no Brasil.
+
+Data da última atualização: 01 de Julho de 2024
+Versão do documento: 1.0
+
+FIM DO AVISO DE COPYRIGHT

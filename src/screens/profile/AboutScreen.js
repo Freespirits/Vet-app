@@ -126,7 +126,7 @@ const AboutScreen = ({ navigation }) => {
 
   const renderFAQItem = (item) => {
     const isExpanded = expandedFAQ === item.id;
-    
+
     return (
       <View key={item.id} style={styles.faqItem}>
         <TouchableOpacity
@@ -187,7 +187,7 @@ const AboutScreen = ({ navigation }) => {
             <Text style={styles.appName}>{appInfo.name}</Text>
             <Text style={styles.appVersion}>Versão {appInfo.version} (Build {appInfo.build})</Text>
             <Text style={styles.appDeveloper}>Desenvolvido por {appInfo.developer}</Text>
-            
+
             <View style={styles.appActions}>
               <TouchableOpacity style={styles.appAction} onPress={openWebsite}>
                 <Ionicons name="globe-outline" size={20} color={Colors.primary} />
@@ -241,7 +241,7 @@ const AboutScreen = ({ navigation }) => {
         {/* Credits */}
         <View style={styles.creditsSection}>
           <Text style={styles.creditsText}>
-            © 2024 VetTech Solutions. Todos os direitos reservados.
+            © 2025 VetTech Solutions. Todos os direitos reservados.
           </Text>
           <Text style={styles.creditsSubtext}>
             Feito com ❤️ para veterinários

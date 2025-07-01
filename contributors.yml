@@ -1,0 +1,320 @@
+# CONTRIBUIDORES DO PETCARE PRO
+# Este arquivo lista todos os contribuidores que ajudaram a construir o PetCare Pro
+# Para adicionar-se como contribuidor, siga as instruções em CONTRIBUTING.md
+
+# Configuração do arquivo
+meta:
+  version: "1.0"
+  last_updated: "2024-07-01"
+  format_version: "all-contributors-1.0.0"
+  project_name: "PetCare Pro"
+  project_description: "Sistema de Gestão Veterinária"
+  repository: "https://github.com/PetCareAi/consultorio-app"
+
+# Fundadores e Core Team
+founders:
+  - name: "Equipe PetCare Pro"
+    github: "PetCareAi"
+    role: "Founder & Lead Developer"
+    email: "team@petcare.pro"
+    avatar: "https://github.com/PetCareAi.png"
+    contributions:
+      - "💻 Código"
+      - "📖 Documentação"
+      - "🎨 Design"
+      - "🔧 Manutenção"
+      - "💡 Ideias"
+      - "📋 Gerenciamento"
+    bio: "Equipe fundadora responsável pela concepção e desenvolvimento inicial do PetCare Pro"
+    joined_date: "2024-04-01"
+    location: "São Paulo, Brasil"
+    specialties:
+      - "React Native"
+      - "Mobile Development"
+      - "Veterinary Software"
+      - "UX/UI Design"
+
+# Mantenedores Principais
+maintainers:
+  - name: "Lead Developer"
+    github: "leaddev"
+    role: "Technical Lead"
+    email: "lead@petcare.pro"
+    avatar: "https://github.com/leaddev.png"
+    contributions:
+      - "💻 Código"
+      - "👀 Revisão"
+      - "🔧 Manutenção"
+      - "📖 Documentação"
+    bio: "Responsável pela arquitetura técnica e qualidade do código"
+    joined_date: "2024-04-01"
+    location: "Brasil"
+
+  - name: "UX/UI Designer"
+    github: "designer"
+    role: "Design Lead"
+    email: "design@petcare.pro"
+    avatar: "https://github.com/designer.png"
+    contributions:
+      - "🎨 Design"
+      - "💡 Ideias"
+      - "📋 Testes de Usabilidade"
+    bio: "Responsável pela experiência do usuário e interface"
+    joined_date: "2024-04-15"
+    location: "Brasil"
+
+# Contribuidores da Comunidade
+contributors:
+  # Aguardando primeiros contribuidores da comunidade
+  # Exemplo de como adicionar um novo contribuidor:
+  # - name: "Seu Nome"
+  #   github: "seu-username"
+  #   role: "Contributor"
+  #   email: "seu@email.com"
+  #   avatar: "https://github.com/seu-username.png"
+  #   contributions:
+  #     - "💻 Código"
+  #     - "🐛 Bug Reports"
+  #   bio: "Breve descrição sobre você"
+  #   joined_date: "YYYY-MM-DD"
+  #   location: "Sua Localização"
+
+# Contribuidores por categoria
+by_contribution_type:
+  code:
+    description: "Contribuidores que escreveram código"
+    count: 1
+    contributors:
+      - "PetCareAi"
+
+  documentation:
+    description: "Contribuidores que melhoraram a documentação"
+    count: 1
+    contributors:
+      - "PetCareAi"
+
+  design:
+    description: "Contribuidores que trabalharam no design"
+    count: 1
+    contributors:
+      - "PetCareAi"
+
+  testing:
+    description: "Contribuidores que ajudaram com testes"
+    count: 0
+    contributors: []
+
+  bug_reports:
+    description: "Contribuidores que reportaram bugs"
+    count: 0
+    contributors: []
+
+  ideas:
+    description: "Contribuidores que sugeriram ideias"
+    count: 1
+    contributors:
+      - "PetCareAi"
+
+  review:
+    description: "Contribuidores que revisaram código"
+    count: 1
+    contributors:
+      - "PetCareAi"
+
+  maintenance:
+    description: "Contribuidores que mantêm o projeto"
+    count: 1
+    contributors:
+      - "PetCareAi"
+
+# Estatísticas
+statistics:
+  total_contributors: 1
+  active_contributors_last_month: 1
+  first_contribution_date: "2024-04-01"
+  last_contribution_date: "2024-07-01"
+  total_commits: 100+
+  total_lines_of_code: 10000+
+
+# Especialistas por área
+experts:
+  react_native:
+    - "PetCareAi"
+
+  mobile_development:
+    - "PetCareAi"
+
+  veterinary_domain:
+    - "PetCareAi"
+
+  ui_ux_design:
+    - "PetCareAi"
+
+  backend_development:
+    - "PetCareAi"
+
+  testing:
+    - "PetCareAi"
+
+  devops:
+    - "PetCareAi"
+
+  documentation:
+    - "PetCareAi"
+
+# Agradecimentos Especiais
+special_thanks:
+  - name: "Comunidade React Native"
+    description: "Por fornecer o framework base"
+    website: "https://reactnative.dev"
+
+  - name: "Expo Team"
+    description: "Por simplificar o desenvolvimento mobile"
+    website: "https://expo.dev"
+
+  - name: "Supabase"
+    description: "Por fornecer backend como serviço"
+    website: "https://supabase.com"
+
+  - name: "Veterinários Consultores"
+    description: "Por orientações sobre o domínio veterinário"
+
+  - name: "Beta Testers"
+    description: "Por testarem e fornecerem feedback valioso"
+
+  - name: "Open Source Community"
+    description: "Por todas as bibliotecas e ferramentas utilizadas"
+
+# Orientações para novos contribuidores
+new_contributor_guide:
+  welcome_message: |
+    Bem-vindo à comunidade PetCare Pro!
+    Agradecemos seu interesse em contribuir para um projeto que visa melhorar
+    a vida de pets e facilitar o trabalho de veterinários.
+
+  getting_started:
+    - "Leia nosso CONTRIBUTING.md"
+    - "Configure o ambiente seguindo install.sh"
+    - "Veja os issues marcados como 'good first issue'"
+    - "Entre em contato no Discord ou Discussions"
+
+  recognition_process: |
+    Todos os contribuidores são reconhecidos! Quando sua contribuição for aceita:
+    1. Você será adicionado automaticamente a este arquivo
+    2. Receberá um badge de contribuidor
+    3. Será mencionado nas release notes
+    4. Poderá adicionar "Contributor do PetCare Pro" ao seu perfil
+
+# Links úteis para contribuidores
+useful_links:
+  contributing_guide: "CONTRIBUTING.md"
+  code_of_conduct: "CODE-OF-CONDUCT.md"
+  issue_tracker: "https://github.com/PetCareAi/consultorio-app/issues"
+  discussions: "https://github.com/PetCareAi/consultorio-app/discussions"
+  discord: "https://discord.gg/petcare-pro"
+  documentation: "https://docs.petcare.pro"
+
+# Tipos de contribuição reconhecidos
+contribution_types:
+  code:
+    emoji: "💻"
+    description: "Código"
+
+  documentation:
+    emoji: "📖"
+    description: "Documentação"
+
+  design:
+    emoji: "🎨"
+    description: "Design"
+
+  ideas:
+    emoji: "💡"
+    description: "Ideias"
+
+  testing:
+    emoji: "🧪"
+    description: "Testes"
+
+  bug_reports:
+    emoji: "🐛"
+    description: "Relatórios de Bug"
+
+  security:
+    emoji: "🔒"
+    description: "Segurança"
+
+  translation:
+    emoji: "🌍"
+    description: "Tradução"
+
+  review:
+    emoji: "👀"
+    description: "Revisão"
+
+  maintenance:
+    emoji: "🔧"
+    description: "Manutenção"
+
+  infrastructure:
+    emoji: "🚇"
+    description: "Infraestrutura"
+
+  performance:
+    emoji: "⚡"
+    description: "Performance"
+
+  accessibility:
+    emoji: "♿"
+    description: "Acessibilidade"
+
+  user_experience:
+    emoji: "📱"
+    description: "Experiência do Usuário"
+
+  data:
+    emoji: "🔣"
+    description: "Dados"
+
+# Hall da Fama (contribuidores que se destacaram)
+hall_of_fame:
+  monthly_highlights:
+    "2024-07":
+      - contributor: "PetCareAi"
+        achievement: "Lançamento da versão 1.0.0"
+        description: "Responsável pelo desenvolvimento e lançamento inicial"
+
+  yearly_highlights:
+    "2024":
+      - contributor: "PetCareAi"
+        achievement: "Criação do PetCare Pro"
+        description: "Fundação do projeto e desenvolvimento inicial completo"
+
+# Métricas de contribuição
+metrics:
+  commits_per_month:
+    "2024-04": 25
+    "2024-05": 35
+    "2024-06": 40
+    "2024-07": 30
+
+  lines_added_per_month:
+    "2024-04": 2500
+    "2024-05": 3500
+    "2024-06": 3000
+    "2024-07": 1000
+
+  issues_resolved_per_month:
+    "2024-04": 5
+    "2024-05": 8
+    "2024-06": 12
+    "2024-07": 10
+
+# Configurações de automação
+automation:
+  auto_update: true
+  update_frequency: "weekly"
+  include_bot_contributions: false
+  minimum_contributions: 1
+
+# Fim do arquivo

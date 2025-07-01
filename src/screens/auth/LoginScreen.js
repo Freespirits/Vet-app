@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  SafeAreaView, 
-  ScrollView, 
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
   KeyboardAvoidingView,
   Platform,
   Alert,
@@ -86,7 +86,7 @@ const LoginScreen = ({ navigation }) => {
 
       if (!result.success) {
         let errorMessage = result.error;
-        
+
         // Tratar diferentes tipos de erro
         if (errorMessage.includes('Invalid login credentials')) {
           errorMessage = 'Email ou senha incorretos';
@@ -105,13 +105,16 @@ const LoginScreen = ({ navigation }) => {
           errorMessage = 'Erro de permissão. Verifique suas credenciais.';
         } else if (errorMessage.includes('PGRST116')) {
           errorMessage = 'Erro de configuração do perfil. Tente novamente.';
+        } else if (errorMessage.includes('duplicate key value violates unique constraint')) {
+          errorMessage = 'Este email já está cadastrado. Tente fazer login.';
+          setIsLogin(true);
         }
-        
+
         Alert.alert('Erro', errorMessage);
       } else if (!isLogin) {
         // Registro bem-sucedido
         Alert.alert(
-          'Cadastro Realizado!', 
+          'Cadastro Realizado!',
           'Sua conta foi criada com sucesso. Você já está logado!',
           [{ text: 'OK' }]
         );
@@ -129,7 +132,7 @@ const LoginScreen = ({ navigation }) => {
 
   const updateField = (field, value) => {
     let formattedValue = value;
-    
+
     if (field === 'phone') {
       formattedValue = formatPhone(value);
     } else if (field === 'email') {
@@ -137,9 +140,9 @@ const LoginScreen = ({ navigation }) => {
     } else if (field === 'crmv') {
       formattedValue = value.toUpperCase();
     }
-    
+
     setFormData(prev => ({ ...prev, [field]: formattedValue }));
-    
+
     // Limpar erro do campo quando usuário começar a digitar
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: null }));
@@ -149,7 +152,7 @@ const LoginScreen = ({ navigation }) => {
   const handleTabChange = (newIsLogin) => {
     setIsLogin(newIsLogin);
     setErrors({});
-    
+
     if (newIsLogin) {
       // Limpar campos de registro quando mudar para login
       setFormData(prev => ({
@@ -188,11 +191,11 @@ const LoginScreen = ({ navigation }) => {
         colors={Colors.primaryGradient}
         style={styles.gradient}
       >
-        <KeyboardAvoidingView 
+        <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.keyboardView}
         >
-          <ScrollView 
+          <ScrollView
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
           >
@@ -291,7 +294,7 @@ const LoginScreen = ({ navigation }) => {
                   />
                 </>
               )}
-              
+
               {/* Campos Comuns */}
               <Input
                 label="Email"
@@ -329,10 +332,10 @@ const LoginScreen = ({ navigation }) => {
               />
 
               {/* Credenciais Demo - apenas no login */}
-              {isLogin && (
+              {/* {isLogin && (
                 <View style={styles.demoContainer}>
                   <Text style={styles.demoTitle}>Credenciais de Demonstração:</Text>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     onPress={fillDemoCredentials}
                     disabled={loading}
                     style={styles.demoCredentials}
@@ -342,7 +345,7 @@ const LoginScreen = ({ navigation }) => {
                     <Text style={styles.demoHint}>Toque aqui para preencher automaticamente</Text>
                   </TouchableOpacity>
                 </View>
-              )}
+              )} */}
 
               {/* Termos de Uso - apenas no cadastro */}
               {!isLogin && (
@@ -357,7 +360,7 @@ const LoginScreen = ({ navigation }) => {
 
               {/* Link para recuperação de senha - apenas no login */}
               {isLogin && (
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.forgotPassword}
                   disabled={loading}
                 >
@@ -369,7 +372,7 @@ const LoginScreen = ({ navigation }) => {
 
               {/* Botão para limpar formulário */}
               {!loading && (formData.email || formData.password || formData.name) && (
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.clearButton}
                   onPress={clearForm}
                 >

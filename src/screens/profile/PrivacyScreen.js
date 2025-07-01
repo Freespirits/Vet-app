@@ -146,11 +146,11 @@ Recomendamos revisar esta política regularmente.`,
             <Ionicons name="shield-checkmark" size={32} color={Colors.primary} />
             <Text style={styles.introTitle}>Sua Privacidade é Importante</Text>
             <Text style={styles.introText}>
-              Esta política explica como coletamos, usamos e protegemos suas informações pessoais no VetApp. 
+              Esta política explica como coletamos, usamos e protegemos suas informações pessoais no VetApp.
               Estamos comprometidos em manter seus dados seguros e privados.
             </Text>
             <Text style={styles.lastUpdated}>
-              Última atualização: 01 de Janeiro de 2024
+              Última atualização: 01 de Julho de 2025
             </Text>
           </View>
         </View>
@@ -164,10 +164,10 @@ Recomendamos revisar esta política regularmente.`,
         <View style={styles.contactSection}>
           <Text style={styles.contactTitle}>Dúvidas sobre Privacidade?</Text>
           <Text style={styles.contactText}>
-            Se você tiver dúvidas sobre esta política ou sobre como tratamos seus dados, 
+            Se você tiver dúvidas sobre esta política ou sobre como tratamos seus dados,
             entre em contato conosco:
           </Text>
-          
+
           <View style={styles.contactInfo}>
             <View style={styles.contactItem}>
               <Ionicons name="mail" size={16} color={Colors.primary} />

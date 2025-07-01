@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
+  const [isRegistering, setIsRegistering] = useState(false); // Novo flag
 
   useEffect(() => {
     // Verificar sessão inicial
@@ -24,23 +25,27 @@ export const AuthProvider = ({ children }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state changed:', event, session);
       setSession(session);
-      
+
       if (event === 'SIGNED_IN' && session?.user) {
-        await loadUserProfile(session.user);
+        // Não criar perfil automaticamente se estiver em processo de registro
+        if (!isRegistering) {
+          await loadUserProfile(session.user);
+        }
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
         setSession(null);
+        setIsRegistering(false); // Reset flag
         setLoading(false);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [isRegistering]);
 
-  const loadUserProfile = async (authUser) => {
+  const loadUserProfile = async (authUser, skipAutoCreate = false) => {
     try {
       console.log('Carregando perfil para usuário:', authUser.id, authUser.email);
-      
+
       // Primeiro, tentar buscar pelo ID
       let { data, error } = await supabase
         .from('users_consultorio')
@@ -51,7 +56,7 @@ export const AuthProvider = ({ children }) => {
       // Se não encontrar pelo ID, tentar buscar pelo email
       if (error && error.code === 'PGRST116') {
         console.log('Perfil não encontrado pelo ID, tentando pelo email...');
-        
+
         const { data: profileByEmail, error: emailError } = await supabase
           .from('users_consultorio')
           .select('*')
@@ -59,10 +64,17 @@ export const AuthProvider = ({ children }) => {
           .single();
 
         if (emailError && emailError.code === 'PGRST116') {
-          // Perfil não existe, criar automaticamente
-          console.log('Perfil não existe, criando automaticamente...');
-          await createUserProfile(authUser);
-          return;
+          // Perfil não existe
+          if (skipAutoCreate) {
+            console.log('Perfil não existe e auto-criação foi pulada');
+            setLoading(false);
+            return;
+          } else {
+            // Criar automaticamente apenas para login (não para registro)
+            console.log('Perfil não existe, criando automaticamente...');
+            await createUserProfile(authUser);
+            return;
+          }
         } else if (emailError) {
           console.error('Erro ao buscar perfil por email:', emailError);
           setLoading(false);
@@ -103,10 +115,10 @@ export const AuthProvider = ({ children }) => {
   const createUserProfile = async (authUser) => {
     try {
       console.log('Criando perfil automático para:', authUser.email);
-      
+
       // Dados padrão para usuário de demonstração
       const isDemo = authUser.email === 'admin@petcare.com';
-      
+
       const profileData = {
         id: authUser.id,
         email: authUser.email,
@@ -141,7 +153,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       console.log('Fazendo login...');
-      
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.toLowerCase().trim(),
         password: password,
@@ -163,9 +175,11 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       console.log('Iniciando registro...');
-      
+
+      setIsRegistering(true); // Sinalizar que está registrando
+
       const email = userData.email.toLowerCase().trim();
-      
+
       // Primeiro, criar usuário na autenticação
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: email,
@@ -179,61 +193,104 @@ export const AuthProvider = ({ children }) => {
 
       if (authError) {
         console.error('Erro na autenticação:', authError);
+        setIsRegistering(false);
         return { success: false, error: authError.message };
       }
 
       if (!authData.user) {
+        setIsRegistering(false);
         return { success: false, error: 'Falha ao criar usuário' };
       }
 
       console.log('Usuário criado na auth, ID:', authData.user.id);
 
-      // Se o usuário foi criado mas não está confirmado, ainda criar o perfil
-      const profileData = {
-        id: authData.user.id,
-        email: email,
-        name: userData.name.trim(),
-        profession: userData.profession || 'Veterinário(a)',
-        clinic: userData.clinic.trim(),
-        crmv: userData.crmv.trim(),
-        phone: userData.phone.trim(),
-      };
+      // Aguardar um pouco para garantir que o evento SIGNED_IN foi processado
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      console.log('Criando perfil com dados:', profileData);
-
-      const { data: profileResult, error: profileError } = await supabase
+      // Verificar se o perfil já existe (criado automaticamente)
+      const { data: existingProfile } = await supabase
         .from('users_consultorio')
-        .insert([profileData])
-        .select()
+        .select('*')
+        .eq('id', authData.user.id)
         .single();
 
-      if (profileError) {
-        console.error('Erro ao criar perfil:', profileError);
-        
-        // Tentar deletar usuário da auth se perfil falhou
-        try {
-          await supabase.auth.signOut();
-        } catch (e) {
-          console.error('Erro ao limpar após falha:', e);
-        }
-        
-        return { 
-          success: false, 
-          error: `Erro ao criar perfil: ${profileError.message}` 
-        };
-      }
+      if (existingProfile) {
+        console.log('Perfil já existe, atualizando com dados do formulário...');
 
-      console.log('Perfil criado com sucesso');
-      
-      // Se o usuário foi auto-confirmado (ambiente de desenvolvimento), definir como usuário ativo
-      if (authData.session) {
+        // Atualizar perfil existente com dados do formulário
+        const { data: updatedProfile, error: updateError } = await supabase
+          .from('users_consultorio')
+          .update({
+            name: userData.name.trim(),
+            profession: userData.profession || 'Veterinário(a)',
+            clinic: userData.clinic.trim(),
+            crmv: userData.crmv.trim(),
+            phone: userData.phone.trim(),
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', authData.user.id)
+          .select()
+          .single();
+
+        if (updateError) {
+          console.error('Erro ao atualizar perfil:', updateError);
+          setIsRegistering(false);
+          return {
+            success: false,
+            error: `Erro ao atualizar perfil: ${updateError.message}`
+          };
+        }
+
+        console.log('Perfil atualizado com sucesso');
+        setUser(updatedProfile);
+        setIsRegistering(false);
+        return { success: true, data: authData };
+      } else {
+        // Criar novo perfil com dados do formulário
+        const profileData = {
+          id: authData.user.id,
+          email: email,
+          name: userData.name.trim(),
+          profession: userData.profession || 'Veterinário(a)',
+          clinic: userData.clinic.trim(),
+          crmv: userData.crmv.trim(),
+          phone: userData.phone.trim(),
+        };
+
+        console.log('Criando perfil com dados:', profileData);
+
+        const { data: profileResult, error: profileError } = await supabase
+          .from('users_consultorio')
+          .insert([profileData])
+          .select()
+          .single();
+
+        if (profileError) {
+          console.error('Erro ao criar perfil:', profileError);
+
+          // Tentar deletar usuário da auth se perfil falhou
+          try {
+            await supabase.auth.signOut();
+          } catch (e) {
+            console.error('Erro ao limpar após falha:', e);
+          }
+
+          setIsRegistering(false);
+          return {
+            success: false,
+            error: `Erro ao criar perfil: ${profileError.message}`
+          };
+        }
+
+        console.log('Perfil criado com sucesso');
         setUser(profileResult);
+        setIsRegistering(false);
+        return { success: true, data: authData };
       }
-      
-      return { success: true, data: authData };
 
     } catch (error) {
       console.error('Erro geral no registro:', error);
+      setIsRegistering(false);
       return { success: false, error: 'Erro interno do sistema' };
     }
   };
@@ -271,6 +328,7 @@ export const AuthProvider = ({ children }) => {
       await supabase.auth.signOut();
       setUser(null);
       setSession(null);
+      setIsRegistering(false);
     } catch (error) {
       console.error('Erro no logout:', error);
     }
