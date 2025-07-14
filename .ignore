@@ -1,0 +1,118 @@
+# Dependências
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Expo
+.expo/
+.expo-shared/
+dist/
+web-build/
+
+# React Native
+.react-native-cli/
+
+# Metro
+.metro-health-check*
+
+# Arquivos de build
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+*.keystore
+*.bundle
+
+# Configurações do VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Configurações do IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Arquivos temporários
+.tmp/
+.cache/
+.temp/
+
+# Logs
+logs/
+*.log
+
+# Arquivos de sistema
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Arquivos de backup
+*.bak
+*.backup
+*.old
+
+# Arquivos de teste
+coverage/
+.nyc_output/
+
+# Arquivos de documentação gerados
+docs/build/
+
+# Arquivos específicos do projeto
+config/secrets.js
+config/keys.js
+
+# Arquivos de deployment
+deployment/
+releases/
+
+# Certificados e chaves
+certificates/
+keys/
+*.pem
+*.crt
+
+# Arquivos de debug
+debug.log
+error.log
+
+# Arquivos de análise de bundle
+bundle-analyzer-report.html
+
+# Arquivos do React Native Debugger
+react-native-debugger.log
+
+# Arquivos do Flipper
+Flipper/
+
+# Dependências nativas
+ios/Pods/
+ios/Podfile.lock
+android/.gradle/
+android/app/build/
+android/build/
+android/gradle/
+android/gradlew
+android/gradlew.bat
+
+# Arquivos gerados automaticamente
+*.generated.js
+*.generated.ts
