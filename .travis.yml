@@ -1,0 +1,201 @@
+# Configuração Travis CI para PetCare Pro
+language: node_js
+
+# Versões do Node.js para testar
+node_js:
+  - "18"
+  - "20"
+
+# Sistema operacional
+os:
+  - linux
+
+# Distribuição
+dist: focal
+
+# Cache para acelerar builds
+cache:
+  directories:
+    - node_modules
+    - ~/.npm
+    - ~/.cache/yarn
+    - $HOME/.expo
+
+# Variáveis de ambiente
+env:
+  global:
+    - EXPO_CLI_NO_LOCALHOST_TUNNEL=1
+    - CI=true
+    - NODE_ENV=test
+
+# Addons necessários
+addons:
+  apt:
+    packages:
+      - jq
+
+# Branches para executar CI
+branches:
+  only:
+    - main
+    - develop
+    - /^release\/.*$/
+    - /^hotfix\/.*$/
+
+# Matrix de builds
+jobs:
+  include:
+    # Testes principais
+    - stage: "Testes"
+      name: "Lint e Testes Unitários"
+      node_js: "18"
+      script:
+        - npm run lint
+        - npm run test:ci
+        - npm run test:coverage
+      after_success:
+        - npm run coverage:upload
+
+    # Build de produção
+    - stage: "Build"
+      name: "Build de Produção"
+      node_js: "18"
+      script:
+        - npm run build:prod
+      if: branch = main
+
+    # Testes E2E (quando disponíveis)
+    - stage: "E2E"
+      name: "Testes End-to-End"
+      node_js: "18"
+      script:
+        - npm run test:e2e
+      if: branch = main
+      allow_failure: true
+
+    # Security audit
+    - stage: "Segurança"
+      name: "Auditoria de Segurança"
+      node_js: "18"
+      script:
+        - npm audit --audit-level moderate
+        - npm run security:check
+      allow_failure: false
+
+# Comandos antes da instalação
+before_install:
+  # Verificar versões
+  - node --version
+  - npm --version
+  
+  # Configurar Git para commits automáticos (se necessário)
+  - git config --global user.email "ci@petcarepro.com"
+  - git config --global user.name "Travis CI"
+  
+  # Instalar dependências globais necessárias
+  - npm install -g expo-cli@latest
+
+# Comandos de instalação
+install:
+  # Instalar dependências com cache
+  - npm ci
+  
+  # Verificar se todas as dependências estão instaladas
+  - npm list --depth=0
+
+# Comandos antes dos scripts
+before_script:
+  # Verificar estrutura do projeto
+  - ls -la
+  
+  # Verificar se arquivos essenciais existem
+  - test -f package.json
+  - test -f App.js
+  
+  # Preparar ambiente de teste
+  - export NODE_OPTIONS="--max-old-space-size=4096"
+
+# Scripts principais (definidos no package.json)
+script:
+  - npm run lint:check
+  - npm run type:check || true  # TypeScript check (opcional)
+  - npm run test:unit
+
+# Comandos após sucesso
+after_success:
+  # Upload de coverage para serviços externos
+  - npm run coverage:codecov || true
+  
+  # Notificar sucesso
+  - echo "Build executado com sucesso!"
+
+# Comandos após falha
+after_failure:
+  # Logs de debug
+  - npm run debug:info
+  - cat npm-debug.log 2>/dev/null || true
+
+# Deploy (apenas para branch main)
+deploy:
+  # Deploy para ambiente de staging
+  - provider: script
+    script: npm run deploy:staging
+    on:
+      branch: develop
+    skip_cleanup: true
+
+  # Deploy para produção
+  - provider: script
+    script: npm run deploy:production
+    on:
+      branch: main
+      condition: $TRAVIS_EVENT_TYPE != "pull_request"
+    skip_cleanup: true
+
+# Notificações
+notifications:
+  email:
+    recipients:
+      - ci@petcarepro.com
+      - dev-team@petcarepro.com
+    on_success: change  # Notificar apenas quando status mudar
+    on_failure: always
+    template:
+      - "Build %{result} para %{repository_name}/%{branch}"
+      - "Commit: %{commit} (%{commit_message})"
+      - "Autor: %{author}"
+      - "Duração: %{duration}"
+      - "Ver detalhes: %{build_url}"
+
+  slack:
+    rooms:
+      - secure: "token_criptografado_do_slack"
+    on_success: change
+    on_failure: always
+    template:
+      - "🚀 PetCare Pro CI: Build %{result} em %{branch}"
+      - "📝 Commit: %{commit_message}"
+      - "👤 Autor: %{author}"
+      - "⏱️ Duração: %{duration}"
+
+# Configurações específicas para stages
+stages:
+  - name: "Testes"
+    if: type != cron
+  - name: "Build"
+    if: branch = main OR branch = develop
+  - name: "E2E"
+    if: branch = main AND type != pull_request
+  - name: "Segurança"
+    if: type = cron OR branch = main
+
+# Comandos finais
+after_script:
+  # Limpeza de arquivos temporários
+  - rm -rf .tmp/
+  - rm -rf coverage/lcov-report/
+  
+  # Estatísticas do build
+  - echo "Build finalizado em $(date)"
+  - echo "Node version: $(node --version)"
+  - echo "NPM version: $(npm --version)"
