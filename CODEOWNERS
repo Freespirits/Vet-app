@@ -1,0 +1,249 @@
+# Arquivo CODEOWNERS do PetCare Pro
+# Define responsáveis automáticos para revisão de código
+# Documentação: https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
+
+# ==============================================================================
+# REGRAS GLOBAIS
+# ==============================================================================
+
+# Por padrão, todos os arquivos precisam de aprovação do tech lead
+* @tech-lead
+
+# ==============================================================================
+# CORE DA APLICAÇÃO
+# ==============================================================================
+
+# Arquivos de configuração principais
+/package.json @tech-lead @senior-dev
+/App.js @tech-lead @mobile-dev
+/app.json @tech-lead @devops-engineer
+/expo.json @tech-lead @devops-engineer
+
+# ==============================================================================
+# CÓDIGO FONTE
+# ==============================================================================
+
+# Diretório src/ - código principal
+/src/ @tech-lead @mobile-dev @senior-dev
+
+# Contextos e estado global
+/src/contexts/ @tech-lead @senior-dev
+/src/navigation/ @mobile-dev @ui-developer
+
+# Componentes reutilizáveis
+/src/components/ @mobile-dev @ui-developer
+/src/components/common/ @ui-developer @mobile-dev
+
+# ==============================================================================
+# TELAS E FUNCIONALIDADES
+# ==============================================================================
+
+# Autenticação
+/src/screens/auth/ @tech-lead @security-engineer
+/src/contexts/AuthContext.js @tech-lead @security-engineer
+
+# Gestão de clientes
+/src/screens/clients/ @product-owner @mobile-dev
+/src/services/ClientService.js @backend-dev @mobile-dev
+
+# Gestão de pets
+/src/screens/pets/ @product-owner @mobile-dev
+/src/services/PetService.js @backend-dev @mobile-dev
+
+# Consultas veterinárias
+/src/screens/consultations/ @veterinary-consultant @mobile-dev
+/src/services/ConsultationService.js @veterinary-consultant @backend-dev
+
+# Agenda e agendamentos
+/src/screens/agenda/ @product-owner @mobile-dev
+/src/services/AppointmentService.js @backend-dev @mobile-dev
+
+# Biblioteca veterinária
+/src/screens/library/ @veterinary-consultant @mobile-dev
+/src/services/LibraryService.js @veterinary-consultant @backend-dev
+
+# Perfil do usuário
+/src/screens/profile/ @mobile-dev @ui-developer
+
+# ==============================================================================
+# SERVIÇOS E INTEGRAÇÕES
+# ==============================================================================
+
+# Serviços backend
+/src/services/ @backend-dev @tech-lead
+
+# Configuração do Supabase
+/src/config/supabase.js @backend-dev @tech-lead @security-engineer
+
+# Serviços de autenticação
+/src/services/AuthService.js @security-engineer @backend-dev
+
+# Serviços de backup
+/src/services/BackupService.js @devops-engineer @tech-lead
+
+# Serviços de notificação
+/src/services/NotificationService.js @mobile-dev @backend-dev
+
+# ==============================================================================
+# UTILITÁRIOS E HELPERS
+# ==============================================================================
+
+# Utilitários gerais
+/src/utils/ @senior-dev @mobile-dev
+
+# Validadores
+/src/utils/validators.js @security-engineer @senior-dev
+
+# Helpers de formatação
+/src/utils/helpers.js @mobile-dev @senior-dev
+
+# ==============================================================================
+# ESTILOS E DESIGN
+# ==============================================================================
+
+# Estilos globais
+/src/styles/ @ui-developer @designer
+
+# Constantes de cores e design
+/src/constants/Colors.js @ui-developer @designer
+/src/constants/Data.js @product-owner @veterinary-consultant
+
+# ==============================================================================
+# CONFIGURAÇÕES E DOCUMENTAÇÃO
+# ==============================================================================
+
+# Documentação
+/docs/ @tech-writer @product-owner
+*.md @tech-writer @product-owner
+README.md @tech-lead @product-owner
+
+# Arquitetura
+architecture.md @tech-lead @senior-architect
+ROADMAP.md @product-owner @tech-lead
+
+# Configurações de CI/CD
+/.github/ @devops-engineer @tech-lead
+/.travis.yml @devops-engineer @tech-lead
+/dependabot.yml @devops-engineer @security-engineer
+
+# Configurações de Git
+/.gitignore @devops-engineer @tech-lead
+/.gitattributes @devops-engineer @tech-lead
+/CODEOWNERS @tech-lead @devops-engineer
+
+# Configurações de linting e formatação
+/.eslintrc.* @tech-lead @senior-dev
+/.prettierrc.* @tech-lead @senior-dev
+/commitlint.config.js @tech-lead @devops-engineer
+
+# Configurações de pré-commit
+/.pre-commit-config.yaml @devops-engineer @tech-lead
+/.husky/ @devops-engineer @tech-lead
+
+# ==============================================================================
+# BANCO DE DADOS
+# ==============================================================================
+
+# Scripts de banco de dados
+/db/ @backend-dev @database-admin
+/db/supabase.sql @database-admin @backend-dev @tech-lead
+
+# Migrações
+/db/migrations/ @database-admin @backend-dev
+
+# ==============================================================================
+# TESTES
+# ==============================================================================
+
+# Configurações de teste
+/__tests__/ @qa-engineer @mobile-dev
+/jest.config.js @qa-engineer @tech-lead
+/test/ @qa-engineer @mobile-dev
+
+# Testes E2E
+/e2e/ @qa-engineer @mobile-dev
+
+# ==============================================================================
+# BUILD E DEPLOYMENT
+# ==============================================================================
+
+# Configurações de build
+/metro.config.js @devops-engineer @mobile-dev
+/babel.config.js @devops-engineer @mobile-dev
+
+# Scripts de release
+/release-scripts/ @devops-engineer @tech-lead
+
+# Configurações específicas de plataforma
+/ios/ @ios-dev @devops-engineer
+/android/ @android-dev @devops-engineer
+
+# ==============================================================================
+# SEGURANÇA
+# ==============================================================================
+
+# Arquivos relacionados à segurança
+/SECURITY.md @security-engineer @tech-lead
+/.secrets.baseline @security-engineer @devops-engineer
+
+# Configurações de segurança
+/security/ @security-engineer @tech-lead
+
+# ==============================================================================
+# NOTEBOOKS E ANÁLISES
+# ==============================================================================
+
+# Jupyter notebooks para análise de dados
+/notebooks/ @data-analyst @backend-dev
+
+# Scripts de análise
+/notebooks/*.ipynb @data-analyst @data-scientist
+
+# ==============================================================================
+# REGRAS ESPECIAIS
+# ==============================================================================
+
+# Arquivos que requerem aprovação de múltiplas equipes
+/package.json @tech-lead @devops-engineer @security-engineer
+/package-lock.json @tech-lead @devops-engineer
+
+# Arquivos críticos de configuração
+/.env.example @tech-lead @security-engineer @devops-engineer
+/app.json @tech-lead @mobile-dev @devops-engineer
+
+# Arquivos de licença e legal
+/LICENSE @legal-team @tech-lead
+/NOTICE.md @legal-team @tech-lead
+/CONTRIBUTORS.md @product-owner @tech-lead
+
+# ==============================================================================
+# EQUIPES POR FUNCIONALIDADE
+# ==============================================================================
+
+# Para funcionalidades críticas, usar equipes
+# @petcare-pro/core-team - Equipe principal
+# @petcare-pro/security-team - Equipe de segurança
+# @petcare-pro/mobile-team - Equipe mobile
+# @petcare-pro/backend-team - Equipe backend
+
+# Funcionalidades críticas de autenticação
+/src/contexts/AuthContext.js @petcare-pro/security-team
+/src/services/AuthService.js @petcare-pro/security-team
+
+# Configurações críticas de infraestrutura
+/.github/workflows/ @petcare-pro/devops-team
+/db/ @petcare-pro/backend-team
+
+# ==============================================================================
+# NOTAS
+# ==============================================================================
+
+# Usuários e equipes disponíveis:
+# Individual: @tech-lead, @mobile-dev, @backend-dev, @ui-developer, 
+#             @security-engineer, @devops-engineer, @qa-engineer,
+#             @product-owner, @veterinary-consultant, @designer,
+#             @senior-dev, @data-analyst, @tech-writer
+# 
+# Equipes: @petcare-pro/core-team, @petcare-pro/security-team,
+#          @petcare-pro/mobile-team, @petcare-pro/backend-team,
+#          @petcare-pro/devops-team
