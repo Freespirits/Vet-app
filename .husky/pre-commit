@@ -1,0 +1,164 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Hook de pré-commit usando Husky para projeto React Native VetApp
+echo "🔍 Executando verificações de pré-commit com Husky..."
+
+# Verificar se há arquivos no stage
+if git diff --cached --quiet; then
+    echo "❌ Nenhum arquivo foi adicionado ao stage. Use 'git add' primeiro."
+    exit 1
+fi
+
+# Executar lint se estiver configurado
+if command -v npx >/dev/null 2>&1; then
+    if [ -f "package.json" ] && grep -q '"lint"' package.json; then
+        echo "🔧 Executando lint..."
+        npx lint-staged 2>/dev/null || {
+            echo "⚠️  Lint-staged não configurado, executando verificações básicas..."
+        }
+    fi
+fi
+
+# Verificar arquivos JavaScript/TypeScript
+echo "📝 Verificando arquivos JavaScript/TypeScript..."
+staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$' || true)
+
+if [ ! -z "$staged_files" ]; then
+    for file in $staged_files; do
+        if [ -f "$file" ]; then
+            # Verificação de sintaxe
+            node -c "$file" 2>/dev/null || {
+                echo "❌ Erro de sintaxe em: $file"
+                exit 1
+            }
+            
+            # Verificar console.log
+            if grep -q "console\.log" "$file"; then
+                echo "⚠️  console.log encontrado em: $file"
+                echo "Considere remover ou usar // eslint-disable-next-line"
+            fi
+        fi
+    done
+    echo "✅ Arquivos JavaScript verificados"
+fi
+
+# Verificar package.json se foi modificado
+if git diff --cached --name-only | grep -q "package.json"; then
+    echo "📦 Verificando package.json..."
+    
+    # Verificar se é válido JSON
+    if ! python -m json.tool package.json >/dev/null 2>&1 && ! node -e "JSON.parse(require('fs').readFileSync('package.json'))" 2>/dev/null; then
+        echo "❌ package.json inválido"
+        exit 1
+    fi
+    
+    echo "✅ package.json válido"
+fi
+
+# Verificar arquivos de configuração do React Native
+echo "⚙️  Verificando configurações do React Native..."
+
+# Verificar metro.config.js se existir
+if [ -f "metro.config.js" ] && git diff --cached --name-only | grep -q "metro.config.js"; then
+    node -c metro.config.js || {
+        echo "❌ Erro de sintaxe em metro.config.js"
+        exit 1
+    }
+fi
+
+# Verificar App.js principal
+if git diff --cached --name-only | grep -q "App.js"; then
+    echo "🔍 Verificando App.js principal..."
+    node -c App.js || {
+        echo "❌ Erro de sintaxe no App.js"
+        exit 1
+    }
+fi
+
+# Verificar imports não utilizados (verificação básica)
+if [ ! -z "$staged_files" ]; then
+    echo "📋 Verificando imports..."
+    for file in $staged_files; do
+        if [ -f "$file" ]; then
+            # Verificar imports que podem estar não utilizados
+            unused_react=$(grep "import React" "$file" | head -1)
+            if [ ! -z "$unused_react" ] && ! grep -q "React\." "$file" && ! grep -q "<" "$file"; then
+                echo "⚠️  Possível import não utilizado do React em: $file"
+            fi
+        fi
+    done
+fi
+
+# Verificar se há mudanças em arquivos de configuração críticos
+config_files=$(git diff --cached --name-only | grep -E "(\.env|supabase\.js|config/)" || true)
+if [ ! -z "$config_files" ]; then
+    echo "🔧 Mudanças em arquivos de configuração detectadas:"
+    echo "$config_files"
+    
+    # Verificar se não há credenciais expostas
+    for file in $config_files; do
+        if [ -f "$file" ] && grep -qi "password\|secret\|key.*=" "$file"; then
+            echo "❌ Possíveis credenciais expostas em: $file"
+            echo "Use variáveis de ambiente em vez de hardcode"
+            exit 1
+        fi
+    done
+fi
+
+# Verificar tamanho dos arquivos
+echo "📏 Verificando tamanho dos arquivos..."
+large_files=$(git diff --cached --name-only --diff-filter=ACM | xargs ls -la 2>/dev/null | awk '$5 > 1048576 {print $9, "(" $5/1048576 "MB)"}' || true)
+
+if [ ! -z "$large_files" ]; then
+    echo "⚠️  Arquivos grandes detectados (>1MB):"
+    echo "$large_files"
+    echo "Considere otimizar ou usar Git LFS"
+fi
+
+# Executar Prettier se estiver disponível
+if command -v npx >/dev/null 2>&1 && [ -f ".prettierrc" ] || [ -f "prettier.config.js" ]; then
+    echo "💅 Executando Prettier..."
+    if [ ! -z "$staged_files" ]; then
+        npx prettier --check $staged_files 2>/dev/null || {
+            echo "⚠️  Arquivos não estão formatados com Prettier"
+            echo "Execute: npx prettier --write [arquivos]"
+        }
+    fi
+fi
+
+# Verificar se há TODOs ou FIXMEs
+echo "📝 Verificando TODOs e FIXMEs..."
+todos=$(git diff --cached | grep -E "^\+.*\b(TODO|FIXME|XXX|HACK)\b" || true)
+
+if [ ! -z "$todos" ]; then
+    echo "📋 TODOs/FIXMEs encontrados:"
+    echo "$todos"
+fi
+
+# Verificar estrutura de pastas do projeto React Native
+echo "📁 Verificando estrutura do projeto..."
+
+# Verificar se pastas essenciais existem
+essential_dirs="src src/components src/screens src/services"
+for dir in $essential_dirs; do
+    if [ ! -d "$dir" ]; then
+        echo "⚠️  Pasta essencial não encontrada: $dir"
+    fi
+done
+
+# Verificar se os arquivos de serviço estão sendo usados corretamente
+service_files=$(git diff --cached --name-only | grep "src/services/" || true)
+if [ ! -z "$service_files" ]; then
+    echo "🔧 Verificando arquivos de serviço..."
+    for file in $service_files; do
+        if [ -f "$file" ]; then
+            # Verificar se exporta default ou named exports
+            if ! grep -q "export" "$file"; then
+                echo "⚠️  Arquivo de serviço sem exports: $file"
+            fi
+        fi
+    done
+fi
+
+echo "✅ Verificações de pré-commit do Husky concluídas!"
