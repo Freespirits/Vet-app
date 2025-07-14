@@ -1,0 +1,121 @@
+repos:
+  # Hooks básicos do pre-commit
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+        name: Remover espaços em branco no final das linhas
+      - id: end-of-file-fixer
+        name: Garantir quebra de linha no final dos arquivos
+      - id: check-yaml
+        name: Validar sintaxe YAML
+      - id: check-json
+        name: Validar sintaxe JSON
+      - id: check-merge-conflict
+        name: Verificar marcadores de conflito de merge
+      - id: check-added-large-files
+        name: Verificar arquivos grandes (>500KB)
+        args: ['--maxkb=500']
+      - id: mixed-line-ending
+        name: Verificar quebras de linha mistas
+      - id: check-case-conflict
+        name: Verificar conflitos de maiúscula/minúscula
+
+  # Formatação e lint JavaScript/TypeScript
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.57.0
+    hooks:
+      - id: eslint
+        name: Executar ESLint
+        files: \.(js|jsx|ts|tsx)$
+        additional_dependencies:
+          - eslint@8.57.0
+          - '@react-native-community/eslint-config'
+          - eslint-plugin-react
+          - eslint-plugin-react-hooks
+          - eslint-plugin-react-native
+
+  # Formatação com Prettier
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.3
+    hooks:
+      - id: prettier
+        name: Formatar código com Prettier
+        files: \.(js|jsx|ts|tsx|json|md|yml|yaml)$
+        additional_dependencies:
+          - prettier@3.0.3
+
+  # Validação de commits
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.8.0
+    hooks:
+      - id: commitlint
+        name: Validar formato do commit
+        stages: [commit-msg]
+        additional_dependencies: ['@commitlint/config-conventional']
+
+  # Verificações de segurança
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        name: Detectar segredos no código
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package.lock.json
+
+  # Verificações específicas do React Native
+  - repo: local
+    hooks:
+      - id: check-react-native-deps
+        name: Verificar dependências do React Native
+        entry: ./scripts/check-rn-deps.sh
+        language: script
+        files: package\.json$
+        
+      - id: validate-component-structure
+        name: Validar estrutura dos componentes
+        entry: ./scripts/validate-components.js
+        language: node
+        files: src/components/.*\.(js|jsx|ts|tsx)$
+        
+      - id: check-translations
+        name: Verificar traduções faltantes
+        entry: ./scripts/check-translations.js
+        language: node
+        files: src/.*\.(js|jsx|ts|tsx)$
+
+  # Análise de código
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+        name: Lint Dockerfile
+        files: Dockerfile.*
+
+# Configurações globais
+fail_fast: false
+default_stages: [commit]
+
+# Configuração por tipo de arquivo
+files: ''
+exclude: |
+  (?x)^(
+    node_modules/.*|
+    \.expo/.*|
+    \.expo-shared/.*|
+    ios/Pods/.*|
+    android/\.gradle/.*|
+    .*\.bundle$|
+    .*\.generated\.(js|ts)$
+  )$
+
+# Configurações de CI
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] correções automáticas
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] atualização automática de versões'
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false
