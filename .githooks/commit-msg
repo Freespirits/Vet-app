@@ -1,0 +1,206 @@
+#!/bin/sh
+
+# Hook de mensagem de commit para projeto React Native VetApp
+# Valida e padroniza mensagens de commit
+
+commit_regex='^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .{1,50}'
+
+# Ler a mensagem de commit
+commit_msg_file="$1"
+commit_msg=$(cat "$commit_msg_file")
+first_line=$(echo "$commit_msg" | head -n1)
+
+echo "🔍 Validando mensagem de commit..."
+
+# Verificar se não está vazia
+if [ -z "$commit_msg" ]; then
+    echo "❌ Mensagem de commit não pode estar vazia"
+    exit 1
+fi
+
+# Verificar se a primeira linha não está muito longa
+if [ ${#first_line} -gt 72 ]; then
+    echo "❌ Primeira linha muito longa (${#first_line} caracteres). Máximo: 72"
+    echo "Linha atual: $first_line"
+    exit 1
+fi
+
+# Verificar se a primeira linha não está muito curta
+if [ ${#first_line} -lt 10 ]; then
+    echo "❌ Primeira linha muito curta (${#first_line} caracteres). Mínimo: 10"
+    echo "Linha atual: $first_line"
+    exit 1
+fi
+
+# Verificar formato padrão (Conventional Commits)
+if ! echo "$first_line" | grep -Eq "$commit_regex"; then
+    echo "❌ Formato de commit inválido!"
+    echo ""
+    echo "📋 Use o formato: tipo(escopo): descrição"
+    echo ""
+    echo "Tipos válidos:"
+    echo "  feat:     Nova funcionalidade"
+    echo "  fix:      Correção de bug"
+    echo "  docs:     Documentação"
+    echo "  style:    Formatação, ponto e vírgula, etc"
+    echo "  refactor: Refatoração de código"
+    echo "  test:     Adição ou correção de testes"
+    echo "  chore:    Manutenção, dependências, etc"
+    echo "  perf:     Melhoria de performance"
+    echo "  ci:       Configuração de CI/CD"
+    echo "  build:    Sistema de build"
+    echo "  revert:   Reverter commit anterior"
+    echo ""
+    echo "Exemplos válidos:"
+    echo "  feat(auth): adicionar login com Google"
+    echo "  fix(agenda): corrigir bug no agendamento"
+    echo "  docs: atualizar README com instruções"
+    echo "  refactor(pets): reorganizar componentes"
+    echo ""
+    echo "Sua mensagem: $first_line"
+    exit 1
+fi
+
+# Verificar se começa com letra maiúscula após o tipo
+description=$(echo "$first_line" | sed 's/^[^:]*: *//')
+first_char=$(echo "$description" | cut -c1)
+
+if ! echo "$first_char" | grep -q '[a-z]'; then
+    echo "⚠️  Recomendação: descrição deve começar com letra minúscula"
+    echo "Exemplo: 'feat: adicionar nova funcionalidade' (não 'Adicionar')"
+fi
+
+# Verificar se termina com ponto
+if echo "$first_line" | grep -q '\.$'; then
+    echo "⚠️  Recomendação: não termine a primeira linha com ponto"
+fi
+
+# Verificar palavras não recomendadas
+forbidden_words="bug|fix|corrigir|arrumei|melhorei|fiz"
+if echo "$first_line" | grep -iq "\b($forbidden_words)\b"; then
+    echo "⚠️  Evite palavras genéricas. Seja mais específico sobre o que foi alterado."
+fi
+
+# Verificar se há segunda linha vazia (boa prática)
+second_line=$(echo "$commit_msg" | sed -n '2p')
+if [ ! -z "$second_line" ]; then
+    echo "⚠️  Recomendação: deixe a segunda linha vazia para separar título do corpo"
+fi
+
+# Verificar se há corpo da mensagem e se está bem formatado
+line_count=$(echo "$commit_msg" | wc -l)
+if [ "$line_count" -gt 2 ]; then
+    echo "✅ Mensagem tem corpo detalhado - muito bom!"
+    
+    # Verificar se as linhas do corpo não são muito longas
+    echo "$commit_msg" | tail -n +3 | while IFS= read -r line; do
+        if [ ${#line} -gt 72 ]; then
+            echo "⚠️  Linha do corpo muito longa (${#line} caracteres): $line"
+        fi
+    done
+fi
+
+# Extrair tipo e escopo para categorização
+commit_type=$(echo "$first_line" | sed 's/\([^(]*\).*/\1/')
+commit_scope=$(echo "$first_line" | sed -n 's/[^(]*(\([^)]*\)).*/\1/p')
+
+echo "📊 Estatísticas do commit:"
+echo "  Tipo: $commit_type"
+if [ ! -z "$commit_scope" ]; then
+    echo "  Escopo: $commit_scope"
+fi
+echo "  Tamanho da mensagem: ${#commit_msg} caracteres"
+echo "  Linhas: $line_count"
+
+# Adicionar estatísticas ao arquivo de log
+{
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $commit_type"
+    if [ ! -z "$commit_scope" ]; then
+        echo "  Escopo: $commit_scope"
+    fi
+    echo "  Mensagem: $first_line"
+    echo "---"
+} >> .git/commit_stats.log
+
+# Verificar padrões específicos do projeto VetApp
+case "$commit_scope" in
+    "auth"|"login"|"perfil")
+        echo "🔐 Commit relacionado à autenticação"
+        ;;
+    "pets"|"animais"|"pacientes")
+        echo "🐾 Commit relacionado aos pets/pacientes"
+        ;;
+    "agenda"|"consultas"|"agendamento")
+        echo "📅 Commit relacionado à agenda/consultas"
+        ;;
+    "biblioteca"|"medicamentos"|"library")
+        echo "📚 Commit relacionado à biblioteca veterinária"
+        ;;
+    "backup"|"dados")
+        echo "💾 Commit relacionado a backup/dados"
+        ;;
+    "ui"|"interface"|"design")
+        echo "🎨 Commit relacionado à interface"
+        ;;
+    "database"|"supabase"|"db")
+        echo "🗄️  Commit relacionado ao banco de dados"
+        ;;
+esac
+
+# Verificações específicas por tipo
+case "$commit_type" in
+    "feat")
+        echo "🎉 Nova funcionalidade adicionada!"
+        ;;
+    "fix")
+        echo "🐛 Bug corrigido!"
+        ;;
+    "perf")
+        echo "⚡ Melhoria de performance!"
+        ;;
+    "refactor")
+        echo "♻️  Código refatorado!"
+        ;;
+    "test")
+        echo "🧪 Testes adicionados/modificados!"
+        ;;
+    "docs")
+        echo "📝 Documentação atualizada!"
+        ;;
+esac
+
+# Sugestões baseadas no tipo de commit
+if [ "$commit_type" = "feat" ]; then
+    echo ""
+    echo "💡 Lembrete para nova funcionalidade:"
+    echo "  - Testes foram adicionados?"
+    echo "  - Documentação foi atualizada?"
+    echo "  - Interface está responsiva?"
+fi
+
+if [ "$commit_type" = "fix" ]; then
+    echo ""
+    echo "💡 Lembrete para correção:"
+    echo "  - O bug foi testado em diferentes cenários?"
+    echo "  - Não causou regressões?"
+fi
+
+echo "✅ Mensagem de commit validada com sucesso!"
+
+# Opcional: Salvar estatística de tipos de commit
+commit_stats_file=".git/commit_type_stats.txt"
+if [ -f "$commit_stats_file" ]; then
+    current_count=$(grep "^$commit_type:" "$commit_stats_file" | cut -d: -f2 || echo "0")
+    new_count=$((current_count + 1))
+    
+    # Atualizar ou adicionar linha
+    if grep -q "^$commit_type:" "$commit_stats_file"; then
+        sed -i "s/^$commit_type:.*/$commit_type:$new_count/" "$commit_stats_file"
+    else
+        echo "$commit_type:$new_count" >> "$commit_stats_file"
+    fi
+else
+    echo "$commit_type:1" > "$commit_stats_file"
+fi
+
+exit 0
