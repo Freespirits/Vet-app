@@ -1,0 +1,279 @@
+# MANIFEST.in para PetCare Pro
+# Define quais arquivos incluir na distribuição do projeto
+
+# ==============================================================================
+# ARQUIVOS DE DOCUMENTAÇÃO
+# ==============================================================================
+
+# Documentação principal
+include README.md
+include CHANGELOG.md
+include CONTRIBUTORS.md
+include ROADMAP.md
+include architecture.md
+include NOTICE.md
+
+# Licenças e termos legais
+include LICENSE
+include SECURITY.md
+include CODE_OF_CONDUCT.md
+
+# ==============================================================================
+# CONFIGURAÇÕES DO PROJETO
+# ==============================================================================
+
+# Configurações principais
+include package.json
+include package-lock.json
+include yarn.lock
+include app.json
+include expo.json
+include App.js
+
+# Configurações de ambiente
+include .env.example
+include .env.template
+
+# ==============================================================================
+# CONFIGURAÇÕES DE BUILD E CI/CD
+# ==============================================================================
+
+# Build tools
+include babel.config.js
+include metro.config.js
+include jest.config.js
+
+# Git hooks e CI
+include .travis.yml
+include .github/workflows/*.yml
+include .github/workflows/*.yaml
+recursive-include .github *
+
+# Pre-commit e hooks
+include .pre-commit-config.yaml
+include commitlint.config.js
+recursive-include .githooks *
+recursive-include .husky *
+
+# ==============================================================================
+# CONFIGURAÇÕES DE CÓDIGO
+# ==============================================================================
+
+# Linting e formatação
+include .eslintrc.js
+include .eslintrc.json
+include .prettierrc
+include .prettierrc.json
+include .editorconfig
+
+# Configurações de tipo
+include tsconfig.json
+include jsconfig.json
+
+# ==============================================================================
+# CÓDIGO FONTE PRINCIPAL
+# ==============================================================================
+
+# Diretório src completo
+recursive-include src *.js
+recursive-include src *.jsx
+recursive-include src *.ts
+recursive-include src *.tsx
+recursive-include src *.json
+
+# Assets e recursos
+recursive-include assets *
+recursive-include src/assets *
+
+# ==============================================================================
+# TESTES
+# ==============================================================================
+
+# Arquivos de teste
+recursive-include __tests__ *.js
+recursive-include __tests__ *.jsx
+recursive-include __tests__ *.ts
+recursive-include __tests__ *.tsx
+
+recursive-include test *.js
+recursive-include test *.json
+
+# Configurações de teste
+include jest.config.js
+include setupTests.js
+include test-setup.js
+
+# Mocks
+recursive-include __mocks__ *
+recursive-include src/__mocks__ *
+
+# ==============================================================================
+# BANCO DE DADOS E SCRIPTS
+# ==============================================================================
+
+# Scripts SQL
+recursive-include db *.sql
+recursive-include database *.sql
+recursive-include migrations *.sql
+
+# Scripts de utilitários
+recursive-include scripts *.js
+recursive-include scripts *.sh
+recursive-include scripts *.py
+
+recursive-include release-scripts *.js
+recursive-include release-scripts *.sh
+
+# ==============================================================================
+# NOTEBOOKS E ANÁLISES
+# ==============================================================================
+
+# Jupyter notebooks
+recursive-include notebooks *.ipynb
+recursive-include notebooks *.md
+recursive-include notebooks *.py
+
+# Dados de exemplo e análise
+recursive-include notebooks/data *.json
+recursive-include notebooks/data *.csv
+
+# ==============================================================================
+# CONFIGURAÇÕES ESPECÍFICAS DE PLATAFORMA
+# ==============================================================================
+
+# Configurações iOS (básicas)
+include ios/PetCarePro.xcodeproj/project.pbxproj
+include ios/PetCarePro/Info.plist
+include ios/PetCarePro/LaunchScreen.storyboard
+
+# Configurações Android (básicas)
+include android/app/build.gradle
+include android/build.gradle
+include android/gradle.properties
+include android/settings.gradle
+include android/app/src/main/AndroidManifest.xml
+
+# ==============================================================================
+# ARQUIVOS DE CONFIGURAÇÃO DIVERSOS
+# ==============================================================================
+
+# Git
+include .gitignore
+include .gitattributes
+include .git-blame-ignore-revs
+include CODEOWNERS
+
+# Editores
+include .vscode/settings.json
+include .vscode/extensions.json
+include .vscode/launch.json
+
+# ==============================================================================
+# DEPENDÊNCIAS E LOCK FILES
+# ==============================================================================
+
+# NPM
+include package.json
+include package-lock.json
+
+# Yarn
+include yarn.lock
+
+# Expo
+include expo.json
+include app.json
+
+# ==============================================================================
+# EXCLUSÕES EXPLÍCITAS
+# ==============================================================================
+
+# Excluir arquivos temporários
+exclude *.tmp
+exclude *.temp
+exclude *.log
+
+# Excluir builds e cache
+exclude build/*
+exclude dist/*
+exclude .expo/*
+exclude node_modules/*
+
+# Excluir arquivos de desenvolvimento local
+exclude .env.local
+exclude .env.development
+exclude .env.production
+
+# Excluir arquivos de IDE específicos
+exclude .idea/*
+exclude *.swp
+exclude *.swo
+exclude *~
+
+# Excluir arquivos de sistema
+exclude .DS_Store
+exclude Thumbs.db
+exclude desktop.ini
+
+# ==============================================================================
+# INCLUSÕES CONDICIONAIS PARA DESENVOLVIMENTO
+# ==============================================================================
+
+# Arquivos úteis para desenvolvimento mas não essenciais
+include .nvmrc
+include .node-version
+
+# Scripts de desenvolvimento
+recursive-include dev-scripts *.js
+recursive-include dev-scripts *.sh
+
+# Configurações de debug
+include .vscode/launch.json
+include debug.config.js
+
+# ==============================================================================
+# ARQUIVOS DE VERSIONING
+# ==============================================================================
+
+# Controle de versão
+include .version
+include VERSION
+include CHANGELOG.md
+
+# ==============================================================================
+# DOCUMENTAÇÃO TÉCNICA
+# ==============================================================================
+
+# Documentação de API
+recursive-include docs *.md
+recursive-include docs *.json
+recursive-include docs *.yaml
+recursive-include docs *.yml
+
+# Diagramas e imagens da documentação
+recursive-include docs *.png
+recursive-include docs *.jpg
+recursive-include docs *.svg
+
+# ==============================================================================
+# RECURSOS E ASSETS
+# ==============================================================================
+
+# Imagens e ícones
+recursive-include assets/images *.png
+recursive-include assets/images *.jpg
+recursive-include assets/images *.svg
+recursive-include assets/icons *.png
+
+# Fontes (se houver)
+recursive-include assets/fonts *.ttf
+recursive-include assets/fonts *.otf
+
+# ==============================================================================
+# CONFIGURAÇÕES DE SEGURANÇA
+# ==============================================================================
+
+# Baseline de segurança
+include .secrets.baseline
+
+# Configurações de segurança (sem dados sensíveis)
+include security.config.js
