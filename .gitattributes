@@ -1,0 +1,101 @@
+# Configurações Git para o projeto PetCare Pro
+
+# Quebras de linha automáticas
+* text=auto
+
+# Arquivos JavaScript/TypeScript
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+
+# Arquivos de configuração
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.ini text eol=lf
+*.cfg text eol=lf
+
+# Arquivos de marcação
+*.md text eol=lf
+*.html text eol=lf
+*.xml text eol=lf
+
+# Arquivos de estilo
+*.css text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+
+# Arquivos Shell
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Arquivos batch do Windows
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Arquivos binários
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.webp binary
+
+# Arquivos de fonte
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+
+# Arquivos de áudio/vídeo
+*.mp3 binary
+*.mp4 binary
+*.avi binary
+*.mov binary
+*.wav binary
+
+# Arquivos de documento
+*.pdf binary
+*.doc binary
+*.docx binary
+*.xls binary
+*.xlsx binary
+*.ppt binary
+*.pptx binary
+
+# Arquivos específicos do React Native
+*.bundle binary
+*.jks binary
+*.keystore binary
+*.p12 binary
+*.mobileprovision binary
+
+# Arquivos que não devem ser normalizados
+*.pbxproj binary merge=union
+
+# Linguistika - Configurações para detecção de linguagem no GitHub
+*.js linguist-language=JavaScript
+*.jsx linguist-language=JavaScript
+*.ts linguist-language=TypeScript
+*.tsx linguist-language=TypeScript
+
+# Marcar arquivos gerados automaticamente
+package-lock.json linguist-generated=true
+yarn.lock linguist-generated=true
+*.generated.* linguist-generated=true
+
+# Excluir arquivos de documentação da contagem de código
+docs/** linguist-documentation=true
+*.md linguist-documentation=true
+
+# Excluir arquivos de vendor da contagem
+node_modules/** linguist-vendored=true
+ios/Pods/** linguist-vendored=true
+android/gradle/** linguist-vendored=true
+
+# Configurações de merge para arquivos específicos
+*.pbxproj merge=union
+CHANGELOG.md merge=union
