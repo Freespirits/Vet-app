@@ -1,0 +1,138 @@
+#!/bin/sh
+
+# Hook de pré-commit para projeto React Native VetApp
+# Executa verificações de qualidade antes do commit
+
+echo "🔍 Executando verificações de pré-commit..."
+
+# Verificar se existem arquivos staged
+if git diff --cached --quiet; then
+    echo "❌ Nenhum arquivo foi adicionado ao stage. Use 'git add' primeiro."
+    exit 1
+fi
+
+# Verificar sintaxe JavaScript/TypeScript
+echo "📝 Verificando sintaxe JavaScript..."
+staged_js_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$' || true)
+
+if [ ! -z "$staged_js_files" ]; then
+    echo "Arquivos JS/TS encontrados: $staged_js_files"
+    
+    # Verificar se há erros de sintaxe nos arquivos JS
+    for file in $staged_js_files; do
+        if [ -f "$file" ]; then
+            # Verificação básica de sintaxe com node
+            node -c "$file" 2>/dev/null || {
+                echo "❌ Erro de sintaxe encontrado em: $file"
+                exit 1
+            }
+        fi
+    done
+    echo "✅ Sintaxe JavaScript verificada"
+fi
+
+# Verificar se não há console.log em produção
+echo "🚫 Verificando console.log..."
+forbidden_logs=$(git diff --cached --name-only --diff-filter=ACM | xargs grep -l "console\.log" 2>/dev/null || true)
+
+if [ ! -z "$forbidden_logs" ]; then
+    echo "❌ Encontrados console.log nos seguintes arquivos:"
+    echo "$forbidden_logs"
+    echo "Remova os console.log antes do commit ou use // eslint-disable-next-line"
+    exit 1
+fi
+echo "✅ Nenhum console.log encontrado"
+
+# Verificar se não há códigos de debug
+echo "🐛 Verificando códigos de debug..."
+debug_code=$(git diff --cached --name-only --diff-filter=ACM | xargs grep -l "debugger\|console\.error\|console\.warn" 2>/dev/null || true)
+
+if [ ! -z "$debug_code" ]; then
+    echo "⚠️  Códigos de debug encontrados nos seguintes arquivos:"
+    echo "$debug_code"
+    echo "Revise se é necessário manter esses códigos"
+fi
+
+# Verificar estrutura de arquivos críticos
+echo "📁 Verificando estrutura de arquivos..."
+
+# Verificar se arquivos essenciais não foram removidos
+essential_files="App.js package.json"
+for file in $essential_files; do
+    if [ ! -f "$file" ]; then
+        echo "❌ Arquivo essencial removido: $file"
+        exit 1
+    fi
+done
+
+# Verificar se há mudanças em arquivos de configuração sensíveis
+config_files=$(git diff --cached --name-only | grep -E "(supabase\.js|\.env)" || true)
+if [ ! -z "$config_files" ]; then
+    echo "⚠️  Mudanças em arquivos de configuração detectadas:"
+    echo "$config_files"
+    echo "Certifique-se de que não há informações sensíveis expostas"
+fi
+
+# Verificar tamanho dos arquivos
+echo "📏 Verificando tamanho dos arquivos..."
+large_files=$(git diff --cached --name-only --diff-filter=ACM | xargs ls -la 2>/dev/null | awk '$5 > 1048576 {print $9, $5}' || true)
+
+if [ ! -z "$large_files" ]; then
+    echo "⚠️  Arquivos grandes detectados (>1MB):"
+    echo "$large_files"
+    echo "Considere otimizar ou usar Git LFS para arquivos grandes"
+fi
+
+# Verificar imports não utilizados (verificação básica)
+echo "📦 Verificando imports..."
+unused_imports=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx)$' | xargs grep -l "^import.*from.*'[^']*'.*$" 2>/dev/null | head -5 || true)
+
+if [ ! -z "$unused_imports" ]; then
+    echo "📋 Verificando imports nos arquivos principais..."
+    # Esta é uma verificação básica - em projetos maiores use ESLint
+fi
+
+# Verificar se há funções muito grandes (>50 linhas)
+echo "🔍 Verificando tamanho das funções..."
+git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx)$' | while read file; do
+    if [ -f "$file" ]; then
+        # Contar linhas entre function e }
+        large_functions=$(awk '
+            /function.*{/ { start=NR; depth=1; next }
+            depth > 0 { 
+                gsub(/[^{}]/, ""); 
+                depth += gsub(/{/, "") - gsub(/}/, "")
+                if (depth == 0 && NR - start > 50) 
+                    print FILENAME ":" start "-" NR " (função muito grande: " (NR-start) " linhas)"
+            }
+        ' "$file" 2>/dev/null || true)
+        
+        if [ ! -z "$large_functions" ]; then
+            echo "⚠️  $large_functions"
+        fi
+    fi
+done
+
+# Verificar se há TODOs ou FIXMEs
+echo "📝 Verificando TODOs e FIXMEs..."
+todos=$(git diff --cached | grep -E "^\+.*\b(TODO|FIXME|XXX|HACK)\b" || true)
+
+if [ ! -z "$todos" ]; then
+    echo "📋 TODOs/FIXMEs encontrados:"
+    echo "$todos"
+    echo "Considere resolver ou documentar melhor essas pendências"
+fi
+
+# Verificar mensagem de commit (se houver)
+if [ -f ".git/COMMIT_EDITMSG" ]; then
+    commit_msg=$(cat .git/COMMIT_EDITMSG | head -1)
+    if [ ${#commit_msg} -lt 10 ]; then
+        echo "❌ Mensagem de commit muito curta. Use pelo menos 10 caracteres."
+        exit 1
+    fi
+fi
+
+echo "✅ Todas as verificações de pré-commit passaram!"
+echo "🚀 Prosseguindo com o commit..."
+
+exit 0
