@@ -24,6 +24,7 @@
 ## 📋 Índice
 
 - [🎯 Sobre o Projeto](#-sobre-o-projeto)
+- [📱 Screenshots da Aplicação](#-screenshots-da-aplicação)
 - [🚀 Características](#-características)
 - [🛠️ Tecnologias](#️-tecnologias)
 - [📱 Compatibilidade](#-compatibilidade)
@@ -36,11 +37,14 @@
 - [📘 Scripts Disponíveis](#-scripts-disponíveis)
 - [🔧 Configuração do Ambiente](#-configuração-do-ambiente)
 - [🗄️ Banco de Dados](#️-banco-de-dados)
+- [🔗 Links Importantes](#-links-importantes)
 - [📈 Roadmap](#-roadmap)
 - [🤝 Contribuição](#-contribuição)
-- [📄 Licença](#-licença)
-- [👥 Equipe](#-equipe)
-- [📞 Suporte](#-suporte)
+- [👥 Equipe de Desenvolvimento](#-equipe-de-desenvolvimento)
+- [📜 Licença](#-licença)
+- [🙏 Agradecimentos](#-agradecimentos)
+- [💬 Suporte](#-suporte)
+- [📱 Redes Sociais](#-redes-sociais)
 
 ---
 
@@ -284,8 +288,6 @@ Fornecer uma solução **gratuita**, **intuitiva** e **completa** que permita ao
   </table>
 </div>
 
----
-
 ### 📋 Resumo Funcional por Categoria
 
 | Categoria | Funcionalidades | Telas Disponíveis |
@@ -299,130 +301,6 @@ Fornecer uma solução **gratuita**, **intuitiva** e **completa** que permita ao
 | ⚙️ **Configurações** | Backup, suporte, informações | 3 |
 | 📋 **Informações** | Políticas, versão do app | 2 |
 | **Total Implementado** | | **19 telas** |
-
-### 🎯 Fluxo de Trabalho do Veterinário
-
-#### **🌅 Rotina Matinal**
-1. **📱 Login** → Acesso seguro ao sistema
-2. **🏠 Dashboard** → Verificar agenda do dia e estatísticas
-3. **📅 Agenda** → Conferir consultas agendadas
-4. **👥 Preparação** → Revisar fichas dos pacientes do dia
-
-#### **📋 Durante os Atendimentos**
-1. **🐾 Seleção do Pet** → Escolher paciente na lista
-2. **📝 Registro** → Documentar sintomas e diagnóstico
-3. **💊 Prescrição** → Utilizar biblioteca de medicamentos
-4. **💰 Faturamento** → Registrar valor da consulta
-
-#### **🌆 Final do Dia**
-1. **📊 Relatórios** → Verificar estatísticas do dia
-2. **📅 Próximo Dia** → Revisar agenda de amanhã
-3. **💾 Backup** → Sincronização automática dos dados
-
-### 🎨 Design e Experiência do Usuário
-
-#### **🎨 Identidade Visual**
-- **🌿 Paleta Verde**: Cores que transmitem confiança e natureza
-- **🔍 Ícones Intuitivos**: Fácil identificação de funcionalidades
-- **📱 Interface Limpa**: Design minimalista e profissional
-- **🔄 Navegação Fluida**: Transições suaves entre telas
-
-#### **🏥 Foco Veterinário**
-- **🩺 Terminologia Técnica**: Linguagem adequada para profissionais
-- **📋 Fluxos Otimizados**: Seguindo rotinas reais de clínicas
-- **⚡ Ações Rápidas**: Acesso direto às funções mais usadas
-- **📊 Informações Relevantes**: Dados importantes em destaque
-
-### 📱 Compatibilidade e Performance
-
-#### **📋 Requisitos Técnicos**
-- **iOS**: iPhone 11+ (iOS 14.0+)
-- **Android**: Android 8.0+ (API 26+)
-- **Memória**: 4GB RAM recomendado
-- **Armazenamento**: 200MB + dados da clínica
-
-#### **⚡ Performance Otimizada**
-- **Carregamento**: < 3 segundos para inicialização
-- **Responsividade**: Interface fluida 60fps
-- **Sincronização**: Dados em tempo real via Supabase
-- **Offline**: Funcionalidades básicas disponíveis
-
-#### **🔒 Segurança Veterinária**
-- **LGPD**: Compliance total com proteção de dados
-- **CRMV**: Integração com dados profissionais
-- **Criptografia**: End-to-end para dados sensíveis
-- **Backup**: Múltiplas camadas de proteção
-
-### 🚀 Funcionalidades em Destaque
-
-#### **✅ Já Disponíveis**
-- ✅ **Sistema completo de gestão** de clientes e pets
-- ✅ **Agenda integrada** com notificações
-- ✅ **Biblioteca veterinária** com 500+ medicamentos
-- ✅ **Dashboard intuitivo** com métricas em tempo real
-- ✅ **Backup automático** na nuvem
-- ✅ **Interface responsiva** para tablets
-- ✅ **Suporte técnico** especializado
-
-#### **🔄 Em Desenvolvimento (v1.2)**
-- 🔄 **Relatórios em PDF** para laudos e receitas
-- 🔄 **Notificações push** para lembretes
-- 🔄 **Modo offline** com sincronização
-- 🔄 **Templates de prescrição** personalizáveis
-- 🔄 **Integração com laboratórios** para exames
-
-#### **🎯 Roadmap (v2.0)**
-- 🎯 **Telemedicina** para consultas remotas
-- 🎯 **App para tutores** com histórico dos pets
-- 🎯 **IA para diagnósticos** assistidos
-- 🎯 **Integração com equipamentos** médicos
-- 🎯 **Sistema multi-clínica** para redes
-
-### 📊 Métricas de Uso
-
-#### **📈 Estatísticas de Adoção**
-- **1,200+** veterinários cadastrados
-- **50,000+** pets registrados
-- **200,000+** consultas realizadas
-- **95%** de satisfação dos usuários
-- **4.8/5** avaliação nas lojas de app
-
-#### **🎯 Principais Benefícios Relatados**
-- **70%** redução no tempo de cadastro
-- **85%** melhoria na organização da agenda
-- **60%** diminuição de erros em prescrições
-- **90%** satisfação com o backup automático
-- **80%** economia de papel e impressões
-
-### 🏆 Diferenciais Competitivos
-
-#### **🎯 Específico para Veterinários**
-- **🩺 Desenvolvido por veterinários** para veterinários
-- **📋 Fluxos otimizados** para rotina clínica
-- **💊 Biblioteca específica** com medicamentos veterinários
-- **📊 Métricas relevantes** para o negócio
-
-#### **🚀 Tecnologia de Ponta**
-- **☁️ Cloud nativo** com Supabase
-- **📱 React Native** para performance máxima
-- **🔄 Sincronização** em tempo real
-- **🔒 Segurança** de nível empresarial
-
-#### **💰 Modelo de Negócio Justo**
-- **🆓 Versão gratuita** completa para clínicas pequenas
-- **💎 Premium** com funcionalidades avançadas
-- **🏥 Enterprise** para redes de clínicas
-- **🎓 Educacional** gratuito para estudantes
-
----
-
-> **🩺 Desenvolvido por veterinários, para veterinários brasileiros**
-
-> **📱 Mais que um app, uma solução completa para sua clínica veterinária**
-
-> **🔒 Seus dados seguros, sua clínica mais eficiente, seus pacientes mais bem cuidados**
-
-> **🌟 Junte-se a milhares de veterinários que já transformaram sua prática com o PetCare Pro**
 
 ---
 
@@ -658,27 +536,6 @@ npm start
 expo start
 ```
 
-#### Opção 2: Criação do Zero
-
-```bash
-# 1. Criar projeto Expo
-npx create-expo-app PetCarePro --template blank
-
-# 2. Entrar no diretório
-cd PetCarePro
-
-# 3. Instalar dependências principais
-npm install @react-navigation/native @react-navigation/stack @react-navigation/bottom-tabs
-
-# 4. Instalar dependências do React Navigation
-npm install react-native-screens react-native-safe-area-context
-
-# 5. Instalar outras dependências
-npm install @react-native-async-storage/async-storage @expo/vector-icons @react-native-picker/picker react-native-gesture-handler react-native-reanimated @supabase/supabase-js expo-image-picker expo-splash-screen expo-linear-gradient react-native-url-polyfill
-
-# 6. Configurar projeto (copiar arquivos src/, db/, etc.)
-```
-
 ### ⚙️ Configuração do Supabase
 
 1. **Criar conta no Supabase**: [https://supabase.com](https://supabase.com)
@@ -700,22 +557,6 @@ npm install @react-native-async-storage/async-storage @expo/vector-icons @react-
    const supabaseUrl = 'SUA_URL_DO_SUPABASE'
    const supabaseAnonKey = 'SUA_CHAVE_PUBLICA'
    ```
-
-### 📱 Executar o Projeto
-
-```bash
-# Modo desenvolvimento
-npm start
-
-# Executar no iOS Simulator
-npm run ios
-
-# Executar no Android Emulator  
-npm run android
-
-# Executar na web
-npm run web
-```
 
 ---
 
@@ -768,51 +609,6 @@ O dashboard oferece uma visão geral completa:
    - Cor
    - Microchip
 
-### 🩺 Registro de Consultas
-
-#### ➕ Nova Consulta
-1. **Pets** → Selecionar pet → **Nova Consulta**
-2. Informações da consulta:
-   - Tipo de consulta
-   - Sintomas
-   - Diagnóstico
-   - Tratamento
-   - Prescrição
-3. Sinais vitais:
-   - Peso, temperatura, frequência cardíaca
-4. Valor da consulta
-
-### 📅 Sistema de Agendamentos
-
-#### ➕ Novo Agendamento
-1. **Agenda** → **Novo Agendamento**
-2. Selecionar:
-   - Cliente e pet
-   - Data e hora
-   - Duração
-   - Tipo de procedimento
-
-### 📚 Biblioteca Veterinária
-
-A biblioteca contém:
-
-#### 💊 Medicamentos
-- Dosagem recomendada
-- Frequência de administração
-- Contraindicações
-- Observações importantes
-
-#### 💉 Vacinas
-- Protocolo de vacinação
-- Doenças prevenidas
-- Cronograma de reforços
-- Espécies aplicáveis
-
-#### ⚕️ Procedimentos
-- Duração estimada
-- Preço sugerido
-- Descrição detalhada
-
 ---
 
 ## 📊 Funcionalidades Principais
@@ -855,38 +651,6 @@ const result = await ClientService.create(clientData);
 // Buscar cliente
 const clients = await ClientService.search('João');
 ```
-
-### 🐾 Controle de Pets
-
-- **Cadastro detalhado**
-- **Histórico médico completo**
-- **Cálculo automático de idade**
-- **Upload de fotos**
-- **Microchip tracking**
-
-### 🩺 Consultas Veterinárias
-
-```javascript
-// Registro de consulta
-const consultationData = {
-  clientId: 'uuid',
-  petId: 'uuid', 
-  type: 'Consulta de Rotina',
-  symptoms: 'Descrição dos sintomas',
-  diagnosis: 'Diagnóstico',
-  treatment: 'Tratamento realizado',
-  prescription: 'Medicamentos prescritos',
-  price: 80.00
-};
-```
-
-### 📅 Sistema de Agendamentos
-
-- **Calendário interativo**
-- **Visualização por dia/semana/mês**
-- **Status dos agendamentos**
-- **Notificações automáticas**
-- **Reagendamentos**
 
 ---
 
@@ -946,21 +710,6 @@ const Colors = {
 />
 ```
 
-#### Card Component
-```javascript
-<Card style={customStyle}>
-  <Text>Conteúdo do cartão</Text>
-</Card>
-```
-
-### 📱 Responsividade
-
-O design se adapta automaticamente a diferentes tamanhos de tela:
-
-- **Smartphones**: 320px - 480px
-- **Tablets**: 768px - 1024px
-- **Layout flexível**: Componentes se reorganizam automaticamente
-
 ---
 
 ## 📘 Scripts Disponíveis
@@ -990,80 +739,9 @@ npm run reset
 npm run prebuild
 ```
 
-### 🏗️ Scripts de Build
-
-```bash
-# Build para Android
-npm run build:android
-
-# Build para iOS
-npm run build:ios
-
-# Build universal
-eas build --platform all
-```
-
-### 🧪 Scripts de Teste
-
-```bash
-# Executar testes
-npm test
-
-# Executar testes com coverage
-npm run test:coverage
-
-# Executar linter
-npm run lint
-
-# Corrigir problemas de lint automaticamente
-npm run lint:fix
-```
-
-### 📊 Scripts de Análise
-
-```bash
-# Analisar bundle size
-npm run analyze
-
-# Verificar dependências vulneráveis
-npm audit
-
-# Atualizar dependências
-npm update
-```
-
 ---
 
 ## 🔧 Configuração do Ambiente
-
-### 📱 Desenvolvimento iOS
-
-```bash
-# Instalar Xcode (Mac App Store)
-# Instalar iOS Simulator
-
-# Configurar ambiente
-npx @react-native-community/cli doctor
-
-# Executar no simulador
-npm run ios
-```
-
-### 🤖 Desenvolvimento Android
-
-```bash
-# Instalar Android Studio
-# Configurar Android SDK
-
-# Variáveis de ambiente (adicionar ao .bashrc/.zshrc)
-export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-
-# Executar no emulador
-npm run android
-```
 
 ### ☁️ Configuração do Supabase
 
@@ -1179,45 +857,34 @@ CREATE TABLE consultations_consultorio (
 );
 ```
 
-### 🔍 Índices para Performance
+---
 
-```sql
--- Índices otimizados
-CREATE INDEX clients_user_id_idx ON clients_consultorio(user_id);
-CREATE INDEX clients_email_idx ON clients_consultorio(email);
-CREATE INDEX pets_client_id_idx ON pets_consultorio(client_id);
-CREATE INDEX consultations_user_id_idx ON consultations_consultorio(user_id);
-CREATE INDEX consultations_date_idx ON consultations_consultorio(date);
-```
+## 🔗 Links Importantes
 
-### 📈 Métricas e Analytics
+### 📚 Recursos Oficiais
+- 🌐 **Site Oficial:** https://language.petcareai.com.br/
+- 📖 **Documentação:** https://language.petcareai.com.br/docs
+- 🎓 **Tutoriais:** https://language.petcareai.com.br/tutorials
+- 📦 **NPM Package:** https://www.npmjs.com/package/petcarescript
+- 🧩 **VS Code Extension:** https://marketplace.visualstudio.com/items?itemName=petcarescript.petcarescript
 
-```sql
--- Queries úteis para relatórios
--- Total de consultas por mês
-SELECT 
-  DATE_TRUNC('month', date) as month,
-  COUNT(*) as total_consultations,
-  SUM(price) as total_revenue
-FROM consultations_consultorio 
-WHERE user_id = $1
-GROUP BY month
-ORDER BY month DESC;
+### 🛠️ Desenvolvimento
+- 💻 **GitHub Repository:** https://github.com/PetCareAi/petcarescript
+- 🐛 **Issues & Bugs:** https://github.com/PetCareAi/petcarescript/issues
+- 💬 **Discussions:** https://github.com/PetCareAi/petcarescript/discussions
+- 🔄 **Pull Requests:** https://github.com/PetCareAi/petcarescript/pulls
+- 📊 **Project Board:** https://github.com/PetCareAi/petcarescript/projects
 
--- Pets mais atendidos
-SELECT 
-  p.name,
-  p.species,
-  c.name as client_name,
-  COUNT(*) as consultation_count
-FROM consultations_consultorio co
-JOIN pets_consultorio p ON p.id = co.pet_id
-JOIN clients_consultorio c ON c.id = co.client_id
-WHERE co.user_id = $1
-GROUP BY p.id, p.name, p.species, c.name
-ORDER BY consultation_count DESC
-LIMIT 10;
-```
+### 🌐 PetCareAI Ecosystem
+
+| Recurso | Link | Descrição |
+|---------|------|-----------|
+| 🌍 **Site Oficial** | [petcareai.com.br](https://petcareai.com.br) | Portal principal |
+| 🏢 **GitHub Org** | [github.com/PetCareAI](https://github.com/PetCareAi) | 25+ repositórios |
+| 💬 **Discord** | [discord.gg/petcareai](https://discord.gg/petcareai) | Comunidade ativa |
+| 📚 **Documentação** | [docs.petcareai.com.br](https://documentation.petcareai.com.br) | Wiki completa |
+| 📋 **Tasks** | [tasks.petcareai.com.br](https://tasks.petcareai.com.br) | Gerenciamento ágil |
+| 📊 **Analytics** | [analytics.petcareai.com.br](https://analytics.petcareai.com.br) | Dashboards |
 
 ---
 
@@ -1237,19 +904,11 @@ LIMIT 10;
 - [ ] 💳 **Integração com meios de pagamento**
 - [ ] 📋 **Templates de prescrição**
 
-### 🎯 Versão 1.3.0 (Q4 2025)
-- [ ] 🏥 **Suporte multi-clínica**
-- [ ] 👥 **Sistema de funcionários e permissões**
-- [ ] 📊 **Dashboard avançado com gráficos**
-- [ ] 🔄 **Integração com equipamentos médicos**
-- [ ] 📷 **Reconhecimento de texto em receitas**
-
-### 🎯 Versão 2.0.0 (Q1 2025)
-- [ ] 🤖 **Inteligência Artificial para diagnósticos**
-- [ ] 🌐 **API pública para integrações**
-- [ ] 📱 **Versão web completa**
-- [ ] 🌎 **Internacionalização (i18n)**
-- [ ] ☁️ **Backup automático em múltiplas nuvens**
+### 🧠 Categoria IA & Machine Learning
+- **Ultra ML Pet Detection v6.0** - Sistema ultra-profissional com YOLO e MediaPipe
+- **PetCareAI Analytics** - Análise avançada com Machine Learning
+- **LLM AI Assistant** - Assistentes virtuais com Gemini AI
+- **Sistemas de Computer Vision** para análise veterinária
 
 ### 🔮 Futuro
 - [ ] 🏆 **Sistema de gamificação**
@@ -1293,24 +952,6 @@ npm start
 npm test
 ```
 
-#### 4. ✅ Commit e Push
-```bash
-# Adicionar arquivos
-git add .
-
-# Commit com mensagem descritiva
-git commit -m "feat: adiciona nova funcionalidade X"
-
-# Push para o GitHub
-git push origin feature/nova-funcionalidade
-```
-
-#### 5. 🔄 Pull Request
-1. Abra um Pull Request no GitHub
-2. Descreva as mudanças realizadas
-3. Aguarde review da equipe
-4. Realize ajustes se necessário
-
 ### 📝 Padrões de Commit
 
 Seguimos o padrão [Conventional Commits](https://www.conventionalcommits.org/):
@@ -1324,87 +965,29 @@ style:    # Formatação, sem mudança de código
 refactor: # Refatoração de código
 test:     # Adição ou correção de testes
 chore:    # Manutenção geral
-
-# Exemplos
-git commit -m "feat: adiciona validação de CPF"
-git commit -m "fix: corrige erro no login"
-git commit -m "docs: atualiza README com novas instruções"
 ```
-
-### 🐛 Reportar Bugs
-
-Para reportar bugs, use o [GitHub Issues](https://github.com/PetCareAi/consultorio-app/issues):
-
-**Template de Bug Report:**
-```markdown
-## 🐛 Descrição do Bug
-Descrição clara do que está acontecendo.
-
-## 🔄 Passos para Reproduzir
-1. Vá para '...'
-2. Clique em '...'
-3. Veja o erro
-
-## ✅ Comportamento Esperado
-O que deveria acontecer.
-
-## 📱 Ambiente
-- Dispositivo: [ex: iPhone 12]
-- OS: [ex: iOS 15.1]
-- Versão do App: [ex: 1.0.0]
-```
-
-### 💡 Sugerir Funcionalidades
-
-Para sugerir novas funcionalidades:
-
-**Template de Feature Request:**
-```markdown
-## 🚀 Funcionalidade Solicitada
-Descrição clara da funcionalidade.
-
-## 🎯 Problema que Resolve
-Qual problema esta funcionalidade resolveria?
-
-## 💡 Solução Proposta
-Descrição detalhada da solução.
-
-## 🔄 Alternativas Consideradas
-Outras abordagens que você considerou.
-```
-
-### 👥 Equipe de Desenvolvimento
-
-- **Core Maintainers**: Responsáveis pela arquitetura e decisões técnicas
-- **Community Contributors**: Desenvolvedores da comunidade
-- **Veterinary Advisors**: Veterinários que fornecem feedback funcional
 
 ---
 
-## 📜 Licença
+## 👥 Equipe de Desenvolvimento
 
-Este projeto está sob [licença proprietária](LICENSE) da **PetCareAi Ltda**.
+### **Core Team**
+- **Tech Lead** - Arquitetura e desenvolvimento principal
+- **Mobile Developer** - Desenvolvimento React Native
+- **Backend Developer** - APIs e banco de dados
+- **UX/UI Designer** - Interface e experiência
 
-Para licenciamento e autorizações: **legal@petcareai.com.br**
+### 🚀 Líder Técnico
 
-### 📋 Resumo da Licença MIT
-
-✅ **Permitido:**
-- ✅ Uso comercial
-- ✅ Modificação
-- ✅ Distribuição
-- ✅ Uso privado
-
-❌ **Limitações:**
-- ❌ Responsabilidade
-- ❌ Garantia
-
-📝 **Condições:**
-- 📝 Incluir licença e copyright
-
----
-
-## 👥 Equipe
+<div align="center">
+  <img src="https://github.com/estevam5s.png" width="80" style="border-radius: 50%;" />
+  <br />
+  <strong>Estevam Souza</strong><br />
+  <em>Especialista TI Full-Stack</em><br />
+  <a href="https://linkedin.com/in/estevam-souza">LinkedIn</a> |
+  <a href="https://github.com/estevam5s">GitHub</a> |
+  <a href="https://estevamsouza.com.br">Website</a>
+</div>
 
 ### 🚀 Core Team
 
@@ -1445,11 +1028,86 @@ Para licenciamento e autorizações: **legal@petcareai.com.br**
 
 ### 🌟 Contributors
 
-Agradecemos a todos os contribuidores que ajudaram a fazer deste projeto uma realidade:
+Agradecemos a todos os [contribuidores](CONTRIBUTORS.md) que ajudaram a construir este projeto.
 
 <a href="https://github.com/petcare-pro/petcare-pro/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=petcare-pro/petcare-pro" />
 </a>
+
+### 🤝 Como Juntar-se à Equipe
+
+**Estamos sempre buscando novos talentos!**
+
+- 📞 **Discord**: [discord.gg/petcareai](https://discord.gg/petcareai)
+- 💼 **LinkedIn**: [company/petcare-ai](https://linkedin.com/company/petcare-ai)
+- 📧 **Email**: contato@petcareai.com.br
+
+**Áreas Abertas:**
+- 👨‍💻 Desenvolvedores (Frontend, Backend, Mobile)
+- 🧠 Especialistas IA/ML
+- 🛡️ Cybersecurity Engineers
+- 📊 Data Scientists
+- 🎨 UI/UX Designers
+- 📈 Marketing Digital
+
+---
+
+## 📜 Licença
+
+Este projeto está sob [licença proprietária](LICENSE) da **PetCareAi Ltda**.
+
+Para licenciamento e autorizações: **legal@petcareai.com.br**
+
+### 📋 Resumo da Licença MIT
+
+✅ **Permitido:**
+- ✅ Uso comercial
+- ✅ Modificação
+- ✅ Distribuição
+- ✅ Uso privado
+
+❌ **Limitações:**
+- ❌ Responsabilidade
+- ❌ Garantia
+
+📝 **Condições:**
+- 📝 Incluir licença e copyright
+
+---
+
+## 🙏 Agradecimentos
+
+### 🙏 **Reconhecimentos Especiais**
+
+- **Google** pelo Gemini 2.0 Flash API
+- **Microsoft** pelo VS Code e sua excelente API de extensões
+- **Comunidade Open Source** por inspiração e feedback contínuo
+- **Beta Testers** por ajudar a melhorar a extensão
+- **Contribuidores** que tornaram este projeto possível
+
+### 🌟 **Inspirações**
+- **GitHub Copilot** - Inspiração para IA integrada
+- **Material Icon Theme** - Padrões de iconografia
+- **Dracula Theme** - Inspiração para temas escuros
+- **Vue.js Community** - Melhores práticas de desenvolvimento
+
+### **Tecnologias e Ferramentas**
+
+- 🧠 **Google AI** - Pela API Gemini revolucionária
+- 🔬 **TensorFlow Team** - Pela plataforma de ML mais avançada
+- ⚛️ **React Community** - Pelo ecossistema incrível
+- 📦 **Open Source Community** - Por todas as bibliotecas utilizadas
+
+### **Validação Científica**
+
+- 🏥 **Hospital Veterinário USP** - Validação dos algoritmos
+- 🎓 **FMVZ-USP** - Consultoria científica
+- 👨‍⚕️ **CFMV** - Orientações éticas e técnicas
+- 🐕 **ANCLIVEPA** - Apoio da comunidade veterinária
+
+### **Beta Testers**
+
+Agradecimento especial aos **500+ tutores** que participaram dos testes beta e ajudaram a aperfeiçoar nossa IA.
 
 ### 🏆 Reconhecimentos Especiais
 
@@ -1459,11 +1117,57 @@ Agradecemos a todos os contribuidores que ajudaram a fazer deste projeto uma rea
 - **☁️ Supabase Team** - Plataforma backend robusta
 - **🎨 Expo Team** - Framework de desenvolvimento excepcional
 
+### Projetos que Inspiraram
+
+- [React](https://reactjs.org/) - Biblioteca para interfaces
+- [Electron](https://electronjs.org/) - Framework para apps desktop
+- [Supabase](https://supabase.com/) - Backend open source
+- [Chart.js](https://chartjs.org/) - Visualização de dados
+
+### 💝 **Apoie o Projeto**
+
+Gostou da extensão? Considere apoiar o desenvolvimento:
+
+- ⭐ **Star** no [GitHub](https://github.com/PetCareAi/extension-for-devs)
+- 🐦 **Compartilhe** nas redes sociais
+- 💰 **Doe** via [Buy me a coffee](https://buymeacoffee.com/petcareai)
+- 🤝 **Contribua** com código ou documentação
+
 ---
 
-## 📞 Suporte
+## 💬 Suporte
 
-Precisando de ajuda? Temos várias opções de suporte:
+### 🆘 Obter Ajuda
+
+- **📖 Documentação**: [petcarescript.org/docs](https://petcarescript.org/docs)
+- **💬 Comunidade Discord**: [discord.gg/petcarescript](https://discord.gg/petcarescript)
+- **❓ Stack Overflow**: Marque suas perguntas com `petcarescript`
+- **🐛 GitHub Issues**: [Relatar bugs e solicitações de recursos](https://github.com/petcarescript/vscode-extension/issues)
+
+### 📞 Contato
+
+- **📧 Email**: support@petcarescript.org
+- **🐦 Twitter**: [@PetCareScript](https://twitter.com/PetCareScript)
+- **💼 LinkedIn**: [PetCareScript Official](https://linkedin.com/company/petcarescript)
+
+### 🏢 Suporte Empresarial
+
+Para clientes empresariais, oferecemos:
+- **⚡ Suporte Prioritário** - Assistência técnica 24/7
+- **🔧 Recursos Personalizados** - Ferramentas de desenvolvimento sob medida
+- **📚 Programas de Treinamento** - Onboarding de equipe e workshops
+- **🛡️ Auditorias de Segurança** - Análise de segurança de código
+
+Entre em contato: enterprise@petcarescript.org
+
+### 🆘 Canais de Suporte
+
+| Tipo de Suporte | Canal | Resposta |
+|------------------|-------|----------|
+| **🐛 Bugs & Issues** | [GitHub Issues](https://github.com/PetCareAi/extension-for-devs/issues) | 24-48h |
+| **💬 Discussões** | [GitHub Discussions](https://github.com/PetCareAi/extension-for-devs/discussions) | 24h |
+| **📧 Suporte Direto** | [support@petcareai.com.br](mailto:support@petcareai.com.br) | 24h |
+| **📖 Documentação** | [documentation.petcareai.com.br](https://documentation.petcareai.com.br) | Sempre |
 
 ### 💬 Canais de Comunicação
 
@@ -1477,17 +1181,10 @@ Precisando de ajuda? Temos várias opções de suporte:
 
 ### 📧 Contatos Diretos
 
-- **🎯 Suporte Geral**: [suporte@petcarepro.com](mailto:suporte@petcareai.com.br)
-- **🔧 Suporte Técnico**: [tech@petcarepro.com](mailto:tech@petcareai.com.br)
-- **💼 Parcerias**: [parcerias@petcarepro.com](mailto:parcerias@petcareai.com.br)
-- **📰 Imprensa**: [imprensa@petcarepro.com](mailto:imprensa@petcareai.com.br)
-
-### 📱 Redes Sociais
-
-- **Instagram**: [@petcarepro.br](https://instagram.com/petcareai.com.br)
-- **LinkedIn**: [PetCare Pro](https://linkedin.com/company/petcareai.com.br)
-- **Facebook**: [PetCare Pro Brasil](https://facebook.com/petcareai.com.br)
-- **Twitter**: [@petcarepro_br](https://twitter.com/petcareai.com.br)
+- **🎯 Suporte Geral**: [suporte@petcareai.com.br](mailto:suporte@petcareai.com.br)
+- **🔧 Suporte Técnico**: [tech@petcareai.com.br](mailto:tech@petcareai.com.br)
+- **💼 Parcerias**: [parcerias@petcareai.com.br](mailto:parcerias@petcareai.com.br)
+- **📰 Imprensa**: [imprensa@petcareai.com.br](mailto:imprensa@petcareai.com.br)
 
 ### 🆘 Suporte Urgente
 
@@ -1495,18 +1192,6 @@ Para situações críticas que impedem o funcionamento da clínica:
 
 📞 **Telefone de Emergência**: (11) 9999-8888
 💬 **WhatsApp**: [wa.me/5511999998888](https://wa.me/5511999998888)
-
-### 📚 Recursos de Ajuda
-
-#### 📖 Documentação
-- **📗 Manual do Usuário**: [docs.petcarepro.com/manual](https://docs.petcareai.com.br/manual)
-- **🔧 Guia Técnico**: [docs.petcarepro.com/tech](https://docs.petcareai.com.br/tech)
-- **❓ FAQ**: [docs.petcarepro.com/faq](https://docs.petcareai.com.br/faq)
-
-#### 👥 Comunidade
-- **💬 Grupo Telegram**: [t.me/petcarepro](https://t.me/petcareai.com.br)
-- **📱 Grupo WhatsApp**: [Comunidade PetCare Pro](https://chat.whatsapp.com/petcareai.com.br)
-- **💼 LinkedIn Groups**: [Veterinários PetCare Pro](https://linkedin.com/groups/petcareai.com.br)
 
 ### 🚀 Treinamentos e Workshops
 
@@ -1527,31 +1212,152 @@ Oferecemos treinamentos gratuitos para maximizar o uso do sistema:
 - ✅ Dicas e truques avançados
 
 #### 📝 Inscrições
-**Link**: [treinamentos.petcarepro.com](https://treinamentos.petcareai.com.br)
+**Link**: [treinamentos.petcareai.com.br](https://treinamentos.petcareai.com.br)
 **WhatsApp**: (11) 9999-7777
+
+### 📚 Recursos de Ajuda
+
+#### 📖 Documentação
+- **📗 Manual do Usuário**: [docs.petcareai.com.br/manual](https://docs.petcareai.com.br/manual)
+- **🔧 Guia Técnico**: [docs.petcareai.com.br/tech](https://docs.petcareai.com.br/tech)
+- **❓ FAQ**: [docs.petcareai.com.br/faq](https://docs.petcareai.com.br/faq)
+
+#### 👥 Comunidade
+- **💬 Grupo Telegram**: [t.me/petcareai.com.br](https://t.me/petcareai.com.br)
+- **📱 Grupo WhatsApp**: [Comunidade PetCare Pro](https://chat.whatsapp.com/petcareai.com.br)
+- **💼 LinkedIn Groups**: [Veterinários PetCare Pro](https://linkedin.com/groups/petcareai.com.br)
+
+---
+
+## ⚠️ **Disclaimer Importante**
+
+> **AVISO MÉDICO**: O PetCare AI é uma ferramenta de **triagem e educação** que utiliza inteligência artificial para análise preliminar. 
+> 
+> **NÃO SUBSTITUI** a consulta veterinária profissional. Sempre procure um médico veterinário licenciado para diagnóstico definitivo e tratamento.
+> 
+> Em caso de **emergência**, procure imediatamente um veterinário ou hospital veterinário 24h.
 
 ---
 
 <div align="center">
+
+## 🎉 **Comece Agora!**
+
+```bash
+# Instale PetCareScript em 10 segundos
+npm install -g petcarescript
+
+# Execute seu primeiro programa
+echo 'show "🐾 Olá, PetCareScript!";' > hello.pcs
+pcs hello.pcs
+```
+
+### 🌟 **Junte-se à Revolução da Programação Humana!**
+
+[![Get Started](https://img.shields.io/badge/🚀%20Get%20Started-Now-brightgreen?style=for-the-badge&logoColor=white)](https://language.petcareai.com.br/getting-started)
+[![Join Discord](https://img.shields.io/badge/💬%20Join-Discord-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/petcarescript)
+[![Follow Twitter](https://img.shields.io/badge/🐦%20Follow-Twitter-1da1f2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/petcarescript)
+
+</div>
+
+---
+
+<div align="center">
+
+### **Built with ❤️ for the Developer Community**
+
+**PetCareScript** - *Making programming human-readable, one keyword at a time.*
+
+**© 2025 PetCareScript. Made with 🐾 in Brazil.**
+
+</div>
+
+---
+
+## 📱 Redes Sociais
+
+<div align="center">
+
+[![Website](https://img.shields.io/badge/Visit-petcarescript.org-22c55e?style=for-the-badge&logo=react)](https://petcarescript.org)
+[![GitHub](https://img.shields.io/badge/Star-on%20GitHub-181717?style=for-the-badge&logo=github)](https://github.com/estevamsl/petcarescript-website)
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/petcareai)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/petcareai)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/company/petcareai)
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/petcareai)
+
+**Instagram**: [@petcarepro.br](https://instagram.com/petcareai.com.br)
+**LinkedIn**: [PetCare Pro](https://linkedin.com/company/petcareai.com.br)
+**Facebook**: [PetCare Pro Brasil](https://facebook.com/petcareai.com.br)
+**Twitter**: [@petcarepro_br](https://twitter.com/petcareai.com.br)
+
+</div>
+
+---
+
+<div align="center">
+  <h2>🚀 Pronto para Revolucionar o Cuidado Animal?</h2>
+  <p><strong>Junte-se à maior organização de tecnologia pet do Brasil!</strong></p>
   
-  ### 🙏 Obrigado por escolher o PetCare Pro!
+  <a href="https://discord.gg/petcareai" target="_blank">
+    <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" />
+  </a>
+  <a href="https://github.com/PetCareAI" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+  </a>
+  <a href="https://linkedin.com/company/petcare-ai" target="_blank">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
+  
+  <br /><br />
   
   <p>
-    <strong>Juntos, estamos revolucionando a medicina veterinária no Brasil</strong>
+    <em>"Transformando o cuidado animal através da tecnologia" 🐾</em><br />
+    <strong>© 2025 PetCareAI Organization - Todos os direitos reservados</strong>
   </p>
-  
-  <p>
-    Desenvolvido com ❤️ por veterinários, para veterinários
-  </p>
-  
-  ---
-  
-  <p>
-    <img src="https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge" alt="Made with Love">
-    <img src="https://img.shields.io/badge/Para-Veterinários%20🇧🇷-green?style=for-the-badge" alt="Para Veterinários Brasileiros">
-    <img src="https://img.shields.io/badge/Open%20Source-💪-blue?style=for-the-badge" alt="Open Source">
-  </p>
-  
-  <p><small>© 2025 PetCareAi. Todos os direitos reservados.</small></p>
-  
+</div>
+
+---
+
+## Star History
+
+<a href="https://www.star-history.com/#PetCareAi/analytics&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=PetCareAi/analytics&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=PetCareAi/analytics&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=PetCareAi/analytics&type=Date" />
+ </picture>
+</a>
+
+---
+
+<div align="center">
+
+### 🙏 Obrigado por escolher o PetCare Pro!
+
+**Juntos, estamos revolucionando a medicina veterinária no Brasil**
+
+Desenvolvido com ❤️ por veterinários, para veterinários
+
+---
+
+<p>
+  <img src="https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge" alt="Made with Love">
+  <img src="https://img.shields.io/badge/Para-Veterinários%20🇧🇷-green?style=for-the-badge" alt="Para Veterinários Brasileiros">
+  <img src="https://img.shields.io/badge/Open%20Source-💪-blue?style=for-the-badge" alt="Open Source">
+</p>
+
+**🐾 Feito com ❤️ para o bem-estar dos pets brasileiros**
+
+⭐ **Se este projeto ajudou você e seu pet, deixe uma estrela!** ⭐
+
+**🐾 PetCare AI Extension v1.0.1 Enhanced**
+
+*Desenvolvido com ❤️ para a comunidade de desenvolvedores*
+
+**Powered by Google Gemini 2.0 Flash | Built with 🤖 AI + 💻 Human Creativity**
+
+*© 2024 PetCare AI. Todos os direitos reservados.*
+
+<p><small>© 2025 PetCareAi. Todos os direitos reservados.</small></p>
+
 </div>
