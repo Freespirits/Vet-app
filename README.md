@@ -1,22 +1,23 @@
 <div align="center">
   <img width="1920" height="1080" alt="Cream and Pink Creative Pet Care Center Presentation" src="https://github.com/user-attachments/assets/9f20263b-59f7-44f6-9a81-6133185964e3" />
-  
-  <h1 style="color: #2E7D32; margin-top: 20px;">🐾 PetCare Pro</h1>
-  
+    
+  <h2>🐾 PetCare Pro</h2>
+    
   <p><strong>Sistema Completo para Gestão de Clínicas Veterinárias e Petshops</strong></p>
+    
+  [![React Native](https://img.shields.io/badge/React%20Native-0.79.2-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactnative.dev/)
+  [![Expo SDK](https://img.shields.io/badge/Expo%20SDK-53-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
+  [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
   
-  <p>
-    <img src="https://img.shields.io/badge/React%20Native-0.79.2-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React Native">
-    <img src="https://img.shields.io/badge/Expo%20SDK-53-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo">
-    <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase">
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
-  </p>
-  
-  <p>
-    <img src="https://img.shields.io/badge/Versão-1.0.0-2E7D32?style=for-the-badge" alt="Version">
-    <img src="https://img.shields.io/badge/Licença-MIT-81C784?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/badge/Plataforma-iOS%20%7C%20Android-4CAF50?style=for-the-badge" alt="Platform">
-  </p>
+  [![License](https://img.shields.io/badge/License-Proprietary-yellow?style=for-the-badge)](#licença)
+  [![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge)](https://github.com)
+  [![Platform](https://img.shields.io/badge/Plataforma-iOS%20%7C%20Android-4CAF50?style=for-the-badge)](https://github.com)
+    
+  **Uma solução moderna e completa para gestão veterinária que torna o cuidado animal mais eficiente e acessível**
+    
+  [🌟 Demo Online](https://petcareai-crm.vercel.app) • [📚 Documentação](docs/) • [💬 Suporte](https://github.com/petcareai/crm/issues) • [🐛 Report Bug](https://github.com/petcareai/crm/issues/new)
+
 </div>
 
 ---
