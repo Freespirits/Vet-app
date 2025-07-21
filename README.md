@@ -21,6 +21,16 @@
 
 ---
 
+<div align="center">
+  
+  <h4>📱 Download</h4>
+  
+  <a href="https://play.google.com/store/apps/details?id=com.petcareai.app"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Download from Google Play" height="80"></a> <a href="https://apps.apple.com/br/app/petcare-ai/id123456789"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="80"></a> <a href="https://apt.izzysoft.de/packages/com.petcareai.app/"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80"></a> <a href="https://f-droid.org/en/packages/com.petcareai.app/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80"></a> <a href="https://www.openapk.net/petcare-ai/com.petcareai.app/"><img src="https://www.openapk.net/images/openapk-badge.png" height="80"></a> <a href="https://www.androidfreeware.net/download-petcare-ai-apk.html"><img src="https://www.androidfreeware.net/images/androidfreeware-badge.png" height="80"></a> <a href="https://github.com/PetCareAi/app/releases"><img src="https://raw.githubusercontent.com/NeoApplications/Neo-Backup/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" height="80"></a> <a href="https://expo.dev/@petcareai/petcare-app"><img src="https://img.shields.io/badge/Download-Expo%20Go-000020.svg?style=for-the-badge&logo=expo&logoColor=white" alt="Download on Expo" height="80"></a>
+
+</div>
+
+---
+
 ## 📋 Índice
 
 - [🎯 Sobre o Projeto](#-sobre-o-projeto)
@@ -301,16 +311,6 @@ Fornecer uma solução **gratuita**, **intuitiva** e **completa** que permita ao
 | ⚙️ **Configurações** | Backup, suporte, informações | 3 |
 | 📋 **Informações** | Políticas, versão do app | 2 |
 | **Total Implementado** | | **19 telas** |
-
----
-
-<div align="center">
-  
-  <h4>📱 Download</h4>
-  
-  <a href="https://play.google.com/store/apps/details?id=com.petcareai.app"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Download from Google Play" height="80"></a> <a href="https://apps.apple.com/br/app/petcare-ai/id123456789"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="80"></a> <a href="https://apt.izzysoft.de/packages/com.petcareai.app/"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80"></a> <a href="https://f-droid.org/en/packages/com.petcareai.app/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80"></a> <a href="https://www.openapk.net/petcare-ai/com.petcareai.app/"><img src="https://www.openapk.net/images/openapk-badge.png" height="80"></a> <a href="https://www.androidfreeware.net/download-petcare-ai-apk.html"><img src="https://www.androidfreeware.net/images/androidfreeware-badge.png" height="80"></a> <a href="https://github.com/PetCareAi/app/releases"><img src="https://raw.githubusercontent.com/NeoApplications/Neo-Backup/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" height="80"></a> <a href="https://expo.dev/@petcareai/petcare-app"><img src="https://img.shields.io/badge/Download-Expo%20Go-000020.svg?style=for-the-badge&logo=expo&logoColor=white" alt="Download on Expo" height="80"></a>
-
-</div>
 
 ---
 
