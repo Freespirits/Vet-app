@@ -9,7 +9,6 @@
   [![Expo SDK](https://img.shields.io/badge/Expo%20SDK-53-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
   [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-  
   [![License](https://img.shields.io/badge/License-Proprietary-yellow?style=for-the-badge)](#licença)
   [![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge)](https://github.com)
   [![Platform](https://img.shields.io/badge/Plataforma-iOS%20%7C%20Android-4CAF50?style=for-the-badge)](https://github.com)
