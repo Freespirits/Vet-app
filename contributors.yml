@@ -1,320 +1,168 @@
-# CONTRIBUIDORES DO PETCARE PRO
-# Este arquivo lista todos os contribuidores que ajudaram a construir o PetCare Pro
-# Para adicionar-se como contribuidor, siga as instruções em CONTRIBUTING.md
+# PetCare AI Assistant - Contributors
+# Este arquivo lista todos os contribuidores do projeto PetCare AI Assistant
+# Formato baseado no All Contributors specification
 
-# Configuração do arquivo
-meta:
-  version: "1.0"
-  last_updated: "2024-07-01"
-  format_version: "all-contributors-1.0.0"
-  project_name: "PetCare Pro"
-  project_description: "Sistema de Gestão Veterinária"
-  repository: "https://github.com/PetCareAi/consultorio-app"
+project:
+  name: "PetCareAi"
+  description: "Assistente de IA conversacional especializado no ecossistema PetCare AI"
+  repository: "https://github.com/PetCareAi/llm"
+  website: "https://petcareai.com.br"
+  license: "Proprietaria"
 
-# Fundadores e Core Team
-founders:
-  - name: "Equipe PetCare Pro"
-    github: "PetCareAi"
-    role: "Founder & Lead Developer"
-    email: "team@petcare.pro"
-    avatar: "https://github.com/PetCareAi.png"
-    contributions:
-      - "💻 Código"
-      - "📖 Documentação"
-      - "🎨 Design"
-      - "🔧 Manutenção"
-      - "💡 Ideias"
-      - "📋 Gerenciamento"
-    bio: "Equipe fundadora responsável pela concepção e desenvolvimento inicial do PetCare Pro"
-    joined_date: "2024-04-01"
-    location: "São Paulo, Brasil"
-    specialties:
-      - "React Native"
-      - "Mobile Development"
-      - "Veterinary Software"
-      - "UX/UI Design"
-
-# Mantenedores Principais
 maintainers:
-  - name: "Lead Developer"
-    github: "leaddev"
-    role: "Technical Lead"
-    email: "lead@petcare.pro"
-    avatar: "https://github.com/leaddev.png"
+  - name: "Estevam Souza"
+    role: "Project Lead & CTO"
+    email: "contato@petcareai.com.br"
+    github: "estevam5s"
+    linkedin: "estevam-souza"
+    avatar: "https://github.com/estevamsouza.png"
+    bio: "Diretor de TI da PetCare AI, especialista em IA e desenvolvimento full-stack"
+    location: "Florianópolis, SC, Brasil"
+    timezone: "America/Sao_Paulo"
+    languages: ["Portuguese", "English", "Spanish"]
+    skills: ["React", "TypeScript", "NestJS", "AI/ML", "Product Management"]
     contributions:
-      - "💻 Código"
-      - "👀 Revisão"
-      - "🔧 Manutenção"
-      - "📖 Documentação"
-    bio: "Responsável pela arquitetura técnica e qualidade do código"
-    joined_date: "2024-04-01"
-    location: "Brasil"
-
-  - name: "UX/UI Designer"
-    github: "designer"
-    role: "Design Lead"
-    email: "design@petcare.pro"
-    avatar: "https://github.com/designer.png"
-    contributions:
+      - "💻 Code"
+      - "📖 Documentation"
       - "🎨 Design"
-      - "💡 Ideias"
-      - "📋 Testes de Usabilidade"
-    bio: "Responsável pela experiência do usuário e interface"
-    joined_date: "2024-04-15"
-    location: "Brasil"
+      - "🤔 Ideas"
+      - "👀 Review"
+      - "📢 Talks"
+      - "💼 Business Logic"
+      - "🔧 Infrastructure"
+    started: "2025-05-15"
+    commits: 127
+    lines_added: 15420
+    lines_removed: 2341
 
-# Contribuidores da Comunidade
-contributors:
-  # Aguardando primeiros contribuidores da comunidade
-  # Exemplo de como adicionar um novo contribuidor:
-  # - name: "Seu Nome"
-  #   github: "seu-username"
-  #   role: "Contributor"
-  #   email: "seu@email.com"
-  #   avatar: "https://github.com/seu-username.png"
-  #   contributions:
-  #     - "💻 Código"
-  #     - "🐛 Bug Reports"
-  #   bio: "Breve descrição sobre você"
-  #   joined_date: "YYYY-MM-DD"
-  #   location: "Sua Localização"
+  - name: "Aluno1"
+    role: "Frontend Developer"
+    email: "aluno1@petcareai.com.br"
+    github: "aluno1"
+    avatar: "https://github.com/aluno1.png"
+    bio: "Desenvolvedor React especializado em aplicações conversacionais"
+    location: "Florianópolis, SC, Brasil"
+    contributions:
+      - "💻 Code"
+      - "🐛 Bug reports"
+      - "📱 Mobile Development"
+      - "⚡ Performance"
+    started: "2025-06-10"
+    commits: 45
+    lines_added: 3280
+    lines_removed: 420
 
-# Contribuidores por categoria
-by_contribution_type:
-  code:
-    description: "Contribuidores que escreveram código"
-    count: 1
-    contributors:
-      - "PetCareAi"
+recognition:
+  hall_of_fame:
+    - name: "Estevam Souza"
+      achievement: "Founder & Architect"
+      date: "2025-08-05"
 
-  documentation:
-    description: "Contribuidores que melhoraram a documentação"
-    count: 1
-    contributors:
-      - "PetCareAi"
+    - name: "Aluno1"
+      achievement: "Frontend Excellence Award"
+      date: "2025-08-05"
 
-  design:
-    description: "Contribuidores que trabalharam no design"
-    count: 1
-    contributors:
-      - "PetCareAi"
-
-  testing:
-    description: "Contribuidores que ajudaram com testes"
-    count: 0
-    contributors: []
-
-  bug_reports:
-    description: "Contribuidores que reportaram bugs"
-    count: 0
-    contributors: []
-
-  ideas:
-    description: "Contribuidores que sugeriram ideias"
-    count: 1
-    contributors:
-      - "PetCareAi"
-
-  review:
-    description: "Contribuidores que revisaram código"
-    count: 1
-    contributors:
-      - "PetCareAi"
-
-  maintenance:
-    description: "Contribuidores que mantêm o projeto"
-    count: 1
-    contributors:
-      - "PetCareAi"
-
-# Estatísticas
-statistics:
-  total_contributors: 1
-  active_contributors_last_month: 1
-  first_contribution_date: "2024-04-01"
-  last_contribution_date: "2024-07-01"
-  total_commits: 100+
-  total_lines_of_code: 10000+
-
-# Especialistas por área
-experts:
-  react_native:
-    - "PetCareAi"
-
-  mobile_development:
-    - "PetCareAi"
-
-  veterinary_domain:
-    - "PetCareAi"
-
-  ui_ux_design:
-    - "PetCareAi"
-
-  backend_development:
-    - "PetCareAi"
-
-  testing:
-    - "PetCareAi"
-
-  devops:
-    - "PetCareAi"
-
-  documentation:
-    - "PetCareAi"
-
-# Agradecimentos Especiais
-special_thanks:
-  - name: "Comunidade React Native"
-    description: "Por fornecer o framework base"
-    website: "https://reactnative.dev"
-
-  - name: "Expo Team"
-    description: "Por simplificar o desenvolvimento mobile"
-    website: "https://expo.dev"
-
-  - name: "Supabase"
-    description: "Por fornecer backend como serviço"
-    website: "https://supabase.com"
-
-  - name: "Veterinários Consultores"
-    description: "Por orientações sobre o domínio veterinário"
-
-  - name: "Beta Testers"
-    description: "Por testarem e fornecerem feedback valioso"
-
-  - name: "Open Source Community"
-    description: "Por todas as bibliotecas e ferramentas utilizadas"
-
-# Orientações para novos contribuidores
-new_contributor_guide:
-  welcome_message: |
-    Bem-vindo à comunidade PetCare Pro!
-    Agradecemos seu interesse em contribuir para um projeto que visa melhorar
-    a vida de pets e facilitar o trabalho de veterinários.
-
-  getting_started:
-    - "Leia nosso CONTRIBUTING.md"
-    - "Configure o ambiente seguindo install.sh"
-    - "Veja os issues marcados como 'good first issue'"
-    - "Entre em contato no Discord ou Discussions"
-
-  recognition_process: |
-    Todos os contribuidores são reconhecidos! Quando sua contribuição for aceita:
-    1. Você será adicionado automaticamente a este arquivo
-    2. Receberá um badge de contribuidor
-    3. Será mencionado nas release notes
-    4. Poderá adicionar "Contributor do PetCare Pro" ao seu perfil
-
-# Links úteis para contribuidores
-useful_links:
-  contributing_guide: "CONTRIBUTING.md"
-  code_of_conduct: "CODE-OF-CONDUCT.md"
-  issue_tracker: "https://github.com/PetCareAi/consultorio-app/issues"
-  discussions: "https://github.com/PetCareAi/consultorio-app/discussions"
-  discord: "https://discord.gg/petcare-pro"
-  documentation: "https://docs.petcare.pro"
-
-# Tipos de contribuição reconhecidos
-contribution_types:
-  code:
-    emoji: "💻"
-    description: "Código"
-
-  documentation:
-    emoji: "📖"
-    description: "Documentação"
-
-  design:
-    emoji: "🎨"
-    description: "Design"
-
-  ideas:
-    emoji: "💡"
-    description: "Ideias"
-
-  testing:
-    emoji: "🧪"
-    description: "Testes"
-
-  bug_reports:
-    emoji: "🐛"
-    description: "Relatórios de Bug"
-
-  security:
-    emoji: "🔒"
-    description: "Segurança"
-
-  translation:
-    emoji: "🌍"
-    description: "Tradução"
-
-  review:
-    emoji: "👀"
-    description: "Revisão"
-
-  maintenance:
-    emoji: "🔧"
-    description: "Manutenção"
-
-  infrastructure:
-    emoji: "🚇"
-    description: "Infraestrutura"
-
-  performance:
-    emoji: "⚡"
-    description: "Performance"
-
-  accessibility:
-    emoji: "♿"
-    description: "Acessibilidade"
-
-  user_experience:
-    emoji: "📱"
-    description: "Experiência do Usuário"
-
-  data:
-    emoji: "🔣"
-    description: "Dados"
-
-# Hall da Fama (contribuidores que se destacaram)
-hall_of_fame:
   monthly_highlights:
-    "2024-07":
-      - contributor: "PetCareAi"
-        achievement: "Lançamento da versão 1.0.0"
-        description: "Responsável pelo desenvolvimento e lançamento inicial"
+    "2025-06":
+      contributor: "Aluno1"
+      reason: "Implementação excepcional da interface conversacional"
 
-  yearly_highlights:
-    "2024":
-      - contributor: "PetCareAi"
-        achievement: "Criação do PetCare Pro"
-        description: "Fundação do projeto e desenvolvimento inicial completo"
+    "2025-07":
+      contributor: "Estevam Souza"
+      reason: "Arquitetura robusta e liderança técnica"
 
-# Métricas de contribuição
-metrics:
-  commits_per_month:
-    "2024-04": 25
-    "2024-05": 35
-    "2024-06": 40
-    "2024-07": 30
+contribution_guidelines:
+  types:
+    - emoji: "💻"
+      code: "code"
+      description: "Contribuições de código"
 
-  lines_added_per_month:
-    "2024-04": 2500
-    "2024-05": 3500
-    "2024-06": 3000
-    "2024-07": 1000
+    - emoji: "📖"
+      code: "doc"
+      description: "Documentação"
 
-  issues_resolved_per_month:
-    "2024-04": 5
-    "2024-05": 8
-    "2024-06": 12
-    "2024-07": 10
+    - emoji: "🎨"
+      code: "design"
+      description: "Design e UX"
 
-# Configurações de automação
-automation:
-  auto_update: true
-  update_frequency: "weekly"
-  include_bot_contributions: false
-  minimum_contributions: 1
+    - emoji: "🐛"
+      code: "bug"
+      description: "Relatórios de bugs"
 
-# Fim do arquivo
+    - emoji: "💡"
+      code: "ideas"
+      description: "Ideias e sugestões"
+
+    - emoji: "👀"
+      code: "review"
+      description: "Revisão de código"
+
+    - emoji: "🧪"
+      code: "test"
+      description: "Testes"
+
+    - emoji: "📱"
+      code: "mobile"
+      description: "Desenvolvimento mobile"
+
+    - emoji: "♿"
+      code: "a11y"
+      description: "Acessibilidade"
+
+    - emoji: "🤖"
+      code: "ai"
+      description: "Melhorias de IA"
+
+    - emoji: "⚡"
+      code: "performance"
+      description: "Otimização de performance"
+
+    - emoji: "💼"
+      code: "business"
+      description: "Lógica de negócio"
+
+    - emoji: "🔧"
+      code: "infra"
+      description: "Infraestrutura"
+
+statistics:
+  total_contributors: 2
+  core_team: 2
+  total_commits: 172
+  total_lines_added: 18700
+  total_lines_removed: 2761
+  languages_supported: 3
+  countries_represented: 1
+  active_since: "2025-05-15"
+
+team_info:
+  size: "Small but mighty"
+  focus: "Quality over quantity"
+  collaboration_style: "Agile and innovative"
+  communication: "Daily standups and code reviews"
+
+how_to_contribute:
+  getting_started:
+    - "Leia o CONTRIBUTING.md"
+    - "Escolha uma issue para trabalhar"
+    - "Faça fork do repositório"
+    - "Crie uma branch para sua feature"
+    - "Implemente suas mudanças"
+    - "Adicione testes se necessário"
+    - "Abra um Pull Request"
+
+  recognition_process:
+    - "Contribuições são automaticamente reconhecidas"
+    - "Updates mensais no contributors.yml"
+    - "Hall of Fame para contribuições especiais"
+    - "Menções em release notes"
+
+contact:
+  community_manager: "estevam.souza@petcareai.com.br"
+  discord: "https://discord.gg/petcareai"
+  telegram: "https://t.me/petcareai"
+  website: "https://petcareai.com.br/contributors"
+
+# Última atualização: 2025-07-24
+# Próxima revisão: 2025-08-24
+# Mantenedor: Estevam Souza

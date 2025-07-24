@@ -1,158 +1,172 @@
-COPYRIGHT NOTICE
+Copyright (c) 2025 PetCareAi - Estevam Souza
 
-PetCare Pro - Sistema de Gestão Veterinária
-Copyright (c) 2024 PetCare AI Solutions
-
-Todos os direitos reservados.
+                            PETCAREAI
+                    Assistente de IA Conversacional
 
 ================================================================================
 
-AVISO DE COPYRIGHT
+DIREITOS AUTORAIS E PROPRIEDADE INTELECTUAL
 
-Este software e documentação associada (o "Software") são propriedade da
-PetCare AI Solutions e estão protegidos por leis de direitos autorais
-brasileiras e internacionais.
+Este software e toda documentação associada (doravante "Software") são
+propriedade de Estevam Souza e estão protegidos pelas leis de direitos autorais
+do Brasil e tratados internacionais de propriedade intelectual.
 
-TERMOS DE USO
+LICENCIADO SOB MIT LICENSE
 
-1. LICENÇA LIMITADA
-   Este software é licenciado, não vendido. A PetCare AI Solutions concede
-   a você uma licença limitada, não exclusiva e intransferível para usar o
-   Software de acordo com os termos estabelecidos na licença MIT incluída
-   neste projeto.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-2. RESTRIÇÕES
-   Você não pode:
-   - Remover ou alterar avisos de copyright
-   - Reverse engineer, descompilar ou desmontar o Software
-   - Usar o Software para fins ilegais ou não autorizados
-   - Redistribuir o Software sem autorização expressa
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-3. PROPRIEDADE INTELECTUAL
-   O Software contém informações proprietárias e confidenciais da PetCare AI
-   Solutions. Todos os direitos não expressamente concedidos são reservados.
-
-COMPONENTES DE TERCEIROS
-
-Este software inclui componentes de código aberto com suas próprias licenças:
-
-- React Native (MIT License)
-- Expo SDK (MIT License)
-- Supabase Client (MIT License)
-- React Navigation (MIT License)
-- Date-fns (MIT License)
-- Ionicons (MIT License)
-
-Ver arquivo LICENSES-THIRD-PARTY.txt para detalhes completos.
-
-ASSETS E CONTEÚDO
-
-- Ícones e imagens: Criados pela equipe PetCare Pro ou licenciados adequadamente
-- Dados de medicamentos: Baseados em fontes públicas e literatura veterinária
-- Interface e design: Copyright PetCare AI Solutions
-- Documentação: Copyright PetCare AI Solutions
-
-MARCAS REGISTRADAS
-
-"PetCare Pro" é uma marca da PetCare AI Solutions. Todas as outras marcas
-mencionadas são propriedades de seus respectivos proprietários.
-
-DADOS E PRIVACIDADE
-
-Este software processa dados médicos veterinários. O uso deve estar em
-conformidade com:
-- Lei Geral de Proteção de Dados (LGPD) - Brasil
-- Regulamentações do Conselho Federal de Medicina Veterinária (CFMV)
-- Normas de privacidade e segurança aplicáveis
-
-RESPONSABILIDADE
-
-O Software é fornecido "como está", sem garantias de qualquer tipo. A
-PetCare AI Solutions não se responsabiliza por danos diretos, indiretos,
-incidentais ou consequenciais resultantes do uso do Software.
-
-JURISDIÇÃO
-
-Este aviso de copyright é regido pelas leis do Brasil. Quaisquer disputas
-serão resolvidas nos tribunais competentes de São Paulo, SP.
-
-CONTATO
-
-Para questões relacionadas a copyright ou licenciamento:
-
-PetCare AI Solutions
-Email: legal@petcare.pro
-Telefone: +55 11 9999-9999
-Endereço: São Paulo, SP - Brasil
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ================================================================================
 
-DETALHES TÉCNICOS DO COPYRIGHT
+MARCAS REGISTRADAS E PROPRIEDADE COMERCIAL
 
-Arquivos cobertos por este copyright:
-- Todo código fonte em /src/
-- Documentação em arquivos .md
-- Configurações do projeto
-- Assets e recursos visuais
-- Scripts de build e deploy
+"PetCareAi", o logotipo PetCare AI, e outras marcas relacionadas são marcas
+registradas ou marcas comerciais de Estevam Souza no Brasil e/ou outros países.
 
-Exclusões:
-- Dependências de terceiros em node_modules/
-- Arquivos de configuração padrão do React Native/Expo
-- Templates e boilerplates públicos utilizados
-
-HISTÓRICO DE COPYRIGHT
-
-2024-07-01: Copyright inicial estabelecido
-2024-07-01: Primeira versão pública (v1.0.0) lançada
-2024-07-01: Licença MIT aplicada para componentes open source
-
-RECONHECIMENTOS
-
-Agradecemos a comunidade open source cujas ferramentas e bibliotecas
-tornaram este projeto possível:
-- Meta (React Native)
-- Expo Team
-- Supabase Team
-- React Navigation Contributors
-- Toda a comunidade JavaScript/TypeScript
+O uso das marcas PetCare AI está sujeito às diretrizes de marca disponíveis em:
+https://petcareai.com.br/brand-guidelines
 
 ================================================================================
 
-ANEXO A - DEFINIÇÕES
+CONTRIBUIÇÕES E DIREITOS DOS COLABORADORES
 
-"Software": Refere-se ao aplicativo PetCare Pro, incluindo todo código fonte,
-documentação, assets e recursos relacionados.
+Ao contribuir para este projeto, você concorda que:
 
-"Uso Comercial": Qualquer uso do Software em ambiente de produção para
-atividades comerciais ou profissionais.
+1. Suas contribuições serão licenciadas sob a mesma licença MIT
+2. Você possui os direitos necessários para fazer a contribuição
+3. Suas contribuições não violam direitos de terceiros
+4. Você renuncia a quaisquer direitos morais sobre suas contribuições
 
-"Modificação": Qualquer alteração, adição ou remoção do código fonte original
-do Software.
-
-"Distribuição": Ato de fornecer cópias do Software a terceiros por qualquer
-meio (download, mídia física, etc.).
-
-ANEXO B - LICENÇAS DE COMPONENTES
-
-Para uma lista completa das licenças de componentes de terceiros utilizados
-neste projeto, consulte o arquivo LICENSES-THIRD-PARTY.txt.
-
-ANEXO C - CONFORMIDADE REGULATÓRIA
-
-Este software foi desenvolvido considerando:
-- Boas práticas de desenvolvimento seguro
-- Padrões de segurança da informação
-- Regulamentações específicas da área veterinária
-- Requisitos de proteção de dados pessoais
+Contribuições significativas são reconhecidas no arquivo CONTRIBUTORS.yml
 
 ================================================================================
 
-Esta é uma versão traduzida e adaptada para o contexto brasileiro. Em caso
-de conflito entre versões, a versão em português prevalece para usuários
-no Brasil.
+INTEGRAÇÃO COM SERVIÇOS DE TERCEIROS
 
-Data da última atualização: 01 de Julho de 2024
-Versão do documento: 1.0
+Este software integra com os seguintes serviços de terceiros:
 
-FIM DO AVISO DE COPYRIGHT
+Google Gemini API
+- Fornecedor: Google LLC
+- Termos: https://ai.google.dev/terms
+- Política de Privacidade: https://policies.google.com/privacy
+
+Web Speech API
+- Fornecedor: Consórcio W3C / Navegadores
+- Especificação: https://w3c.github.io/speech-api/
+
+O uso destes serviços está sujeito aos termos e condições de seus respectivos
+fornecedores.
+
+================================================================================
+
+ISENÇÃO DE RESPONSABILIDADE VETERINÁRIA
+
+IMPORTANTE: Este software é uma ferramenta educacional e de suporte. NÃO
+substitui consultas veterinárias profissionais. As informações fornecidas
+pela inteligência artificial são apenas para fins informativos e não devem
+ser consideradas como aconselhamento médico veterinário.
+
+Sempre consulte um veterinário licenciado para questões de saúde, diagnóstico
+ou tratamento de animais.
+
+================================================================================
+
+CONFORMIDADE LEGAL
+
+Este software está em conformidade com:
+
+- Lei Geral de Proteção de Dados (LGPD) - Lei 13.709/2018
+- Marco Civil da Internet - Lei 12.965/2014
+- Código de Defesa do Consumidor - Lei 8.078/1990
+- Lei de Software - Lei 9.609/1998
+
+================================================================================
+
+POLÍTICA DE PRIVACIDADE E DADOS
+
+O tratamento de dados pessoais neste software segue os princípios da LGPD:
+
+- Finalidade: Apenas para funcionamento do assistente de IA
+- Adequação: Compatível com a finalidade declarada
+- Necessidade: Limitação ao mínimo necessário
+- Livre acesso: Direitos dos titulares respeitados
+- Qualidade dos dados: Exatidão e atualização
+- Transparência: Informações claras e acessíveis
+- Segurança: Medidas técnicas e administrativas
+- Prevenção: Adoção de medidas preventivas
+- Não discriminação: Vedação de discriminação
+- Responsabilização: Demonstração de conformidade
+
+================================================================================
+
+LIMITAÇÕES E EXCLUSÕES
+
+O software é fornecido "como está" sem garantias de qualquer tipo. Em nenhuma
+circunstância os autores ou detentores de direitos autorais serão responsáveis
+por quaisquer danos diretos, indiretos, incidentais, especiais, exemplares ou
+consequenciais decorrentes do uso do software.
+
+================================================================================
+
+RESOLUÇÃO DE DISPUTAS
+
+Quaisquer disputas relacionadas a direitos autorais ou uso deste software
+serão resolvidas de acordo com as leis brasileiras, com foro na cidade de
+Florianópolis, Santa Catarina, Brasil.
+
+================================================================================
+
+CONTATO PARA QUESTÕES DE DIREITOS AUTORAIS
+
+Para questões relacionadas a direitos autorais, violações ou licenciamento:
+
+Estevam Souza
+Diretor de TI - PetCare AI
+Email: legal@petcareai.com.br
+Website: https://petcareai.com.br
+Endereço: Florianópolis, Santa Catarina, Brasil
+
+Para relatórios de violação de direitos autorais (DMCA):
+Email: contato@petcareai.com.br
+
+================================================================================
+
+ATUALIZAÇÕES E MODIFICAÇÕES
+
+Esta declaração de direitos autorais pode ser atualizada periodicamente.
+A versão mais atual estará sempre disponível no repositório oficial do projeto.
+
+Última atualização: 05 de Agosto de 2025
+Versão: 1.0.0
+
+================================================================================
+
+RECONHECIMENTOS ESPECIAIS
+
+Agradecimentos especiais às comunidades de código aberto que tornaram este
+projeto possível, aos beta testers, e à comunidade de tutores de pets que
+inspiraram o desenvolvimento desta solução.
+
+Dedicado a todos os animais de estimação e seus tutores dedicados.
+
+================================================================================
+
+                    Copyright (c) 2025 PetCare AI - Estevam Souza
+                              Todos os direitos reservados.
+
+                             🐾 Feito com amor para pets 🐾

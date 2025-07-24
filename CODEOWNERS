@@ -1,249 +1,289 @@
-# Arquivo CODEOWNERS do PetCare Pro
-# Define responsáveis automáticos para revisão de código
-# Documentação: https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
+# Arquivo CODEOWNERS para definir revisores automáticos de código
+# Para mais informações: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-# ==============================================================================
+# =============================================================================
 # REGRAS GLOBAIS
-# ==============================================================================
+# =============================================================================
 
-# Por padrão, todos os arquivos precisam de aprovação do tech lead
-* @tech-lead
+# Regra padrão: Estevam Souza como owner geral do projeto
+* @estevamsouza
 
-# ==============================================================================
-# CORE DA APLICAÇÃO
-# ==============================================================================
+# Arquivos críticos sempre precisam de aprovação do owner principal
+package.json @estevamsouza
+package-lock.json @estevamsouza
+tsconfig.json @estevamsouza
 
-# Arquivos de configuração principais
-/package.json @tech-lead @senior-dev
-/App.js @tech-lead @mobile-dev
-/app.json @tech-lead @devops-engineer
-/expo.json @tech-lead @devops-engineer
+# =============================================================================
+# CONFIGURAÇÕES E INFRAESTRUTURA
+# =============================================================================
 
-# ==============================================================================
-# CÓDIGO FONTE
-# ==============================================================================
+# Arquivos de configuração de CI/CD
+/.github/ @estevamsouza
+/.travis.yml @estevamsouza
+/.pre-commit-config.yaml @estevamsouza
+/commitlint.config.js @estevamsouza
 
-# Diretório src/ - código principal
-/src/ @tech-lead @mobile-dev @senior-dev
+# Configurações de desenvolvimento
+/.editorconfig @estevamsouza
+/.gitignore @estevamsouza
+/.gitattributes @estevamsouza
+/.eslintrc* @estevamsouza
+/.prettierrc* @estevamsouza
 
-# Contextos e estado global
-/src/contexts/ @tech-lead @senior-dev
-/src/navigation/ @mobile-dev @ui-developer
+# Docker e deploy
+/Dockerfile* @estevamsouza
+/docker-compose* @estevamsouza
+/deployment/ @estevamsouza
 
-# Componentes reutilizáveis
-/src/components/ @mobile-dev @ui-developer
-/src/components/common/ @ui-developer @mobile-dev
+# Scripts de build e automação
+/scripts/ @estevamsouza
+/build/ @estevamsouza
+/release-scripts/ @estevamsouza
 
-# ==============================================================================
-# TELAS E FUNCIONALIDADES
-# ==============================================================================
+# =============================================================================
+# DOCUMENTAÇÃO
+# =============================================================================
 
-# Autenticação
-/src/screens/auth/ @tech-lead @security-engineer
-/src/contexts/AuthContext.js @tech-lead @security-engineer
+# Documentação principal
+/README.md @estevamsouza @aluno1
+/CONTRIBUTING.md @estevamsouza @aluno1
+/CHANGELOG.md @estevamsouza
+/LICENSE @estevamsouza
+/NOTICE.md @estevamsouza
 
-# Gestão de clientes
-/src/screens/clients/ @product-owner @mobile-dev
-/src/services/ClientService.js @backend-dev @mobile-dev
+# Documentação técnica
+/docs/ @estevamsouza @aluno1 @aluno3
+/architecture.md @estevamsouza @aluno3
+/ROADMAP.md @estevamsouza @aluno1
 
-# Gestão de pets
-/src/screens/pets/ @product-owner @mobile-dev
-/src/services/PetService.js @backend-dev @mobile-dev
+# Guias e tutoriais
+/guides/ @aluno1 @aluno2
+/tutorials/ @aluno1 @aluno2
 
-# Consultas veterinárias
-/src/screens/consultations/ @veterinary-consultant @mobile-dev
-/src/services/ConsultationService.js @veterinary-consultant @backend-dev
+# =============================================================================
+# CÓDIGO FRONTEND
+# =============================================================================
 
-# Agenda e agendamentos
-/src/screens/agenda/ @product-owner @mobile-dev
-/src/services/AppointmentService.js @backend-dev @mobile-dev
+# Estrutura principal do React
+/src/ @aluno1 @estevamsouza
 
-# Biblioteca veterinária
-/src/screens/library/ @veterinary-consultant @mobile-dev
-/src/services/LibraryService.js @veterinary-consultant @backend-dev
+# Componentes principais
+/src/components/ @aluno1 @aluno3
+/src/pages/ @aluno1 @aluno3
 
-# Perfil do usuário
-/src/screens/profile/ @mobile-dev @ui-developer
+# Context e estado global
+/src/context/ @aluno1 @estevamsouza
+/src/hooks/ @aluno1
 
-# ==============================================================================
-# SERVIÇOS E INTEGRAÇÕES
-# ==============================================================================
+# Serviços e integrações
+/src/services/ @estevamsouza @aluno2
+/src/services/geminiApi.ts @estevamsouza
+/src/services/supabaseService.ts @estevamsouza @aluno2
+
+# Estilos e temas
+/src/styles/ @aluno1 @aluno3
+/src/components/**/styled.ts @aluno1
+
+# Tipos TypeScript
+/src/types/ @aluno1 @estevamsouza
+
+# Base de conhecimento
+/src/knowledge/ @estevamsouza @aluno2
+
+# =============================================================================
+# TESTES
+# =============================================================================
+
+# Configuração de testes
+/jest.config.js @aluno3 @aluno1
+/setupTests.ts @aluno3 @aluno1
+
+# Testes unitários
+/src/**/*.test.ts @aluno3 @aluno1
+/src/**/*.test.tsx @aluno3 @aluno1
+/src/**/*.spec.ts @aluno3 @aluno1
+/src/**/*.spec.tsx @aluno3 @aluno1
+
+# Testes de integração
+/tests/ @aluno3 @aluno1
+/e2e/ @aluno3
+
+# Mocks e fixtures
+/src/__mocks__/ @aluno3
+/src/**/__fixtures__/ @aluno3
+
+# Coverage e relatórios
+/coverage/ @aluno3
+
+# =============================================================================
+# FUNCIONALIDADES ESPECÍFICAS
+# =============================================================================
+
+# Reconhecimento de voz
+/src/hooks/useSpeechRecognition.ts @aluno3 @aluno1
+/src/components/ChatInput.tsx @aluno3 @aluno1
+
+# Integração com IA
+/src/services/geminiApi.ts @estevamsouza
+/src/knowledge/ @estevamsouza @aluno2
+
+# Interface de chat
+/src/components/ChatMessage.tsx @aluno1 @aluno3
+/src/components/ChatInput.tsx @aluno1 @aluno3
+/src/pages/ChatPage.tsx @aluno1 @aluno3
+
+# Componentes visuais avançados
+/src/components/APIDownloadModal.tsx @aluno1 @aluno3
+/src/components/ToolsPanel.tsx @aluno1 @aluno3
+/src/components/KnowledgeDisplay.tsx @aluno1 @aluno2
+
+# =============================================================================
+# BACKEND E APIS
+# =============================================================================
 
 # Serviços backend
-/src/services/ @backend-dev @tech-lead
+/api/ @aluno2 @estevamsouza
+/server/ @aluno2 @estevamsouza
 
-# Configuração do Supabase
-/src/config/supabase.js @backend-dev @tech-lead @security-engineer
+# Configurações de banco de dados
+/database/ @aluno2 @estevamsouza
+/migrations/ @aluno2 @estevamsouza
 
-# Serviços de autenticação
-/src/services/AuthService.js @security-engineer @backend-dev
+# Integrações externas
+/src/services/external/ @aluno2 @estevamsouza
 
-# Serviços de backup
-/src/services/BackupService.js @devops-engineer @tech-lead
+# =============================================================================
+# ASSETS E RECURSOS
+# =============================================================================
 
-# Serviços de notificação
-/src/services/NotificationService.js @mobile-dev @backend-dev
+# Imagens e ícones
+/public/ @aluno1
+/src/assets/ @aluno1
+/public/logo* @aluno1
 
-# ==============================================================================
-# UTILITÁRIOS E HELPERS
-# ==============================================================================
+# Manifesto PWA
+/public/manifest.json @aluno1 @aluno3
 
-# Utilitários gerais
-/src/utils/ @senior-dev @mobile-dev
+# =============================================================================
+# SEGURANÇA E COMPLIANCE
+# =============================================================================
 
-# Validadores
-/src/utils/validators.js @security-engineer @senior-dev
+# Arquivos de segurança
+/SECURITY.md @estevamsouza
+/.github/SECURITY.md @estevamsouza
 
-# Helpers de formatação
-/src/utils/helpers.js @mobile-dev @senior-dev
+# Configurações de dependências e auditoria
+/npm-audit.json @estevamsouza
+/.dependabot/ @estevamsouza
+/.github/dependabot.yml @estevamsouza
 
-# ==============================================================================
-# ESTILOS E DESIGN
-# ==============================================================================
+# =============================================================================
+# NOTEBOOKS E PESQUISA
+# =============================================================================
 
-# Estilos globais
-/src/styles/ @ui-developer @designer
+# Jupyter notebooks e análises
+/notebooks/ @estevamsouza @aluno3
+*.ipynb @estevamsouza @aluno3
 
-# Constantes de cores e design
-/src/constants/Colors.js @ui-developer @designer
-/src/constants/Data.js @product-owner @veterinary-consultant
+# Scripts de análise de dados
+/analytics/ @aluno3 @estevamsouza
 
-# ==============================================================================
-# CONFIGURAÇÕES E DOCUMENTAÇÃO
-# ==============================================================================
-
-# Documentação
-/docs/ @tech-writer @product-owner
-*.md @tech-writer @product-owner
-README.md @tech-lead @product-owner
-
-# Arquitetura
-architecture.md @tech-lead @senior-architect
-ROADMAP.md @product-owner @tech-lead
-
-# Configurações de CI/CD
-/.github/ @devops-engineer @tech-lead
-/.travis.yml @devops-engineer @tech-lead
-/dependabot.yml @devops-engineer @security-engineer
-
-# Configurações de Git
-/.gitignore @devops-engineer @tech-lead
-/.gitattributes @devops-engineer @tech-lead
-/CODEOWNERS @tech-lead @devops-engineer
-
-# Configurações de linting e formatação
-/.eslintrc.* @tech-lead @senior-dev
-/.prettierrc.* @tech-lead @senior-dev
-/commitlint.config.js @tech-lead @devops-engineer
-
-# Configurações de pré-commit
-/.pre-commit-config.yaml @devops-engineer @tech-lead
-/.husky/ @devops-engineer @tech-lead
-
-# ==============================================================================
-# BANCO DE DADOS
-# ==============================================================================
-
-# Scripts de banco de dados
-/db/ @backend-dev @database-admin
-/db/supabase.sql @database-admin @backend-dev @tech-lead
-
-# Migrações
-/db/migrations/ @database-admin @backend-dev
-
-# ==============================================================================
-# TESTES
-# ==============================================================================
-
-# Configurações de teste
-/__tests__/ @qa-engineer @mobile-dev
-/jest.config.js @qa-engineer @tech-lead
-/test/ @qa-engineer @mobile-dev
-
-# Testes E2E
-/e2e/ @qa-engineer @mobile-dev
-
-# ==============================================================================
-# BUILD E DEPLOYMENT
-# ==============================================================================
-
-# Configurações de build
-/metro.config.js @devops-engineer @mobile-dev
-/babel.config.js @devops-engineer @mobile-dev
+# =============================================================================
+# RELEASES E VERSIONAMENTO
+# =============================================================================
 
 # Scripts de release
-/release-scripts/ @devops-engineer @tech-lead
+/release-scripts/ @estevamsouza
+/.version @estevamsouza
+/CHANGELOG.md @estevamsouza
 
-# Configurações específicas de plataforma
-/ios/ @ios-dev @devops-engineer
-/android/ @android-dev @devops-engineer
+# Tags e releases
+# (Aplicável apenas a branches e tags específicas via GitHub UI)
 
-# ==============================================================================
-# SEGURANÇA
-# ==============================================================================
+# =============================================================================
+# GITHOOKS E AUTOMAÇÃO
+# =============================================================================
 
-# Arquivos relacionados à segurança
-/SECURITY.md @security-engineer @tech-lead
-/.secrets.baseline @security-engineer @devops-engineer
+# Git hooks locais
+/.githooks/ @estevamsouza
+/.husky/ @estevamsouza
 
-# Configurações de segurança
-/security/ @security-engineer @tech-lead
+# Scripts de automação
+/scripts/deploy.sh @estevamsouza
+/scripts/setup.sh @estevamsouza
 
-# ==============================================================================
-# NOTEBOOKS E ANÁLISES
-# ==============================================================================
+# =============================================================================
+# EQUIPES E GRUPOS
+# =============================================================================
 
-# Jupyter notebooks para análise de dados
-/notebooks/ @data-analyst @backend-dev
+# Para definir equipes, use a sintaxe @org/team-name
+# Exemplo: /frontend/ @PetCareAi/frontend-team
 
-# Scripts de análise
-/notebooks/*.ipynb @data-analyst @data-scientist
+# Equipe de desenvolvimento principal
+/src/ @PetCareAi/dev-team
 
-# ==============================================================================
-# REGRAS ESPECIAIS
-# ==============================================================================
+# Equipe de QA
+/tests/ @PetCareAi/qa-team
 
-# Arquivos que requerem aprovação de múltiplas equipes
-/package.json @tech-lead @devops-engineer @security-engineer
-/package-lock.json @tech-lead @devops-engineer
+# Equipe de design
+/src/styles/ @PetCareAi/design-team
+/src/components/**/styled.ts @PetCareAi/design-team
 
-# Arquivos críticos de configuração
-/.env.example @tech-lead @security-engineer @devops-engineer
-/app.json @tech-lead @mobile-dev @devops-engineer
+# =============================================================================
+# CONFIGURAÇÕES ESPECIAIS
+# =============================================================================
 
-# Arquivos de licença e legal
-/LICENSE @legal-team @tech-lead
-/NOTICE.md @legal-team @tech-lead
-/CONTRIBUTORS.md @product-owner @tech-lead
+# Arquivos que requerem revisão de múltiplas pessoas
+/src/services/supabaseService.ts @estevamsouza @aluno2 @aluno3
+/src/context/ChatContext.tsx @estevamsouza @aluno1 @aluno3
 
-# ==============================================================================
-# EQUIPES POR FUNCIONALIDADE
-# ==============================================================================
+# Arquivos críticos que precisam de aprovação unânime
+/package.json @estevamsouza @aluno1 @aluno3
+/.github/workflows/ @estevamsouza @aluno3
 
-# Para funcionalidades críticas, usar equipes
-# @petcare-pro/core-team - Equipe principal
-# @petcare-pro/security-team - Equipe de segurança
-# @petcare-pro/mobile-team - Equipe mobile
-# @petcare-pro/backend-team - Equipe backend
+# =============================================================================
+# RESPONSABILIDADES POR ESPECIALIDADE
+# =============================================================================
 
-# Funcionalidades críticas de autenticação
-/src/contexts/AuthContext.js @petcare-pro/security-team
-/src/services/AuthService.js @petcare-pro/security-team
+# Frontend (React, UI/UX)
+/src/components/ @aluno1 @aluno3
+/src/styles/ @aluno1
+/src/hooks/ @aluno1
 
-# Configurações críticas de infraestrutura
-/.github/workflows/ @petcare-pro/devops-team
-/db/ @petcare-pro/backend-team
+# Backend (APIs, Services, Database)
+/src/services/ @aluno2 @estevamsouza
+/api/ @aluno2
+/database/ @aluno2
 
-# ==============================================================================
-# NOTAS
-# ==============================================================================
+# Full Stack & QA (Testing, Voice, Performance)
+/tests/ @aluno3
+/src/hooks/useSpeechRecognition.ts @aluno3
+/e2e/ @aluno3
 
-# Usuários e equipes disponíveis:
-# Individual: @tech-lead, @mobile-dev, @backend-dev, @ui-developer, 
-#             @security-engineer, @devops-engineer, @qa-engineer,
-#             @product-owner, @veterinary-consultant, @designer,
-#             @senior-dev, @data-analyst, @tech-writer
-# 
-# Equipes: @petcare-pro/core-team, @petcare-pro/security-team,
-#          @petcare-pro/mobile-team, @petcare-pro/backend-team,
-#          @petcare-pro/devops-team
+# =============================================================================
+# NOTAS IMPORTANTES
+# =============================================================================
+
+# 1. A ordem das regras importa - regras mais específicas devem vir depois
+# 2. Pelo menos um CODEOWNER deve aprovar mudanças nos arquivos correspondentes
+# 3. Se um arquivo não está coberto por nenhuma regra, qualquer um pode aprovar
+# 4. Membros da equipe podem ser removidos se não estiverem mais ativos
+# 5. Para emergências, owners podem forçar merge (não recomendado)
+
+# =============================================================================
+# CONTATOS DA EQUIPE
+# =============================================================================
+
+# @estevamsouza - Diretor de TI / Arquiteto Principal & CTO
+# @aluno1 - Frontend Developer (React, UI/UX, Documentação)
+# @aluno2 - Backend Developer (APIs, Database, Integração)
+# @aluno3 - Full Stack Developer (Testing, Voice Recognition, Performance)
+
+# =============================================================================
+# DISTRIBUIÇÃO DE RESPONSABILIDADES
+# =============================================================================
+
+# Estevam Souza: Arquitetura, IA, Infraestrutura, Liderança técnica
+# Aluno1: Frontend, React Components, Estilos, Documentação
+# Aluno2: Backend, APIs, Base de conhecimento, Integrações
+# Aluno3: Full Stack, Testes, Reconhecimento de voz, QA
