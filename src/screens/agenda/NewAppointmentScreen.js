@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   View, 
   Text, 
@@ -230,7 +230,20 @@ const NewAppointmentScreen = ({ navigation, route }) => {
   };
 
   const selectedClient = clients.find(client => client.id === formData.clientId);
-  const selectedPet = pets.find(pet => pet.id === formData.petId);
+  const selectedPet = useMemo(() => {
+    if (!formData.petId) {
+      return undefined;
+    }
+
+    const pet = pets.find(currentPet => currentPet.id === formData.petId);
+    if (!pet) {
+      throw new Error(
+        `Selected pet with id ${formData.petId} for client ${formData.clientId || 'unknown'} was not found among ${pets.length} loaded pets.`
+      );
+    }
+
+    return pet;
+  }, [formData.clientId, formData.petId, pets]);
   const selectedAppointmentType = appointmentTypes.find(type => type.value === formData.title);
   const selectedDuration = durations.find(duration => duration.value === formData.duration);
   const selectedStatus = statusOptions.find(status => status.value === formData.status);
@@ -444,7 +457,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                   </LinearGradient>
                 </View>
                 {errors.petId && <Text style={styles.errorText}>{errors.petId}</Text>}
-                {selectedחיית מחמד && (
+                {selectedPet && (
                   <View style={styles.selectedPetInfo}>
                     <Ionicons name="checkmark-circle" size={16} color={Colors.success} />
                     <Text style={styles.petInfoText}>
