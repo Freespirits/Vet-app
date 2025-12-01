@@ -55,23 +55,23 @@ const VetLibraryScreen = ({ navigation }) => {
   });
 
   const categories = [
-    { id: 'all', name: 'Todos', icon: 'medical', color: Colors.primary },
-    { id: 'medicamento', name: 'Medicamentos', icon: 'medical', color: Colors.success },
-    { id: 'vacina', name: 'Vacinas', icon: 'shield-checkmark', color: Colors.info },
-    { id: 'procedimento', name: 'Procedimentos', icon: 'cut', color: Colors.warning },
-    { id: 'exame', name: 'Exames', icon: 'search', color: Colors.error },
-    { id: 'tratamento', name: 'Tratamentos', icon: 'fitness', color: Colors.secondary },
+    { id: 'all', name: 'הכול', icon: 'medical', color: Colors.primary },
+    { id: 'medicamento', name: 'תרופות', icon: 'medical', color: Colors.success },
+    { id: 'vacina', name: 'חיסונים', icon: 'shield-checkmark', color: Colors.info },
+    { id: 'procedimento', name: 'פרוצדורות', icon: 'cut', color: Colors.warning },
+    { id: 'exame', name: 'בדיקות', icon: 'search', color: Colors.error },
+    { id: 'tratamento', name: 'טיפולים', icon: 'fitness', color: Colors.secondary },
   ];
 
   const categoryOptions = [
-    { value: 'medicamento', label: 'Medicamento', icon: 'medical', color: Colors.success },
-    { value: 'vacina', label: 'Vacina', icon: 'shield-checkmark', color: Colors.info },
-    { value: 'procedimento', label: 'Procedimento', icon: 'cut', color: Colors.warning },
-    { value: 'exame', label: 'Exame', icon: 'search', color: Colors.error },
-    { value: 'tratamento', label: 'Tratamento', icon: 'fitness', color: Colors.secondary },
+    { value: 'medicamento', label: 'תרופה', icon: 'medical', color: Colors.success },
+    { value: 'vacina', label: 'חיסון', icon: 'shield-checkmark', color: Colors.info },
+    { value: 'procedimento', label: 'פרוצדורה', icon: 'cut', color: Colors.warning },
+    { value: 'exame', label: 'בדיקה', icon: 'search', color: Colors.error },
+    { value: 'tratamento', label: 'טיפול', icon: 'fitness', color: Colors.secondary },
   ];
 
-  const speciesOptions = ['Cão', 'Gato', 'Aves', 'Bovinos', 'Equinos', 'Suínos', 'Todos'];
+  const speciesOptions = ['כלב', 'חתול', 'ציפורים', 'בקר', 'סוסים', 'חזירים', 'הכול'];
 
   useEffect(() => {
     loadMedications();
@@ -83,8 +83,8 @@ const VetLibraryScreen = ({ navigation }) => {
       const data = await LibraryService.getAll();
       setMedications(data);
     } catch (error) {
-      console.error('Erro ao carregar medicamentos:', error);
-      Alert.alert('Erro', 'Erro ao carregar a biblioteca de medicamentos');
+      console.error('שגיאה בטעינת ספריית התרופות:', error);
+      Alert.alert('שגיאה', 'אירעה שגיאה בעת טעינת ספריית התרופות');
     } finally {
       setLoading(false);
     }
@@ -108,10 +108,10 @@ const VetLibraryScreen = ({ navigation }) => {
   const handleMedicationPress = (medication) => {
     Alert.alert(
       medication.name,
-      `Categoria: ${medication.category}\n\nDescrição: ${medication.description || 'Não informada'}\n\nDosagem: ${medication.dosage || 'Não informada'}\nFrequência: ${medication.frequency || 'Não informada'}\n\nEspécies: ${medication.species || 'Não informada'}\n\nContraindicações: ${medication.contraindications || 'Não informadas'}`,
+      `קטגוריה: ${getCategoryLabel(medication.category)}\n\nתיאור: ${medication.description || 'לא צוין'}\n\nמינון: ${medication.dosage || 'לא צוין'}\nתדירות: ${medication.frequency || 'לא צוין'}\n\nמינים: ${medication.species || 'לא צוינו'}\n\nהתוויות נגד: ${medication.contraindications || 'לא צוינו'}`,
       [
-        { text: 'OK' },
-        { text: 'Editar', onPress: () => openEditModal(medication) }
+        { text: 'אישור' },
+        { text: 'עריכה', onPress: () => openEditModal(medication) }
       ],
       { cancelable: true }
     );
@@ -179,7 +179,7 @@ const VetLibraryScreen = ({ navigation }) => {
 
   const handleSave = async () => {
     if (!formData.name.trim()) {
-      Alert.alert('Erro', 'Nome é obrigatório');
+      Alert.alert('שגיאה', 'שם הוא שדה חובה');
       return;
     }
 
@@ -212,15 +212,15 @@ const VetLibraryScreen = ({ navigation }) => {
         closeModal();
         await loadMedications();
         Alert.alert(
-          'Sucesso',
-          `${editingMedication ? 'Item atualizado' : 'Item adicionado'} com sucesso!`
+          'הצלחה',
+          `${editingMedication ? 'הפריט עודכן בהצלחה' : 'הפריט נוסף בהצלחה'}`
         );
       } else {
-        Alert.alert('Erro', result.error || 'Erro ao salvar item');
+        Alert.alert('שגיאה', result.error || 'שגיאה בעת שמירת הפריט');
       }
     } catch (error) {
-      console.error('Erro ao salvar medicamento:', error);
-      Alert.alert('Erro', 'Erro interno do sistema');
+      console.error('שגיאה בעת שמירת פריט בספרייה:', error);
+      Alert.alert('שגיאה', 'אירעה שגיאה פנימית במערכת');
     } finally {
       setSaving(false);
     }
@@ -228,25 +228,25 @@ const VetLibraryScreen = ({ navigation }) => {
 
   const handleDelete = async (medication) => {
     Alert.alert(
-      'Confirmar Exclusão',
-      `Deseja realmente excluir "${medication.name}"?`,
+      'אישור מחיקה',
+      `האם למחוק את "${medication.name}"?`,
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: 'ביטול', style: 'cancel' },
         {
-          text: 'Excluir',
+          text: 'מחיקה',
           style: 'destructive',
           onPress: async () => {
             try {
               const result = await LibraryService.delete(medication.id);
               if (result.success) {
                 await loadMedications();
-                Alert.alert('Sucesso', 'Item excluído com sucesso');
+                Alert.alert('הצלחה', 'הפריט נמחק בהצלחה');
               } else {
-                Alert.alert('Erro', result.error || 'Erro ao excluir item');
+                Alert.alert('שגיאה', result.error || 'שגיאה במחיקת הפריט');
               }
             } catch (error) {
-              console.error('Erro ao excluir medicamento:', error);
-              Alert.alert('Erro', 'Erro interno do sistema');
+              console.error('שגיאה במחיקת פריט מהספרייה:', error);
+              Alert.alert('שגיאה', 'אירעה שגיאה פנימית במערכת');
             }
           }
         }
@@ -261,6 +261,12 @@ const VetLibraryScreen = ({ navigation }) => {
   const getCategoryColor = (category) => {
     const categoryConfig = categories.find(cat => cat.id === category);
     return categoryConfig ? categoryConfig.color : Colors.textSecondary;
+  };
+
+  const getCategoryLabel = (category) => {
+    const categoryConfig = categoryOptions.find(cat => cat.value === category) ||
+      categories.find(cat => cat.id === category);
+    return categoryConfig ? (categoryConfig.label || categoryConfig.name) : 'אחר';
   };
 
   const getCategoryIcon = (category) => {
@@ -289,7 +295,7 @@ const VetLibraryScreen = ({ navigation }) => {
           </View>
           <View style={styles.medicationInfo}>
             <Text style={styles.medicationName}>{medication.name}</Text>
-            <Text style={styles.medicationCategory}>{medication.category}</Text>
+            <Text style={styles.medicationCategory}>{getCategoryLabel(medication.category)}</Text>
           </View>
           <TouchableOpacity
             style={styles.deleteButton}
@@ -300,7 +306,7 @@ const VetLibraryScreen = ({ navigation }) => {
         </View>
         
         <Text style={styles.medicationDescription} numberOfLines={2}>
-          {medication.description || 'Sem descrição'}
+          {medication.description || 'ללא תיאור'}
         </Text>
         
         <View style={styles.medicationDetails}>
@@ -342,8 +348,8 @@ const VetLibraryScreen = ({ navigation }) => {
               <Ionicons name="library" size={28} color={Colors.surface} />
             </View>
             <View>
-              <Text style={styles.headerTitle}>Biblioteca Veterinária</Text>
-              <Text style={styles.headerSubtitle}>Medicamentos e protocolos</Text>
+              <Text style={styles.headerTitle}>הספרייה הווטרינרית</Text>
+              <Text style={styles.headerSubtitle}>תרופות ופרוטוקולים</Text>
             </View>
           </View>
         </View>
@@ -352,7 +358,7 @@ const VetLibraryScreen = ({ navigation }) => {
       {/* Search and Filter */}
       <View style={styles.searchContainer}>
         <SearchBar
-          placeholder="Buscar medicamento..."
+          placeholder="חיפוש תרופה..."
           value={searchQuery}
           onChangeText={setSearchQuery}
           onClear={() => setSearchQuery('')}
@@ -408,13 +414,13 @@ const VetLibraryScreen = ({ navigation }) => {
       >
         <View style={styles.resultsHeader}>
           <Text style={styles.resultsCount}>
-            {filteredMedications.length} item{filteredMedications.length !== 1 ? 's' : ''} encontrado{filteredMedications.length !== 1 ? 's' : ''}
+            {`${filteredMedications.length} ${filteredMedications.length === 1 ? 'פריט נמצא' : 'פריטים נמצאו'}`}
           </Text>
         </View>
 
         {loading ? (
           <View style={styles.loadingContainer}>
-            <Text style={styles.loadingText}>Carregando...</Text>
+            <Text style={styles.loadingText}>טוען נתונים...</Text>
           </View>
         ) : filteredMedications.length === 0 ? (
           <View style={styles.emptyState}>
@@ -423,12 +429,12 @@ const VetLibraryScreen = ({ navigation }) => {
               style={styles.emptyGradient}
             >
               <Ionicons name="search" size={64} color={Colors.textSecondary} />
-              <Text style={styles.emptyTitle}>Nenhum item encontrado</Text>
+              <Text style={styles.emptyTitle}>לא נמצאו פריטים</Text>
               <Text style={styles.emptyDescription}>
-                {searchQuery ? 'Tente ajustar os filtros ou termos de busca' : 'Adicione o primeiro item à sua biblioteca'}
+                {searchQuery ? 'נסו להתאים את המסנן או מילות החיפוש' : 'הוסיפו את הפריט הראשון לספרייה שלכם'}
               </Text>
               <Button
-                title="Adicionar Item"
+                title="הוספת פריט"
                 onPress={openAddModal}
                 style={styles.addButton}
                 icon={<Ionicons name="add" size={16} color={Colors.surface} />}
@@ -456,10 +462,10 @@ const VetLibraryScreen = ({ navigation }) => {
             <Ionicons name="add" size={24} color={Colors.surface} />
           </LinearGradient>
         </TouchableOpacity>
-        <Text style={styles.fabLabel}>Adicionar</Text>
+        <Text style={styles.fabLabel}>הוספה</Text>
       </View>
 
-      {/* Modal para Adicionar/Editar */}
+      {/* חלון קופץ להוספה/עריכה */}
       <Modal
         visible={modalVisible}
         animationType="slide"
@@ -477,7 +483,7 @@ const VetLibraryScreen = ({ navigation }) => {
                 <Ionicons name="close" size={24} color={Colors.surface} />
               </TouchableOpacity>
               <Text style={styles.modalTitle}>
-                {editingMedication ? 'Editar Item' : 'Novo Item'}
+                {editingMedication ? 'עריכת פריט' : 'פריט חדש'}
               </Text>
               <View style={styles.modalHeaderSpacer} />
             </View>
@@ -490,20 +496,20 @@ const VetLibraryScreen = ({ navigation }) => {
           >
             <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
               <View style={styles.formContainer}>
-                {/* Nome */}
+                {/* שם */}
                 <Input
-                  label="Nome"
+                  label="שם"
                   value={formData.name}
                   onChangeText={(value) => updateField('name', value)}
-                  placeholder="Nome do medicamento/procedimento"
+                  placeholder="שם התרופה או ההליך"
                   required
                   autoCapitalize="words"
                 />
 
-                {/* Categoria com botões visuais */}
+                {/* קטגוריה עם כפתורים חזותיים */}
                 <View style={styles.categorySection}>
                   <Text style={styles.sectionLabel}>
-                    Categoria <Text style={styles.required}>*</Text>
+                    קטגוריה <Text style={styles.required}>*</Text>
                   </Text>
                   <View style={styles.categoryGrid}>
                     {categoryOptions.map(option => (
@@ -540,113 +546,113 @@ const VetLibraryScreen = ({ navigation }) => {
                   </View>
                 </View>
 
-                {/* Descrição */}
+                {/* תיאור */}
                 <Input
-                  label="Descrição"
+                  label="תיאור"
                   value={formData.description}
                   onChangeText={(value) => updateField('description', value)}
-                  placeholder="Descrição detalhada"
+                  placeholder="תיאור מפורט"
                   multiline
                   numberOfLines={3}
                   autoCapitalize="sentences"
                 />
 
-                {/* Dosagem e Frequência */}
+                {/* מינון ותדירות */}
                 <View style={styles.rowInputs}>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Dosagem"
+                      label="מינון"
                       value={formData.dosage}
                       onChangeText={(value) => updateField('dosage', value)}
-                      placeholder="Ex: 2-4 mg/kg"
+                      placeholder="לדוגמה: 2-4 מ"ג/ק"ג"
                     />
                   </View>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Frequência"
+                      label="תדירות"
                       value={formData.frequency}
                       onChangeText={(value) => updateField('frequency', value)}
-                      placeholder="Ex: 12/12h"
+                      placeholder="לדוגמה: כל 12 שעות"
                     />
                   </View>
                 </View>
 
-                {/* Espécies */}
+                {/* מינים */}
                 <Input
-                  label="Espécies"
+                  label="מינים"
                   value={formData.species}
                   onChangeText={(value) => updateField('species', value)}
-                  placeholder="Ex: Cão, Gato, Aves"
+                  placeholder="לדוגמה: כלב, חתול, ציפורים"
                 />
 
-                {/* Doenças/Indicações */}
+                {/* מחלות/התוויות */}
                 <Input
-                  label="Doenças/Indicações"
+                  label="מחלות/התוויות"
                   value={formData.diseases}
                   onChangeText={(value) => updateField('diseases', value)}
-                  placeholder="Separar por vírgulas"
+                  placeholder="להפריד בפסיקים"
                   multiline
                   numberOfLines={2}
                 />
 
-                {/* Contraindicações */}
+                {/* התוויות נגד */}
                 <Input
-                  label="Contraindicações"
+                  label="התוויות נגד"
                   value={formData.contraindications}
                   onChangeText={(value) => updateField('contraindications', value)}
-                  placeholder="Quando não usar"
+                  placeholder="מתי לא להשתמש"
                   multiline
                   numberOfLines={3}
                 />
 
-                {/* Cronograma e Reforço */}
+                {/* לוח זמנים ובוסטר */}
                 <View style={styles.rowInputs}>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Cronograma"
+                      label="לוח זמנים"
                       value={formData.schedule}
                       onChangeText={(value) => updateField('schedule', value)}
-                      placeholder="Ex: 6-8 semanas"
+                      placeholder="לדוגמה: שבועות 6-8"
                     />
                   </View>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Reforço"
+                      label="מנת בוסטר"
                       value={formData.booster}
                       onChangeText={(value) => updateField('booster', value)}
-                      placeholder="Ex: Anual"
+                      placeholder="לדוגמה: פעם בשנה"
                     />
                   </View>
                 </View>
 
-                {/* Duração e Preço */}
+                {/* משך ומחיר */}
                 <View style={styles.rowInputs}>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Duração (dias)"
+                      label="משך (ימים)"
                       value={formData.duration}
                       onChangeText={(value) => updateField('duration', value)}
-                      placeholder="Ex: 7"
+                      placeholder="לדוגמה: 7"
                       keyboardType="numeric"
                     />
                   </View>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Preço (R$)"
+                      label="מחיר (₪)"
                       value={formData.price}
                       onChangeText={(value) => updateField('price', value)}
-                      placeholder="Ex: 25.90"
+                      placeholder="לדוגמה: 25.90"
                       keyboardType="decimal-pad"
                     />
                   </View>
                 </View>
 
-                {/* Observações */}
+                {/* הערות */}
                 <Input
-                  label="Observações"
+                  label="הערות"
                   value={formData.observations}
                   onChangeText={(value) => updateField('observations', value)}
-                  placeholder="Observações adicionais"
+                  placeholder="הערות נוספות"
                   multiline
                   numberOfLines={3}
                   autoCapitalize="sentences"
@@ -657,14 +663,14 @@ const VetLibraryScreen = ({ navigation }) => {
             {/* Modal Actions */}
             <View style={styles.modalActions}>
               <Button
-                title="Cancelar"
+                title="ביטול"
                 variant="outline"
                 onPress={closeModal}
                 style={styles.cancelButton}
                 disabled={saving}
               />
               <Button
-                title={editingMedication ? 'Atualizar' : 'Salvar'}
+                title={editingMedication ? 'עדכון' : 'שמירה'}
                 onPress={handleSave}
                 loading={saving}
                 style={styles.saveButton}

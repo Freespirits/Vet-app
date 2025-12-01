@@ -30,15 +30,15 @@ const ChangePasswordScreen = ({ navigation }) => {
     const newErrors = {};
 
     if (!validateRequired(formData.newPassword)) {
-      newErrors.newPassword = 'Nova senha é obrigatória';
+      newErrors.newPassword = 'הסיסמה החדשה היא שדה חובה';
     } else if (!validateMinLength(formData.newPassword, 6)) {
-      newErrors.newPassword = 'Nova senha deve ter pelo menos 6 caracteres';
+      newErrors.newPassword = 'הסיסמה החדשה חייבת לכלול לפחות 6 תווים';
     }
 
     if (!validateRequired(formData.confirmPassword)) {
-      newErrors.confirmPassword = 'Confirmação de senha é obrigatória';
+      newErrors.confirmPassword = 'יש לאשר את הסיסמה החדשה';
     } else if (formData.newPassword !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Senhas não coincidem';
+      newErrors.confirmPassword = 'הסיסמאות אינן זהות';
     }
 
     setErrors(newErrors);
@@ -55,18 +55,18 @@ const ChangePasswordScreen = ({ navigation }) => {
       });
 
       if (error) {
-        Alert.alert('Erro', error.message);
+        Alert.alert('שגיאה', error.message);
         return;
       }
 
       Alert.alert(
-        'Sucesso',
-        'Senha alterada com sucesso!',
-        [{ text: 'OK', onPress: () => navigation.goBack() }]
+        'הצלחה',
+        'הסיסמה עודכנה בהצלחה!',
+        [{ text: 'אישור', onPress: () => navigation.goBack() }]
       );
     } catch (error) {
-      console.error('Erro ao alterar senha:', error);
-      Alert.alert('Erro', 'Erro interno do sistema');
+      console.error('שגיאה בעת שינוי סיסמה:', error);
+      Alert.alert('שגיאה', 'אירעה שגיאה פנימית במערכת');
     } finally {
       setLoading(false);
     }
@@ -94,14 +94,14 @@ const ChangePasswordScreen = ({ navigation }) => {
           >
             <Ionicons name="arrow-back" size={24} color={Colors.surface} />
           </TouchableOpacity>
-          
+
           <View style={styles.headerTitleContainer}>
             <View style={styles.headerIconContainer}>
               <Ionicons name="lock-closed" size={28} color={Colors.surface} />
             </View>
             <View>
-              <Text style={styles.headerTitle}>Alterar Senha</Text>
-              <Text style={styles.headerSubtitle}>Defina uma nova senha segura</Text>
+              <Text style={styles.headerTitle}>שינוי סיסמה</Text>
+              <Text style={styles.headerSubtitle}>הגדירו סיסמה חדשה ובטוחה</Text>
             </View>
           </View>
         </View>
@@ -120,22 +120,22 @@ const ChangePasswordScreen = ({ navigation }) => {
             <View style={styles.infoCard}>
               <View style={styles.infoHeader}>
                 <Ionicons name="information-circle" size={24} color={Colors.info} />
-                <Text style={styles.infoTitle}>Dicas de Segurança</Text>
+                <Text style={styles.infoTitle}>טיפים לאבטחה</Text>
               </View>
               <Text style={styles.infoText}>
-                • Use pelo menos 6 caracteres{'\n'}
-                • Combine letras, números e símbolos{'\n'}
-                • Evite informações pessoais{'\n'}
-                • Use uma senha única para esta conta
+                • השתמשו בלפחות 6 תווים{'\n'}
+                • שלבו אותיות, מספרים וסימנים{'\n'}
+                • הימנעו ממידע אישי גלוי{'\n'}
+                • השתמשו בסיסמה ייחודית לחשבון זה
               </Text>
             </View>
 
             <View style={styles.section}>
               <Input
-                label="Nova Senha"
+                label="סיסמה חדשה"
                 value={formData.newPassword}
                 onChangeText={(value) => updateField('newPassword', value)}
-                placeholder="Digite a nova senha"
+                placeholder="הקלידו סיסמה חדשה"
                 secureTextEntry
                 leftIcon="lock-closed"
                 error={errors.newPassword}
@@ -145,10 +145,10 @@ const ChangePasswordScreen = ({ navigation }) => {
               />
 
               <Input
-                label="Confirmar Nova Senha"
+                label="אישור סיסמה חדשה"
                 value={formData.confirmPassword}
                 onChangeText={(value) => updateField('confirmPassword', value)}
-                placeholder="Digite novamente a nova senha"
+                placeholder="הקלידו שוב את הסיסמה החדשה"
                 secureTextEntry
                 leftIcon="lock-closed"
                 error={errors.confirmPassword}
@@ -161,10 +161,10 @@ const ChangePasswordScreen = ({ navigation }) => {
             <View style={styles.warningCard}>
               <View style={styles.warningHeader}>
                 <Ionicons name="warning" size={20} color={Colors.warning} />
-                <Text style={styles.warningTitle}>Importante</Text>
+                <Text style={styles.warningTitle}>חשוב לדעת</Text>
               </View>
               <Text style={styles.warningText}>
-                Após alterar sua senha, você será desconectado de outros dispositivos por segurança.
+                לאחר שינוי הסיסמה תתבצע התנתקות ממכשירים אחרים לצורך אבטחה.
               </Text>
             </View>
           </View>
@@ -173,14 +173,14 @@ const ChangePasswordScreen = ({ navigation }) => {
         {/* Action Buttons */}
         <View style={styles.actionContainer}>
           <Button
-            title="Cancelar"
+            title="ביטול"
             variant="outline"
             onPress={() => navigation.goBack()}
             style={styles.cancelButton}
             disabled={loading}
           />
           <Button
-            title="Alterar Senha"
+            title="עדכון סיסמה"
             onPress={handleChangePassword}
             loading={loading}
             style={styles.saveButton}
