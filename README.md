@@ -1,201 +1,197 @@
 <div align="center">
-  <img width="1920" height="1080" alt="Cream and Pink Creative Pet Care Center Presentation" src="https://github.com/user-attachments/assets/9f20263b-59f7-44f6-9a81-6133185964e3" />
-    
-    
+  <img width="1920" height="1080" alt="מצגת קרם ורוד Creative Pet Care Center" src="https://github.com/user-attachments/assets/9f20263b-59f7-44f6-9a81-6133185964e3" />
+
+
   <h2>🐾 PetCare Pro</h2>
-    
-  <p><strong>Sistema Completo para Gestão de Clínicas Veterinárias e Petshops</strong></p>
-    
+
+  <p><strong>מערכת שלמה לניהול מרפאות וטרינריות וחנויות חיות</strong></p>
   [![React Native](https://img.shields.io/badge/React%20Native-0.79.2-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactnative.dev/)
   [![Expo SDK](https://img.shields.io/badge/Expo%20SDK-53-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
   [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-  [![License](https://img.shields.io/badge/License-Proprietary-yellow?style=for-the-badge)](#licença)
-  [![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge)](https://github.com)
-  [![Platform](https://img.shields.io/badge/Plataforma-iOS%20%7C%20Android-4CAF50?style=for-the-badge)](https://github.com)
-    
-  **Uma solução moderna e completa para gestão veterinária que torna o cuidado animal mais eficiente e acessível**
-    
-  [🌟 Demo Online](https://petcareai.com.br) • [📚 Documentação](https://documentation.petcareai.com.br/) • [💬 Suporte](https://github.com/petcareai/consultorio-app/issues) • [🐛 Report Bug](https://github.com/petcareai/consultorio-app/issues/new)
+  [![רישיון](https://img.shields.io/badge/License-Proprietary-yellow?style=for-the-badge)](#-רישיון)
+  [![גרסה](https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge)](https://github.com)
+  [![פלטפורמה](https://img.shields.io/badge/Plataforma-iOS%20%7C%20Android-4CAF50?style=for-the-badge)](https://github.com)
+
+  **פתרון מודרני ומלא לניהול וטרינרי שהופך את הטיפול בבעלי חיים ליעיל ונגיש יותר**
+
+  [🌟 הדגמה מקוונת](https://petcareai.com.br) • [📚 תיעוד](https://documentation.petcareai.com.br/) • [💬 תמיכה](https://github.com/petcareai/consultorio-app/issues) • [🐛 דוח באגים](https://github.com/petcareai/consultorio-app/issues/new)
 
 </div>
 
 ---
 
 <div align="center">
-  
-  <h4>📱 Download</h4>
-  
-  <a href="https://play.google.com/store/apps/details?id=com.petcareai.app"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Download from Google Play" height="80"></a> <a href="https://apps.apple.com/br/app/petcare-ai/id123456789"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="80"></a> <a href="https://apt.izzysoft.de/packages/com.petcareai.app/"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80"></a> <a href="https://f-droid.org/en/packages/com.petcareai.app/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80"></a> <a href="https://www.openapk.net/petcare-ai/com.petcareai.app/"><img src="https://www.openapk.net/images/openapk-badge.png" height="80"></a> <a href="https://www.androidfreeware.net/download-petcare-ai-apk.html"><img src="https://www.androidfreeware.net/images/androidfreeware-badge.png" height="80"></a> <a href="https://github.com/PetCareAi/app/releases"><img src="https://raw.githubusercontent.com/NeoApplications/Neo-Backup/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" height="80"></a> <a href="https://expo.dev/@petcareai/petcare-app"><img src="https://img.shields.io/badge/Download-Expo%20Go-000020.svg?style=for-the-badge&logo=expo&logoColor=white" alt="Download on Expo" height="80"></a>
+
+  <h4>📱 הורד</h4>
+  <a href="https://play.google.com/store/apps/details?id=com.petcareai.app"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="הורדה מ-Google Play" height="80"></a> <a href="https://apps.apple.com/br/app/petcare-ai/id123456789"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="הורדה ב-App Store" height="80"></a> <a href="https://apt.izzysoft.de/packages/com.petcareai.app/"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80"></a> <a href="https://f-droid.org/en/packages/com.petcareai.app/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80"></a> <a href="https://www.openapk.net/petcare-ai/com.petcareai.app/"><img src="https://www.openapk.net/images/openapk-badge.png" height="80"></a> <a href="https://www.androidfreeware.net/download-petcare-ai-apk.html"><img src="https://www.androidfreeware.net/images/androidfreeware-badge.png" height="80"></a> <a href="https://github.com/PetCareAi/app/releases"><img src="https://raw.githubusercontent.com/NeoApplications/Neo-Backup/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" height="80"></a> <a href="https://expo.dev/@petcareai/petcare-app"><img src="https://img.shields.io/badge/Download-Expo%20Go-000020.svg?style=for-the-badge&logo=expo&logoColor=white" alt="הורדה ב-Expo" height="80"></a>
 
 </div>
 
 ---
 
-## 📋 Índice
+## 📋 אינדקס
 
-- [🎯 Sobre o Projeto](#-sobre-o-projeto)
-- [📱 Screenshots da Aplicação](#-screenshots-da-aplicação)
-- [🚀 Características](#-características)
-- [🛠️ Tecnologias](#️-tecnologias)
-- [📱 Compatibilidade](#-compatibilidade)
-- [🏗️ Arquitetura](#️-arquitetura)
-- [📁 Estrutura do Projeto](#-estrutura-do-projeto)
-- [⚡ Instalação e Configuração](#-instalação-e-configuração)
-- [🎮 Como Usar](#-como-usar)
-- [📊 Funcionalidades Principais](#-funcionalidades-principais)
-- [🎨 Design System](#-design-system)
-- [📘 Scripts Disponíveis](#-scripts-disponíveis)
-- [🔧 Configuração do Ambiente](#-configuração-do-ambiente)
-- [🗄️ Banco de Dados](#️-banco-de-dados)
-- [🔗 Links Importantes](#-links-importantes)
-- [📈 Roadmap](#-roadmap)
-- [🤝 Contribuição](#-contribuição)
-- [👥 Equipe de Desenvolvimento](#-equipe-de-desenvolvimento)
-- [📜 Licença](#-licença)
-- [🙏 Agradecimentos](#-agradecimentos)
-- [💬 Suporte](#-suporte)
-- [📱 Redes Sociais](#-redes-sociais)
-
----
-
-## 🎯 Sobre o Projeto
-
-O **PetCare Pro** é um sistema completo e moderno desenvolvido especificamente para veterinários brasileiros que desejam digitalizar e otimizar a gestão de suas clínicas veterinárias e petshops. 
-
-### 🌟 Por que PetCare Pro?
-
-Em um mercado veterinário em constante crescimento no Brasil, com mais de 149 milhões de animais de estimação (segundo o Instituto Pet Brasil), a digitalização dos processos se tornou essencial para:
-
-- **Eficiência Operacional**: Reduzir tempo gasto em tarefas administrativas
-- **Melhor Atendimento**: Acesso rápido ao histórico completo dos pacientes
-- **Gestão Financeira**: Controle de receitas e procedimentos realizados
-- **Organização**: Sistema centralizado para clientes, pets e consultas
-- **Mobilidade**: Acesso às informações em qualquer lugar
-
-### 🎯 Objetivo Principal
-
-Fornecer uma solução **gratuita**, **intuitiva** e **completa** que permita aos veterinários focar no que fazem de melhor: **cuidar dos animais**.
+- [🎯 אודות הפרויקט](#-אודות-הפרויקט)
+- [📱 צילומי מסך של האפליקציה](#-צילומי-מסך-של-האפליקציה)
+- [🚀 תכונות](#-תכונות)
+- [🛠️ טכנולוגיות](#️-טכנולוגיות)
+- [📱 תאימות](#-תאימות)
+- [🏗️ אדריכלות](#️-אדריכלות)
+- [📁 מבנה הפרויקט](#-מבנה-הפרויקט)
+- [⚡ התקנה ותצורה](#-התקנה-ותצורה)
+- [🎮 כיצד להשתמש](#-כיצד-להשתמש)
+- [📊 תכונות עיקריות](#-תכונות-עיקריות)
+- [🎨 מערכת עיצוב](#-מערכת-עיצוב)
+- [📘 סקריפטים זמינים](#-סקריפטים-זמינים)
+- [🔧 תצורת סביבה](#-תצורת-הסביבה)
+- [🗄️ מסד נתונים](#️-מסד-נתונים)
+- [🔗 קישורים חשובים](#-קישורים-חשובים)
+- [📈 מפת דרכים](#-מפת-דרכים)
+- [🤝 תרומה](#-תרומה)
+- [👥 צוות פיתוח](#-צוות-פיתוח)
+- [📜 רישיון](#-רישיון)
+- [🙏 תודה](#-תודה)
+- [💬 תמיכה](#-תמיכה)
+- [📱 רשתות חברתיות](#-רשתות-חברתיות)
 
 ---
 
-## 📱 Screenshots da Aplicação
+## 🎯 על הפרויקט
 
-### 🔐 Autenticação e Primeiros Passos
+**PetCare Pro** היא מערכת שלמה ומודרנית שפותחה במיוחד עבור וטרינרים ברזילאים שרוצים לבצע דיגיטציה ואופטימיזציה של ניהול המרפאות הווטרינריות וחנויות החיות שלהם.
+### 🌟 למה PetCare Pro?
+
+בשוק הווטרינרי הצומח ללא הרף בברזיל, עם יותר מ-149 מיליון חיות מחמד (על פי Instituto Pet Brasil), הדיגיטליזציה של תהליכים הפכה חיונית עבור:
+
+- **יעילות תפעולית**: צמצם את הזמן המושקע במשימות אדמיניסטרטיביות
+- **השירות הטוב ביותר**: גישה מהירה להשלמת היסטוריית המטופלים
+- **ניהול פיננסי**: בקרת הכנסות ונהלים שבוצעו
+- **ארגון**: מערכת מרכזית ללקוחות, חיות מחמד וייעוץ
+- **ניידות**: גישה למידע בכל מקום
+
+### 🎯 המטרה העיקרית
+
+ספק פתרון **חינם**, **אינטואיטיבי** ו**שלם** המאפשר לוטרינרים להתמקד במה שהם עושים הכי טוב: **טיפול בבעלי חיים**.
+
+---
+## 📱 צילומי מסך של האפליקציה
+
+### 🔐 אימות ותחילת העבודה
 
 <div align="center">
   <table>
     <tr>
       <td align="center">
-        <img src="assets/screenshots/login.png" alt="Tela de Login" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+        <img src="assets/screenshots/login.png" alt="מסך כניסה" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Login Profissional</strong>
+        <strong>התחברות מקצועית</strong>
         <br />
-        <small>Acesso seguro para veterinários</small>
+<small>גישה בטוחה לוטרינרים</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/registro.png" alt="Registro de Usuário" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+        <img src="assets/screenshots/registro.png" alt="רישום משתמש" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Cadastro Veterinário</strong>
+        <strong>רישום וטרינרי</strong>
         <br />
-        <small>Registro com CRMV e dados profissionais</small>
+        <small>רישום עם CRMV ונתונים מקצועיים</small>
       </td>
-      <td align="center">
-        <img src="assets/screenshots/home.png" alt="Dashboard Principal" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<td align="center">
+        <img src="assets/screenshots/home.png" alt="מרכז המחוונים הראשי" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Dashboard Principal</strong>
+        <strong>מרכז שליטה ראשי</strong>
         <br />
-        <small>Visão geral da clínica</small>
+        <small>סקירה כללית של המרפאה</small>
       </td>
     </tr>
   </table>
 </div>
 
-### 👥 Gestão de Clientes e Pets
+### 👥 ניהול לקוחות וחיות מחמד
 
 <div align="center">
   <table>
-    <tr>
+<tr>
       <td align="center">
-        <img src="assets/screenshots/clients.png" alt="Lista de Clientes" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+        <img src="assets/screenshots/clients.png" alt="רשימת לקוחות" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Gestão de Clientes</strong>
+        <strong>ניהול לקוחות</strong>
         <br />
-        <small>Lista completa de tutores</small>
+        <small>רשימה מלאה של מורים</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/add_paciente.png" alt="Adicionar Cliente" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/add_paciente.png" alt="הוסף לקוח" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Novo Cliente</strong>
+        <strong>לקוח חדש</strong>
         <br />
-        <small>Cadastro detalhado de tutores</small>
+        <small>רישום מפורט של מורים</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/pets.png" alt="Lista de Pets" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/pets.png" alt="רשימת חיות מחמד" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Gestão de Pets</strong>
+        <strong>ניהול חיות מחמד</strong>
         <br />
-        <small>Pacientes da clínica</small>
+        <small>מטופלי מרפאה</small>
       </td>
     </tr>
   </table>
 </div>
 
-### 🐾 Cadastro e Cuidados com Pets
+### 🐾 רישום וטיפול בחיות מחמד
 
 <div align="center">
   <table>
     <tr>
       <td align="center">
-        <img src="assets/screenshots/cadastrar_pet.png" alt="Cadastrar Pet" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/cadastrar_pet.png" alt="רשום חיית מחמד" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Cadastro de Pet</strong>
+        <strong>רישום חיות מחמד</strong>
         <br />
-        <small>Ficha completa do paciente</small>
+        <small>רישום מטופל מלא</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/agenda.png" alt="Agenda de Consultas" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/agenda.png" alt="Agenda de Consultas" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Agenda Veterinária</strong>
+        <strong>סדר יום וטרינרי</strong>
         <br />
-        <small>Calendário de atendimentos</small>
+        <small>יומן שירות</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/novo_agendamento.png" alt="Novo Agendamento" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/novo_agendamento.png" alt="Novo Agendamento" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Agendar Consulta</strong>
+        <strong>תזמן פגישה</strong>
         <br />
-        <small>Sistema de agendamentos</small>
+        <small>מערכת תזמון</small>
       </td>
     </tr>
   </table>
 </div>
 
-### 📚 Biblioteca Veterinária
+### 📚 ספרייה וטרינרית
 
 <div align="center">
   <table>
     <tr>
-      <td align="center">
-        <img src="assets/screenshots/biblioteca.png" alt="Biblioteca Veterinária" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<td align="center">
+        <img src="assets/screenshots/biblioteca.png" alt="ספרייה וטרינרית" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Biblioteca Veterinária</strong>
+        <strong>ספרייה וטרינרית</strong>
         <br />
-        <small>Medicamentos, vacinas e procedimentos</small>
+        <small>תרופות, חיסונים ונהלים</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/add_biblioteca.png" alt="Adicionar à Biblioteca" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/add_biblioteca.png" alt="הוסף לספרייה" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Novo Item</strong>
+        <strong>פריט חדש</strong>
         <br />
-        <small>Cadastro de medicamentos</small>
+        <small>רישום תרופות</small>
       </td>
       <td align="center" style="opacity: 0.7;">
-        <div style="width: 200px; height: 356px; background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; text-align: center;">
+<div style="width: 200px; height: 356px; background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color:wealign: center; color:wealign: bold;
           <div>
             <div style="font-size: 48px; margin-bottom: 10px;">💊</div>
-            <div>Prescrições<br/>Digitais</div>
-            <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">V1.2</div>
+            <div>דרישות<br/>דיגיטליות</div>
+<div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">V1.2</div>
           </div>
         </div>
         <br />
@@ -205,212 +201,207 @@ Fornecer uma solução **gratuita**, **intuitiva** e **completa** que permita ao
   </table>
 </div>
 
-### 👤 Perfil e Configurações
+### 👤 תצורות פרופיל
 
 <div align="center">
   <table>
     <tr>
       <td align="center">
-        <img src="assets/screenshots/perfil.png" alt="Perfil do Veterinário" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/perfil.png" alt="פרופיל הוטרינר" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Perfil Profissional</strong>
+        <strong>פרופיל מקצועי</strong>
         <br />
-        <small>Dados do veterinário</small>
+        <small>פרטים וטרינרים</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/editar_perfil.png" alt="Editar Perfil" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/editar_perfil.png" alt="עריכת פרופיל" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Editar Perfil</strong>
+        <strong>ערוך פרופיל</strong>
         <br />
-        <small>Atualização de dados</small>
+        <small>עדכון נתונים</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/alterar_senha.png" alt="Alterar Senha" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/alterar_senha.png" alt="שנה סיסמה" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Segurança</strong>
+        <strong>אבטחה</strong>
         <br />
-        <small>Alteração de senha</small>
+        <small>שינוי סיסמה</small>
       </td>
     </tr>
   </table>
 </div>
 
-### ⚙️ Configurações e Suporte
+### ⚙️ הגדרות ותמיכה
 
 <div align="center">
   <table>
     <tr>
       <td align="center">
-        <img src="assets/screenshots/backup_e_restauracao.png" alt="Backup e Restauração" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/backup_e_restauracao.png" alt="Backup e Restauração" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Backup & Restauração</strong>
+        <strong>גיבוי ושחזור</strong>
         <br />
-        <small>Segurança dos dados</small>
+        <small>אבטחת נתונים</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/ajuda_e_suporte.png" alt="Ajuda e Suporte" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/ajuda_e_suporte.png" alt="עזרה ותמיכה" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Ajuda & Suporte</strong>
+        <strong>עזרה ותמיכה</strong>
         <br />
-        <small>Central de atendimento</small>
+        <small>מוקד טלפוני</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/sobre.png" alt="Sobre o App" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/sobre.png" alt="אודות האפליקציה" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Sobre o PetCare Pro</strong>
+        <strong>על PetCare Pro</strong>
         <br />
-        <small>Informações do aplicativo</small>
+        <small>פרטי יישום</small>
       </td>
     </tr>
   </table>
 </div>
 
-### 📋 Informações e Políticas
+### 📋 מידע ומדיניות
 
 <div align="center">
   <table>
     <tr>
       <td align="center">
-        <img src="assets/screenshots/politicas_de_privacidade.png" alt="Políticas de Privacidade" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/politicas_de_privacidade.png" alt="מדיניות פרטיות" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Políticas de Privacidade</strong>
+        <strong>מדיניות פרטיות</strong>
         <br />
-        <small>LGPD e proteção de dados</small>
+        <small>LGPD והגנה על נתונים</small>
       </td>
       <td align="center">
-        <img src="assets/screenshots/version.png" alt="Versão do App" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+<img src="assets/screenshots/version.png" alt="גרסה של אפליקציה" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
         <br />
-        <strong>Informações da Versão</strong>
+        <strong>מידע על גרסה</strong>
         <br />
-        <small>Atualizações e changelog</small>
+        <small>עדכונים ויומן שינויים</small>
       </td>
       <td align="center" style="opacity: 0.7;">
-        <div style="width: 200px; height: 356px; background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; text-align: center;">
+<div style="width: 200px; height: 356px; background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color:weight: bold: center; color:wealign: bold;
           <div>
             <div style="font-size: 48px; margin-bottom: 10px;">📊</div>
             <div>Relatórios<br/>Detalhados</div>
-            <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Próxima versão</div>
+<div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">גרסה הבאה</div>
           </div>
         </div>
         <br />
-        <strong>Relatórios & Analytics</strong>
+        <strong>דוחות וניתוחים</strong>
       </td>
     </tr>
   </table>
 </div>
 
-### 📋 Resumo Funcional por Categoria
+### 📋 סיכום פונקציונלי לפי קטגוריה
 
-| Categoria | Funcionalidades | Telas Disponíveis |
-|-----------|-----------------|-------------------|
-| 🔐 **Autenticação** | Login seguro, registro profissional, dashboard | 3 |
-| 👥 **Gestão de Clientes** | CRUD completo, busca avançada | 2 |
-| 🐾 **Gestão de Pets** | Cadastro detalhado, histórico médico | 2 |
-| 📅 **Agendamentos** | Sistema de agenda, marcação de consultas | 2 |
-| 📚 **Biblioteca** | Medicamentos, vacinas, procedimentos | 2 |
-| 👤 **Perfil** | Dados profissionais, segurança | 3 |
-| ⚙️ **Configurações** | Backup, suporte, informações | 3 |
-| 📋 **Informações** | Políticas, versão do app | 2 |
-| **Total Implementado** | | **19 telas** |
+| קטגוריה | תכונות | מסכים זמינים |
+|-----------|----------------|------------------------|
+| 🔐 **אימות** | כניסה מאובטחת, רישום מקצועי, לוח מחוונים | 3 |
+| 👥 **ניהול לקוחות** | CRUD מלא, חיפוש מתקדם | 2 |
+| 🐾 **ניהול חיות מחמד** | רישום מפורט, היסטוריה רפואית | 2 |
+| 📅 **תורים** | מערכת סדר יום, הזמנת תורים | 2 |
+| 📚 **ספרייה** | תרופות, חיסונים, נהלים | 2 |
+| 👤 **פרופיל** | נתונים מקצועיים, אבטחה | 3 |
+| ⚙️ **הגדרות** | גיבוי, תמיכה, מידע | 3 |
+| 📋 **מידע** | מדיניות, גרסת האפליקציה | 2 |
+| **סך הכל מיושם** | | **19 מסכים** |
 
 ---
 
-## 🚀 Características
+## 🚀 תכונות
 
-### ✅ Funcionalidades Implementadas
+### ✅ תכונות מיושמות
 
-| Módulo | Funcionalidade | Status |
+| מודול | פונקציונליות | סטטוס |
 |--------|----------------|--------|
-| 🔐 **Autenticação** | Sistema completo de login/registro | ✅ Completo |
-| 📊 **Dashboard** | Estatísticas em tempo real | ✅ Completo |
-| 👥 **Gestão de Clientes** | CRUD completo com validações | ✅ Completo |
-| 🐾 **Gestão de Pets** | Cadastro detalhado e histórico | ✅ Completo |
-| 📋 **Consultas** | Registro completo de atendimentos | ✅ Completo |
-| 📅 **Agenda** | Sistema de agendamentos | ✅ Completo |
-| 📚 **Biblioteca Veterinária** | Medicamentos, vacinas e procedimentos | ✅ Completo |
-| 📱 **Interface Responsiva** | Design moderno e intuitivo | ✅ Completo |
-| 💾 **Armazenamento** | Banco de dados robusto (Supabase) | ✅ Completo |
-| ✅ **Validação** | Formulários com validação completa | ✅ Completo |
-| 🔄 **Estados** | Loading, erro e sucesso | ✅ Completo |
+| 🔐 **אימות** | מערכת כניסה/רישום מלאה | ✅ השלם |
+| 📊 **לוח מחוונים** | נתונים סטטיסטיים בזמן אמת | ✅ השלם |
+| 👥 **ניהול לקוחות** | השלם CRUD עם אימותים | ✅ השלם |
+| 🐾 **ניהול חיות מחמד** | רישום מפורט והיסטורי | ✅ השלם |
+| 📋 **התייעצויות** | שיא נוכחות מלא | ✅ השלם |
+| 📅 **סדר יום** | מערכת תורים | ✅ השלם |
+| 📚 **ספרייה וטרינרית** | תרופות, חיסונים ונהלים | ✅ השלם |
+| 📱 **ממשק רספונסיבי** | עיצוב מודרני ואינטואיטיבי | ✅ השלם |
+| 💾 **אחסון** | מסד נתונים איתן (Supabase) | ✅ השלם |
+| ✅ **אימות** | טפסים עם אימות מלא | ✅ השלם |
+| 🔄 **מדינות** | טעינה, שגיאה והצלחה | ✅ השלם |
 
-### 🚧 Em Desenvolvimento
-
-| Funcionalidade | Previsão | Prioridade |
-|----------------|----------|------------|
-| 📧 **Notificações Push** | v1.1.0 | Alta |
-| 📊 **Relatórios PDF** | v1.2.0 | Alta |
-| ☁️ **Backup em Nuvem** | v1.2.0 | Média |
-| 🔄 **Sincronização Multi-device** | v1.3.0 | Média |
-| 📱 **App para Clientes** | v2.0.0 | Baixa |
-| 🏥 **Multi-clínica** | v2.0.0 | Baixa |
+### 🚧 בפיתוח
+| פונקציונליות | תחזית | עדיפות |
+|----------------|--------|----------------|
+| 📧 **הודעות פוש** | v1.1.0 | גבוה |
+| 📊 **דוחות PDF** | v1.2.0 | גבוה |
+| ☁️ **גיבוי בענן** | v1.2.0 | ממוצע |
+| 🔄 **סנכרון ריבוי מכשירים** | v1.3.0 | ממוצע |
+| 📱 **אפליקציה ללקוחות** | v2.0.0 | נמוך |
+| 🏥 **מולטי-קליניקה** | v2.0.0 | נמוך |
 
 ---
 
-## 🛠️ Tecnologias
+## 🛠️ טכנולוגיות
 
-### 🎯 Core Technologies
-
-| Tecnologia | Versão | Propósito |
-|------------|--------|-----------|
-| **React Native** | 0.79.2 | Framework principal para desenvolvimento móvel |
-| **Expo SDK** | 53.0.9 | Plataforma de desenvolvimento e build |
+### 🎯 טכנולוגיות ליבה
+| טכנולוגיה | גרסה | מטרה |
+|------------|----------------|--------|
+| **React Native** | 0.79.2 | מסגרת ליבה לפיתוח נייד |
+| **Expo SDK** | 53.0.9 | פיתוח ובניית פלטפורמה |
 | **Supabase** | 2.39.0 | Backend-as-a-Service (BaaS) |
-| **React Navigation** | v6 | Navegação entre telas |
-| **AsyncStorage** | 2.1.2 | Armazenamento local |
+| **ניווט תגובה** | v6 | ניווט בין מסכים |
+| **AsyncStorage** | 2.1.2 | אחסון מקומי |
 
-### 🎨 UI/UX Libraries
-
-| Biblioteca | Versão | Funcionalidade |
+### 🎨 ספריות ממשק משתמש/UX
+| ספריה | גרסה | פונקציונליות |
 |------------|--------|----------------|
-| **Expo Vector Icons** | 14.1.0 | Ícones vetorizados |
-| **React Native Gesture Handler** | 2.24.0 | Gestos e interações |
-| **React Native Reanimated** | 3.17.4 | Animações fluidas |
-| **Expo Linear Gradient** | 14.1.4 | Gradientes visuais |
-| **React Native Safe Area Context** | 5.4.0 | Área segura para dispositivos |
+| **אקספו וקטור אייקונים** | 14.1.0 | אייקונים וקטורים |
+| **מטפל מחוות יליד תגובה** | 2.24.0 | מחוות ואינטראקציות |
+| **React Native Reanimated** | 3.17.4 | אנימציות נוזליות |
+| **Linear Gradient Expo** | 14.1.4 | שיפועים חזותיים |
+| **להגיב בהקשר של אזור בטוח יליד** | 5.4.0 | אזור מאובטח למכשירים |
+### 🔧 כלי פיתוח
 
-### 🔧 Development Tools
+| כלי | גרסה | מטרה |
+|------------|----------------|--------|
+| **Babel Core** | 7.20.0 | טרנספילציה של JavaScript |
+| **בוחר ילידים תגובה** | 2.11.0 | בוררים נפתחים |
+| **בורר תמונות אקספו** | 15.0.7 | בחירת תמונה |
+| **Expo Splash Screen** | 0.29.9 | מסך טעינה |
 
-| Ferramenta | Versão | Propósito |
-|------------|--------|-----------|
-| **Babel Core** | 7.20.0 | Transpilação JavaScript |
-| **React Native Picker** | 2.11.0 | Seletores dropdown |
-| **Expo Image Picker** | 15.0.7 | Seleção de imagens |
-| **Expo Splash Screen** | 0.29.9 | Tela de carregamento |
+### 🗄️ מסד נתונים וגב
 
-### 🗄️ Database & Backend
-
-| Serviço | Funcionalidade |
-|---------|----------------|
-| **Supabase PostgreSQL** | Banco de dados principal |
-| **Supabase Auth** | Autenticação de usuários |
-| **Supabase Storage** | Armazenamento de arquivos |
-| **Supabase Realtime** | Sincronização em tempo real |
+| שירות | פונקציונליות |
+|--------|----------------|
+| **Supabase PostgreSQL** | מסד נתונים ראשי |
+| **Supabase Auth** | אימות משתמש |
+| **אחסון Supabase** | אחסון קבצים |
+| **Supabase Realtime** | סנכרון בזמן אמת |
 
 ---
 
-## 📱 Compatibilidade
+## 📱 תאימות
 
-### 📋 Requisitos de Sistema
+### 📋 דרישות מערכת
 
-| Plataforma | Versão Mínima | Status |
-|------------|---------------|--------|
-| **iOS** | 12.0+ | ✅ Totalmente suportado |
-| **Android** | API 21+ (Android 5.0) | ✅ Totalmente suportado |
-| **Expo Go** | Última versão | ✅ Desenvolvimento e testes |
-| **Expo Development Build** | - | ✅ Builds customizados |
+| פלטפורמה | גרסה מינימלית | סטטוס |
+|------------|-------------|--------|
+| **iOS** | 12.0+ | ✅ תמיכה מלאה |
+| **אנדרואיד** | API 21+ (אנדרואיד 5.0) | ✅ תמיכה מלאה |
+| **אקספו גו** | הגרסה האחרונה | ✅ פיתוח ובדיקה |
+| **Expo Development Build** | - | ✅ בנייה בהתאמה אישית |
 
-### 🎯 Dispositivos Testados
+### 🎯 מכשירים שנבדקו
 
 - **iOS**: iPhone 12+, iPad Air 4+
-- **Android**: Samsung Galaxy S21+, Pixel 6+
-- **Tablets**: Suporte responsivo completo
+- **אנדרואיד**: Samsung Galaxy S21+, Pixel 6+
+- **טאבלטים**: תמיכה מלאה בתגובות
 
 ---
 
-## 🏗️ Arquitetura
+## 🏗️ אדריכלות
 
-### 📐 Padrões Arquiteturais
-
+### 📐 דפוסים אדריכליים
 ```mermaid
 graph TB
     A[React Native App] --> B[Expo Framework]
@@ -425,19 +416,17 @@ graph TB
     E --> I[Authentication]
     E --> J[File Storage]
 ```
+### 🔄 זרימת נתונים
 
-### 🔄 Fluxo de Dados
-
-1. **UI Components** → Interação do usuário
-2. **Context API** → Gerenciamento de estado global
-3. **Services** → Lógica de negócio e API calls
-4. **Supabase** → Backend e persistência
-5. **AsyncStorage** → Cache local
+1. **רכיבי ממשק משתמש** ← אינטראקציית משתמש
+2. **Context API** → ניהול מצב גלובלי
+3. **שירותים** → לוגיקה עסקית וקריאות API
+4. **Supabase** ← Backend והתמדה
+5. **AsyncStorage** ← מטמון מקומי
 
 ---
 
-## 📁 Estrutura do Projeto
-
+## 📁 מבנה הפרויקט
 ```
 📁 consultorio-app/
 ├── 🪝 .githooks/                          # Scripts de automação Git customizados
@@ -580,31 +569,27 @@ graph TB
 ├── 📝 TODO.md                             # Lista de tarefas pendentes e melhorias
 └── 🔧 TROUBLESHOOTING.md                  # Guia de resolução de problemas comuns
 ```
-
 ---
 
-## ⚡ Instalação e Configuração
+## ⚡ התקנה ותצורה
 
-### 📋 Pré-requisitos
+### 📋 דרישות מוקדמות
 
-Certifique-se de ter instalado:
+ודא שהתקנת:
 
-- **Node.js** (versão 18.0.0 ou superior)
-- **npm** ou **yarn**
-- **Expo CLI** (recomendado: versão mais recente)
-- **Git**
-
+- **Node.js** (גרסה 18.0.0 ומעלה)
+- **npm** או **חוט**
+- **Expo CLI** (מומלץ: הגרסה האחרונה)
+- **גיט**
 ```bash
 # Verificar versões
 node --version    # v18.0.0+
 npm --version     # 8.0.0+
 expo --version    # 49.0.0+
 ```
+### 🚀 התקנה מהירה
 
-### 🚀 Instalação Rápida
-
-#### Opção 1: Clone do Repositório
-
+#### אפשרות 1: שיבוט מאגר
 ```bash
 # 1. Clone o repositório
 git clone https://github.com/PetCareAi/consultorio-app.git
@@ -624,86 +609,81 @@ npm start
 # ou
 expo start
 ```
+### ⚙️ תצורת Supabase
 
-### ⚙️ Configuração do Supabase
+1. **צור חשבון ב-Supabase**: [https://supabase.com](https://supabase.com)
 
-1. **Criar conta no Supabase**: [https://supabase.com](https://supabase.com)
+2. **צור פרויקט חדש**:
+   - שם: `PetCare Pro`
+   - אזור: `דרום אמריקה (סאו פאולו)`
+   - סיסמת בנק: (בחר סיסמה חזקה)
 
-2. **Criar novo projeto**:
-   - Nome: `PetCare Pro`
-   - Região: `South America (São Paulo)`
-   - Senha do banco: (escolha uma senha forte)
-
-3. **Executar script do banco**:
+3. **הפעל סקריפט בנק**:
    ```sql
    -- Execute o conteúdo do arquivo db/supabase.sql
    -- no SQL Editor do Supabase
    ```
-
-4. **Configurar credenciais**:
+4. **הגדר אישורים**:
    ```javascript
    // src/config/supabase.js
    const supabaseUrl = 'SUA_URL_DO_SUPABASE'
    const supabaseAnonKey = 'SUA_CHAVE_PUBLICA'
    ```
+---
+
+## 🎮 כיצד להשתמש
+
+### 🔐 גישה ראשונה
+
+1. **פתח את האפליקציה**
+2. **השתמש באישורי הדגמה**:
+   - 📧 **דוא"ל**: `admin@petcare.com`
+   - 🔒 **סיסמה**: `123456`
+3. **או צור חשבון חדש** על ידי לחיצה על "הירשם"
+
+### 🏠 לוח המחוונים הראשי
+
+לוח המחוונים מציע סקירה מלאה:
+
+- **📊 נתונים סטטיסטיים בזמן אמת**
+- **📅 סדר היום של היום**
+- **⚡ פעולות מהירות**
+- **📈 מדדים חשובים**
+### 👥 ניהול לקוחות
+
+#### ➕ הוסף לקוח
+1. נווט אל **לקוחות** → **חדש**
+2. מלא את נתוני החובה:
+   - שם מלא
+   - אימייל
+   - טלפון
+3. נתונים אופציונליים:
+   - CPF, כתובת, הערות
+
+#### 🔍 חפש לקוחות
+- השתמש בסרגל החיפוש
+- חפש לפי: שם, מייל, טלפון, CPF
+
+### 🐾 ניהול חיות מחמד
+
+#### ➕ רישום חיית מחמד
+1. **לקוחות** → בחר לקוח → **חיית מחמד חדשה**
+2. מידע בסיסי:
+   - שמה של חיית המחמד
+   - מינים (כלב, חתול וכו')
+   - גזע
+   - סקס
+3. פרטים פיזיים:
+   - תאריך לידה
+   - משקל
+   - צבע
+   - שבב
 
 ---
 
-## 🎮 Como Usar
+## 📊 תכונות עיקריות
 
-### 🔐 Primeiro Acesso
-
-1. **Abra o aplicativo**
-2. **Use as credenciais de demonstração**:
-   - 📧 **Email**: `admin@petcare.com`
-   - 🔒 **Senha**: `123456`
-3. **Ou crie uma nova conta** clicando em "Cadastrar"
-
-### 🏠 Dashboard Principal
-
-O dashboard oferece uma visão geral completa:
-
-- **📊 Estatísticas em tempo real**
-- **📅 Agenda do dia**
-- **⚡ Ações rápidas**
-- **📈 Métricas importantes**
-
-### 👥 Gestão de Clientes
-
-#### ➕ Adicionar Cliente
-1. Navegue para **Clientes** → **Novo**
-2. Preencha os dados obrigatórios:
-   - Nome completo
-   - Email
-   - Telefone
-3. Dados opcionais:
-   - CPF, endereço, observações
-
-#### 🔍 Buscar Clientes
-- Use a barra de busca
-- Pesquise por: nome, email, telefone, CPF
-
-### 🐾 Gestão de Pets
-
-#### ➕ Cadastrar Pet
-1. **Clientes** → Selecionar cliente → **Novo Pet**
-2. Informações básicas:
-   - Nome do pet
-   - Espécie (Cão, Gato, etc.)
-   - Raça
-   - Sexo
-3. Detalhes físicos:
-   - Data de nascimento
-   - Peso
-   - Cor
-   - Microchip
-
----
-
-## 📊 Funcionalidades Principais
-
-### 🔐 Sistema de Autenticação
-
+### 🔐 מערכת אימות
 ```javascript
 // Exemplo de uso
 const { login, register, logout, user } = useAuth();
@@ -716,17 +696,15 @@ if (user) {
   // Usuário logado
 }
 ```
+### 📊 לוח מחוונים אינטראקטיבי
 
-### 📊 Dashboard Interativo
+- **סטטיסטיקה בזמן אמת**
+- **גרפים ומדדים**
+- **סדר היום**
+- **פעולות מהירות**
+- **תזכורות חשובות**
 
-- **Estatísticas em tempo real**
-- **Gráficos e métricas**
-- **Agenda do dia**
-- **Ações rápidas**
-- **Lembretes importantes**
-
-### 👥 Gestão Completa de Clientes
-
+### 👥 ניהול לקוחות מלא
 ```javascript
 // Exemplo de operações CRUD
 import { ClientService } from '../services/ClientService';
@@ -740,13 +718,11 @@ const result = await ClientService.create(clientData);
 // Buscar cliente
 const clients = await ClientService.search('João');
 ```
-
 ---
 
-## 🎨 Design System
+## 🎨 מערכת עיצוב
 
-### 🎨 Paleta de Cores
-
+### 🎨 פלטת צבעים
 ```javascript
 // Cores principais
 const Colors = {
@@ -772,10 +748,9 @@ const Colors = {
   border: '#E0E0E0',        // Bordas
 };
 ```
+### 🧩 רכיבים
 
-### 🧩 Componentes
-
-#### Button Component
+#### רכיב לחצן
 ```javascript
 <Button 
   title="Salvar"
@@ -786,8 +761,7 @@ const Colors = {
   icon={<Ionicons name="save" />}
 />
 ```
-
-#### Input Component
+#### רכיב קלט
 ```javascript
 <Input 
   label="Nome"
@@ -798,13 +772,11 @@ const Colors = {
   multiline={false}
 />
 ```
-
 ---
 
-## 📘 Scripts Disponíveis
+## 📘 סקריפטים זמינים
 
-### 🚀 Scripts de Desenvolvimento
-
+### 🚀 סקריפטים לפיתוח
 ```bash
 # Iniciar servidor de desenvolvimento
 npm start
@@ -827,15 +799,13 @@ npm run reset
 # Gerar build para produção
 npm run prebuild
 ```
-
 ---
 
-## 🔧 Configuração do Ambiente
+## 🔧 תצורת סביבה
 
-### ☁️ Configuração do Supabase
+### ☁️ תצורת Supabase
 
-#### 1. Configuração Inicial
-
+#### 1. הגדרה ראשונית
 ```javascript
 // src/config/supabase.js
 import { createClient } from '@supabase/supabase-js';
@@ -851,9 +821,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 });
 ```
-
-#### 2. Configuração de Políticas RLS
-
+#### 2. הגדרת מדיניות RLS
 ```sql
 -- Habilitar RLS (Row Level Security)
 ALTER TABLE users_consultorio ENABLE ROW LEVEL SECURITY;
@@ -866,13 +834,11 @@ ALTER TABLE appointments_consultorio ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own data" ON clients_consultorio
   FOR SELECT USING (user_id = auth.uid());
 ```
-
 ---
 
-## 🗄️ Banco de Dados
+## 🗄️ מסד נתונים
 
-### 📊 Schema Principal
-
+### 📊 סכימה ראשית
 ```sql
 -- Usuários (Veterinários)
 CREATE TABLE users_consultorio (
@@ -945,82 +911,77 @@ CREATE TABLE consultations_consultorio (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 ```
-
 ---
 
-## 🔗 Links Importantes
+## 🔗 קישורים חשובים
 
-### 📚 Recursos Oficiais
-- 🌐 **Site Oficial:** https://language.petcareai.com.br/
-- 📖 **Documentação:** https://language.petcareai.com.br/docs
-- 🎓 **Tutoriais:** https://language.petcareai.com.br/tutorials
-- 📦 **NPM Package:** https://www.npmjs.com/package/petcarescript
-- 🧩 **VS Code Extension:** https://marketplace.visualstudio.com/items?itemName=petcarescript.petcarescript
-
+### 📚 משאבים רשמיים
+- 🌐 **אתר רשמי:** https://language.petcareai.com.br/
+- 📖 **תיעוד:** https://language.petcareai.com.br/docs
+- 🎓 **הדרכות:** https://language.petcareai.com.br/tutorials
+- 📦 **חבילת NPM:** https://www.npmjs.com/package/petcarescript
+- 🧩 **הרחבת קוד VS:** https://marketplace.visualstudio.com/items?itemName=petcarescript.petcarescript
 ### 🛠️ Desenvolvimento
-- 💻 **GitHub Repository:** https://github.com/PetCareAi/petcarescript
-- 🐛 **Issues & Bugs:** https://github.com/PetCareAi/petcarescript/issues
-- 💬 **Discussions:** https://github.com/PetCareAi/petcarescript/discussions
-- 🔄 **Pull Requests:** https://github.com/PetCareAi/petcarescript/pulls
-- 📊 **Project Board:** https://github.com/PetCareAi/petcarescript/projects
+- 💻 **מאגר GitHub:** https://github.com/PetCareAi/petcarescript
+- 🐛 **בעיות ובאגים:** https://github.com/PetCareAi/petcarescript/issues
+- 💬 **דיונים:** https://github.com/PetCareAi/petcarescript/discussions
+- 🔄 ** בקשות למשוך:** https://github.com/PetCareAi/petcarescript/pulls
+- 📊 **לוח הפרויקט:** https://github.com/PetCareAi/petcarescript/projects
+### 🌐 PetCareAI אקולוגי
 
-### 🌐 PetCareAI Ecosystem
-
-| Recurso | Link | Descrição |
-|---------|------|-----------|
-| 🌍 **Site Oficial** | [petcareai.com.br](https://petcareai.com.br) | Portal principal |
-| 🏢 **GitHub Org** | [github.com/PetCareAI](https://github.com/PetCareAi) | 25+ repositórios |
-| 💬 **Discord** | [discord.gg/petcareai](https://discord.gg/petcareai) | Comunidade ativa |
-| 📚 **Documentação** | [docs.petcareai.com.br](https://documentation.petcareai.com.br) | Wiki completa |
-| 📋 **Tasks** | [tasks.petcareai.com.br](https://tasks.petcareai.com.br) | Gerenciamento ágil |
-| 📊 **Analytics** | [analytics.petcareai.com.br](https://analytics.petcareai.com.br) | Dashboards |
-
----
-
-## 📈 Roadmap
-
-### 🎯 Versão 1.1.0 (Q2 2025)
-- [ ] 📧 **Sistema de notificações push**
-- [ ] 🔄 **Sincronização offline**
-- [ ] 📊 **Relatórios básicos em PDF**
-- [ ] 🔐 **Recuperação de senha**
-- [ ] 👤 **Perfil detalhado do veterinário**
-
-### 🎯 Versão 1.2.0 (Q3 2025)
-- [ ] 📅 **Agendamento online para clientes**
-- [ ] 🤖 **Lembretes automáticos (WhatsApp/SMS)**
-- [ ] 📱 **App dedicado para clientes**
-- [ ] 💳 **Integração com meios de pagamento**
-- [ ] 📋 **Templates de prescrição**
-
-### 🧠 Categoria IA & Machine Learning
-- **Ultra ML Pet Detection v6.0** - Sistema ultra-profissional com YOLO e MediaPipe
-- **PetCareAI Analytics** - Análise avançada com Machine Learning
-- **LLM AI Assistant** - Assistentes virtuais com Gemini AI
-- **Sistemas de Computer Vision** para análise veterinária
-
-### 🔮 Futuro
-- [ ] 🏆 **Sistema de gamificação**
-- [ ] 📺 **Telemedicina veterinária**
-- [ ] 🔗 **Blockchain para registros médicos**
-- [ ] 🎯 **Machine Learning para previsões**
+| משאב | קישור | תיאור |
+|--------|------|--------|
+| 🌍 **האתר הרשמי** | [petcareai.com.br](https://petcareai.com.br) | פורטל ראשי |
+| 🏢 **GitHub Org** | [github.com/PetCareAI](https://github.com/PetCareAi) | 25+ מאגרים |
+| 💬 **דיסקורד** | [discord.gg/petcareai](https://discord.gg/petcareai) | קהילה פעילה |
+| 📚 **תיעוד** | [docs.petcareai.com.br](https://documentation.petcareai.com.br) | ויקי השלם |
+| 📋 **משימות** | [tasks.petcareai.com.br](https://tasks.petcareai.com.br) | ניהול זריז |
+| 📊 **אנליטיקס** | [analytics.petcareai.com.br](https://analytics.petcareai.com.br) | לוחות מחוונים |
 
 ---
 
-## 🤝 Contribuição
+## 📈 מפת דרכים
 
-Contribuições são sempre bem-vindas! Este projeto é open source e desenvolvido para a comunidade veterinária brasileira.
+### 🎯 גרסה 1.1.0 (Q2 2025)
+- [ ] 📧 **מערכת הודעות דחיפה**
+- [ ] 🔄 **סנכרון לא מקוון**
+- [ ] 📊 **דוחות בסיסיים ב-PDF**
+- [ ] 🔐 **שחזור סיסמה**
+- [ ] 👤 **פרופיל וטרינר מפורט**
 
-### 🚀 Como Contribuir
+### 🎯 גרסה 1.2.0 (Q3 2025)
+- [ ] 📅 **תזמון מקוון ללקוחות**
+- [ ] 🤖 **תזכורות אוטומטיות (WhatsApp/SMS)**
+- [ ] 📱 **אפליקציה ייעודית ללקוחות**
+- [ ] 💳 **שילוב עם אמצעי תשלום**
+- [ ] 📋 **תבניות מרשם**
+### 🧠 קטגוריית AI ולמידת מכונה
+- **Ultra ML Pet Detection v6.0** - מערכת אולטרה מקצועית עם YOLO ו-MediaPipe
+- **PetCareAI Analytics** - ניתוח מתקדם עם למידת מכונה
+- **LLM AI Assistant** - עוזרים וירטואליים עם Gemini AI
+- **מערכות ראיית מחשב** לניתוח וטרינרי
 
-#### 1. 🍴 Fork do Projeto
+### 🔮 עתיד
+- [ ] 🏆 **מערכת Gamification**
+- [ ] 📺 **רפואה וטרינרית**
+- [ ] 🔗 **בלוקצ'יין לתיעוד רפואי**
+- [ ] 🎯 **למידת מכונה לתחזיות**
+
+---
+
+## 🤝 תרומה
+
+תרומות תמיד יתקבלו בברכה! פרויקט זה הוא קוד פתוח ופותח עבור הקהילה הווטרינרית הברזילאית.
+
+### 🚀 איך לתרום
+
+#### 1. 🍴 Project Fork
 ```bash
 # Fork no GitHub e clone
 git clone https://github.com/seu-usuario/petcare-pro.git
 cd petcare-pro
 ```
-
-#### 2. 🌿 Criar Branch
+#### 2. 🌿 צור סניף
 ```bash
 # Criar branch para feature
 git checkout -b feature/nova-funcionalidade
@@ -1028,8 +989,7 @@ git checkout -b feature/nova-funcionalidade
 # Criar branch para bugfix
 git checkout -b bugfix/correcao-bug
 ```
-
-#### 3. 💻 Desenvolvimento
+#### 3. 💻 פיתוח
 ```bash
 # Instalar dependências
 npm install
@@ -1040,11 +1000,9 @@ npm start
 # Executar testes
 npm test
 ```
+### 📝 תבניות מחויבות
 
-### 📝 Padrões de Commit
-
-Seguimos o padrão [Conventional Commits](https://www.conventionalcommits.org/):
-
+אנו פועלים לפי דפוס [התחייבויות קונבנציונליות](https://www.conventionalcommits.org/):
 ```bash
 # Tipos de commit
 feat:     # Nova funcionalidade
@@ -1055,39 +1013,38 @@ refactor: # Refatoração de código
 test:     # Adição ou correção de testes
 chore:    # Manutenção geral
 ```
-
 ---
 
-## 👥 Equipe de Desenvolvimento
+## 👥 צוות פיתוח
 
-### **Core Team**
-- **Tech Lead** - Arquitetura e desenvolvimento principal
-- **Mobile Developer** - Desenvolvimento React Native
-- **Backend Developer** - APIs e banco de dados
-- **UX/UI Designer** - Interface e experiência
+### **צוות ליבה**
+- **Lead Tech** - אדריכלות ופיתוח עיקרי
+- **מפתח נייד** - React Native Development
+- **מפתח עורפי** - ממשקי API ומסד נתונים
+- **מעצב UX/UI** - ממשק וניסיון
 
-### 🚀 Líder Técnico
+### 🚀 מנהיג טכני
 
 <div align="center">
   <img src="https://github.com/estevam5s.png" width="80" style="border-radius: 50%;" />
   <br />
-  <strong>Estevam Souza</strong><br />
+<strong>Estevam Souza</strong><br />
   <em>Especialista TI Full-Stack</em><br />
   <a href="https://linkedin.com/in/estevam-souza">LinkedIn</a> |
   <a href="https://github.com/estevam5s">GitHub</a> |
-  <a href="https://estevamsouza.com.br">Website</a>
+  <a href="https://estevamsouza.com.br">אתר</a>
 </div>
 
-### 🚀 Core Team
+### 🚀 צוות ליבה
 
 <table>
   <tr>
     <td align="center">
       <img src="https://github.com/avatar1.png" width="100px;" alt=""/>
       <br />
-      <sub><b>João Silva</b></sub>
+<sub><b>João Silva</b></sub>
       <br />
-      <sub>Tech Lead & Full Stack Developer</sub>
+      <sub>מפתח טכני ו-Full Stack Developer</sub>
       <br />
       <a href="mailto:joao@petcarepro.com">📧</a>
       <a href="https://linkedin.com/in/joao">💼</a>
@@ -1095,9 +1052,9 @@ chore:    # Manutenção geral
     <td align="center">
       <img src="https://github.com/avatar2.png" width="100px;" alt=""/>
       <br />
-      <sub><b>Maria Santos</b></sub>
+      <sub><b>מריה סנטוס</b></sub>
       <br />
-      <sub>UI/UX Designer & Frontend Developer</sub>
+<sub>מעצב UI/UX ומפתח חזית</sub>
       <br />
       <a href="mailto:maria@petcarepro.com">📧</a>
       <a href="https://linkedin.com/in/maria">💼</a>
@@ -1105,330 +1062,321 @@ chore:    # Manutenção geral
     <td align="center">
       <img src="https://github.com/avatar3.png" width="100px;" alt=""/>
       <br />
-      <sub><b>Dr. Carlos Mendes</b></sub>
+      <sub><b>דר. קרלוס מנדס</b></sub>
       <br />
-      <sub>Veterinary Advisor & Product Owner</sub>
+      <sub>יועץ וטרינרי ובעל מוצר</sub>
       <br />
-      <a href="mailto:carlos@petcarepro.com">📧</a>
+<a href="mailto:carlos@petcarepro.com">📧</a>
       <a href="https://linkedin.com/in/carlos">💼</a>
     </td>
   </tr>
 </table>
 
-### 🌟 Contributors
+### 🌟 תורמים
 
-Agradecemos a todos os [contribuidores](CONTRIBUTORS.md) que ajudaram a construir este projeto.
+אנו מודים לכל [תורמים](CONTRIBUTORS.md) שעזרו לבנות את הפרויקט הזה.
 
 <a href="https://github.com/petcare-pro/petcare-pro/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=petcare-pro/petcare-pro" />
 </a>
+### 🤝 איך להצטרף לצוות
 
-### 🤝 Como Juntar-se à Equipe
+**אנחנו תמיד מחפשים כישרונות חדשים!**
 
-**Estamos sempre buscando novos talentos!**
-
-- 📞 **Discord**: [discord.gg/petcareai](https://discord.gg/petcareai)
+- 📞 **דיסקורד**: [discord.gg/petcareai](https://discord.gg/petcareai)
 - 💼 **LinkedIn**: [company/petcare-ai](https://linkedin.com/company/petcare-ai)
-- 📧 **Email**: contato@petcareai.com.br
+- 📧 **דוא"ל**: contato@petcareai.com.br
 
-**Áreas Abertas:**
-- 👨‍💻 Desenvolvedores (Frontend, Backend, Mobile)
-- 🧠 Especialistas IA/ML
-- 🛡️ Cybersecurity Engineers
-- 📊 Data Scientists
-- 🎨 UI/UX Designers
-- 📈 Marketing Digital
-
----
-
-## 📜 Licença
-
-Este projeto está sob [licença proprietária](LICENSE) da **PetCareAi Ltda**.
-
-Para licenciamento e autorizações: **legal@petcareai.com.br**
-
-### 📋 Resumo da Licença MIT
-
-✅ **Permitido:**
-- ✅ Uso comercial
-- ✅ Modificação
-- ✅ Distribuição
-- ✅ Uso privado
-
-❌ **Limitações:**
-- ❌ Responsabilidade
-- ❌ Garantia
-
-📝 **Condições:**
-- 📝 Incluir licença e copyright
+**שטחים פתוחים:**
+- 👨‍💻 מפתחים (Frontend, Backend, Mobile)
+- 🧠 מומחי AI/ML
+- 🛡️ מהנדסי אבטחת סייבר
+- 📊מדעני נתונים
+- 🎨 מעצבי UI/UX
+- 📈 שיווק דיגיטלי
 
 ---
 
-## 🙏 Agradecimentos
+## 📜 רישיון
 
-### 🙏 **Reconhecimentos Especiais**
+פרויקט זה נמצא תחת [רישיון קנייני](LICENSE) מאת **PetCareAi Ltda**.
 
-- **Google** pelo Gemini 2.0 Flash API
-- **Microsoft** pelo VS Code e sua excelente API de extensões
-- **Comunidade Open Source** por inspiração e feedback contínuo
-- **Beta Testers** por ajudar a melhorar a extensão
-- **Contribuidores** que tornaram este projeto possível
+לרישוי והרשאות: **legal@petcareai.com.br**
 
-### 🌟 **Inspirações**
-- **GitHub Copilot** - Inspiração para IA integrada
-- **Material Icon Theme** - Padrões de iconografia
-- **Dracula Theme** - Inspiração para temas escuros
-- **Vue.js Community** - Melhores práticas de desenvolvimento
+### 📋 סיכום רישיון MIT
 
-### **Tecnologias e Ferramentas**
+✅ **מותר:**
+- ✅ שימוש מסחרי
+- ✅ שינוי
+- ✅ הפצה
+- ✅ שימוש פרטי
 
-- 🧠 **Google AI** - Pela API Gemini revolucionária
-- 🔬 **TensorFlow Team** - Pela plataforma de ML mais avançada
-- ⚛️ **React Community** - Pelo ecossistema incrível
-- 📦 **Open Source Community** - Por todas as bibliotecas utilizadas
+❌ **הגבלות:**
+- ❌ אחריות
+- ❌ אחריות
 
-### **Validação Científica**
+📝 **תנאים:**
+- 📝 כלול רישיון וזכויות יוצרים
 
-- 🏥 **Hospital Veterinário USP** - Validação dos algoritmos
-- 🎓 **FMVZ-USP** - Consultoria científica
-- 👨‍⚕️ **CFMV** - Orientações éticas e técnicas
-- 🐕 **ANCLIVEPA** - Apoio da comunidade veterinária
+---
+## 🙏 תודה
 
-### **Beta Testers**
+### 🙏 **תודות מיוחדות**
 
-Agradecimento especial aos **500+ tutores** que participaram dos testes beta e ajudaram a aperfeiçoar nossa IA.
+- **Google** מאת Gemini 2.0 Flash API
+- **Microsoft** עבור VS Code ו-API ההרחבות המעולה שלו
+- **קהילת קוד פתוח** להשראה ומשוב מתמשך
+- **בודקי בטא** לעזרה בשיפור התוסף
+- **תורמים** שאיפשרו את הפרויקט הזה
 
-### 🏆 Reconhecimentos Especiais
+### 🌟 **השראה**
+- **GitHub Copilot** - השראה ל-AI משולב
+- **חומר נושא סמל** - דפוסי איקונוגרפיה
+- **נושא דרקולה** - השראה לנושאים אפלים
+- **קהילת Vue.js** - שיטות עבודה מומלצות לפיתוח
 
-- **🩺 Conselho Regional de Medicina Veterinária de São Paulo (CRMV-SP)** - Consultoria técnica
-- **🏥 Clínica Veterinária VetCare** - Testes e feedback funcional
-- **👨‍💻 React Native Community** - Suporte técnico e bibliotecas
-- **☁️ Supabase Team** - Plataforma backend robusta
-- **🎨 Expo Team** - Framework de desenvolvimento excepcional
+### **טכנולוגיות וכלים**
 
-### Projetos que Inspiraram
+- 🧠 **Google AI** - מאת Gemini API מהפכני
+- 🔬 **TensorFlow Team** - על ידי פלטפורמת ה-ML המתקדמת ביותר
+- ⚛️ **React Community** - למערכת האקולוגית המדהימה
+- 📦 **קהילת קוד פתוח** - לכל הספריות בהן נעשה שימוש
 
-- [React](https://reactjs.org/) - Biblioteca para interfaces
-- [Electron](https://electronjs.org/) - Framework para apps desktop
-- [Supabase](https://supabase.com/) - Backend open source
-- [Chart.js](https://chartjs.org/) - Visualização de dados
+### **אימות מדעי**
 
-### 💝 **Apoie o Projeto**
+- 🏥 **בית חולים וטרינרי USP** - אימות אלגוריתמים
+- 🎓 **FMVZ-USP** - ייעוץ מדעי
+- 👨‍⚕️ **CFMV** - הנחיות אתיות וטכניות
+- 🐕 **ANCLIVEPA** - תמיכה מהקהילה הווטרינרית
 
-Gostou da extensão? Considere apoiar o desenvolvimento:
+### **בודקי בטא**
+תודה מיוחדת ל**500+ מורים** שהשתתפו בבדיקות בטא ועזרו לשכלל את ה-AI שלנו.
 
-- ⭐ **Star** no [GitHub](https://github.com/PetCareAi/extension-for-devs)
-- 🐦 **Compartilhe** nas redes sociais
-- 💰 **Doe** via [Buy me a coffee](https://buymeacoffee.com/petcareai)
-- 🤝 **Contribua** com código ou documentação
+### 🏆 הכרות מיוחדות
+
+- **🩺 המועצה האזורית לרפואה וטרינרית של סאו פאולו (CRMV-SP)** - ייעוץ טכני
+- **🏥 מרפאה וטרינרית של VetCare** - בדיקות ומשוב תפקודי
+- **👨‍💻 React Native Community** - תמיכה טכנית וספריות
+- **☁️ צוות Supabase** - פלטפורמה עורפית חזקה
+- **🎨 צוות אקספו** - מסגרת פיתוח יוצאת דופן
+
+### פרויקטים שעוררו השראה
+
+- [React](https://reactjs.org/) - ספריה לממשקים
+- [אלקטרון](https://electronjs.org/) - מסגרת עבור אפליקציות שולחן עבודה
+- [Supabase](https://supabase.com/) - Backend של קוד פתוח
+- [Chart.js](https://chartjs.org/) - הדמיית נתונים
+### 💝 **תמוך בפרויקט**
+
+אהבתם את התוסף? שקול לתמוך בפיתוח:
+
+- ⭐ **כוכב** ב-[GitHub](https://github.com/PetCareAi/extension-for-devs)
+- 🐦 **שתף** ברשתות החברתיות
+- 💰 **לתרום** דרך [קנה לי קפה](https://buymeacoffee.com/petcareai)
+- 🤝 **תרום** עם קוד או תיעוד
 
 ---
 
-## 💬 Suporte
+## 💬 תמיכה
 
-### 🆘 Obter Ajuda
+### 🆘 קבל עזרה
+- **📖 תיעוד**: [petcarescript.org/docs](https://petcarescript.org/docs)
+- **💬 קהילת דיסקורד**: [discord.gg/petcarescript](https://discord.gg/petcarescript)
+- **❓ Stack Overflow**: תייגו את השאלות שלכם עם `petcarescript`
+- **🐛 בעיות GitHub**: [דווח על באגים ובקשות לתכונות](https://github.com/petcarescript/vscode-extension/issues)
 
-- **📖 Documentação**: [petcarescript.org/docs](https://petcarescript.org/docs)
-- **💬 Comunidade Discord**: [discord.gg/petcarescript](https://discord.gg/petcarescript)
-- **❓ Stack Overflow**: Marque suas perguntas com `petcarescript`
-- **🐛 GitHub Issues**: [Relatar bugs e solicitações de recursos](https://github.com/petcarescript/vscode-extension/issues)
+### 📞 צור קשר
+- **📧 דוא"ל**: support@petcarescript.org
+- **🐦 טוויטר**: [@PetCareScript](https://twitter.com/PetCareScript)
+- **💼 LinkedIn**: [PetCareScript רשמי](https://linkedin.com/company/petcarescript)
 
-### 📞 Contato
+### 🏢 תמיכה עסקית
 
-- **📧 Email**: support@petcarescript.org
-- **🐦 Twitter**: [@PetCareScript](https://twitter.com/PetCareScript)
-- **💼 LinkedIn**: [PetCareScript Official](https://linkedin.com/company/petcarescript)
+ללקוחות עסקיים אנו מציעים:
+- **⚡ תמיכה מועדפת** - סיוע טכני 24/7
+- **🔧 תכונות מותאמות אישית** - כלי פיתוח בהתאמה אישית
+- **📚 תכניות הדרכה** - הצטרפות לצוות וסדנאות
+- **🛡️ ביקורת אבטחה** - ניתוח אבטחת קוד
 
-### 🏢 Suporte Empresarial
+צור קשר: enterprise@petcarescript.org
 
-Para clientes empresariais, oferecemos:
-- **⚡ Suporte Prioritário** - Assistência técnica 24/7
-- **🔧 Recursos Personalizados** - Ferramentas de desenvolvimento sob medida
-- **📚 Programas de Treinamento** - Onboarding de equipe e workshops
-- **🛡️ Auditorias de Segurança** - Análise de segurança de código
+### 🆘 ערוצי תמיכה
 
-Entre em contato: enterprise@petcarescript.org
+| סוג התמיכה | ערוץ | תשובה |
+|----------------|-------|--------|
+| **🐛באגים ובעיות** | [בעיות GitHub](https://github.com/PetCareAi/consultorio-app/issues) | 24-48 שעות |
+| **💬 דיונים** | [דיוני GitHub](https://github.com/PetCareAi/consultorio-app/discussions) | 24 שעות |
+| **📧 תמיכה ישירה** | [support@petcareai.com.br](mailto:support@petcareai.com.br) | 24 שעות |
+| **📖 תיעוד** | [documentation.petcareai.com.br](https://documentation.petcareai.com.br) | תמיד |
 
-### 🆘 Canais de Suporte
+### 💬 ערוצי תקשורת
 
-| Tipo de Suporte | Canal | Resposta |
-|------------------|-------|----------|
-| **🐛 Bugs & Issues** | [GitHub Issues](https://github.com/PetCareAi/consultorio-app/issues) | 24-48h |
-| **💬 Discussões** | [GitHub Discussions](https://github.com/PetCareAi/consultorio-app/discussions) | 24h |
-| **📧 Suporte Direto** | [support@petcareai.com.br](mailto:support@petcareai.com.br) | 24h |
-| **📖 Documentação** | [documentation.petcareai.com.br](https://documentation.petcareai.com.br) | Sempre |
+| ערוץ | מטרה | זמן תגובה |
+|-------|--------|----------------|
+| 📧 **מייל** | תמיכה כללית ומסחרית | 24-48 שעות |
+| 💬 **וואטסאפ** | תמיכה טכנית דחופה | 2-8 שעות |
+| 🐛 **בעיות GitHub** | באגים ובקשות תכונה | 1-3 ימים |
+| 📱 **טלגרם** | קהילת משתמשים | זמן אמת |
+| 📺 **יוטיוב** | הדרכות וחדשות | שבועי |
 
-### 💬 Canais de Comunicação
+### 📧 אנשי קשר ישירים
+- **🎯 תמיכה כללית**: [suporte@petcareai.com.br](mailto:suporte@petcareai.com.br)
+- **🔧 תמיכה טכנית**: [tech@petcareai.com.br](mailto:tech@petcareai.com.br)
+- **💼 שותפויות**: [parcerias@petcareai.com.br](mailto:parcerias@petcareai.com.br)
+- **📰 לחץ**: [imprensa@petcareai.com.br](mailto:imprensa@petcareai.com.br)
 
-| Canal | Propósito | Tempo de Resposta |
-|-------|-----------|-------------------|
-| 📧 **Email** | Suporte geral e comercial | 24-48 horas |
-| 💬 **WhatsApp** | Suporte técnico urgente | 2-8 horas |
-| 🐛 **GitHub Issues** | Bugs e solicitações de funcionalidades | 1-3 dias |
-| 📱 **Telegram** | Comunidade de usuários | Tempo real |
-| 📺 **YouTube** | Tutoriais e novidades | Semanal |
+### 🆘 תמיכה דחופה
+למצבים קריטיים המונעים מהמרפאה לתפקד:
 
-### 📧 Contatos Diretos
+📞 **טלפון חירום**: (11) 9999-8888
+💬 **וואטסאפ**: [wa.me/5511999998888](https://wa.me/5511999998888)
 
-- **🎯 Suporte Geral**: [suporte@petcareai.com.br](mailto:suporte@petcareai.com.br)
-- **🔧 Suporte Técnico**: [tech@petcareai.com.br](mailto:tech@petcareai.com.br)
-- **💼 Parcerias**: [parcerias@petcareai.com.br](mailto:parcerias@petcareai.com.br)
-- **📰 Imprensa**: [imprensa@petcareai.com.br](mailto:imprensa@petcareai.com.br)
+### 🚀 הדרכות וסדנאות
 
-### 🆘 Suporte Urgente
+אנו מציעים הדרכה חינם כדי למקסם את השימוש במערכת:
 
-Para situações críticas que impedem o funcionamento da clínica:
+#### 📅 לוח אימונים
+- **🟢 בסיסי**: ימי שני בשעה 19:00 (01:00)
+- **🟡 בינוני**: ימי רביעי בשעה 19:00 (1.5 שעות)
+- **🔴 מתקדם**: ימי שישי בשעה 19:00 (2 לפנות בוקר)
 
-📞 **Telefone de Emergência**: (11) 9999-8888
-💬 **WhatsApp**: [wa.me/5511999998888](https://wa.me/5511999998888)
+#### 📋 נושאים מכוסים
+- ✅ תחילת העבודה עם PetCare Pro
+- ✅ ניהול יעיל של לקוחות וחיות מחמד
+- ✅ רישום תורים ומרשמים
+- ✅ מערכת תורים
+- ✅ דוחות וניתוחים
+- ✅ גיבוי ואבטחת נתונים
+- ✅ טיפים וטריקים מתקדמים
 
-### 🚀 Treinamentos e Workshops
-
-Oferecemos treinamentos gratuitos para maximizar o uso do sistema:
-
-#### 📅 Agenda de Treinamentos
-- **🟢 Básico**: Segundas-feiras às 19h (1h)
-- **🟡 Intermediário**: Quartas-feiras às 19h (1.5h)
-- **🔴 Avançado**: Sextas-feiras às 19h (2h)
-
-#### 📋 Tópicos Abordados
-- ✅ Primeiros passos no PetCare Pro
-- ✅ Gestão eficiente de clientes e pets
-- ✅ Registro de consultas e prescrições
-- ✅ Sistema de agendamentos
-- ✅ Relatórios e análises
-- ✅ Backup e segurança de dados
-- ✅ Dicas e truques avançados
-
-#### 📝 Inscrições
-**Link**: [treinamentos.petcareai.com.br](https://treinamentos.petcareai.com.br)
-**WhatsApp**: (11) 9999-7777
+#### 📝 הרשמה
+**קישור**: [treinamentos.petcareai.com.br](https://treinamentos.petcareai.com.br)
+**וואטסאפ**: (11) 9999-7777
 
 ---
 
-## 🔗 Links Importantes
+## 🔗 קישורים חשובים
 
-### 📚 Recursos Oficiais
-- 🌐 **Site Oficial:** https://language.petcareai.com.br/
-- 📖 **Documentação:** https://language.petcareai.com.br/docs
-- 🎓 **Tutoriais:** https://language.petcareai.com.br/tutorials
-- 📦 **NPM Package:** https://www.npmjs.com/package/petcarescript
-- 🧩 **VS Code Extension:** https://marketplace.visualstudio.com/items?itemName=petcarescript.petcarescript
+### 📚 משאבים רשמיים
+- 🌐 **אתר רשמי:** https://language.petcareai.com.br/
+- 📖 **תיעוד:** https://language.petcareai.com.br/docs
+- 🎓 **הדרכות:** https://language.petcareai.com.br/tutorials
+- 📦 **חבילת NPM:** https://www.npmjs.com/package/petcarescript
+- 🧩 **הרחבת קוד VS:** https://marketplace.visualstudio.com/items?itemName=petcarescript.petcarescript
 
 ### 🛠️ Desenvolvimento
-- 💻 **GitHub Repository:** https://github.com/PetCareAi/petcarescript
-- 🐛 **Issues & Bugs:** https://github.com/PetCareAi/petcarescript/issues
-- 💬 **Discussions:** https://github.com/PetCareAi/petcarescript/discussions
-- 🔄 **Pull Requests:** https://github.com/PetCareAi/petcarescript/pulls
-- 📊 **Project Board:** https://github.com/PetCareAi/petcarescript/projects
+- 💻 **מאגר GitHub:** https://github.com/PetCareAi/petcarescript
+- 🐛 **בעיות ובאגים:** https://github.com/PetCareAi/petcarescript/issues
+- 💬 **דיונים:** https://github.com/PetCareAi/petcarescript/discussions
+- 🔄 ** בקשות משיכה:** https://github.com/PetCareAi/petcarescript/pulls
+- 📊 **לוח הפרויקט:** https://github.com/PetCareAi/petcarescript/projects
 
-### 📈 Analytics & Status
-- 📊 **NPM Stats:** https://npm-stat.com/charts.html?package=petcarescript
-- 🔍 **GitHub Stats:** https://github.com/PetCareAi/petcarescript/pulse
-- 🚀 **Status Page:** https://status.petcareai.com.br
-- 📈 **Roadmap:** https://language.petcareai.com.br/roadmap
+### 📈 ניתוח וסטטוס
+- 📊 **נתונים סטטיסטיים של NPM:** https://npm-stat.com/charts.html?package=petcarescript
+- 🔍 ** סטטיסטיקות GitHub:** https://github.com/PetCareAi/petcarescript/pulse
+- 🚀 **דף סטטוס:** https://status.petcareai.com.br
+- 📈 **מפת דרכים:** https://language.petcareai.com.br/roadmap
 
-### 🌐 PetCareAI Ecosystem
+### 🌐 PetCareAI אקולוגי
 
-| Recurso | Link | Descrição |
-|---------|------|-----------|
-| 🌍 **Site Oficial** | [petcareai.com.br](https://petcareai.com.br) | Portal principal |
-| 🏢 **GitHub Org** | [github.com/PetCareAI](https://github.com/PetCareAi) | 18+ repositórios |
-| 💬 **Discord** | [discord.gg/petcareai](https://discord.gg/petcareai) | Comunidade ativa |
-| 📚 **Documentação** | [docs.petcareai.com.br](https://documentation.petcareai.com.br) | Wiki completa |
-| 📋 **Tasks** | [tasks.petcareai.com.br](https://tasks.petcareai.com.br) | Gerenciamento ágil |
-| 📊 **Analytics** | [analytics.petcareai.com.br](https://analytics.petcareai.com.br) | Dashboards |
+| משאב | קישור | תיאור |
+|--------|------|--------|
+| 🌍 **האתר הרשמי** | [petcareai.com.br](https://petcareai.com.br) | פורטל ראשי |
+| 🏢 **GitHub Org** | [github.com/PetCareAI](https://github.com/PetCareAi) | 18+ מאגרים |
+| 💬 **דיסקורד** | [discord.gg/petcareai](https://discord.gg/petcareai) | קהילה פעילה |
+| 📚 **תיעוד** | [docs.petcareai.com.br](https://documentation.petcareai.com.br) | ויקי השלם |
+| 📋 **משימות** | [tasks.petcareai.com.br](https://tasks.petcareai.com.br) | ניהול זריז |
+| 📊 **אנליטיקס** | [analytics.petcareai.com.br](https://analytics.petcareai.com.br) | לוחות מחוונים |
+### 🛠️ כלים ומשאבים
 
-### 🛠️ Ferramentas & Recursos
-
-| Categoria | Ferramentas |
+| קטגוריה | כלים |
 |-----------|-------------|
-| **🎨 Design** | Figma, Adobe XD, Sketch |
-| **💻 IDE** | VSCode + Extensão PetCareAI |
-| **🧪 Testing** | Jest, Cypress, Testing Library |
-| **📦 Package Managers** | npm, yarn |
-| **🚀 Deploy** | Vercel, Netlify, GitHub Pages |
-| **📊 Analytics** | Google Analytics, Hotjar |
+| **🎨 עיצוב** | Figma, Adobe XD, Sketch |
+| **💻 IDE** | VSCode + תוסף PetCareAI |
+| **🧪 בדיקות** | ג'סט, ברוש, ספריית בדיקות |
+| **📦 מנהלי חבילות** | npm, חוט |
+| **🚀 פריסה** | Vercel, Netlify, GitHub Pages |
+| **📊 אנליטיקה** | Google Analytics, Hotjar |
 
-### 📚 Recursos de Ajuda
+### 📚 משאבי עזרה
 
-#### 📖 Documentação
-- **📗 Manual do Usuário**: [docs.petcareai.com.br/manual](https://docs.petcareai.com.br/manual)
-- **🔧 Guia Técnico**: [docs.petcareai.com.br/tech](https://docs.petcareai.com.br/tech)
-- **❓ FAQ**: [docs.petcareai.com.br/faq](https://docs.petcareai.com.br/faq)
+#### 📖 תיעוד
+- **📗 מדריך למשתמש**: [docs.petcareai.com.br/manual](https://docs.petcareai.com.br/manual)
+- **🔧 מדריך טכני**: [docs.petcareai.com.br/tech](https://docs.petcareai.com.br/tech)
+- **❓ שאלות נפוצות**: [docs.petcareai.com.br/faq](https://docs.petcareai.com.br/faq)
 
-#### 👥 Comunidade
-- **💬 Grupo Telegram**: [t.me/petcareai.com.br](https://t.me/petcareai.com.br)
-- **📱 Grupo WhatsApp**: [Comunidade PetCare Pro](https://chat.whatsapp.com/petcareai.com.br)
-- **💼 LinkedIn Groups**: [Veterinários PetCare Pro](https://linkedin.com/groups/petcareai.com.br)
+#### 👥 קהילה
+- **💬 קבוצת טלגרם**: [t.me/petcareai.com.br](https://t.me/petcareai.com.br)
+- **📱 קבוצת WhatsApp**: [קהילת PetCare Pro](https://chat.whatsapp.com/petcareai.com.br)
+- **💼 קבוצות לינקדאין**: [וטרינרים של PetCare Pro](https://linkedin.com/groups/petcareai.com.br)
 
-### 🔗 Links Úteis
+### 🔗 קישורים שימושיים
 
-- **📖 [Documentação Oficial](https://docs.petcareai.com)**
-- **🏗️ [Arquitetura do Sistema](https://docs.petcareai.com/architecture)**
-- **🔗 [API Reference](https://docs.petcareai.com/api)**
+- **📖 [תיעוד רשמי](https://docs.petcareai.com)**
+- **🏗️ [ארכיטקטורת מערכת](https://docs.petcareai.com/architecture)**
+- **🔗 [Reference API](https://docs.petcareai.com/api)**
 - **📱 [React Native Docs](https://docs.petcareai.com/react-native)**
 - **🖥️ [Electron Docs](https://docs.petcareai.com/electron)**
 
 ### 📋 Recursos Adicionais
 
-- **🎨 [Design System](https://figma.com/petcare-design-system)**
-- **📊 [Analytics Dashboard](https://analytics.petcareai.com)**
-- **🐛 [Bug Tracker](https://github.com/PetCareAi/petcare-docs/issues)**
-- **💬 [Discord Community](https://discord.gg/petcare-ai)**
+- **🎨 [מערכת עיצוב](https://figma.com/petcare-design-system)**
+- **📊 [מרכז השליטה ב-Analytics](https://analytics.petcareai.com)**
+- **🐛 [מעקב אחר באגים](https://github.com/PetCareAi/petcare-docs/issues)**
+- **💬 [קהילת דיסקורד](https://discord.gg/petcare-ai)**
 
 ---
 
-## 👥 Equipe de Desenvolvimento
+## 👥 צוות פיתוח
 
-### **Core Team**
-- **Tech Lead** - Arquitetura e desenvolvimento principal
-- **Mobile Developer** - Desenvolvimento React Native
-- **Backend Developer** - APIs e banco de dados
-- **UX/UI Designer** - Interface e experiência
+### **צוות ליבה**
+- **Lead Tech** - אדריכלות ופיתוח עיקרי
+- **מפתח נייד** - React Native Development
+- **מפתח עורפי** - ממשקי API ומסד נתונים
+- **מעצב UX/UI** - ממשק וניסיון
 
-### 🚀 Líder Técnico
+### 🚀 מנהיג טכני
 
 <div align="center">
-  <img src="https://github.com/estevam5s.png" width="80" style="border-radius: 50%;" />
+<img src="https://github.com/estevam5s.png" width="80" style="border-radius: 50%;" />
   <br />
   <strong>Estevam Souza</strong><br />
   <em>Especialista TI Full-Stack</em><br />
   <a href="https://linkedin.com/in/estevam-souza">LinkedIn</a> |
   <a href="https://github.com/estevam5s">GitHub</a> |
-  <a href="https://estevamsouza.com.br">Website</a>
+  <a href="https://estevamsouza.com.br">אתר</a>
 </div>
 
-### 🚀 Core Team
+### 🚀 צוות ליבה
 
 <table>
   <tr>
-    <td align="center">
+<td align="center">
       <img src="https://github.com/avatar1.png" width="100px;" alt=""/>
       <br />
       <sub><b>Aluno1</b></sub>
       <br />
-      <sub>Tech Lead & Full Stack Developer</sub>
+      <sub>מפתח טכני ו-Full Stack Developer</sub>
       <br />
       <a href="mailto:aluno1@petcarepro.com">📧</a>
       <a href="https://linkedin.com/in/joao">💼</a>
     </td>
     <td align="center">
-      <img src="https://github.com/avatar2.png" width="100px;" alt=""/>
+<img src="https://github.com/avatar2.png" width="100px;" alt=""/>
       <br />
       <sub><b>Aluno2</b></sub>
       <br />
-      <sub>UI/UX Designer & Frontend Developer</sub>
+      <sub>מעצב UI/UX ומפתח חזית</sub>
       <br />
       <a href="mailto:aluno2@petcarepro.com">📧</a>
       <a href="https://linkedin.com/in/maria">💼</a>
     </td>
     <td align="center">
       <img src="https://github.com/avatar3.png" width="100px;" alt=""/>
+<br />
+      <sub><b>סטודנט3</b></sub>
       <br />
-      <sub><b>Aluno3</b></sub>
-      <br />
-      <sub>Veterinary Advisor & Product Owner</sub>
+      <sub>יועץ וטרינרי ובעל מוצר</sub>
       <br />
       <a href="mailto:aluno3@petcarepro.com">📧</a>
       <a href="https://linkedin.com/in/carlos">💼</a>
@@ -1436,249 +1384,240 @@ Oferecemos treinamentos gratuitos para maximizar o uso do sistema:
   </tr>
 </table>
 
-### 🌟 Contributors
+### 🌟 תורמים
 
-Agradecemos a todos os [contribuidores](CONTRIBUTORS.md) que ajudaram a construir este projeto.
-
+אנו מודים לכל [תורמים](CONTRIBUTORS.md) שעזרו לבנות את הפרויקט הזה.
 <a href="https://github.com/petcare-pro/petcare-pro/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=petcare-pro/petcare-pro" />
 </a>
 
-### 🤝 Como Juntar-se à Equipe
+### 🤝 איך להצטרף לצוות
 
-**Estamos sempre buscando novos talentos!**
+**אנחנו תמיד מחפשים כישרונות חדשים!**
 
-- 📞 **Discord**: [discord.gg/petcareai](https://discord.gg/petcareai)
+- 📞 **דיסקורד**: [discord.gg/petcareai](https://discord.gg/petcareai)
 - 💼 **LinkedIn**: [company/petcare-ai](https://linkedin.com/company/petcare-ai)
-- 📧 **Email**: contato@petcareai.com.br
+- 📧 **דוא"ל**: contato@petcareai.com.br
 
-**Áreas Abertas:**
-- 👨‍💻 Desenvolvedores (Frontend, Backend, Mobile)
-- 🧠 Especialistas IA/ML
-- 🛡️ Cybersecurity Engineers
-- 📊 Data Scientists
-- 🎨 UI/UX Designers
-- 📈 Marketing Digital
-
----
-
-## 🤝 Contribuindo
-
-Contribuições são muito bem-vindas! 🎉
-
-### 🔀 Processo de Contribuição
-
-1. **🍴 Fork** o projeto
-2. **🌟 Clone** seu fork: `git clone https://github.com/SEU_USUARIO/petcare-docs.git`
-3. **🌿 Crie uma branch:** `git checkout -b feature/nova-funcionalidade`
-4. **✨ Faça suas alterações** seguindo os padrões do projeto
-5. **✅ Execute os testes:** `npm test`
-6. **📝 Commit suas mudanças:** `git commit -m 'feat: adiciona nova funcionalidade'`
-7. **🚀 Push para a branch:** `git push origin feature/nova-funcionalidade`
-8. **🔃 Abra um Pull Request**
-
-### 📏 Padrões de Código
-
-- **📝 Commits:** Seguir [Conventional Commits](https://www.conventionalcommits.org/)
-- **🎯 TypeScript:** Tipagem rigorosa obrigatória
-- **🎨 Styled Components:** Para todos os estilos
-- **📖 Documentação:** Comentários JSDoc quando necessário
-- **🧪 Testes:** Coverage mínima de 80%
-
-### 🐛 Reportando Bugs
-
-Use o [Issue Template](.github/ISSUE_TEMPLATE/bug_report.md):
-
-- ✅ Versão do Node.js e npm
-- ✅ Sistema operacional
-- ✅ Passos para reproduzir
-- ✅ Comportamento esperado vs atual
-- ✅ Screenshots (se aplicável)
+**שטחים פתוחים:**
+- 👨‍💻 מפתחים (Frontend, Backend, Mobile)
+- 🧠 מומחי AI/ML
+- 🛡️ מהנדסי אבטחת סייבר
+- 📊מדעני נתונים
+- 🎨 מעצבי UI/UX
+- 📈 שיווק דיגיטלי
 
 ---
 
-## 📜 Licença
+## 🤝 תורם
 
-Este projeto está sob [licença proprietária](LICENSE) da **PetCareAi Ltda**.
+תרומות יתקבלו בברכה! 🎉
 
-Para licenciamento e autorizações: **legal@petcareai.com.br**
+### 🔀 תהליך תרומה
 
-### 📋 Resumo da Licença MIT
+1. **🍴 מזלג** את הפרויקט
+2. **🌟 שכבו** את המזלג שלכם: `git clone https://github.com/SEU_USUARIO/petcare-docs.git`
+3. **🌿 צור סניף:** `git checkout -b feature/new-functionality`
+4. **✨ בצע את השינויים שלך** בהתאם לסטנדרטים של הפרויקט
+5. **✅ הפעל את הבדיקות:** `מבחן npm`
+6. **📝 בצע את השינויים שלך:** `git commit -m 'feat: מוסיף פונקציונליות חדשה'`
+7. **🚀 דחיפה לסניף:** 'תכונה של git push origin/new-feature'
+8. **🔃 פתח בקשת משיכה**
 
-✅ **Permitido:**
-- ✅ Uso comercial
-- ✅ Modificação
-- ✅ Distribuição
-- ✅ Uso privado
+### 📏 תקני קוד
 
-❌ **Limitações:**
-- ❌ Responsabilidade
-- ❌ Garantia
+- **📝 מחויבות:** עקוב אחר [התחייבויות קונבנציונליות](https://www.conventionalcommits.org/)
+- **🎯 TypeScript:** נדרשת הקלדה קפדנית
+- **🎨 רכיבים מעוצבים:** לכל הסגנונות
+- **📖 תיעוד:** הערות JSDoc בעת הצורך
+- **🧪 בדיקות:** כיסוי מינימלי של 80%
 
-📝 **Condições:**
-- 📝 Incluir licença e copyright
+### 🐛 דיווח על באגים
 
----
+השתמש ב-[Issue Template](.github/ISSUE_TEMPLATE/bug_report.md):
 
-## 🙏 Agradecimentos
-
-### 🙏 **Reconhecimentos Especiais**
-
-- **Google** pelo Gemini 2.0 Flash API
-- **Microsoft** pelo VS Code e sua excelente API de extensões
-- **Comunidade Open Source** por inspiração e feedback contínuo
-- **Beta Testers** por ajudar a melhorar a extensão
-- **Contribuidores** que tornaram este projeto possível
-
-### 🌟 **Inspirações**
-- **GitHub Copilot** - Inspiração para IA integrada
-- **Material Icon Theme** - Padrões de iconografia
-- **Dracula Theme** - Inspiração para temas escuros
-- **Vue.js Community** - Melhores práticas de desenvolvimento
-
-### **Tecnologias e Ferramentas**
-
-- 🧠 **Google AI** - Pela API Gemini revolucionária
-- 🔬 **TensorFlow Team** - Pela plataforma de ML mais avançada
-- ⚛️ **React Community** - Pelo ecossistema incrível
-- 📦 **Open Source Community** - Por todas as bibliotecas utilizadas
-
-### **Validação Científica**
-
-- 🏥 **Hospital Veterinário USP** - Validação dos algoritmos
-- 🎓 **FMVZ-USP** - Consultoria científica
-- 👨‍⚕️ **CFMV** - Orientações éticas e técnicas
-- 🐕 **ANCLIVEPA** - Apoio da comunidade veterinária
-
-### **Beta Testers**
-
-Agradecimento especial aos **500+ tutores** que participaram dos testes beta e ajudaram a aperfeiçoar nossa IA.
-
-### 🏆 Reconhecimentos Especiais
-
-- **🩺 Conselho Regional de Medicina Veterinária de São Paulo (CRMV-SP)** - Consultoria técnica
-- **🏥 Clínica Veterinária VetCare** - Testes e feedback funcional
-- **👨‍💻 React Native Community** - Suporte técnico e bibliotecas
-- **☁️ Supabase Team** - Plataforma backend robusta
-- **🎨 Expo Team** - Framework de desenvolvimento excepcional
-
-### Projetos que Inspiraram
-
-- [React](https://reactjs.org/) - Biblioteca para interfaces
-- [Electron](https://electronjs.org/) - Framework para apps desktop
-- [Supabase](https://supabase.com/) - Backend open source
-- [Chart.js](https://chartjs.org/) - Visualização de dados
-
-### 💝 **Apoie o Projeto**
-
-Gostou da extensão? Considere apoiar o desenvolvimento:
-
-- ⭐ **Star** no [GitHub](https://github.com/PetCareAi/consultorio-app)
-- 🐦 **Compartilhe** nas redes sociais
-- 💰 **Doe** via [Buy me a coffee](https://buymeacoffee.com/petcareai)
-- 🤝 **Contribua** com código ou documentação
+- ✅ גרסת Node.js ו-npm
+- ✅ מערכת הפעלה
+- ✅ שלבים להתרבות
+- ✅ התנהגות צפויה לעומת התנהגות נוכחית
+- ✅ צילומי מסך (אם רלוונטי)
 
 ---
 
-## 🎯 Roadmap
+## 📜 רישיון
 
-### 📊 Repositórios Atualizados
-- **25+ repositórios** agora incluídos na apresentação
-- **Informações detalhadas** de cada projeto com tecnologias específicas
-- **Status atualizado** de todos os repositórios (Produção, Beta, Desenvolvimento)
-- **Links diretos** para todos os repositórios GitHub
+פרויקט זה נמצא תחת [רישיון קנייני](LICENSE) מאת **PetCareAi Ltda**.
+לרישוי והרשאות: **legal@petcareai.com.br**
 
-### 🧠 Categoria IA & Machine Learning
-- **Ultra ML Pet Detection v6.0** - Sistema ultra-profissional com YOLO e MediaPipe
-- **PetCareAI Analytics** - Análise avançada com Machine Learning
-- **LLM AI Assistant** - Assistentes virtuais com Gemini AI
-- **Sistemas de Computer Vision** para análise veterinária
+### 📋 סיכום רישיון MIT
 
-### 📱 Aplicações Completas
-- **Apps Mobile**: React Native, Expo, Vue.js PWA
-- **Apps Desktop**: Electron, sistemas multiplataforma
-- **Plataformas Web**: Next.js, React, Angular, Vue.js
-- **APIs e Backend**: NestJS, Python, sistemas RESTful
+✅ **מותר:**
+- ✅ שימוש מסחרי
+- ✅ שינוי
+- ✅ הפצה
+- ✅ שימוש פרטי
 
-### 🏢 Sistemas Empresariais
-- **ERP Completo** - Gestão empresarial integrada
-- **Sistemas de CRM** - Gestão de relacionamento com clientes
-- **Plataformas de Cybersecurity** - ISO 27001/27002
-- **Sistemas de Gestão de Projetos** - Scrum e Kanban
+❌ **הגבלות:**
+- ❌ אחריות
+- ❌ אחריות
 
-### ⚡ Melhorias Técnicas
-- **Animações aprimoradas** com Framer Motion
-- **SEO otimizado** com meta tags completas
-- **Performance melhorada** com lazy loading
-- **Responsividade aprimorada** para todos os dispositivos
-
-### ✅ Funcionalidades Implementadas
-
-- ✅ **Interface responsiva** para todos os dispositivos
-- ✅ **Componentes principais** (Header, Sidebar, CodeBlock)
-- ✅ **Sistema de roteamento** completo
-- ✅ **Documentação backend** detalhada
-- ✅ **Syntax highlighting** para códigos
-- ✅ **Deploy automático** na Vercel
-
-### 🚧 Em Desenvolvimento
-
-- 🚧 **Modo escuro** (Dark Mode)
-- 🚧 **Sistema de busca** na documentação
-- 🚧 **Comentários** nas páginas
-- 🚧 **Versionamento** da documentação
-- 🚧 **Integração** com API real
-
-### 📋 Roadmap Futuro
-
-- 📋 **Multi-idioma** (Português/Inglês)
-- 📋 **Offline support** (PWA)
-- 📋 **Exportação** para PDF
-- 📋 **Integração** com Notion
-- 📋 **Analytics** avançadas
+📝 **תנאים:**
+- 📝 כלול רישיון וזכויות יוצרים
 
 ---
 
-## 📊 Status do Projeto
+## 🙏 תודה
 
-### 📈 Métricas e Analytics
+### 🙏 **תודות מיוחדות**
 
-### 📊 Estatísticas do Projeto
+- **Google** מאת Gemini 2.0 Flash API
+- **Microsoft** עבור VS Code ו-API ההרחבות המעולה שלו
+- **קהילת קוד פתוח** להשראה ומשוב מתמשך
+- **בודקי בטא** לעזרה בשיפור התוסף
+- **תורמים** שאיפשרו את הפרויקט הזה
 
-- **⭐ Stars:** 150+
-- **🍴 Forks:** 25+
-- **👥 Contributors:** 8+
-- **📝 Commits:** 300+
-- **📄 Páginas:** 20+
+### 🌟 **השראה**
+- **GitHub Copilot** - השראה ל-AI משולב
+- **חומר נושא סמל** - דפוסי איקונוגרפיה
+- **נושא דרקולה** - השראה לנושאים אפלים
+- **קהילת Vue.js** - שיטות עבודה מומלצות לפיתוח
+
+### **טכנולוגיות וכלים**
+
+- 🧠 **Google AI** - מאת Gemini API מהפכני
+- 🔬 **TensorFlow Team** - על ידי פלטפורמת ה-ML המתקדמת ביותר
+- ⚛️ **React Community** - למערכת האקולוגית המדהימה
+- 📦 **קהילת קוד פתוח** - לכל הספריות בהן נעשה שימוש
+### **אימות מדעי**
+
+- 🏥 **בית חולים וטרינרי USP** - אימות אלגוריתמים
+- 🎓 **FMVZ-USP** - ייעוץ מדעי
+- 👨‍⚕️ **CFMV** - הנחיות אתיות וטכניות
+- 🐕 **ANCLIVEPA** - תמיכה מהקהילה הווטרינרית
+
+### **בודקי בטא**
+
+תודה מיוחדת ל**500+ מורים** שהשתתפו בבדיקות בטא ועזרו לשכלל את ה-AI שלנו.
+
+### 🏆 הכרות מיוחדות
+- **🩺 המועצה האזורית לרפואה וטרינרית של סאו פאולו (CRMV-SP)** - ייעוץ טכני
+- **🏥 מרפאה וטרינרית של VetCare** - בדיקות ומשוב תפקודי
+- **👨‍💻 React Native Community** - תמיכה טכנית וספריות
+- **☁️ צוות Supabase** - פלטפורמה עורפית חזקה
+- **🎨 צוות אקספו** - מסגרת פיתוח יוצאת דופן
+
+### פרויקטים שעוררו השראה
+- [React](https://reactjs.org/) - ספריה לממשקים
+- [אלקטרון](https://electronjs.org/) - מסגרת עבור אפליקציות שולחן עבודה
+- [Supabase](https://supabase.com/) - Backend של קוד פתוח
+- [Chart.js](https://chartjs.org/) - הדמיית נתונים
+
+### 💝 **תמוך בפרויקט**
+
+אהבתם את התוסף? שקול לתמוך בפיתוח:
+
+- ⭐ **כוכב** ב-[GitHub](https://github.com/PetCareAi/consultorio-app)
+- 🐦 **שתף** ברשתות החברתיות
+- 💰 **לתרום** דרך [קנה לי קפה](https://buymeacoffee.com/petcareai)
+- 🤝 **תרום** עם קוד או תיעוד
+
+---
+
+## 🎯 מפת דרכים
+
+### 📊 מאגרים מעודכנים
+- **25+ מאגרים** כלולים כעת במצגת
+- **מידע מפורט** של כל פרויקט עם טכנולוגיות ספציפיות
+- **סטטוס מעודכן** של כל המאגרים (ייצור, בטא, פיתוח)
+- **קישורים ישירים** לכל מאגרי GitHub
+
+### 🧠 קטגוריית AI ולמידת מכונה
+- **Ultra ML Pet Detection v6.0** - מערכת אולטרה מקצועית עם YOLO ו-MediaPipe
+- **PetCareAI Analytics** - ניתוח מתקדם עם למידת מכונה
+- **LLM AI Assistant** - עוזרים וירטואליים עם Gemini AI
+- **מערכות ראיית מחשב** לניתוח וטרינרי
+
+### 📱 השלם יישומים
+- **אפליקציות לנייד**: React Native, Expo, Vue.js PWA
+- **אפליקציות שולחניות**: מערכות אלקטרוניות, מרובות פלטפורמות
+- **פלטפורמות אינטרנט**: Next.js, React, Angular, Vue.js
+- **API ו-Backend**: מערכות NestJS, Python, RESTful
+
+### 🏢 מערכות עסקיות
+- **ERP שלם** - ניהול עסקי משולב
+- **מערכות CRM** - ניהול קשרי לקוחות
+- **פלטפורמות אבטחת סייבר** - ISO 27001/27002
+- **מערכות ניהול פרויקטים** - Scrum ו-Kanban
+
+### ⚡ שיפורים טכניים
+- **אנימציות משופרות** עם Framer Motion
+- **אופטימיזציה של SEO** עם מטא תגיות מלאות
+- **ביצועים משופרים** עם טעינה עצלנית
+- **היענות משופרת** לכל המכשירים
+### ✅ תכונות מיושמות
+
+- ✅ **ממשק רספונסיבי** לכל המכשירים
+- ✅ **רכיבים עיקריים** (כותרת, סרגל צד, CodeBlock)
+- ✅ **מערכת ניתוב מלאה**
+- ✅ **תיעוד אחורי מפורט**
+- ✅ **הדגשת תחביר** עבור קודים
+- ✅ **פריסה אוטומטית** ב-Vercel
+
+### 🚧 בפיתוח
+
+- 🚧 **מצב כהה**
+- 🚧 **מערכת חיפוש** בתיעוד
+- 🚧 **הערות** על דפים
+- 🚧 **גירסאות** של תיעוד
+- 🚧 **שילוב** עם API אמיתי
+
+### 📋 מפת דרכים עתידית
+
+- 📋 **רב שפות** (פורטוגזית/אנגלית)
+- 📋 **תמיכה במצב לא מקוון** (PWA)
+- 📋 **ייצוא** ל-PDF
+- 📋 **שילוב** עם Notion
+- 📋 **אנליטיקה** מתקדמת
+
+---
+
+## 📊 סטטוס הפרויקט
+
+### 📈 מדדים ואנליטיקה
+
+### 📊 סטטיסטיקת הפרויקט
+
+- **⭐ כוכבים:** 150+
+- **🍴 מזלגות:** 25+
+- **👥 תורמים:** 8+
+- **📝 מתחייבים:** 300+
+- **📄 עמודים:** 20+
 - **🌍 Usuários/mês:** 1,000+
 
-### 📱 Performance
+### 📱 ביצועים
 
-- **⚡ Lighthouse Score:** 95+
-- **🚀 First Contentful Paint:** <1.5s
-- **📊 Largest Contentful Paint:** <2.5s
-- **🎯 Cumulative Layout Shift:** <0.1
-
----
-
-## ⚠️ **Disclaimer Importante**
-
-> **AVISO MÉDICO**: O PetCare AI é uma ferramenta de **triagem e educação** que utiliza inteligência artificial para análise preliminar. 
-> 
-> **NÃO SUBSTITUI** a consulta veterinária profissional. Sempre procure um médico veterinário licenciado para diagnóstico definitivo e tratamento.
-> 
-> Em caso de **emergência**, procure imediatamente um veterinário ou hospital veterinário 24h.
+- **⚡ ציון Lighthouse:** 95+
+- **🚀 צבע תוכן ראשון:** <1.5 שניות
+- **📊 צבע התוכן הגדול ביותר:** <2.5 שניות
+- **🎯 שינוי פריסה מצטבר:** <0.1
 
 ---
 
+## ⚠️ ** כתב ויתור חשוב**
+> **הודעה רפואית**: PetCare AI הוא כלי **הקרנה וחינוך** המשתמש בבינה מלאכותית לניתוח ראשוני. 
+> 
+> **לא מחליף** ייעוץ וטרינרי מקצועי. פנה תמיד לוטרינר מורשה לאבחון וטיפול סופיים.
+> 
+> במקרה של **חירום** יש לפנות מיד לוטרינר או לבית חולים וטרינרי 24 שעות ביממה.
+
+---
 <div align="center">
 
-## 🎉 **Comece Agora!**
+## 🎉 **התחל עכשיו!**
 
 <table>
 <tr>
 <td>
-
 ```bash
 # Instale PetCareScript em 10 segundos
 npm install -g petcarescript
@@ -1687,78 +1626,75 @@ npm install -g petcarescript
 echo 'show "🐾 Olá, PetCareScript!";' > hello.pcs
 pcs hello.pcs
 ```
-
 </td>
 </tr>
 </table>
 
-**✨ É só isso! Seu ambiente PetCareScript está pronto para usar! ✨**
+**✨ זה הכל! סביבת PetCareScript שלך מוכנה לשימוש! ✨**
 
-## 📱 Redes Sociais
+## 📱 מדיה חברתית
 
-[![Website](https://img.shields.io/badge/Visit-petcarescript.org-22c55e?style=for-the-badge&logo=react)](https://petcarescript.org)
+[![אתר](https://img.shields.io/badge/Visit-petcarescript.org-22c55e?style=for-the-badge&logo=react)](https://petcarescript.org)
 [![GitHub](https://img.shields.io/badge/Star-on%20GitHub-181717?style=for-the-badge&logo=github)](https://github.com/estevamsl/petcarescript-website)
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/petcareai)
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/petcareai)
+[![טוויטר](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/petcareai)
+[![אינסטגרם](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/petcareai)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/company/petcareai)
 [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/petcareai)
 
 </div>
 
 <div align="center">
-  <h2>🚀 Pronto para Revolucionar o Cuidado Animal?</h2>
-  <p><strong>Junte-se à maior organização de tecnologia pet do Brasil!</strong></p>
+  <h2>🚀 מוכן לחולל מהפכה בטיפול בבעלי חיים?</h2>
+<p><strong>הצטרף לארגון טכנולוגיית חיות המחמד הגדול ביותר בברזיל!</strong></p>
   
   <a href="https://discord.gg/petcareai" target="_blank">
     <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" />
   </a>
   <a href="https://github.com/PetCareAI" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+<img src=
   </a>
-  <a href="https://linkedin.com/company/petcare-ai" target="_blank">
-    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  <a href="_URL1__"
+    </URL2_URL2_" /URL2
   </a>
   
 </div>
 
 ---
 
-<div align="center">
+<div alignes="center">
 
-## 🙏 Obrigado por escolher o PetCare Pro!
+## 🙏 פתוח ללימודים או ל-PetCare Pro!
+**יחד, אנחנו מחוללים מהפכה ברפואה הווטרינרית בברזיל**
 
-**Juntos, estamos revolucionando a medicina veterinária no Brasil**
-
-*Desenvolvido com ❤️ por veterinários, para veterinários e a comunidade de desenvolvedores*
+*פותח עם ❤️ על ידי וטרינרים, לוטרינרים ולקהילת המפתחים*
 
 <p>
-  <img src="https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge" alt="Made with Love">
-  <img src="https://img.shields.io/badge/Para-Veterinários%20🇧🇷-green?style=for-the-badge" alt="Para Veterinários Brasileiros">
-  <img src="https://img.shields.io/badge/Open%20Source-💪-blue?style=for-the-badge" alt="Open Source">
+  <img src="https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge" alt="עשוי באהבה">
+  <img src="https://img.shields.io/badge/Para-Veterinários%20🇧🇷-green?style=for-the-badge" alt="עבור וטרינרים ברזילאים">
+<img src="https://img.shields.io/badge/Open%20Source-💪-blue?style=for-the-badge" alt="קוד פתוח">
 </p>
 
-## 🐾 Feito com ❤️ para o bem-estar dos pets brasileiros
+## 🐾 עשוי עם ❤️ לרווחת חיות המחמד הברזילאיות
 
-### ⭐ **Se este projeto ajudou você e seu pet, deixe uma estrela!** ⭐
+### ⭐ **אם הפרויקט הזה עזר לך ולחיית המחמד שלך, השאר כוכב!** ⭐
 
-### 🚀 **Tecnologia**
-**Powered by Google Gemini 2.0 Flash | Built with 🤖 AI + 💻 Human Creativity**
+### 🚀 **טכנולוגיה**
+**מופעל על ידי Google Gemini 2.0 פלאש | נבנה עם 🤖 AI + 💻 יצירתיות אנושית**
 
-### 💫 **Missão**
-*"Transformando o cuidado animal através da tecnologia"* 🐾
-
-**© 2025 PetCareAI Organization - Todos os direitos reservados**
+### 💫 **משימה**
+*"שינוי טיפול בבעלי חיים באמצעות טכנולוגיה"* 🐾
+**© 2025 PetCareAI Organization - כל הזכויות שמורות**
 
 </div>
 
 ---
 
-## Star History
+## היסטוריית כוכבים
 
 <a href="https://www.star-history.com/PetCareAi/consultorio-app&Date">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=PetCareAi/consultorio-app&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=PetCareAi/consultorio-app&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=PetCareAi/consultorio-app&type=Date" />
+<source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=PetCareAi/consultorio-app&type=Date" />
+   <img alt="תרשים היסטוריית כוכבים" src="https://api.star-history.com/svg?repos=PetCareAi/consultorio-app&type=Date" />
  </picture>
 </a>
