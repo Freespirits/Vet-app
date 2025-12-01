@@ -108,3 +108,37 @@ test('Version info screen changelog is translated to Hebrew', () => {
   assert.ok(!content.includes('Lançamento inicial do VetApp'));
   assert.ok(!content.includes('Melhorias na sincronização de dados'));
 });
+
+test('New pet form copy is localized to Hebrew', () => {
+  const content = readFile('src/screens/pets/NewPetScreen.js');
+  assert.ok(content.includes('שם חיית המחמד הוא שדה חובה'));
+  assert.ok(content.includes('בעלים הוא שדה חובה'));
+  assert.ok(content.includes('סוג החיה הוא שדה חובה'));
+  assert.ok(content.includes('יש לבחור מין לחיית המחמד'));
+  assert.ok(!content.includes('Nome é obrigatório'));
+});
+
+test('Profile settings and actions use Hebrew labels', () => {
+  const content = readFile('src/screens/profile/ProfileScreen.js');
+  assert.ok(content.includes('הגדרות'));
+  assert.ok(content.includes('גיבוי ושחזור'));
+  assert.ok(content.includes('התראות'));
+  assert.ok(content.includes('התנתקות מהחשבון'));
+  assert.ok(!content.includes('Backup e Restauração'));
+});
+
+test('About screen FAQ is fully translated to Hebrew', () => {
+  const content = readFile('src/screens/profile/AboutScreen.js');
+  assert.ok(content.includes('מהו ה-VetApp?'));
+  assert.ok(content.includes('איך קובעים תור במערכת?'));
+  assert.ok(content.includes('האם המידע שלי מאובטח?'));
+  assert.ok(!content.includes('O que é o VetApp?'));
+});
+
+test('Client list screen messages are in Hebrew', () => {
+  const content = readFile('src/screens/clients/ClientListScreen.js');
+  assert.ok(content.includes('לא נמצאו לקוחות'));
+  assert.ok(content.includes('חיפוש לקוחות'));
+  assert.ok(content.includes('מחיקת לקוח'));
+  assert.ok(!content.includes('Nenhum cliente encontrado'));
+});
