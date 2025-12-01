@@ -31,26 +31,26 @@ const AppointmentDetailsScreen = ({ navigation, route }) => {
       const data = await AppointmentService.getById(appointmentId);
       setAppointment(data);
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao carregar detalhes do agendamento');
+      Alert.alert('שגיאה', 'אירעה שגיאה בעת טעינת פרטי התור');
     } finally {
       setLoading(false);
     }
   };
 
   if (loading) {
-    return <Loading message="Carregando detalhes..." />;
+    return <Loading message="טוען פרטים..." />;
   }
 
   if (!appointment) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>Agendamento não encontrado</Text>
+          <Text style={styles.errorText}>התור לא נמצא</Text>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Text style={styles.backButtonText}>Voltar</Text>
+            <Text style={styles.backButtonText}>חזרה</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -70,7 +70,7 @@ const AppointmentDetailsScreen = ({ navigation, route }) => {
           >
             <Ionicons name="arrow-back" size={24} color={Colors.surface} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Detalhes do Agendamento</Text>
+          <Text style={styles.headerTitle}>פרטי התור</Text>
           <TouchableOpacity
             style={styles.editButton}
             onPress={() => navigation.navigate('NewAppointment', { appointmentId })}
@@ -84,30 +84,30 @@ const AppointmentDetailsScreen = ({ navigation, route }) => {
         <Card style={styles.infoCard}>
           <Text style={styles.cardTitle}>{appointment.title}</Text>
           <Text style={styles.cardDate}>{formatDateTime(appointment.date)}</Text>
-          
+
           <View style={styles.infoRow}>
             <Ionicons name="person" size={20} color={Colors.primary} />
-            <Text style={styles.infoText}>Cliente: {appointment.client?.name}</Text>
+            <Text style={styles.infoText}>לקוח: {appointment.client?.name}</Text>
           </View>
-          
+
           <View style={styles.infoRow}>
             <Ionicons name="paw" size={20} color={Colors.primary} />
-            <Text style={styles.infoText}>Pet: {appointment.pet?.name}</Text>
+            <Text style={styles.infoText}>חיית מחמד: {appointment.pet?.name}</Text>
           </View>
-          
+
           <View style={styles.infoRow}>
             <Ionicons name="time" size={20} color={Colors.primary} />
-            <Text style={styles.infoText}>Duração: {appointment.duration} minutos</Text>
+            <Text style={styles.infoText}>משך: {appointment.duration} דקות</Text>
           </View>
-          
+
           <View style={styles.infoRow}>
             <Ionicons name="checkmark-circle" size={20} color={Colors.primary} />
-            <Text style={styles.infoText}>Status: {appointment.status}</Text>
+            <Text style={styles.infoText}>סטטוס: {appointment.status}</Text>
           </View>
-          
+
           {appointment.description && (
             <View style={styles.descriptionSection}>
-              <Text style={styles.descriptionTitle}>Descrição</Text>
+              <Text style={styles.descriptionTitle}>תיאור</Text>
               <Text style={styles.descriptionText}>{appointment.description}</Text>
             </View>
           )}

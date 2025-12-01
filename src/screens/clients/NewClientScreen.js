@@ -63,8 +63,8 @@ const NewClientScreen = ({ navigation, route }) => {
         });
       }
     } catch (error) {
-      console.error('Erro ao carregar cliente:', error);
-      Alert.alert('Erro', 'Erro ao carregar dados do cliente');
+      console.error('שגיאה בטעינת נתוני לקוח:', error);
+      Alert.alert('שגיאה', 'אירעה שגיאה בעת טעינת נתוני הלקוח');
     } finally {
       setLoadingData(false);
     }
@@ -74,23 +74,23 @@ const NewClientScreen = ({ navigation, route }) => {
     const newErrors = {};
 
     if (!validateRequired(formData.name)) {
-      newErrors.name = 'Nome é obrigatório';
+      newErrors.name = 'שם הלקוח הוא שדה חובה';
     }
 
     if (!validateRequired(formData.email)) {
-      newErrors.email = 'Email é obrigatório';
+      newErrors.email = 'האימייל הוא שדה חובה';
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Email inválido';
+      newErrors.email = 'האימייל לא תקין';
     }
 
     if (!validateRequired(formData.phone)) {
-      newErrors.phone = 'Telefone é obrigatório';
+      newErrors.phone = 'טלפון הוא שדה חובה';
     } else if (!validatePhone(formData.phone)) {
-      newErrors.phone = 'Telefone inválido';
+      newErrors.phone = 'טלפון לא תקין';
     }
 
     if (formData.cpf && !validateCPF(formData.cpf)) {
-      newErrors.cpf = 'CPF inválido';
+      newErrors.cpf = 'CPF לא תקין';
     }
 
     setErrors(newErrors);
@@ -102,7 +102,7 @@ const NewClientScreen = ({ navigation, route }) => {
 
     setLoading(true);
     try {
-      console.log('Salvando cliente:', formData);
+      console.log('שומר לקוח:', formData);
       
       let result;
       if (isEditing) {
@@ -111,20 +111,20 @@ const NewClientScreen = ({ navigation, route }) => {
         result = await ClientService.create(formData);
       }
 
-      console.log('Resultado do salvamento:', result);
+      console.log('תוצאת השמירה:', result);
 
       if (result.success) {
         Alert.alert(
-          'Sucesso', 
-          `Cliente ${isEditing ? 'atualizado' : 'cadastrado'} com sucesso!`,
-          [{ text: 'OK', onPress: () => navigation.goBack() }]
+          'הצלחה',
+          `הלקוח ${isEditing ? 'עודכן' : 'נוסף'} בהצלחה!`,
+          [{ text: 'אישור', onPress: () => navigation.goBack() }]
         );
       } else {
-        Alert.alert('Erro', result.error || 'Erro desconhecido');
+        Alert.alert('שגיאה', result.error || 'שגיאה לא ידועה');
       }
     } catch (error) {
-      console.error('Erro ao salvar cliente:', error);
-      Alert.alert('Erro', 'Erro interno do sistema');
+      console.error('שגיאה בשמירת לקוח:', error);
+      Alert.alert('שגיאה', 'אירעה שגיאה פנימית במערכת');
     } finally {
       setLoading(false);
     }
@@ -154,7 +154,7 @@ const NewClientScreen = ({ navigation, route }) => {
     return (
       <SafeAreaView style={globalStyles.container}>
         <View style={[globalStyles.container, globalStyles.justifyCenter, globalStyles.alignCenter]}>
-          <Text style={globalStyles.textRegular}>Carregando dados do cliente...</Text>
+          <Text style={globalStyles.textRegular}>טוען נתוני לקוח...</Text>
         </View>
       </SafeAreaView>
     );
@@ -176,18 +176,18 @@ const NewClientScreen = ({ navigation, route }) => {
             <View style={styles.header}>
               <Ionicons name="person-add" size={24} color={Colors.primary} />
               <Text style={styles.title}>
-                {isEditing ? 'Editar Cliente' : 'Novo Cliente'}
+                {isEditing ? 'עריכת לקוח' : 'לקוח חדש'}
               </Text>
             </View>
 
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Dados Pessoais</Text>
-              
+              <Text style={styles.sectionTitle}>פרטים אישיים</Text>
+
               <Input
-                label="Nome Completo"
+                label="שם מלא"
                 value={formData.name}
                 onChangeText={(value) => updateField('name', value)}
-                placeholder="Nome do cliente"
+                placeholder="שם הלקוח"
                 leftIcon="person"
                 error={errors.name}
                 required
@@ -196,10 +196,10 @@ const NewClientScreen = ({ navigation, route }) => {
               />
 
               <Input
-                label="Email"
+                label="אימייל"
                 value={formData.email}
                 onChangeText={(value) => updateField('email', value)}
-                placeholder="email@exemplo.com"
+                placeholder="email@example.com"
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -210,10 +210,10 @@ const NewClientScreen = ({ navigation, route }) => {
               />
 
               <Input
-                label="Telefone"
+                label="טלפון"
                 value={formData.phone}
                 onChangeText={(value) => updateField('phone', value)}
-                placeholder="(11) 99999-9999"
+                placeholder="050-0000000"
                 keyboardType="phone-pad"
                 leftIcon="call"
                 error={errors.phone}
@@ -235,13 +235,13 @@ const NewClientScreen = ({ navigation, route }) => {
             </View>
 
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Endereço</Text>
-              
+              <Text style={styles.sectionTitle}>כתובת</Text>
+
               <Input
-                label="Endereço"
+                label="כתובת"
                 value={formData.address}
                 onChangeText={(value) => updateField('address', value)}
-                placeholder="Rua, número, bairro"
+                placeholder="רחוב, מספר, שכונה"
                 leftIcon="location"
                 editable={true}
                 autoCapitalize="words"
@@ -250,17 +250,17 @@ const NewClientScreen = ({ navigation, route }) => {
               <View style={styles.row}>
                 <View style={styles.flex1}>
                   <Input
-                    label="Cidade"
+                    label="עיר"
                     value={formData.city}
                     onChangeText={(value) => updateField('city', value)}
-                    placeholder="Cidade"
+                    placeholder="עיר"
                     editable={true}
                     autoCapitalize="words"
                   />
                 </View>
                 <View style={styles.stateContainer}>
                   <Input
-                    label="Estado"
+                    label="מחוז"
                     value={formData.state}
                     onChangeText={(value) => updateField('state', value)}
                     placeholder="UF"
@@ -272,7 +272,7 @@ const NewClientScreen = ({ navigation, route }) => {
               </View>
 
               <Input
-                label="CEP"
+                label="מיקוד"
                 value={formData.zipCode}
                 onChangeText={(value) => updateField('zipCode', value)}
                 placeholder="00000-000"
@@ -283,13 +283,13 @@ const NewClientScreen = ({ navigation, route }) => {
             </View>
 
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Observações</Text>
-              
+              <Text style={styles.sectionTitle}>הערות</Text>
+
               <Input
-                label="Observações"
+                label="הערות"
                 value={formData.notes}
                 onChangeText={(value) => updateField('notes', value)}
-                placeholder="Observações adicionais sobre o cliente"
+                placeholder="הערות נוספות על הלקוח"
                 multiline
                 numberOfLines={3}
                 maxLength={500}
@@ -300,14 +300,14 @@ const NewClientScreen = ({ navigation, route }) => {
 
             <View style={styles.buttonContainer}>
               <Button
-                title="Cancelar"
+                title="ביטול"
                 variant="outline"
                 onPress={() => navigation.goBack()}
                 style={styles.cancelButton}
                 disabled={loading}
               />
               <Button
-                title={isEditing ? 'Atualizar' : 'Cadastrar'}
+                title={isEditing ? 'עדכון' : 'שמירה'}
                 onPress={handleSave}
                 loading={loading}
                 style={styles.saveButton}
