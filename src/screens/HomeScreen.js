@@ -41,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
     try {
       setLoading(true);
       
-      // Carregar dados reais do Supabase
+      // טעינת נתונים אמיתיים מ-Supabase
       const [
         allAppointments,
         allConsultations,
@@ -54,7 +54,7 @@ const HomeScreen = ({ navigation }) => {
         PetService.getAll()
       ]);
 
-      // Filtrar agendamentos de hoje
+      // סינון תורים של היום
       const today = new Date();
       const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
       const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
@@ -64,7 +64,7 @@ const HomeScreen = ({ navigation }) => {
         return appointmentDate >= todayStart && appointmentDate < todayEnd;
       });
 
-      // Filtrar próximos agendamentos (próximos 7 dias, excluindo hoje)
+      // סינון התורים הקרובים (7 הימים הבאים, ללא היום)
       const nextWeek = new Date();
       nextWeek.setDate(today.getDate() + 7);
 
@@ -73,12 +73,12 @@ const HomeScreen = ({ navigation }) => {
         return appointmentDate >= todayEnd && appointmentDate <= nextWeek;
       });
 
-      // Pacientes recentes (últimos 5 pets cadastrados)
+      // מטופלים אחרונים (5 חיות המחמד האחרונות שנרשמו)
       const sortedPets = allPets
         .sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt))
         .slice(0, 5);
 
-      // Calcular estatísticas
+      // חישוב סטטיסטיקות
       const weekStart = new Date();
       weekStart.setDate(today.getDate() - 7);
       
@@ -98,7 +98,7 @@ const HomeScreen = ({ navigation }) => {
       });
 
     } catch (error) {
-      console.error('Erro ao carregar dados:', error);
+      console.error('שגיאה בטעינת נתונים:', error);
     } finally {
       setLoading(false);
     }
@@ -112,25 +112,25 @@ const HomeScreen = ({ navigation }) => {
 
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return 'Bom dia';
-    if (hour < 18) return 'Boa tarde';
-    return 'Boa noite';
+    if (hour < 12) return 'בוקר טוב';
+    if (hour < 18) return 'צהריים טובים';
+    return 'ערב טוב';
   };
 
   const formatDate = (date, format = 'full') => {
     const d = new Date(date);
-    const days = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-    const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    const days = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
+    const months = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
     
     switch (format) {
       case 'full':
-        return `${days[d.getDay()]}, ${d.getDate()} de ${months[d.getMonth()]}`;
+        return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
       case 'short':
         return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
       case 'time':
         return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
       default:
-        return d.toLocaleDateString('pt-BR');
+        return d.toLocaleDateString('he-IL');
     }
   };
 
@@ -153,32 +153,32 @@ const HomeScreen = ({ navigation }) => {
 
   const getDateLabel = (date) => {
     const appointmentDate = new Date(date);
-    if (isToday(appointmentDate)) return 'Hoje';
-    if (isTomorrow(appointmentDate)) return 'Amanhã';
+    if (isToday(appointmentDate)) return 'היום';
+    if (isTomorrow(appointmentDate)) return 'מחר';
     return formatDate(appointmentDate, 'short');
   };
 
   const quickActions = [
     {
       id: 'new-appointment',
-      title: 'Nova Consulta',
-      subtitle: 'Agendar consulta',
+      title: 'בדיקה חדשה',
+      subtitle: 'לתזמן בדיקה',
       icon: 'calendar-outline',
       color: Colors.primary,
       onPress: () => navigation.navigate('NewAppointment'),
     },
     {
       id: 'new-patient',
-      title: 'Novo Paciente',
-      subtitle: 'Cadastrar pet',
+      title: 'מטופל חדש',
+      subtitle: 'רישום חיית מחמד',
       icon: 'add-circle-outline',
       color: Colors.success,
       onPress: () => navigation.navigate('NewPet'),
     },
     {
       id: 'library',
-      title: 'Biblioteca',
-      subtitle: 'Medicamentos',
+      title: 'ספרייה',
+      subtitle: 'תרופות',
       icon: 'library-outline',
       color: Colors.info,
       onPress: () => navigation.navigate('VetLibrary'),
@@ -187,32 +187,32 @@ const HomeScreen = ({ navigation }) => {
 
   const statsCards = [
     {
-      title: 'Hoje',
+      title: 'היום',
       value: stats.todayTotal,
       icon: 'today-outline',
       color: Colors.primary,
-      subtitle: 'consultas',
+      subtitle: 'בדיקות',
     },
     {
-      title: 'Semana',
+      title: 'שבוע',
       value: stats.weekTotal,
       icon: 'calendar-outline',
       color: Colors.success,
-      subtitle: 'consultas',
+      subtitle: 'בדיקות',
     },
     {
-      title: 'Pendentes',
+      title: 'ממתינים',
       value: stats.pendingTotal,
       icon: 'hourglass-outline',
       color: Colors.warning,
-      subtitle: 'retornos',
+      subtitle: 'מעקבים',
     },
     {
-      title: 'Pacientes',
+      title: 'מטופלים',
       value: stats.totalPatients,
       icon: 'paw-outline',
       color: Colors.info,
-      subtitle: 'cadastrados',
+      subtitle: 'רשומים',
     },
   ];
 
@@ -258,7 +258,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   const renderAppointmentCard = (appointment, showDate = false) => {
-    // Verificar se tem dados válidos antes de renderizar
+    // בדיקה שיש נתונים תקפים לפני הצגה
     if (!appointment || !appointment.id) return null;
 
     return (
@@ -266,25 +266,25 @@ const HomeScreen = ({ navigation }) => {
         key={appointment.id}
         style={styles.appointmentCard}
         onPress={() => {
-          // Navegar apenas se tiver ID válido
+          // ניווט רק אם קיים מזהה תקף
           if (appointment.id && typeof appointment.id === 'string' && appointment.id.length > 10) {
             navigation.navigate('AppointmentDetails', { appointmentId: appointment.id });
           } else {
-            Alert.alert('Informação', `Consulta: ${appointment.title || 'Sem título'}\nCliente: ${appointment.client?.name || 'N/A'}\nPet: ${appointment.pet?.name || 'N/A'}`);
+            Alert.alert('מידע', `בדיקה: ${appointment.title || 'ללא כותרת'}\nלקוח: ${appointment.client?.name || 'N/A'}\nחיית מחמד: ${appointment.pet?.name || 'N/A'}`);
           }
         }}
         activeOpacity={0.7}
       >
         <View style={styles.appointmentInfo}>
           <View style={styles.appointmentHeader}>
-            <Text style={styles.patientName}>{appointment.pet?.name || appointment.title || 'Paciente'}</Text>
+            <Text style={styles.patientName}>{appointment.pet?.name || appointment.title || 'מטופל'}</Text>
             <Text style={styles.appointmentTime}>
               {showDate && `${getDateLabel(appointment.date)} • `}
               {formatAppointmentTime(appointment.date)}
             </Text>
           </View>
-          <Text style={styles.ownerName}>{appointment.client?.name || 'Proprietário'}</Text>
-          <Text style={styles.appointmentType}>{appointment.title || appointment.type || 'Consulta'}</Text>
+          <Text style={styles.ownerName}>{appointment.client?.name || 'בעלים'}</Text>
+          <Text style={styles.appointmentType}>{appointment.title || appointment.type || 'בדיקה'}</Text>
         </View>
         <View style={[styles.statusBadge, { backgroundColor: `${Colors.primary}20` }]}>
           <Ionicons name="time-outline" size={12} color={Colors.primary} />
@@ -306,7 +306,7 @@ const HomeScreen = ({ navigation }) => {
           if (patient.id && typeof patient.id === 'string' && patient.id.length > 10) {
             navigation.navigate('PatientDetails', { patientId: patient.id });
           } else {
-            Alert.alert('Informação', `Pet: ${patient.name}\nProprietário: ${patient.client?.name || 'N/A'}\nEspécie: ${patient.species || 'N/A'}`);
+            Alert.alert('מידע', `חיית מחמד: ${patient.name}\nבעלים: ${patient.client?.name || 'N/A'}\nמֵין: ${patient.species || 'N/A'}`);
           }
         }}
         activeOpacity={0.7}
@@ -316,8 +316,8 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View style={styles.patientInfo}>
           <Text style={styles.patientName}>{patient.name}</Text>
-          <Text style={styles.patientOwner}>{patient.client?.name || 'Proprietário'}</Text>
-          <Text style={styles.patientDetails}>{patient.species} • {patient.breed || 'SRD'}</Text>
+          <Text style={styles.patientOwner}>{patient.client?.name || 'בעלים'}</Text>
+          <Text style={styles.patientDetails}>{patient.species} • {patient.breed || 'מעורב'}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -332,8 +332,8 @@ const HomeScreen = ({ navigation }) => {
       >
         <View style={styles.headerContent}>
           <View style={styles.greetingContainer}>
-            <Text style={styles.greeting}>{getGreeting()}, Dr.</Text>
-            <Text style={styles.doctorName}>Veterinário</Text>
+            <Text style={styles.greeting}>{getGreeting()}, ד"ר</Text>
+            <Text style={styles.doctorName}>וטרינר</Text>
             <Text style={styles.headerDate}>
               {formatDate(new Date(), 'full')}
             </Text>
@@ -358,7 +358,7 @@ const HomeScreen = ({ navigation }) => {
       >
         {/* Stats Cards */}
         <View style={styles.statsSection}>
-          <Text style={styles.sectionTitle}>Resumo</Text>
+          <Text style={styles.sectionTitle}>סיכום</Text>
           <View style={styles.statsGrid}>
             {statsCards.map(renderStatCard)}
           </View>
@@ -366,7 +366,7 @@ const HomeScreen = ({ navigation }) => {
 
         {/* Quick Actions */}
         <View style={styles.quickActionsSection}>
-          <Text style={styles.sectionTitle}>Ações Rápidas</Text>
+          <Text style={styles.sectionTitle}>פעולות מהירות</Text>
           <View style={styles.quickActionsGrid}>
             {quickActions.map(renderQuickAction)}
           </View>
@@ -375,12 +375,12 @@ const HomeScreen = ({ navigation }) => {
         {/* Today's Appointments */}
         <View style={styles.appointmentsSection}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Consultas de Hoje</Text>
+            <Text style={styles.sectionTitle}>בדיקות היום</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('Agenda')}
               style={styles.seeAllButton}
             >
-              <Text style={styles.seeAllText}>Ver todas</Text>
+              <Text style={styles.seeAllText}>הצגת הכל</Text>
               <Ionicons name="chevron-forward" size={16} color={Colors.primary} />
             </TouchableOpacity>
           </View>
@@ -392,8 +392,8 @@ const HomeScreen = ({ navigation }) => {
           ) : (
             <View style={styles.emptyState}>
               <Ionicons name="calendar-outline" size={48} color={Colors.textSecondary} />
-              <Text style={styles.emptyTitle}>Nenhuma consulta hoje</Text>
-              <Text style={styles.emptySubtitle}>Que tal agendar uma nova consulta?</Text>
+              <Text style={styles.emptyTitle}>אין בדיקות היום</Text>
+              <Text style={styles.emptySubtitle}>מה דעתך לקבוע בדיקה חדשה?</Text>
             </View>
           )}
         </View>
@@ -402,12 +402,12 @@ const HomeScreen = ({ navigation }) => {
         {upcomingAppointments.length > 0 && (
           <View style={styles.appointmentsSection}>
             <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Próximas Consultas</Text>
+              <Text style={styles.sectionTitle}>בדיקות קרובות</Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Agenda')}
                 style={styles.seeAllButton}
               >
-                <Text style={styles.seeAllText}>Ver todas</Text>
+                <Text style={styles.seeAllText}>הצגת הכל</Text>
                 <Ionicons name="chevron-forward" size={16} color={Colors.primary} />
               </TouchableOpacity>
             </View>
@@ -422,12 +422,12 @@ const HomeScreen = ({ navigation }) => {
         {recentPatients.length > 0 && (
           <View style={styles.patientsSection}>
             <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Pacientes Recentes</Text>
+              <Text style={styles.sectionTitle}>מטופלים אחרונים</Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Pets')}
                 style={styles.seeAllButton}
               >
-                <Text style={styles.seeAllText}>Ver todos</Text>
+                <Text style={styles.seeAllText}>הצגת הכל</Text>
                 <Ionicons name="chevron-forward" size={16} color={Colors.primary} />
               </TouchableOpacity>
             </View>
