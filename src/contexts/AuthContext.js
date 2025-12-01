@@ -202,6 +202,17 @@ export const AuthProvider = ({ children }) => {
         return { success: false, error: 'Falha ao criar usuário' };
       }
 
+      // Se o Supabase exigir confirmação de email, não haverá sessão ativa.
+      // Nessa situação não podemos escrever na tabela protegida, então apenas orientamos o usuário.
+      if (!authData.session) {
+        setIsRegistering(false);
+        return {
+          success: true,
+          requiresEmailConfirmation: true,
+          message: 'Conta criada. Verifique seu email para confirmar antes de acessar.'
+        };
+      }
+
       console.log('Usuário criado na auth, ID:', authData.user.id);
 
       // Aguardar um pouco para garantir que o evento SIGNED_IN foi processado

@@ -3,9 +3,16 @@ import { supabase } from '../config/supabase';
 export const LibraryService = {
   async getAll() {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error('Usuário não autenticado ao listar biblioteca');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('library_items_consultorio')
         .select('*')
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -18,10 +25,17 @@ export const LibraryService = {
 
   async getByCategory(category) {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error('Usuário não autenticado ao filtrar biblioteca');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('library_items_consultorio')
         .select('*')
         .eq('category', category)
+        .eq('user_id', user.id)
         .order('name', { ascending: true });
 
       if (error) throw error;
@@ -34,10 +48,17 @@ export const LibraryService = {
 
   async getById(id) {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error('Usuário não autenticado ao buscar item da biblioteca');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('library_items_consultorio')
         .select('*')
         .eq('id', id)
+        .eq('user_id', user.id)
         .single();
 
       if (error) throw error;
@@ -123,9 +144,16 @@ export const LibraryService = {
 
   async search(query) {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error('Usuário não autenticado ao buscar na biblioteca');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('library_items_consultorio')
         .select('*')
+        .eq('user_id', user.id)
         .or(`name.ilike.%${query}%,description.ilike.%${query}%,category.ilike.%${query}%`)
         .order('name', { ascending: true });
 

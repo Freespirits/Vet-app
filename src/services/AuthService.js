@@ -138,6 +138,16 @@ export const AuthService = {
         return { success: false, error: 'Falha ao criar usuário' };
       }
 
+      // Se o Supabase exigir confirmação de email, não haverá sessão ativa.
+      // Nessa situação não podemos salvar o perfil ainda.
+      if (!authData.session) {
+        return {
+          success: true,
+          requiresEmailConfirmation: true,
+          message: 'Conta criada. Verifique seu email para confirmar antes de acessar.'
+        };
+      }
+
       const profileData = {
         id: authData.user.id,
         email: email,
