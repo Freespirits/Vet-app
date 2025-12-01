@@ -1,13 +1,13 @@
 # PetCare AI Assistant - Contributors
-# Este arquivo lista todos os contribuidores do projeto PetCare AI Assistant
-# Formato baseado no All Contributors specification
+# קובץ זה מפרט את כל התורמים למיזם PetCare AI Assistant
+# פורמט מבוסס על מפרט All Contributors
 
 project:
   name: "PetCareAi"
-  description: "Assistente de IA conversacional especializado no ecossistema PetCare AI"
+  description: "עוזר בינה מלאכותית שיחה המתמחה באקוסיסטם של PetCare AI"
   repository: "https://github.com/PetCareAi/llm"
   website: "https://petcareai.com.br"
-  license: "Proprietaria"
+  license: "קניינית"
 
 maintainers:
   - name: "Estevam Souza"
@@ -16,7 +16,7 @@ maintainers:
     github: "estevam5s"
     linkedin: "estevam-souza"
     avatar: "https://github.com/estevamsouza.png"
-    bio: "Diretor de TI da PetCare AI, especialista em IA e desenvolvimento full-stack"
+    bio: "מנהל ה-IT של PetCare AI, מומחה ל-AI ולפיתוח פול־סטאק"
     location: "Florianópolis, SC, Brasil"
     timezone: "America/Sao_Paulo"
     languages: ["Portuguese", "English", "Spanish"]
@@ -40,7 +40,7 @@ maintainers:
     email: "aluno1@petcareai.com.br"
     github: "aluno1"
     avatar: "https://github.com/aluno1.png"
-    bio: "Desenvolvedor React especializado em aplicações conversacionais"
+    bio: "מפתח React המתמחה באפליקציות שיחה"
     location: "Florianópolis, SC, Brasil"
     contributions:
       - "💻 Code"
@@ -65,65 +65,65 @@ recognition:
   monthly_highlights:
     "2025-06":
       contributor: "Aluno1"
-      reason: "Implementação excepcional da interface conversacional"
+      reason: "מימוש יוצא דופן של הממשק השיחתי"
 
     "2025-07":
       contributor: "Estevam Souza"
-      reason: "Arquitetura robusta e liderança técnica"
+      reason: "ארכיטקטורה איתנה והובלה טכנית"
 
 contribution_guidelines:
   types:
     - emoji: "💻"
       code: "code"
-      description: "Contribuições de código"
+      description: "תרומות קוד"
 
     - emoji: "📖"
       code: "doc"
-      description: "Documentação"
+      description: "תיעוד"
 
     - emoji: "🎨"
       code: "design"
-      description: "Design e UX"
+      description: "עיצוב וחוויית משתמש"
 
     - emoji: "🐛"
       code: "bug"
-      description: "Relatórios de bugs"
+      description: "דיווחי באגים"
 
     - emoji: "💡"
       code: "ideas"
-      description: "Ideias e sugestões"
+      description: "רעיונות והצעות"
 
     - emoji: "👀"
       code: "review"
-      description: "Revisão de código"
+      description: "ביקורת קוד"
 
     - emoji: "🧪"
       code: "test"
-      description: "Testes"
+      description: "בדיקות"
 
     - emoji: "📱"
       code: "mobile"
-      description: "Desenvolvimento mobile"
+      description: "פיתוח מובייל"
 
     - emoji: "♿"
       code: "a11y"
-      description: "Acessibilidade"
+      description: "נגישות"
 
     - emoji: "🤖"
       code: "ai"
-      description: "Melhorias de IA"
+      description: "שיפורי בינה מלאכותית"
 
     - emoji: "⚡"
       code: "performance"
-      description: "Otimização de performance"
+      description: "אופטימיזציית ביצועים"
 
     - emoji: "💼"
       code: "business"
-      description: "Lógica de negócio"
+      description: "לוגיקת עסק"
 
     - emoji: "🔧"
       code: "infra"
-      description: "Infraestrutura"
+      description: "תשתיות"
 
 statistics:
   total_contributors: 2
@@ -143,26 +143,21 @@ team_info:
 
 how_to_contribute:
   getting_started:
-    - "Leia o CONTRIBUTING.md"
-    - "Escolha uma issue para trabalhar"
-    - "Faça fork do repositório"
-    - "Crie uma branch para sua feature"
-    - "Implemente suas mudanças"
-    - "Adicione testes se necessário"
-    - "Abra um Pull Request"
+    - "קרא את CONTRIBUTING.md"
+    - "בחר issue לעבוד עליה"
+    - "בצע fork למאגר"
+    - "צור ענף חדש עבור הפיצ'ר שלך"
+    - "ממש את השינויים"
+    - "הוסף בדיקות במידת הצורך"
+    - "פתח Pull Request"
 
   recognition_process:
-    - "Contribuições são automaticamente reconhecidas"
-    - "Updates mensais no contributors.yml"
-    - "Hall of Fame para contribuições especiais"
-    - "Menções em release notes"
+    - "תרומות מזוהות אוטומטית"
+    - "עדכונים חודשיים בקובץ contributors.yml"
+    - "Hall of Fame עבור תרומות מיוחדות"
+    - "אזכורים ב-release notes"
 
 contact:
-  community_manager: "estevam.souza@petcareai.com.br"
-  discord: "https://discord.gg/petcareai"
-  telegram: "https://t.me/petcareai"
-  website: "https://petcareai.com.br/contributors"
-
-# Última atualização: 2025-07-24
-# Próxima revisão: 2025-08-24
-# Mantenedor: Estevam Souza
+  email: "contato@petcareai.com.br"
+  slack: "#petcareai-contributors"
+  discord: "PetCareAI Community"
