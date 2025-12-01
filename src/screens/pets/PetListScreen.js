@@ -243,21 +243,21 @@ const PetListScreen = ({ navigation, route }) => {
 
   const EmptyState = () => (
     <View style={globalStyles.emptyState}>
-      <Ionicons 
-        name="paw-outline" 
-        size={64} 
+      <Ionicons
+        name="paw-outline"
+        size={64}
         color={Colors.textSecondary}
         style={globalStyles.emptyStateIcon}
       />
       <Text style={globalStyles.emptyStateTitle}>
-        {clientIdFromRoute ? 'Nenhum pet cadastrado para este cliente' : 'Nenhum pet encontrado'}
+        {clientIdFromRoute ? 'לא נרשמו חיות מחמד ללקוח זה' : 'לא נמצאו חיות מחמד'}
       </Text>
       <Text style={globalStyles.emptyStateText}>
-        {searchQuery ? 'Tente uma busca diferente' : 'Cadastre o primeiro pet para começar'}
+        {searchQuery ? 'נסו חיפוש אחר' : 'צרו את חיית המחמד הראשונה כדי להתחיל'}
       </Text>
       {!searchQuery && (
         <Button
-          title="Cadastrar Pet"
+          title="הוספת חיית מחמד"
           onPress={() => navigation.navigate('NewPet', clientIdFromRoute ? { clientId: clientIdFromRoute } : {})}
           style={globalStyles.emptyStateButton}
         />
@@ -266,7 +266,7 @@ const PetListScreen = ({ navigation, route }) => {
   );
 
   if (loading) {
-    return <Loading message="Carregando pets..." />;
+    return <Loading message="טוען חיות מחמד..." />;
   }
 
   return (
@@ -275,12 +275,12 @@ const PetListScreen = ({ navigation, route }) => {
         <Input
           value={searchQuery}
           onChangeText={handleSearch}
-          placeholder="Buscar pets..."
+          placeholder="חיפוש חיות מחמד..."
           leftIcon="search"
           style={styles.searchInput}
         />
         <Button
-          title="Novo"
+          title="חדש"
           onPress={() => navigation.navigate('NewPet', clientIdFromRoute ? { clientId: clientIdFromRoute } : {})}
           style={styles.newButton}
           icon={<Ionicons name="add" size={16} color={Colors.surface} />}
@@ -290,10 +290,10 @@ const PetListScreen = ({ navigation, route }) => {
       {clientIdFromRoute && (
         <View style={styles.filterInfo}>
           <Text style={styles.filterText}>
-            Mostrando pets de um cliente específico
+            מציג חיות מחמד של לקוח מסוים
           </Text>
           <TouchableOpacity onPress={() => navigation.setParams({ clientId: null })}>
-            <Text style={styles.clearFilterText}>Ver todos os pets</Text>
+            <Text style={styles.clearFilterText}>הצגת כל חיות המחמד</Text>
           </TouchableOpacity>
         </View>
       )}

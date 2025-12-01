@@ -274,11 +274,11 @@ const AgendaScreen = ({ navigation }) => {
         {dayItems.length === 0 ? (
           <View style={styles.emptyDay}>
             <Ionicons name="calendar-outline" size={48} color={Colors.textSecondary} />
-            <Text style={styles.emptyDayText}>Nenhum compromisso para este dia</Text>
+            <Text style={styles.emptyDayText}>אין פגישות ביום זה</Text>
             <Button
               title="קבע ייעוץ"
-              onPress={() => navigation.navigate('NewAppointment', { 
-                selectedDate: selectedDate.toISOString() 
+              onPress={() => navigation.navigate('NewAppointment', {
+                selectedDate: selectedDate.toISOString()
               })}
               style={styles.emptyDayButton}
             />
