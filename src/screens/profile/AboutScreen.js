@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants/Colors';
 
 const AboutScreen = ({ navigation }) => {
-  const [expandedFAQ, setExpandedFAQ] = useState(null);
+  const [expandedQuestionId, setExpandedQuestionId] = useState(null);
 
   const appInfo = {
     name: 'VetApp',
@@ -27,81 +27,81 @@ const AboutScreen = ({ navigation }) => {
   const faqData = [
     {
       id: 1,
-      question: 'O que é o VetApp?',
-      answer: 'O VetApp é um sistema completo de gestão veterinária que permite agendar consultas, gerenciar pacientes, manter histórico médico e organizar a rotina da clínica veterinária.',
+      question: 'מהו ה-VetApp?',
+      answer: 'VetApp הוא פתרון מלא לניהול מרפאה וטרינרית: קביעת תורים, ניהול מטופלים, מעקב אחרי היסטוריה רפואית וארגון שוטף של המרפאה.',
     },
     {
       id: 2,
-      question: 'Como funciona o agendamento?',
-      answer: 'Você pode agendar consultas diretamente pelo app, escolhendo data, horário e tipo de atendimento. O sistema envia lembretes automáticos e permite reagendamentos.',
+      question: 'איך קובעים תור במערכת?',
+      answer: 'ניתן לקבוע תורים ישירות באפליקציה, לבחור תאריך, שעה וסוג ביקור. המערכת שולחת תזכורות אוטומטיות ומאפשרת שינויי מועד.',
     },
     {
       id: 3,
-      question: 'Os dados ficam seguros?',
-      answer: 'Sim! Utilizamos criptografia de ponta e seguimos as melhores práticas de segurança. Você também pode fazer backups locais dos seus dados.',
+      question: 'האם המידע שלי מאובטח?',
+      answer: 'בהחלט. אנו משתמשים בהצפנה מתקדמת ונצמדים לפרקטיקות אבטחה מחמירות. אפשר גם לבצע גיבויים מקומיים.',
     },
     {
       id: 4,
-      question: 'Posso usar em múltiplos dispositivos?',
-      answer: 'Sim, seus dados são sincronizados na nuvem e você pode acessar de qualquer dispositivo com sua conta.',
+      question: 'אפשר להשתמש בכמה מכשירים?',
+      answer: 'כן. הנתונים מסתנכרנים לענן, כך שתוכל לגשת מכל מכשיר עם החשבון שלך.',
     },
     {
       id: 5,
-      question: 'Como funciona a biblioteca de medicamentos?',
-      answer: 'A biblioteca permite catalogar medicamentos, vacinas e procedimentos com dosagens, contraindicações e protocolos personalizados.',
+      question: 'איך פועלת ספריית התרופות?',
+      answer: 'הספרייה מאפשרת לקטלג תרופות, חיסונים ופרוצדורות עם מינונים, התוויות נגד ופרוטוקולים מותאמים.',
     },
     {
       id: 6,
-      question: 'Tem suporte offline?',
-      answer: 'Sim, o app funciona offline. Quando a internet voltar, os dados são sincronizados automaticamente.',
+      question: 'האם יש מצב לא מקוון?',
+      answer: 'כן. האפליקציה פועלת גם ללא חיבור, והסנכרון מתבצע אוטומטית כשיש רשת.',
     },
     {
       id: 7,
-      question: 'Como fazer backup dos dados?',
-      answer: 'Vá em Perfil > Backup e Restauração. Recomendamos fazer backups regulares para proteger suas informações.',
+      question: 'איך מגבים את הנתונים?',
+      answer: 'היכנס לפרופיל > גיבוי ושחזור. מומלץ לבצע גיבויים תקופתיים כדי להגן על המידע.',
     },
     {
       id: 8,
-      question: 'Há limite de pacientes?',
-      answer: 'Não há limite! Você pode cadastrar quantos pacientes precisar.',
+      question: 'האם יש מגבלה על מספר המטופלים?',
+      answer: 'אין מגבלה. ניתן לרשום כל כמות של מטופלים בהתאם לצורך.',
     },
   ];
 
   const features = [
     {
       icon: 'calendar-outline',
-      title: 'Agendamento',
-      description: 'Sistema completo de agendamento de consultas',
+      title: 'יומן תורים',
+      description: 'מערכת מלאה לתיאום וניהול ייעוצים',
     },
     {
       icon: 'paw-outline',
-      title: 'Gestão de Pacientes',
-      description: 'Cadastro e histórico completo dos pets',
+      title: 'ניהול מטופלים',
+      description: 'רישום ומעקב היסטורי מלא לחיות המחמד',
     },
     {
       icon: 'medical-outline',
-      title: 'Histórico Médico',
-      description: 'Prontuário digital completo',
+      title: 'היסטוריה רפואית',
+      description: 'תיק רפואי דיגיטלי מקיף',
     },
     {
       icon: 'library-outline',
-      title: 'Biblioteca Veterinária',
-      description: 'Medicamentos e protocolos organizados',
+      title: 'ספרייה וטרינרית',
+      description: 'תרופות, חיסונים ופרוטוקולים מסודרים',
     },
     {
       icon: 'notifications-outline',
-      title: 'Lembretes',
-      description: 'Notificações automáticas e personalizadas',
+      title: 'תזכורות',
+      description: 'התראות אוטומטיות ומותאמות אישית',
     },
     {
       icon: 'cloud-outline',
-      title: 'Backup Seguro',
-      description: 'Seus dados sempre protegidos',
+      title: 'גיבוי מאובטח',
+      description: 'הנתונים שלך נשמרים ומוגנים תמיד',
     },
   ];
 
-  const toggleFAQ = (id) => {
-    setExpandedFAQ(expandedFAQ === id ? null : id);
+  const toggleQuestion = (id) => {
+    setExpandedQuestionId(expandedQuestionId === id ? null : id);
   };
 
   const openWebsite = () => {
@@ -124,14 +124,14 @@ const AboutScreen = ({ navigation }) => {
     </View>
   );
 
-  const renderFAQItem = (item) => {
-    const isExpanded = expandedFAQ === item.id;
+  const renderQuestionItem = (item) => {
+    const isExpanded = expandedQuestionId === item.id;
 
     return (
       <View key={item.id} style={styles.faqItem}>
         <TouchableOpacity
           style={styles.faqHeader}
-          onPress={() => toggleFAQ(item.id)}
+          onPress={() => toggleQuestion(item.id)}
           activeOpacity={0.7}
         >
           <Text style={styles.faqQuestion}>{item.question}</Text>
@@ -164,7 +164,7 @@ const AboutScreen = ({ navigation }) => {
           >
             <Ionicons name="arrow-back" size={24} color={Colors.surface} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Sobre</Text>
+          <Text style={styles.headerTitle}>אודות</Text>
           <View style={styles.headerSpacer} />
         </View>
       </LinearGradient>
@@ -185,17 +185,17 @@ const AboutScreen = ({ navigation }) => {
               </LinearGradient>
             </View>
             <Text style={styles.appName}>{appInfo.name}</Text>
-            <Text style={styles.appVersion}>Versão {appInfo.version} (Build {appInfo.build})</Text>
-            <Text style={styles.appDeveloper}>Desenvolvido por {appInfo.developer}</Text>
+            <Text style={styles.appVersion}>גרסה {appInfo.version} (Build {appInfo.build})</Text>
+            <Text style={styles.appDeveloper}>פותח על ידי {appInfo.developer}</Text>
 
             <View style={styles.appActions}>
               <TouchableOpacity style={styles.appAction} onPress={openWebsite}>
                 <Ionicons name="globe-outline" size={20} color={Colors.primary} />
-                <Text style={styles.appActionText}>Site</Text>
+                <Text style={styles.appActionText}>אתר</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.appAction} onPress={sendEmail}>
                 <Ionicons name="mail-outline" size={20} color={Colors.primary} />
-                <Text style={styles.appActionText}>Contato</Text>
+                <Text style={styles.appActionText}>יצירת קשר</Text>
               </TouchableOpacity>
             </View>
           </LinearGradient>
@@ -203,36 +203,36 @@ const AboutScreen = ({ navigation }) => {
 
         {/* Features */}
         <View style={styles.featuresSection}>
-          <Text style={styles.sectionTitle}>Funcionalidades</Text>
+          <Text style={styles.sectionTitle}>יכולות</Text>
           <View style={styles.featuresList}>
             {features.map(renderFeature)}
           </View>
         </View>
 
-        {/* FAQ */}
+        {/* שאלות נפוצות */}
         <View style={styles.faqSection}>
-          <Text style={styles.sectionTitle}>Perguntas Frequentes</Text>
+          <Text style={styles.sectionTitle}>שאלות נפוצות</Text>
           <View style={styles.faqList}>
-            {faqData.map(renderFAQItem)}
+            {faqData.map(renderQuestionItem)}
           </View>
         </View>
 
         {/* Legal */}
         <View style={styles.legalSection}>
-          <Text style={styles.sectionTitle}>Legal</Text>
+          <Text style={styles.sectionTitle}>מידע משפטי</Text>
           <View style={styles.legalList}>
             <TouchableOpacity
               style={styles.legalItem}
               onPress={() => navigation.navigate('Privacy')}
             >
-              <Text style={styles.legalText}>Política de Privacidade</Text>
+              <Text style={styles.legalText}>מדיניות פרטיות</Text>
               <Ionicons name="chevron-forward" size={20} color={Colors.textSecondary} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.legalItem}
               onPress={() => navigation.navigate('TermsOfService')}
             >
-              <Text style={styles.legalText}>Termos de Uso</Text>
+              <Text style={styles.legalText}>תנאי שימוש</Text>
               <Ionicons name="chevron-forward" size={20} color={Colors.textSecondary} />
             </TouchableOpacity>
           </View>
@@ -241,10 +241,10 @@ const AboutScreen = ({ navigation }) => {
         {/* Credits */}
         <View style={styles.creditsSection}>
           <Text style={styles.creditsText}>
-            © 2025 VetTech Solutions. Todos os direitos reservados.
+            © 2025 VetTech Solutions. כל הזכויות שמורות.
           </Text>
           <Text style={styles.creditsSubtext}>
-            Feito com ❤️ para veterinários
+            נוצר באהבה עבור וטרינרים
           </Text>
         </View>
 
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     lineHeight: 20,
   },
-  // FAQ Section
+  // שאלות נפוצות
   faqSection: {
     padding: 20,
     paddingTop: 0,

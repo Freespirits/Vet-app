@@ -12,7 +12,7 @@ const AppNavigator = () => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <Loading message="Inicializando aplicação..." />;
+    return <Loading message="מאתחל את היישום..." />;
   }
 
   return (

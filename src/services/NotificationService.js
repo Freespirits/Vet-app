@@ -14,29 +14,29 @@ class NotificationServiceClass {
     };
   }
 
-  // Verificar se as notificações estão habilitadas
+  // בדיקה האם ההתראות מופעלות
   async isEnabled() {
     try {
       const settings = await this.getSettings();
       return settings.enabled;
     } catch (error) {
-      console.error('Erro ao verificar notificações:', error);
+      console.error('שגיאה בבדיקת סטטוס ההתראות:', error);
       return false;
     }
   }
 
-  // Solicitar permissão para notificações (versão simplificada)
+  // בקשת הרשאת התראות (גרסה מקוצרת)
   async requestPermission() {
     try {
-      // Versão simplificada - sempre retorna true para desenvolvimento
+      // גרסה פשוטה - מחזירה true לפיתוח
       return true;
     } catch (error) {
-      console.error('Erro ao solicitar permissão:', error);
+      console.error('שגיאה בבקשת הרשאת התראות:', error);
       return false;
     }
   }
 
-  // Obter configurações de notificação
+  // קבלת הגדרות התראות
   async getSettings() {
     try {
       const settingsJson = await AsyncStorage.getItem(this.STORAGE_KEY);
@@ -45,72 +45,72 @@ class NotificationServiceClass {
       }
       return this.DEFAULT_SETTINGS;
     } catch (error) {
-      console.error('Erro ao obter configurações:', error);
+      console.error('שגיאה בשליפת הגדרות התראות:', error);
       return this.DEFAULT_SETTINGS;
     }
   }
 
-  // Atualizar configurações de notificação
+  // עדכון הגדרות התראות
   async updateSettings(newSettings) {
     try {
       const currentSettings = await this.getSettings();
       const updatedSettings = { ...currentSettings, ...newSettings };
       await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedSettings));
-      
+
       return { success: true };
     } catch (error) {
-      console.error('Erro ao atualizar configurações:', error);
+      console.error('שגיאה בעדכון הגדרות התראות:', error);
       return { success: false, error: error.message };
     }
   }
 
-  // Habilitar notificações
+  // הפעלת התראות
   async enable() {
     return await this.updateSettings({ enabled: true });
   }
 
-  // Desabilitar notificações
+  // כיבוי התראות
   async disable() {
     return await this.updateSettings({ enabled: false });
   }
 
-  // Agendar notificação de consulta (versão simplificada)
+  // תזמון התראת ייעוץ (גרסה מקוצרת)
   async scheduleAppointment(appointment) {
     try {
       const settings = await this.getSettings();
       if (!settings.enabled || !settings.appointments) return { success: true };
 
-      // Por enquanto, apenas log - implementação futura
-      console.log('Notificação agendada para:', appointment);
+      // בינתיים רק לוג - מימוש מלא בהמשך
+      console.log('התראה מתוזמנת עבור:', appointment);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao agendar notificação:', error);
+      console.error('שגיאה בתזמון התראה:', error);
       return { success: false, error: error.message };
     }
   }
 
-  // Notificação de teste
+  // התראת בדיקה
   async scheduleTest() {
     try {
       Alert.alert(
-        'Teste de Notificação ✅',
-        'Suas notificações estão funcionando perfeitamente!',
-        [{ text: 'OK' }]
+        'התראת בדיקה ✅',
+        'ההתראות שלך פועלות כשורה!',
+        [{ text: 'אישור' }]
       );
       return { success: true };
     } catch (error) {
-      console.error('Erro ao enviar notificação de teste:', error);
+      console.error('שגיאה בשליחת התראת בדיקה:', error);
       return { success: false, error: error.message };
     }
   }
 
-  // Cancelar todas as notificações (versão simplificada)
+  // ביטול כל ההתראות (גרסה מקוצרת)
   async cancelAll() {
     try {
-      console.log('Todas as notificações canceladas');
+      console.log('כל ההתראות בוטלו');
       return { success: true };
     } catch (error) {
-      console.error('Erro ao cancelar notificações:', error);
+      console.error('שגיאה בביטול התראות:', error);
       return { success: false, error: error.message };
     }
   }

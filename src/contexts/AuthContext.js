@@ -7,12 +7,12 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
-  const [isRegistering, setIsRegistering] = useState(false); // Novo flag
+  const [isRegistering, setIsRegistering] = useState(false); // דגל המבדיל רישום
 
   useEffect(() => {
-    // Verificar sessão inicial
+    // בדיקת סשן ראשוני
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('Sessão inicial:', session);
+      console.log('מצב התחברות ראשוני:', session);
       setSession(session);
       if (session?.user) {
         loadUserProfile(session.user);
@@ -21,13 +21,13 @@ export const AuthProvider = ({ children }) => {
       }
     });
 
-    // Escutar mudanças de autenticação
+    // האזנה לשינויים בזיהוי משתמש
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state changed:', event, session);
       setSession(session);
 
       if (event === 'SIGNED_IN' && session?.user) {
-        // Não criar perfil automaticamente se estiver em processo de registro
+        // לא ליצור פרופיל אוטומטית אם אנחנו באמצע רישום
         if (!isRegistering) {
           await loadUserProfile(session.user);
         }
@@ -44,18 +44,18 @@ export const AuthProvider = ({ children }) => {
 
   const loadUserProfile = async (authUser, skipAutoCreate = false) => {
     try {
-      console.log('Carregando perfil para usuário:', authUser.id, authUser.email);
+      console.log('טוען פרופיל עבור משתמש:', authUser.id, authUser.email);
 
-      // Primeiro, tentar buscar pelo ID
+      // תחילה ננסה לפי מזהה
       let { data, error } = await supabase
         .from('users_consultorio')
         .select('*')
         .eq('id', authUser.id)
         .single();
 
-      // Se não encontrar pelo ID, tentar buscar pelo email
+      // אם לא נמצא לפי מזהה, ננסה לפי אימייל
       if (error && error.code === 'PGRST116') {
-        console.log('Perfil não encontrado pelo ID, tentando pelo email...');
+        console.log('הפרופיל לא נמצא לפי מזהה, מנסה לפי האימייל...');
 
         const { data: profileByEmail, error: emailError } = await supabase
           .from('users_consultorio')
@@ -64,24 +64,24 @@ export const AuthProvider = ({ children }) => {
           .single();
 
         if (emailError && emailError.code === 'PGRST116') {
-          // Perfil não existe
+          // הפרופיל לא קיים
           if (skipAutoCreate) {
-            console.log('Perfil não existe e auto-criação foi pulada');
+            console.log('הפרופיל לא קיים והיצירה האוטומטית דולגה');
             setLoading(false);
             return;
           } else {
-            // Criar automaticamente apenas para login (não para registro)
-            console.log('Perfil não existe, criando automaticamente...');
+            // יצירה אוטומטית רק עבור התחברות (לא עבור רישום)
+            console.log('הפרופיל לא קיים, יוצר באופן אוטומטי...');
             await createUserProfile(authUser);
             return;
           }
         } else if (emailError) {
-          console.error('Erro ao buscar perfil por email:', emailError);
+          console.error('שגיאה בעת חיפוש פרופיל לפי אימייל:', emailError);
           setLoading(false);
           return;
         } else {
-          // Perfil encontrado por email, atualizar o ID
-          console.log('Perfil encontrado por email, atualizando ID...');
+          // נמצא פרופיל לפי אימייל, מעדכן מזהה
+          console.log('הפרופיל נמצא לפי אימייל, מעדכן מזהה...');
           const { data: updatedProfile, error: updateError } = await supabase
             .from('users_consultorio')
             .update({ id: authUser.id, updated_at: new Date().toISOString() })
@@ -90,23 +90,23 @@ export const AuthProvider = ({ children }) => {
             .single();
 
           if (updateError) {
-            console.error('Erro ao atualizar ID do perfil:', updateError);
-            setUser(profileByEmail); // Usar perfil sem atualizar ID
+            console.error('שגיאה בעדכון מזהה הפרופיל:', updateError);
+            setUser(profileByEmail); // שימוש בפרופיל גם ללא עדכון מזהה
           } else {
             setUser(updatedProfile);
           }
         }
       } else if (error) {
-        console.error('Erro ao carregar perfil:', error);
+        console.error('שגיאה בטעינת פרופיל:', error);
         setLoading(false);
         return;
       } else {
-        // Perfil encontrado pelo ID
-        console.log('Perfil carregado com sucesso:', data);
+        // פרופיל נמצא לפי מזהה
+        console.log('הפרופיל נטען בהצלחה:', data);
         setUser(data);
       }
     } catch (error) {
-      console.error('Erro ao carregar usuário:', error);
+      console.error('שגיאה בטעינת משתמש:', error);
     } finally {
       setLoading(false);
     }
@@ -114,17 +114,17 @@ export const AuthProvider = ({ children }) => {
 
   const createUserProfile = async (authUser) => {
     try {
-      console.log('Criando perfil automático para:', authUser.email);
+      console.log('יוצר פרופיל אוטומטי עבור:', authUser.email);
 
-      // Dados padrão para usuário de demonstração
+      // נתוני ברירת מחדל למשתמש הדגמה
       const isDemo = authUser.email === 'admin@petcare.com';
 
       const profileData = {
         id: authUser.id,
         email: authUser.email,
-        name: isDemo ? 'Dr. João Silva' : authUser.user_metadata?.name || 'Usuário',
-        profession: 'Veterinário(a)',
-        clinic: isDemo ? 'Clínica VetCare' : 'Minha Clínica',
+        name: isDemo ? 'ד"ר ז׳ואאו סילבה' : authUser.user_metadata?.name || 'משתמש חדש',
+        profession: 'וטרינר/ית',
+        clinic: isDemo ? 'VetCare מרפאת' : 'המרפאה שלי',
         crmv: isDemo ? '12345-SP' : '',
         phone: isDemo ? '(11) 99999-9999' : '',
       };
@@ -136,15 +136,15 @@ export const AuthProvider = ({ children }) => {
         .single();
 
       if (error) {
-        console.error('Erro ao criar perfil automático:', error);
+        console.error('שגיאה ביצירת פרופיל אוטומטי:', error);
         setLoading(false);
         return;
       }
 
-      console.log('Perfil criado automaticamente:', data);
+      console.log('פרופיל נוצר אוטומטית:', data);
       setUser(data);
     } catch (error) {
-      console.error('Erro ao criar perfil automático:', error);
+      console.error('שגיאה ביצירת פרופיל אוטומטי:', error);
     } finally {
       setLoading(false);
     }
@@ -152,7 +152,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      console.log('Fazendo login...');
+      console.log('מבצע התחברות...');
 
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.toLowerCase().trim(),
@@ -160,27 +160,27 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (error) {
-        console.error('Erro no login:', error);
+        console.error('שגיאה בהתחברות:', error);
         return { success: false, error: error.message };
       }
 
-      console.log('Login realizado com sucesso');
+      console.log('התחברות בוצעה בהצלחה');
       return { success: true, data };
     } catch (error) {
-      console.error('Erro no login:', error);
-      return { success: false, error: 'Erro interno do sistema' };
+      console.error('שגיאה בהתחברות:', error);
+      return { success: false, error: 'שגיאה פנימית במערכת' };
     }
   };
 
   const register = async (userData) => {
     try {
-      console.log('Iniciando registro...');
+      console.log('מתחיל רישום...');
 
-      setIsRegistering(true); // Sinalizar que está registrando
+      setIsRegistering(true); // סימון תהליך רישום פעיל
 
       const email = userData.email.toLowerCase().trim();
 
-      // Primeiro, criar usuário na autenticação
+      // תחילה, יצירת משתמש בשכבת האימות
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: email,
         password: userData.password,
@@ -192,33 +192,32 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (authError) {
-        console.error('Erro na autenticação:', authError);
+        console.error('שגיאה באימות:', authError);
         setIsRegistering(false);
         return { success: false, error: authError.message };
       }
 
       if (!authData.user) {
         setIsRegistering(false);
-        return { success: false, error: 'Falha ao criar usuário' };
+        return { success: false, error: 'יצירת המשתמש נכשלה' };
       }
 
-      // Se o Supabase exigir confirmação de email, não haverá sessão ativa.
-      // Nessa situação não podemos escrever na tabela protegida, então apenas orientamos o usuário.
+      // אם נדרשת אימות אימייל לא תהיה סשן פעיל ולכן לא נכתוב בטבלה המוגנת.
       if (!authData.session) {
         setIsRegistering(false);
         return {
           success: true,
           requiresEmailConfirmation: true,
-          message: 'Conta criada. Verifique seu email para confirmar antes de acessar.'
+          message: 'החשבון נוצר. יש לאשר את האימייל לפני הכניסה.'
         };
       }
 
-      console.log('Usuário criado na auth, ID:', authData.user.id);
+      console.log('משתמש נוצר בשכבת האימות, מזהה:', authData.user.id);
 
-      // Aguardar um pouco para garantir que o evento SIGNED_IN foi processado
+      // ממתין מעט כדי לוודא שאירוע SIGNED_IN טופל
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Verificar se o perfil já existe (criado automaticamente)
+      // בדיקה אם הפרופיל כבר קיים (יצירה אוטומטית)
       const { data: existingProfile } = await supabase
         .from('users_consultorio')
         .select('*')
@@ -226,14 +225,14 @@ export const AuthProvider = ({ children }) => {
         .single();
 
       if (existingProfile) {
-        console.log('Perfil já existe, atualizando com dados do formulário...');
+        console.log('הפרופיל כבר קיים, מעדכן לפי נתוני הטופס...');
 
-        // Atualizar perfil existente com dados do formulário
+        // מעדכן פרופיל קיים עם נתוני הטופס
         const { data: updatedProfile, error: updateError } = await supabase
           .from('users_consultorio')
           .update({
             name: userData.name.trim(),
-            profession: userData.profession || 'Veterinário(a)',
+            profession: userData.profession || 'וטרינר/ית',
             clinic: userData.clinic.trim(),
             crmv: userData.crmv.trim(),
             phone: userData.phone.trim(),
@@ -244,31 +243,31 @@ export const AuthProvider = ({ children }) => {
           .single();
 
         if (updateError) {
-          console.error('Erro ao atualizar perfil:', updateError);
+          console.error('שגיאה בעדכון פרופיל:', updateError);
           setIsRegistering(false);
           return {
             success: false,
-            error: `Erro ao atualizar perfil: ${updateError.message}`
+            error: `שגיאה בעדכון פרופיל: ${updateError.message}`
           };
         }
 
-        console.log('Perfil atualizado com sucesso');
+        console.log('הפרופיל עודכן בהצלחה');
         setUser(updatedProfile);
         setIsRegistering(false);
         return { success: true, data: authData };
       } else {
-        // Criar novo perfil com dados do formulário
+        // יצירת פרופיל חדש עם נתוני הטופס
         const profileData = {
           id: authData.user.id,
           email: email,
           name: userData.name.trim(),
-          profession: userData.profession || 'Veterinário(a)',
+          profession: userData.profession || 'וטרינר/ית',
           clinic: userData.clinic.trim(),
           crmv: userData.crmv.trim(),
           phone: userData.phone.trim(),
         };
 
-        console.log('Criando perfil com dados:', profileData);
+        console.log('יוצר פרופיל עם הנתונים:', profileData);
 
         const { data: profileResult, error: profileError } = await supabase
           .from('users_consultorio')
@@ -277,39 +276,39 @@ export const AuthProvider = ({ children }) => {
           .single();
 
         if (profileError) {
-          console.error('Erro ao criar perfil:', profileError);
+          console.error('שגיאה ביצירת פרופיל:', profileError);
 
-          // Tentar deletar usuário da auth se perfil falhou
+          // מנסה להתנתק אם יצירת הפרופיל נכשלה
           try {
             await supabase.auth.signOut();
           } catch (e) {
-            console.error('Erro ao limpar após falha:', e);
+            console.error('שגיאה בעת ניקוי אחרי כישלון:', e);
           }
 
           setIsRegistering(false);
           return {
             success: false,
-            error: `Erro ao criar perfil: ${profileError.message}`
+            error: `שגיאה ביצירת פרופיל: ${profileError.message}`
           };
         }
 
-        console.log('Perfil criado com sucesso');
+        console.log('פרופיל נוצר בהצלחה');
         setUser(profileResult);
         setIsRegistering(false);
         return { success: true, data: authData };
       }
 
     } catch (error) {
-      console.error('Erro geral no registro:', error);
+      console.error('שגיאה כללית בתהליך ההרשמה:', error);
       setIsRegistering(false);
-      return { success: false, error: 'Erro interno do sistema' };
+      return { success: false, error: 'שגיאה פנימית במערכת' };
     }
   };
 
   const updateProfile = async (updatedData) => {
     try {
       if (!user?.id) {
-        return { success: false, error: 'Usuário não encontrado' };
+        return { success: false, error: 'משתמש לא נמצא' };
       }
 
       const { data, error } = await supabase
@@ -329,8 +328,8 @@ export const AuthProvider = ({ children }) => {
       setUser(data);
       return { success: true };
     } catch (error) {
-      console.error('Erro ao atualizar perfil:', error);
-      return { success: false, error: 'Erro ao atualizar perfil' };
+      console.error('שגיאה בעדכון פרופיל:', error);
+      return { success: false, error: 'שגיאה בעדכון הפרופיל' };
     }
   };
 
@@ -341,7 +340,7 @@ export const AuthProvider = ({ children }) => {
       setSession(null);
       setIsRegistering(false);
     } catch (error) {
-      console.error('Erro no logout:', error);
+      console.error('שגיאה בהתנתקות:', error);
     }
   };
 
@@ -366,7 +365,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth deve ser usado dentro de AuthProvider');
+    throw new Error('יש להשתמש ב-useAuth בתוך AuthProvider');
   }
   return context;
 };

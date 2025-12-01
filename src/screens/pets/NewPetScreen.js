@@ -51,6 +51,25 @@ const NewPetScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
 
+  const normalizeSpecies = (value) => {
+    const mapping = {
+      'Cão': 'כלב',
+      'Gato': 'חתול',
+      'Pássaro': 'ציפור',
+      'Peixe': 'דג',
+      'Hamster': 'אוגר',
+      'Coelho': 'ארנב',
+      'Réptil': 'זוחל',
+      'Outros': 'אחר'
+    };
+    return mapping[value] || value;
+  };
+
+  const normalizeGender = (value) => {
+    const mapping = { 'Macho': 'זכר', 'Fêmea': 'נקבה' };
+    return mapping[value] || value;
+  };
+
   useEffect(() => {
     loadClients();
     if (isEditing) {
@@ -69,7 +88,7 @@ const NewPetScreen = ({ navigation, route }) => {
       const clientList = await ClientService.getAll();
       setClients(clientList);
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao carregar clientes');
+      Alert.alert('שגיאה', 'אירעה שגיאה בעת טעינת הלקוחות');
     }
   };
 
@@ -81,9 +100,9 @@ const NewPetScreen = ({ navigation, route }) => {
         setFormData({
           name: pet.name || '',
           clientId: pet.clientId || pet.client_id || '',
-          species: pet.species || '',
+          species: normalizeSpecies(pet.species || ''),
           breed: pet.breed || '',
-          gender: pet.gender || '',
+          gender: normalizeGender(pet.gender || ''),
           birthDate: pet.birthDate || pet.birth_date || '',
           weight: pet.weight?.toString() || '',
           color: pet.color || '',
@@ -92,7 +111,7 @@ const NewPetScreen = ({ navigation, route }) => {
         });
       }
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao carregar dados do pet');
+      Alert.alert('שגיאה', 'לא ניתן לטעון את פרטי חיית המחמד');
     } finally {
       setLoadingData(false);
     }
@@ -100,15 +119,16 @@ const NewPetScreen = ({ navigation, route }) => {
 
   const updateAvailableBreeds = () => {
     let breeds = [];
-    switch (formData.species) {
-      case 'Cão':
+    const normalizedSpecies = normalizeSpecies(formData.species);
+    switch (normalizedSpecies) {
+      case 'כלב':
         breeds = RACAS_CAES;
         break;
-      case 'Gato':
+      case 'חתול':
         breeds = RACAS_GATOS;
         break;
       default:
-        breeds = ['SRD (Sem Raça Definida)', 'Outros'];
+        breeds = ['מעורב (ללא גזע מוגדר)', 'אחר'];
     }
     setAvailableBreeds(breeds);
 
@@ -121,19 +141,19 @@ const NewPetScreen = ({ navigation, route }) => {
     const newErrors = {};
 
     if (!validateRequired(formData.name)) {
-      newErrors.name = 'Nome é obrigatório';
+      newErrors.name = 'שם חיית המחמד הוא שדה חובה';
     }
 
     if (!validateRequired(formData.clientId)) {
-      newErrors.clientId = 'Cliente é obrigatório';
+      newErrors.clientId = 'בעלים הוא שדה חובה';
     }
 
     if (!validateRequired(formData.species)) {
-      newErrors.species = 'Espécie é obrigatória';
+      newErrors.species = 'סוג החיה הוא שדה חובה';
     }
 
     if (!validateRequired(formData.gender)) {
-      newErrors.gender = 'Sexo é obrigatório';
+      newErrors.gender = 'יש לבחור מין לחיית המחמד';
     }
 
     setErrors(newErrors);
@@ -142,13 +162,13 @@ const NewPetScreen = ({ navigation, route }) => {
 
   const handleSave = async () => {
     if (!validateForm()) {
-      Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios');
+      Alert.alert('שגיאה', 'נא למלא את כל שדות החובה');
       return;
     }
 
     // Verificar se o cliente foi selecionado
     if (!formData.clientId) {
-      Alert.alert('Erro', 'Por favor, selecione um cliente para o pet');
+      Alert.alert('שגיאה', 'בחרו בעלים עבור חיית המחמד');
       return;
     }
 
@@ -167,7 +187,7 @@ const NewPetScreen = ({ navigation, route }) => {
         notes: formData.notes.trim() || null
       };
 
-      console.log('Dados do pet a serem salvos:', petData); // Debug
+      console.log('נתוני החיה לשמירה:', petData);
 
       let result;
       if (isEditing) {
@@ -178,16 +198,16 @@ const NewPetScreen = ({ navigation, route }) => {
 
       if (result.success) {
         Alert.alert(
-          'Sucesso',
-          `Pet ${isEditing ? 'atualizado' : 'cadastrado'} com sucesso!`,
-          [{ text: 'OK', onPress: () => navigation.goBack() }]
+          'הצלחה',
+          `החיה ${isEditing ? 'עודכנה' : 'נרשמה'} בהצלחה!`,
+          [{ text: 'אישור', onPress: () => navigation.goBack() }]
         );
       } else {
-        Alert.alert('Erro', result.error || 'Erro ao salvar pet');
+        Alert.alert('שגיאה', result.error || 'אירעה שגיאה בשמירת החיה');
       }
     } catch (error) {
-      console.error('Erro ao salvar pet:', error);
-      Alert.alert('Erro', 'Erro interno do sistema. Verifique os dados e tente novamente.');
+      console.error('שגיאה בשמירת חיית המחמד:', error);
+      Alert.alert('שגיאה', 'שגיאה פנימית במערכת. בדקו את הנתונים ונסו שוב.');
     } finally {
       setLoading(false);
     }
@@ -215,27 +235,29 @@ const NewPetScreen = ({ navigation, route }) => {
   const selectedClient = clients.find(client => client.id === formData.clientId);
 
   const getSpeciesIcon = (species) => {
-    switch (species) {
-      case 'Cão': return 'paw';
-      case 'Gato': return 'paw';
-      case 'Pássaro': return 'airplane';
-      case 'Peixe': return 'fish';
-      case 'Hamster': return 'ellipse';
-      case 'Coelho': return 'ellipse';
-      case 'Réptil': return 'bug';
+    const normalized = normalizeSpecies(species);
+    switch (normalized) {
+      case 'כלב': return 'paw';
+      case 'חתול': return 'paw';
+      case 'ציפור': return 'airplane';
+      case 'דג': return 'fish';
+      case 'אוגר': return 'ellipse';
+      case 'ארנב': return 'ellipse';
+      case 'זוחל': return 'bug';
       default: return 'heart';
     }
   };
 
   const getSpeciesColor = (species) => {
-    switch (species) {
-      case 'Cão': return Colors.primary;
-      case 'Gato': return Colors.secondary;
-      case 'Pássaro': return Colors.info;
-      case 'Peixe': return '#00BCD4';
-      case 'Hamster': return '#FF9800';
-      case 'Coelho': return '#795548';
-      case 'Réptil': return Colors.success;
+    const normalized = normalizeSpecies(species);
+    switch (normalized) {
+      case 'כלב': return Colors.primary;
+      case 'חתול': return Colors.secondary;
+      case 'ציפור': return Colors.info;
+      case 'דג': return '#00BCD4';
+      case 'אוגר': return '#FF9800';
+      case 'ארנב': return '#795548';
+      case 'זוחל': return Colors.success;
       default: return Colors.textSecondary;
     }
   };
@@ -244,7 +266,7 @@ const NewPetScreen = ({ navigation, route }) => {
     return (
       <SafeAreaView style={globalStyles.container}>
         <View style={[globalStyles.container, globalStyles.justifyCenter, globalStyles.alignCenter]}>
-          <Text style={globalStyles.textRegular}>Carregando dados do pet...</Text>
+          <Text style={globalStyles.textRegular}>טוען נתונים של חיית המחמד...</Text>
         </View>
       </SafeAreaView>
     );
@@ -271,10 +293,10 @@ const NewPetScreen = ({ navigation, route }) => {
             </View>
             <View>
               <Text style={styles.headerTitle}>
-                {isEditing ? 'Editar Pet' : 'Novo Pet'}
+                {isEditing ? 'עריכת חיית מחמד' : 'חיית מחמד חדשה'}
               </Text>
               <Text style={styles.headerSubtitle}>
-                {isEditing ? 'Atualize as informações do pet' : 'Cadastre um novo amiguinho'}
+                {isEditing ? 'עדכנו את פרטי החיה' : 'הוסיפו חבר חדש למרפאה'}
               </Text>
             </View>
           </View>
@@ -305,15 +327,15 @@ const NewPetScreen = ({ navigation, route }) => {
                 >
                   <Ionicons name="heart" size={20} color={Colors.surface} />
                 </LinearGradient>
-                <Text style={styles.sectionTitle}>Informações Básicas</Text>
+                <Text style={styles.sectionTitle}>מידע בסיסי</Text>
               </View>
 
               <View style={styles.inputContainer}>
                 <Input
-                  label="Nome do Pet"
+                  label="שם חיית המחמד"
                   value={formData.name}
                   onChangeText={(value) => updateField('name', value)}
-                  placeholder="Como o pet se chama?"
+                  placeholder="איך קוראים לחיה?"
                   leftIcon="heart"
                   error={errors.name}
                   required
@@ -327,7 +349,7 @@ const NewPetScreen = ({ navigation, route }) => {
               {/* Cliente Selector com design melhorado */}
               <View style={styles.pickerSection}>
                 <Text style={styles.pickerLabel}>
-                  Proprietário <Text style={styles.required}>*</Text>
+                  בעלים <Text style={styles.required}>*</Text>
                 </Text>
                 <View style={[styles.pickerContainer, errors.clientId && styles.pickerError]}>
                   <LinearGradient
@@ -342,7 +364,7 @@ const NewPetScreen = ({ navigation, route }) => {
                       mode="dropdown"
                       dropdownIconColor={Colors.primary}
                     >
-                      <Picker.Item label="Selecione o proprietário..." value="" />
+                      <Picker.Item label="בחרו בעלים..." value="" />
                       {clients.map(client => (
                         <Picker.Item
                           key={client.id}
@@ -367,7 +389,7 @@ const NewPetScreen = ({ navigation, route }) => {
               {/* Espécie com ícones visuais */}
               <View style={styles.pickerSection}>
                 <Text style={styles.pickerLabel}>
-                  Espécie <Text style={styles.required}>*</Text>
+                  סוג <Text style={styles.required}>*</Text>
                 </Text>
                 <View style={[styles.speciesContainer, errors.species && styles.pickerError]}>
                   {ESPECIES.map(especie => (
@@ -410,7 +432,7 @@ const NewPetScreen = ({ navigation, route }) => {
 
               {/* Raça */}
               <View style={styles.pickerSection}>
-                <Text style={styles.pickerLabel}>Raça</Text>
+                <Text style={styles.pickerLabel}>גזע</Text>
                 <View style={[styles.pickerContainer, !formData.species && styles.pickerDisabled]}>
                   <LinearGradient
                     colors={formData.species ? ['#F8F9FA', '#FFFFFF'] : ['#F5F5F5', '#F0F0F0']}
@@ -430,7 +452,7 @@ const NewPetScreen = ({ navigation, route }) => {
                       mode="dropdown"
                       dropdownIconColor={formData.species ? Colors.primary : Colors.textSecondary}
                     >
-                      <Picker.Item label="Selecione a raça..." value="" />
+                      <Picker.Item label="בחרו גזע..." value="" />
                       {availableBreeds.map(raca => (
                         <Picker.Item key={raca} label={raca} value={raca} />
                       ))}
@@ -442,19 +464,19 @@ const NewPetScreen = ({ navigation, route }) => {
               {/* Sexo com botões visuais */}
               <View style={styles.pickerSection}>
                 <Text style={styles.pickerLabel}>
-                  Sexo <Text style={styles.required}>*</Text>
+                  מין <Text style={styles.required}>*</Text>
                 </Text>
                 <View style={styles.genderContainer}>
                   <TouchableOpacity
                     style={[
                       styles.genderOption,
-                      formData.gender === 'Macho' && styles.genderOptionSelected,
+                      formData.gender === 'זכר' && styles.genderOptionSelected,
                       { borderColor: Colors.info }
                     ]}
-                    onPress={() => updateField('gender', 'Macho')}
+                    onPress={() => updateField('gender', 'זכר')}
                   >
                     <LinearGradient
-                      colors={formData.gender === 'Macho' ?
+                      colors={formData.gender === 'זכר' ?
                         [Colors.info, `${Colors.info}CC`] :
                         ['transparent', 'transparent']
                       }
@@ -463,13 +485,13 @@ const NewPetScreen = ({ navigation, route }) => {
                       <Ionicons
                         name="male"
                         size={24}
-                        color={formData.gender === 'Macho' ? Colors.surface : Colors.info}
+                        color={formData.gender === 'זכר' ? Colors.surface : Colors.info}
                       />
                       <Text style={[
                         styles.genderOptionText,
-                        formData.gender === 'Macho' && styles.genderOptionTextSelected
+                        formData.gender === 'זכר' && styles.genderOptionTextSelected
                       ]}>
-                        Macho
+                        זכר
                       </Text>
                     </LinearGradient>
                   </TouchableOpacity>
@@ -477,13 +499,13 @@ const NewPetScreen = ({ navigation, route }) => {
                   <TouchableOpacity
                     style={[
                       styles.genderOption,
-                      formData.gender === 'Fêmea' && styles.genderOptionSelected,
+                      formData.gender === 'נקבה' && styles.genderOptionSelected,
                       { borderColor: Colors.warning }
                     ]}
-                    onPress={() => updateField('gender', 'Fêmea')}
+                    onPress={() => updateField('gender', 'נקבה')}
                   >
                     <LinearGradient
-                      colors={formData.gender === 'Fêmea' ?
+                      colors={formData.gender === 'נקבה' ?
                         [Colors.warning, `${Colors.warning}CC`] :
                         ['transparent', 'transparent']
                       }
@@ -492,13 +514,13 @@ const NewPetScreen = ({ navigation, route }) => {
                       <Ionicons
                         name="female"
                         size={24}
-                        color={formData.gender === 'Fêmea' ? Colors.surface : Colors.warning}
+                        color={formData.gender === 'נקבה' ? Colors.surface : Colors.warning}
                       />
                       <Text style={[
                         styles.genderOptionText,
-                        formData.gender === 'Fêmea' && styles.genderOptionTextSelected
+                        formData.gender === 'נקבה' && styles.genderOptionTextSelected
                       ]}>
-                        Fêmea
+                        נקבה
                       </Text>
                     </LinearGradient>
                   </TouchableOpacity>
@@ -516,14 +538,14 @@ const NewPetScreen = ({ navigation, route }) => {
                 >
                   <Ionicons name="fitness" size={20} color={Colors.surface} />
                 </LinearGradient>
-                <Text style={styles.sectionTitle}>Detalhes Físicos</Text>
+                <Text style={styles.sectionTitle}>פרטים פיזיים</Text>
               </View>
 
               <Input
-                label="Data de Nascimento"
+                label="תאריך לידה"
                 value={formData.birthDate}
                 onChangeText={(value) => updateField('birthDate', formatBirthDate(value))}
-                placeholder="DD/MM/AAAA"
+                placeholder="DD/MM/YYYY"
                 keyboardType="numeric"
                 leftIcon="calendar"
                 maxLength={10}
@@ -542,7 +564,7 @@ const NewPetScreen = ({ navigation, route }) => {
                   >
                     <Ionicons name="time" size={16} color={Colors.surface} />
                     <Text style={styles.ageText}>
-                      Idade: {calculateAge(formData.birthDate)}
+                      גיל: {calculateAge(formData.birthDate)}
                     </Text>
                   </LinearGradient>
                 </View>
@@ -551,7 +573,7 @@ const NewPetScreen = ({ navigation, route }) => {
               <View style={styles.rowInputs}>
                 <View style={styles.halfInput}>
                   <Input
-                    label="Peso (kg)"
+                    label={'משקל (ק"ג)'}
                     value={formData.weight}
                     onChangeText={(value) => updateField('weight', value)}
                     placeholder="5.2"
@@ -563,10 +585,10 @@ const NewPetScreen = ({ navigation, route }) => {
                 </View>
                 <View style={styles.halfInput}>
                   <Input
-                    label="Cor Principal"
+                    label="צבע עיקרי"
                     value={formData.color}
                     onChangeText={(value) => updateField('color', value)}
-                    placeholder="Dourado"
+                    placeholder="זהוב"
                     leftIcon="color-palette"
                     autoCapitalize="words"
                     returnKeyType="next"
@@ -576,10 +598,10 @@ const NewPetScreen = ({ navigation, route }) => {
               </View>
 
               <Input
-                label="Microchip"
+                label="שבב"
                 value={formData.microchip}
                 onChangeText={(value) => updateField('microchip', value)}
-                placeholder="Número do microchip (opcional)"
+                placeholder="מספר שבב (אופציונלי)"
                 leftIcon="radio"
                 returnKeyType="next"
                 blurOnSubmit={false}
@@ -596,14 +618,14 @@ const NewPetScreen = ({ navigation, route }) => {
                 >
                   <Ionicons name="document-text" size={20} color={Colors.surface} />
                 </LinearGradient>
-                <Text style={styles.sectionTitle}>Observações</Text>
+                <Text style={styles.sectionTitle}>הערות</Text>
               </View>
 
               <Input
-                label="Observações Especiais"
+                label="הערות מיוחדות"
                 value={formData.notes}
                 onChangeText={(value) => updateField('notes', value)}
-                placeholder="Temperamento, alergias, medicamentos contínuos..."
+                placeholder="אופי, אלרגיות, תרופות קבועות..."
                 multiline
                 numberOfLines={4}
                 maxLength={500}
@@ -623,7 +645,7 @@ const NewPetScreen = ({ navigation, route }) => {
         >
           <View style={styles.actionButtons}>
             <Button
-              title="Cancelar"
+              title="ביטול"
               variant="outline"
               onPress={() => navigation.goBack()}
               style={styles.cancelButton}
@@ -631,7 +653,7 @@ const NewPetScreen = ({ navigation, route }) => {
               icon={<Ionicons name="close" size={16} color={Colors.textSecondary} />}
             />
             <Button
-              title={isEditing ? 'Atualizar Pet' : 'Cadastrar Pet'}
+              title={isEditing ? 'עדכון חיית מחמד' : 'רישום חיית מחמד'}
               onPress={handleSave}
               loading={loading}
               style={styles.saveButton}

@@ -32,7 +32,7 @@ const ProfileScreen = ({ navigation }) => {
       const enabled = await NotificationService.isEnabled();
       setNotificationsEnabled(enabled);
     } catch (error) {
-      console.error('Erro ao carregar configurações de notificação:', error);
+      console.error('שגיאה בטעינת הגדרות ההתראות:', error);
     }
   };
 
@@ -45,11 +45,11 @@ const ProfileScreen = ({ navigation }) => {
           setNotificationsEnabled(true);
         } else {
           Alert.alert(
-            'Permissão Negada',
-            'Para receber notificações, ative-as nas configurações do seu dispositivo.',
+            'ההרשאה נדחתה',
+            'כדי לקבל התראות, יש לאפשר אותן בהגדרות המכשיר.',
             [
-              { text: 'OK' },
-              { text: 'Configurações', onPress: () => Linking.openSettings() }
+              { text: 'אישור' },
+              { text: 'הגדרות', onPress: () => Linking.openSettings() }
             ]
           );
         }
@@ -58,33 +58,33 @@ const ProfileScreen = ({ navigation }) => {
         setNotificationsEnabled(false);
       }
     } catch (error) {
-      console.error('Erro ao alterar configurações de notificação:', error);
-      Alert.alert('Erro', 'Não foi possível alterar as configurações de notificação');
+      console.error('שגיאה בשינוי הגדרות ההתראות:', error);
+      Alert.alert('שגיאה', 'לא ניתן היה לעדכן את הגדרות ההתראות');
     }
   };
 
   const handleBackup = async () => {
     Alert.alert(
-      'Backup dos Dados',
-      'Deseja fazer backup de todos os seus dados? Isso incluirá consultas, pacientes e configurações.',
+      'גיבוי נתונים',
+      'האם לגבות את כל הנתונים? הפעולה תכלול ייעוצים, מטופלים והגדרות.',
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: 'ביטול', style: 'cancel' },
         {
-          text: 'Fazer Backup',
+          text: 'ביצוע גיבוי',
           onPress: async () => {
             try {
               const result = await BackupService.createBackup();
               if (result.success) {
                 Alert.alert(
-                  'Backup Concluído',
-                  `Backup criado com sucesso!\nArquivo: ${result.filename}\nTamanho: ${result.size}`
+                  'הגיבוי הושלם',
+                  `הגיבוי נוצר בהצלחה!\nקובץ: ${result.filename}\nגודל: ${result.size}`
                 );
               } else {
-                Alert.alert('Erro', result.error || 'Erro ao criar backup');
+                Alert.alert('שגיאה', result.error || 'אירעה שגיאה בעת יצירת הגיבוי');
               }
             } catch (error) {
-              console.error('Erro ao fazer backup:', error);
-              Alert.alert('Erro', 'Erro interno ao criar backup');
+              console.error('שגיאה בעת יצירת הגיבוי:', error);
+              Alert.alert('שגיאה', 'שגיאה פנימית בעת יצירת הגיבוי');
             }
           }
         }
@@ -94,12 +94,12 @@ const ProfileScreen = ({ navigation }) => {
 
   const handleRestore = async () => {
     Alert.alert(
-      'Restaurar Backup',
-      'Deseja restaurar dados de um backup? Isso substituirá todos os dados atuais.',
+      'שחזור גיבוי',
+      'להחזיר נתונים מגיבוי? פעולה זו תחליף את כל המידע הקיים.',
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: 'ביטול', style: 'cancel' },
         {
-          text: 'Restaurar',
+          text: 'שחזור',
           style: 'destructive',
           onPress: () => navigation.navigate('BackupSettings')
         }
@@ -109,19 +109,19 @@ const ProfileScreen = ({ navigation }) => {
 
   const handleLogout = () => {
     Alert.alert(
-      'Sair',
-      'Tem certeza que deseja sair da sua conta?',
+      'התנתקות',
+      'האם לצאת מהחשבון?',
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: 'ביטול', style: 'cancel' },
         {
-          text: 'Sair',
+          text: 'התנתקות',
           style: 'destructive',
           onPress: async () => {
             try {
               await logout();
             } catch (error) {
-              console.error('Erro ao fazer logout:', error);
-              Alert.alert('Erro', 'Erro ao sair da conta');
+              console.error('שגיאה בעת התנתקות:', error);
+              Alert.alert('שגיאה', 'אירעה שגיאה בעת היציאה מהחשבון');
             }
           }
         }
@@ -131,31 +131,31 @@ const ProfileScreen = ({ navigation }) => {
 
   const profileSections = [
     {
-      title: 'Conta',
+      title: 'חשבון',
       items: [
         {
           id: 'edit-profile',
-          title: 'Editar Perfil',
-          subtitle: 'Nome, email e informações pessoais',
+          title: 'עריכת פרופיל',
+          subtitle: 'שם, אימייל ופרטים אישיים',
           icon: 'person-outline',
           onPress: () => navigation.navigate('EditProfile'),
         },
         {
           id: 'change-password',
-          title: 'Alterar Senha',
-          subtitle: 'Atualizar senha de acesso',
+          title: 'החלפת סיסמה',
+          subtitle: 'עדכון סיסמת גישה',
           icon: 'lock-closed-outline',
           onPress: () => navigation.navigate('ChangePassword'),
         },
       ],
     },
     {
-      title: 'Configurações',
+      title: 'הגדרות',
       items: [
         {
           id: 'notifications',
-          title: 'Notificações',
-          subtitle: 'Lembretes e alertas',
+          title: 'התראות',
+          subtitle: 'תזכורות והתראות',
           icon: 'notifications-outline',
           showSwitch: true,
           switchValue: notificationsEnabled,
@@ -164,53 +164,53 @@ const ProfileScreen = ({ navigation }) => {
         },
         {
           id: 'backup',
-          title: 'Backup e Restauração',
-          subtitle: 'Proteger seus dados',
+          title: 'גיבוי ושחזור',
+          subtitle: 'הגנה על הנתונים שלך',
           icon: 'cloud-outline',
           onPress: () => navigation.navigate('BackupSettings'),
         },
       ],
     },
     {
-      title: 'Suporte',
+      title: 'תמיכה',
       items: [
         {
           id: 'help',
-          title: 'Ajuda e Suporte',
-          subtitle: 'Central de ajuda e contato',
+          title: 'עזרה ותמיכה',
+          subtitle: 'מרכז עזרה ויצירת קשר',
           icon: 'help-circle-outline',
           onPress: () => navigation.navigate('HelpSupport'),
         },
         {
           id: 'about',
-          title: 'Sobre',
-          subtitle: 'FAQ e informações',
+          title: 'אודות',
+          subtitle: 'שאלות נפוצות ומידע',
           icon: 'information-circle-outline',
           onPress: () => navigation.navigate('About'),
         },
         {
           id: 'privacy',
-          title: 'Privacidade',
-          subtitle: 'Política de privacidade',
+          title: 'פרטיות',
+          subtitle: 'מדיניות פרטיות',
           icon: 'shield-outline',
           onPress: () => navigation.navigate('Privacy'),
         },
         {
           id: 'version',
-          title: 'Versão',
-          subtitle: 'Changelog e atualizações',
+          title: 'גרסה',
+          subtitle: 'יומן שינויים ועדכונים',
           icon: 'code-outline',
           onPress: () => navigation.navigate('VersionInfo'),
         },
       ],
     },
     {
-      title: 'Sessão',
+      title: 'סשן',
       items: [
         {
           id: 'logout',
-          title: 'Sair',
-          subtitle: 'Desconectar da conta',
+          title: 'התנתקות',
+          subtitle: 'התנתקות מהחשבון',
           icon: 'log-out-outline',
           onPress: handleLogout,
           danger: true,
@@ -277,7 +277,7 @@ const ProfileScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Profile Sections */}
-        <View style={styles.sectionsContainer}>
+        <View style={styles.sectionsWrapper}>
           {profileSections.map(renderSection)}
         </View>
 
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
-  sectionsContainer: {
+  sectionsWrapper: {
     paddingHorizontal: 20,
     paddingTop: 20,
   },

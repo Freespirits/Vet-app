@@ -19,7 +19,7 @@ export const ConsultationService = {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar consultas:', error);
+      console.error('שגיאה בשליפת ייעוצים:', error);
       return [];
     }
   },
@@ -39,7 +39,7 @@ export const ConsultationService = {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Erro ao buscar consulta:', error);
+      console.error('שגיאה בשליפת ייעוץ:', error);
       return null;
     }
   },
@@ -59,7 +59,7 @@ export const ConsultationService = {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar consultas do pet:', error);
+      console.error('שגיאה בשליפת ייעוצים עבור חיית המחמד:', error);
       return [];
     }
   },
@@ -79,7 +79,7 @@ export const ConsultationService = {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar consultas do cliente:', error);
+      console.error('שגיאה בשליפת ייעוצים עבור הלקוח:', error);
       return [];
     }
   },
@@ -88,7 +88,7 @@ export const ConsultationService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Usuário não autenticado' };
+        return { success: false, error: 'המשתמש אינו מחובר' };
       }
 
       const { data, error } = await supabase
@@ -105,8 +105,8 @@ export const ConsultationService = {
       if (error) throw error;
       return { success: true, data };
     } catch (error) {
-      console.error('Erro ao criar consulta:', error);
-      return { success: false, error: 'Erro ao salvar consulta' };
+      console.error('שגיאה ביצירת ייעוץ:', error);
+      return { success: false, error: 'אירעה שגיאה בעת שמירת הייעוץ' };
     }
   },
 
@@ -114,7 +114,7 @@ export const ConsultationService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Usuário não autenticado' };
+        return { success: false, error: 'המשתמש אינו מחובר' };
       }
 
       const { data, error } = await supabase
@@ -131,8 +131,8 @@ export const ConsultationService = {
       if (error) throw error;
       return { success: true, data };
     } catch (error) {
-      console.error('Erro ao atualizar consulta:', error);
-      return { success: false, error: 'Erro ao atualizar consulta' };
+      console.error('שגיאה בעדכון ייעוץ:', error);
+      return { success: false, error: 'אירעה שגיאה בעדכון הייעוץ' };
     }
   },
 
@@ -140,7 +140,7 @@ export const ConsultationService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Usuário não autenticado' };
+        return { success: false, error: 'המשתמש אינו מחובר' };
       }
 
       const { error } = await supabase
@@ -152,8 +152,8 @@ export const ConsultationService = {
       if (error) throw error;
       return { success: true };
     } catch (error) {
-      console.error('Erro ao deletar consulta:', error);
-      return { success: false, error: 'Erro ao deletar consulta' };
+      console.error('שגיאה במחיקת ייעוץ:', error);
+      return { success: false, error: 'אירעה שגיאה במחיקת הייעוץ' };
     }
   },
 
@@ -196,7 +196,7 @@ export const ConsultationService = {
         byType,
       };
     } catch (error) {
-      console.error('Erro ao buscar estatísticas:', error);
+      console.error('שגיאה בשליפת נתוני סטטיסטיקה:', error);
       return { total: 0, today: 0, thisMonth: 0, byType: {} };
     }
   }

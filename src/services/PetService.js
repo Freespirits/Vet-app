@@ -25,7 +25,7 @@ export const PetService = {
       
       return petsWithClientId;
     } catch (error) {
-      console.error('Erro ao buscar pets:', error);
+      console.error('שגיאה בשליפת חיות מחמד:', error);
       return [];
     }
   },
@@ -33,7 +33,7 @@ export const PetService = {
   async getById(id) {
     try {
       if (!id) {
-        console.error('ID do pet não fornecido');
+        console.error('מזהה חיית מחמד לא סופק');
         return null;
       }
 
@@ -47,7 +47,7 @@ export const PetService = {
         .single();
 
       if (error && error.code !== 'PGRST116') {
-        console.error('Erro ao buscar pet por ID:', error);
+        console.error('שגיאה בשליפת חיית מחמד לפי מזהה:', error);
         throw error;
       }
 
@@ -56,7 +56,7 @@ export const PetService = {
         clientId: data.client_id || data.client?.id
       } : null;
     } catch (error) {
-      console.error('Erro ao buscar pet:', error);
+      console.error('שגיאה בשליפת חיית מחמד:', error);
       return null;
     }
   },
@@ -64,7 +64,7 @@ export const PetService = {
   async getByClientId(clientId) {
     try {
       if (!clientId) {
-        console.error('ID do cliente não fornecido');
+        console.error('מזהה לקוח לא סופק');
         return [];
       }
 
@@ -84,18 +84,18 @@ export const PetService = {
       
       return petsWithClientId;
     } catch (error) {
-      console.error('Erro ao buscar pets do cliente:', error);
+      console.error('שגיאה בשליפת חיות המחמד של הלקוח:', error);
       return [];
     }
   },
 
   async create(petData) {
     try {
-      console.log('Criando pet com dados:', petData);
+      console.log('יוצר חיית מחמד עם נתונים:', petData);
       
-      // Validação básica
+      // ולידציה בסיסית
       if (!petData.name || !petData.client_id) {
-        return { success: false, error: 'Nome e cliente são obrigatórios' };
+        return { success: false, error: 'שם ובעלים הם שדות חובה' };
       }
 
       const { data, error } = await supabase
@@ -105,25 +105,25 @@ export const PetService = {
         .single();
 
       if (error) {
-        console.error('Erro ao inserir pet:', error);
-        return { success: false, error: `Erro ao salvar pet: ${error.message}` };
+        console.error('שגיאה בהוספת חיית מחמד:', error);
+        return { success: false, error: `שגיאה בשמירת חיית המחמד: ${error.message}` };
       }
 
-      console.log('Pet criado com sucesso:', data);
+      console.log('חיית מחמד נוצרה בהצלחה:', data);
       return { success: true, data };
     } catch (error) {
-      console.error('Erro ao criar pet:', error);
-      return { success: false, error: 'Erro interno do sistema' };
+      console.error('שגיאה ביצירת חיית מחמד:', error);
+      return { success: false, error: 'שגיאה פנימית במערכת' };
     }
   },
 
   async update(id, petData) {
     try {
-      console.log('Atualizando pet:', id, petData);
+      console.log('מעדכן חיית מחמד:', id, petData);
       
-      // Validação básica
+      // ולידציה בסיסית
       if (!petData.name || !petData.client_id) {
-        return { success: false, error: 'Nome e cliente são obrigatórios' };
+        return { success: false, error: 'שם ובעלים הם שדות חובה' };
       }
 
       const { data, error } = await supabase
@@ -137,15 +137,15 @@ export const PetService = {
         .single();
 
       if (error) {
-        console.error('Erro ao atualizar pet:', error);
-        return { success: false, error: `Erro ao atualizar pet: ${error.message}` };
+        console.error('שגיאה בעדכון חיית מחמד:', error);
+        return { success: false, error: `שגיאה בעדכון חיית המחמד: ${error.message}` };
       }
 
-      console.log('Pet atualizado com sucesso:', data);
+      console.log('חיית מחמד עודכנה בהצלחה:', data);
       return { success: true, data };
     } catch (error) {
-      console.error('Erro ao atualizar pet:', error);
-      return { success: false, error: 'Erro interno do sistema' };
+      console.error('שגיאה בעדכון חיית מחמד:', error);
+      return { success: false, error: 'שגיאה פנימית במערכת' };
     }
   },
 
@@ -159,8 +159,8 @@ export const PetService = {
       if (error) throw error;
       return { success: true };
     } catch (error) {
-      console.error('Erro ao deletar pet:', error);
-      return { success: false, error: 'Erro ao deletar pet' };
+      console.error('שגיאה במחיקת חיית מחמד:', error);
+      return { success: false, error: 'אירעה שגיאה במחיקה' };
     }
   },
 
@@ -195,7 +195,7 @@ export const PetService = {
       
       return petsWithClientId;
     } catch (error) {
-      console.error('Erro na busca:', error);
+      console.error('שגיאה בחיפוש:', error);
       return [];
     }
   },

@@ -30,6 +30,62 @@ const bannedPhrasesByFile = {
   'src/services/AppointmentService.js': [
     'Erro ao buscar consultas',
   ],
+  'src/contexts/AuthContext.js': [
+    'Usuário',
+    'Sessão',
+    'Perfil não existe',
+  ],
+  'src/services/ClientService.js': [
+    'Usuário não autenticado',
+    'Nome, email e telefone são obrigatórios',
+    'Email já cadastrado',
+  ],
+  'src/services/PetService.js': [
+    'Nome e cliente são obrigatórios',
+  ],
+  'src/services/ConsultationService.js': [
+    'Usuário não autenticado',
+    'Erro ao buscar estatísticas',
+  ],
+  'src/services/LibraryService.js': [
+    'Usuário não autenticado',
+  ],
+  'src/services/NotificationService.js': [
+    'Notificação',
+    'Notificações',
+  ],
+  'src/navigation/MainNavigator.js': [
+    'Biblioteca Veterinária',
+    'Início',
+  ],
+  'src/navigation/AppNavigator.js': [
+    'Inicializando aplicação',
+  ],
+  'src/screens/profile/ProfileScreen.js': [
+    'Backup e Restauração',
+    'Conta',
+    'Configurações',
+    'Ajuda e Suporte',
+  ],
+  'src/screens/profile/AboutScreen.js': [
+    'O que é o VetApp?',
+    'FAQ',
+    'Posso usar em múltiplos dispositivos?',
+  ],
+  'src/screens/pets/NewPetScreen.js': [
+    'Nome é obrigatório',
+    'Cliente é obrigatório',
+    'Espécie é obrigatória',
+    'Sexo é obrigatório',
+    'Novo Pet',
+    'Cadastrar Pet',
+  ],
+  'src/screens/clients/ClientListScreen.js': [
+    'Nenhum cliente encontrado',
+    'Excluir',
+    'Confirmar Exclusão',
+    'Carregando clientes',
+  ],
   'db/supabase.sql': [
     'Vacinação Anual',
   ],

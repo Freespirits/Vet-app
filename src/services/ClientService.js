@@ -5,11 +5,11 @@ export const ClientService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        console.error('Usuário não autenticado');
+        console.error('משתמש לא מחובר');
         return [];
       }
 
-      console.log('Buscando clientes para o usuário:', user.id);
+      console.log('טוען לקוחות עבור המשתמש:', user.id);
 
       const { data, error } = await supabase
         .from('clients_consultorio')
@@ -18,14 +18,14 @@ export const ClientService = {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Erro ao buscar clientes:', error);
+        console.error('שגיאה בשליפת לקוחות:', error);
         throw error;
       }
 
-      console.log(`${data?.length || 0} clientes encontrados`);
+      console.log(`${data?.length || 0} לקוחות נמצאו`);
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar clientes:', error);
+      console.error('שגיאה בשליפת לקוחות:', error);
       return [];
     }
   },
@@ -33,7 +33,7 @@ export const ClientService = {
   async getById(id) {
     try {
       if (!id) {
-        console.error('ID do cliente não fornecido');
+        console.error('מזהה לקוח לא סופק');
         return null;
       }
 
@@ -44,36 +44,34 @@ export const ClientService = {
         .single();
 
       if (error && error.code !== 'PGRST116') {
-        console.error('Erro ao buscar cliente por ID:', error);
+        console.error('שגיאה בשליפת לקוח לפי מזהה:', error);
         throw error;
       }
 
       return data || null;
     } catch (error) {
-      console.error('Erro ao buscar cliente:', error);
+      console.error('שגיאה בשליפת לקוח:', error);
       return null;
     }
   },
 
   async create(clientData) {
     try {
-      console.log('Iniciando criação de cliente...');
-      
+      console.log('מתחיל יצירת לקוח...');
+
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        console.error('Usuário não autenticado para criar cliente');
-        return { success: false, error: 'Usuário não autenticado' };
+        console.error('משתמש לא מחובר ליצירת לקוח');
+        return { success: false, error: 'המשתמש אינו מחובר' };
       }
 
-      console.log('Usuário autenticado:', user.id);
-      console.log('Dados do cliente:', clientData);
+      console.log('משתמש מאומת:', user.id);
+      console.log('נתוני הלקוח:', clientData);
 
-      // Validação básica
       if (!clientData.name || !clientData.email || !clientData.phone) {
-        return { success: false, error: 'Nome, email e telefone são obrigatórios' };
+        return { success: false, error: 'שם, אימייל וטלפון הם שדות חובה' };
       }
 
-      // Verificar se email já existe para este usuário
       const { data: existingClient } = await supabase
         .from('clients_consultorio')
         .select('id')
@@ -82,11 +80,10 @@ export const ClientService = {
         .maybeSingle();
 
       if (existingClient) {
-        console.log('Email já cadastrado:', clientData.email);
-        return { success: false, error: 'Email já cadastrado para este usuário' };
+        console.log('האימייל כבר קיים:', clientData.email);
+        return { success: false, error: 'האימייל כבר שמור למשתמש זה' };
       }
 
-      // Preparar dados para inserção
       const insertData = {
         user_id: user.id,
         name: clientData.name.trim(),
@@ -102,7 +99,7 @@ export const ClientService = {
         updated_at: new Date().toISOString(),
       };
 
-      console.log('Dados preparados para inserção:', insertData);
+      console.log('נתונים מוכנים להוספה:', insertData);
 
       const { data, error } = await supabase
         .from('clients_consultorio')
@@ -111,46 +108,43 @@ export const ClientService = {
         .single();
 
       if (error) {
-        console.error('Erro ao inserir cliente:', error);
-        
-        // Tratar erros específicos
+        console.error('שגיאה בהוספת לקוח:', error);
+
         if (error.code === '23505') {
-          return { success: false, error: 'Este email já está cadastrado' };
+          return { success: false, error: 'האימייל הזה כבר קיים' };
         }
-        
-        return { 
-          success: false, 
-          error: `Erro ao salvar cliente: ${error.message}` 
+
+        return {
+          success: false,
+          error: `שגיאה בשמירת הלקוח: ${error.message}`
         };
       }
 
-      console.log('Cliente criado com sucesso:', data);
+      console.log('לקוח נוצר בהצלחה:', data);
       return { success: true, data };
     } catch (error) {
-      console.error('Erro ao criar cliente:', error);
-      return { 
-        success: false, 
-        error: 'Erro interno do sistema. Tente novamente.' 
+      console.error('שגיאה ביצירת לקוח:', error);
+      return {
+        success: false,
+        error: 'שגיאה פנימית במערכת. נסה שוב.'
       };
     }
   },
 
   async update(id, clientData) {
     try {
-      console.log('Iniciando atualização de cliente:', id);
-      
+      console.log('מתחיל עדכון לקוח:', id);
+
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        console.error('Usuário não autenticado para atualizar cliente');
-        return { success: false, error: 'Usuário não autenticado' };
+        console.error('משתמש לא מחובר לעדכון לקוח');
+        return { success: false, error: 'המשתמש אינו מחובר' };
       }
 
-      // Validação básica
       if (!clientData.name || !clientData.email || !clientData.phone) {
-        return { success: false, error: 'Nome, email e telefone são obrigatórios' };
+        return { success: false, error: 'שם, אימייל וטלפון הם שדות חובה' };
       }
 
-      // Verificar se email já existe em outro cliente
       const { data: existingClient } = await supabase
         .from('clients_consultorio')
         .select('id')
@@ -160,11 +154,10 @@ export const ClientService = {
         .maybeSingle();
 
       if (existingClient) {
-        console.log('Email já cadastrado para outro cliente:', clientData.email);
-        return { success: false, error: 'Email já cadastrado para outro cliente' };
+        console.log('אימייל כבר קיים עבור לקוח אחר:', clientData.email);
+        return { success: false, error: 'האימייל כבר משויך ללקוח אחר' };
       }
 
-      // Preparar dados para atualização
       const updateData = {
         name: clientData.name.trim(),
         email: clientData.email.toLowerCase().trim(),
@@ -178,7 +171,7 @@ export const ClientService = {
         updated_at: new Date().toISOString(),
       };
 
-      console.log('Dados preparados para atualização:', updateData);
+      console.log('נתונים מוכנים לעדכון:', updateData);
 
       const { data, error } = await supabase
         .from('clients_consultorio')
@@ -189,53 +182,52 @@ export const ClientService = {
         .single();
 
       if (error) {
-        console.error('Erro ao atualizar cliente:', error);
-        
+        console.error('שגיאה בעדכון לקוח:', error);
+
         if (error.code === '23505') {
-          return { success: false, error: 'Este email já está cadastrado' };
+          return { success: false, error: 'האימייל הזה כבר קיים' };
         }
-        
-        return { 
-          success: false, 
-          error: `Erro ao atualizar cliente: ${error.message}` 
+
+        return {
+          success: false,
+          error: `שגיאה בעדכון הלקוח: ${error.message}`
         };
       }
 
       if (!data) {
-        return { success: false, error: 'Cliente não encontrado ou sem permissão para editar' };
+        return { success: false, error: 'הלקוח לא נמצא או שאין הרשאה לעריכה' };
       }
 
-      console.log('Cliente atualizado com sucesso:', data);
+      console.log('לקוח עודכן בהצלחה:', data);
       return { success: true, data };
     } catch (error) {
-      console.error('Erro ao atualizar cliente:', error);
-      return { 
-        success: false, 
-        error: 'Erro interno do sistema. Tente novamente.' 
+      console.error('שגיאה בעדכון לקוח:', error);
+      return {
+        success: false,
+        error: 'שגיאה פנימית במערכת. נסה שוב.'
       };
     }
   },
 
   async delete(id) {
     try {
-      console.log('Iniciando exclusão de cliente:', id);
-      
+      console.log('מתחיל מחיקת לקוח:', id);
+
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        console.error('Usuário não autenticado para deletar cliente');
-        return { success: false, error: 'Usuário não autenticado' };
+        console.error('משתמש לא מחובר למחיקת לקוח');
+        return { success: false, error: 'המשתמש אינו מחובר' };
       }
 
-      // Verificar se existem pets vinculados ao cliente
       const { data: pets } = await supabase
         .from('pets_consultorio')
         .select('id')
         .eq('client_id', id);
 
       if (pets && pets.length > 0) {
-        return { 
-          success: false, 
-          error: 'Não é possível excluir cliente com pets cadastrados. Exclua os pets primeiro.' 
+        return {
+          success: false,
+          error: 'לא ניתן למחוק לקוח עם חיות מחמד רשומות. יש למחוק את החיות תחילה.'
         };
       }
 
@@ -246,20 +238,20 @@ export const ClientService = {
         .eq('user_id', user.id);
 
       if (error) {
-        console.error('Erro ao deletar cliente:', error);
-        return { 
-          success: false, 
-          error: `Erro ao excluir cliente: ${error.message}` 
+        console.error('שגיאה במחיקת לקוח:', error);
+        return {
+          success: false,
+          error: `שגיאה במחיקת הלקוח: ${error.message}`
         };
       }
 
-      console.log('Cliente deletado com sucesso');
+      console.log('לקוח נמחק בהצלחה');
       return { success: true };
     } catch (error) {
-      console.error('Erro ao deletar cliente:', error);
-      return { 
-        success: false, 
-        error: 'Erro interno do sistema. Tente novamente.' 
+      console.error('שגיאה במחיקת לקוח:', error);
+      return {
+        success: false,
+        error: 'שגיאה פנימית במחיקת הלקוח'
       };
     }
   },
@@ -268,7 +260,7 @@ export const ClientService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        console.error('Usuário não autenticado para buscar clientes');
+        console.error('משתמש לא מחובר לחיפוש לקוחות');
         return [];
       }
 
@@ -280,13 +272,13 @@ export const ClientService = {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Erro na busca de clientes:', error);
+        console.error('שגיאה בחיפוש לקוחות:', error);
         throw error;
       }
 
       return data || [];
     } catch (error) {
-      console.error('Erro na busca:', error);
+      console.error('שגיאה בחיפוש:', error);
       return [];
     }
   },
@@ -302,7 +294,7 @@ export const ClientService = {
         .eq('user_id', user.id);
 
       if (error) {
-        console.error('Erro ao buscar estatísticas de clientes:', error);
+        console.error('שגיאה בשליפת נתוני לקוחות:', error);
         throw error;
       }
 
@@ -322,7 +314,7 @@ export const ClientService = {
         active: data.length,
       };
     } catch (error) {
-      console.error('Erro ao buscar estatísticas:', error);
+      console.error('שגיאה בשליפת סטטיסטיקות:', error);
       return { total: 0, thisMonth: 0, active: 0 };
     }
   }

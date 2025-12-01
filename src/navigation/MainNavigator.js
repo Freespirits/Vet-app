@@ -65,13 +65,13 @@ const ProfileHeader = ({ navigation, user }) => (
         
         <View style={styles.profileHeaderText}>
           <Text style={styles.profileHeaderName}>
-            {user?.name || 'Usuário'}
+            {user?.name || 'משתמש'}
           </Text>
           <Text style={styles.profileHeaderProfession}>
-            {user?.profession || 'Veterinário(a)'}
+            {user?.profession || 'וטרינר/ית'}
           </Text>
           <Text style={styles.profileHeaderClinic}>
-            📍 {user?.clinic || 'Clínica Veterinária'}
+            📍 {user?.clinic || 'מרפאה וטרינרית'}
           </Text>
         </View>
       </View>
@@ -116,7 +116,7 @@ const HomeStackNavigator = () => {
         name="NewConsultation" 
         component={NewConsultationScreen}
         options={{
-          title: 'Nova Consulta',
+          title: 'ייעוץ חדש',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: Colors.surface,
           headerTitleStyle: { fontWeight: 'bold' }
@@ -126,7 +126,7 @@ const HomeStackNavigator = () => {
         name="NewClient" 
         component={NewClientScreen}
         options={{
-          title: 'Novo Cliente',
+          title: 'לקוח חדש',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: Colors.surface,
           headerTitleStyle: { fontWeight: 'bold' }
@@ -136,7 +136,7 @@ const HomeStackNavigator = () => {
         name="NewPet" 
         component={NewPetScreen}
         options={{
-          title: 'Novo Pet',
+          title: 'חיית מחמד חדשה',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: Colors.surface,
           headerTitleStyle: { fontWeight: 'bold' }
@@ -146,7 +146,7 @@ const HomeStackNavigator = () => {
         name="NewAppointment" 
         component={NewAppointmentScreen}
         options={{
-          title: 'Novo Agendamento',
+          title: 'תור חדש',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: Colors.surface,
           headerTitleStyle: { fontWeight: 'bold' }
@@ -156,7 +156,7 @@ const HomeStackNavigator = () => {
         name="VetLibrary" 
         component={VetLibraryScreen}
         options={{
-          title: 'Biblioteca Veterinária',
+          title: 'הספרייה הווטרינרית',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: Colors.surface,
           headerTitleStyle: { fontWeight: 'bold' }
@@ -219,7 +219,7 @@ const ClientsStackNavigator = () => (
       name="NewClient" 
       component={NewClientScreen}
       options={{
-        title: 'Novo Cliente',
+        title: 'לקוח חדש',
         headerStyle: { backgroundColor: Colors.primary },
         headerTintColor: Colors.surface,
         headerTitleStyle: { fontWeight: 'bold' }
@@ -231,26 +231,26 @@ const ClientsStackNavigator = () => (
 // Stack Navigator para Pets
 const PetsStackNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen 
-      name="Voltar" 
-      component={PetListScreen} 
+    <Stack.Screen
+      name="Voltar"
+      component={PetListScreen}
       options={{ headerShown: false }}
     />
-    <Stack.Screen 
-      name="NewPet" 
+    <Stack.Screen
+      name="NewPet"
       component={NewPetScreen}
       options={{
-        title: 'Novo Pet',
+        title: 'חיית מחמד חדשה',
         headerStyle: { backgroundColor: Colors.primary },
         headerTintColor: Colors.surface,
         headerTitleStyle: { fontWeight: 'bold' }
       }}
     />
-    <Stack.Screen 
-      name="NewConsultation" 
+    <Stack.Screen
+      name="NewConsultation"
       component={NewConsultationScreen}
       options={{
-        title: 'Nova Consulta',
+        title: 'ייעוץ חדש',
         headerStyle: { backgroundColor: Colors.primary },
         headerTintColor: Colors.surface,
         headerTitleStyle: { fontWeight: 'bold' }
@@ -267,31 +267,31 @@ const AgendaStackNavigator = () => (
       component={AgendaScreen} 
       options={{ headerShown: false }}
     />
-    <Stack.Screen 
-      name="NewConsultation" 
+    <Stack.Screen
+      name="NewConsultation"
       component={NewConsultationScreen}
       options={{
-        title: 'Nova Consulta',
+        title: 'ייעוץ חדש',
         headerStyle: { backgroundColor: Colors.primary },
         headerTintColor: Colors.surface,
         headerTitleStyle: { fontWeight: 'bold' }
       }}
     />
-    <Stack.Screen 
-      name="NewAppointment" 
+    <Stack.Screen
+      name="NewAppointment"
       component={NewAppointmentScreen}
       options={{
-        title: 'Novo Agendamento',
+        title: 'תור חדש',
         headerStyle: { backgroundColor: Colors.primary },
         headerTintColor: Colors.surface,
         headerTitleStyle: { fontWeight: 'bold' }
       }}
     />
-    <Stack.Screen 
-      name="VetLibrary" 
+    <Stack.Screen
+      name="VetLibrary"
       component={VetLibraryScreen}
       options={{
-        title: 'Biblioteca Veterinária',
+        title: 'הספרייה הווטרינרית',
         headerStyle: { backgroundColor: Colors.primary },
         headerTintColor: Colors.surface,
         headerTitleStyle: { fontWeight: 'bold' }
@@ -357,41 +357,41 @@ const MainNavigator = () => (
       name="Home" 
       component={HomeStackNavigator} 
       options={{ 
-        title: 'Início',
+        title: 'בית',
         headerTitle: 'PetCare Pro'
-      }} 
+      }}
     />
-    <Tab.Screen 
-      name="Clients" 
-      component={ClientsStackNavigator} 
-      options={{ 
-        title: 'Clientes',
-        headerTitle: 'Clientes'
-      }} 
+    <Tab.Screen
+      name="Clients"
+      component={ClientsStackNavigator}
+      options={{
+        title: 'לקוחות',
+        headerTitle: 'לקוחות'
+      }}
     />
-    <Tab.Screen 
-      name="Pets" 
-      component={PetsStackNavigator} 
-      options={{ 
-        title: 'Pets',
-        headerTitle: 'Pets'
-      }} 
+    <Tab.Screen
+      name="Pets"
+      component={PetsStackNavigator}
+      options={{
+        title: 'חיות מחמד',
+        headerTitle: 'חיות מחמד'
+      }}
     />
-    <Tab.Screen 
-      name="Agenda" 
-      component={AgendaStackNavigator} 
-      options={{ 
-        title: 'Agenda',
-        headerTitle: 'Agenda'
-      }} 
+    <Tab.Screen
+      name="Agenda"
+      component={AgendaStackNavigator}
+      options={{
+        title: 'יומן',
+        headerTitle: 'יומן'
+      }}
     />
-    <Tab.Screen 
-      name="Library" 
-      component={VetLibraryScreen} 
-      options={{ 
-        title: 'Biblioteca',
-        headerTitle: 'Biblioteca Veterinária'
-      }} 
+    <Tab.Screen
+      name="Library"
+      component={VetLibraryScreen}
+      options={{
+        title: 'ספרייה',
+        headerTitle: 'הספרייה הווטרינרית'
+      }}
     />
   </Tab.Navigator>
 );
