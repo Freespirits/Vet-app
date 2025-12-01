@@ -99,3 +99,12 @@ test('Patient details view uses Hebrew labels', () => {
   assert.ok(content.includes('תצפיות'));
   assert.ok(!content.includes('Paciente não encontrado'));
 });
+
+test('Version info screen changelog is translated to Hebrew', () => {
+  const content = readFile('src/screens/profile/VersionInfoScreen.js');
+  assert.ok(content.includes('גרסת אפליקציה נוכחית'));
+  assert.ok(content.includes('יומן שינויים'));
+  assert.ok(content.includes('שיפור ביצועים כללי'));
+  assert.ok(!content.includes('Lançamento inicial do VetApp'));
+  assert.ok(!content.includes('Melhorias na sincronização de dados'));
+});
