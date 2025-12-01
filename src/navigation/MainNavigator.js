@@ -89,9 +89,9 @@ const HomeStackNavigator = () => {
   
   return (
     <Stack.Navigator>
-      <Stack.Screen 
-        name="Inicio" 
-        component={HomeScreen} 
+      <Stack.Screen
+        name="בית"
+        component={HomeScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen 
@@ -210,9 +210,9 @@ const HomeStackNavigator = () => {
 // Stack Navigator para Clientes
 const ClientsStackNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen 
-      name="Voltar" 
-      component={ClientListScreen} 
+    <Stack.Screen
+      name="רשימת לקוחות"
+      component={ClientListScreen}
       options={{ headerShown: false }}
     />
     <Stack.Screen 
@@ -232,7 +232,7 @@ const ClientsStackNavigator = () => (
 const PetsStackNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="Voltar"
+      name="רשימת חיות מחמד"
       component={PetListScreen}
       options={{ headerShown: false }}
     />
@@ -262,9 +262,9 @@ const PetsStackNavigator = () => (
 // Stack Navigator para Agenda
 const AgendaStackNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen 
-      name="Voltar" 
-      component={AgendaScreen} 
+    <Stack.Screen
+      name="רשימת פגישות"
+      component={AgendaScreen}
       options={{ headerShown: false }}
     />
     <Stack.Screen
@@ -353,12 +353,12 @@ const MainNavigator = () => (
       },
     })}
   >
-    <Tab.Screen 
-      name="Home" 
-      component={HomeStackNavigator} 
-      options={{ 
+    <Tab.Screen
+      name="Home"
+      component={HomeStackNavigator}
+      options={{
         title: 'בית',
-        headerTitle: 'PetCare Pro'
+        headerTitle: 'פטקייר פרו'
       }}
     />
     <Tab.Screen

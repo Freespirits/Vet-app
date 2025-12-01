@@ -343,8 +343,8 @@ const VetLibraryScreen = ({ navigation }) => {
               <Ionicons name="library" size={28} color={Colors.surface} />
             </View>
             <View>
-              <Text style={styles.headerTitle}>Biblioteca veterinaria</Text>
-              <Text style={styles.headerSubtitle}>תרופות, vacinas e protocolos em um so lugar.</Text>
+              <Text style={styles.headerTitle}>הספרייה הווטרינרית</Text>
+              <Text style={styles.headerSubtitle}>תרופות, חיסונים ופרוטוקולים במקום אחד.</Text>
             </View>
           </View>
         </View>
@@ -353,7 +353,7 @@ const VetLibraryScreen = ({ navigation }) => {
       {/* Search and Filter */}
       <View style={styles.searchContainer}>
         <SearchBar
-          placeholder="Buscar na biblioteca..."
+          placeholder="חיפוש בספרייה..."
           value={searchQuery}
           onChangeText={setSearchQuery}
           onClear={() => setSearchQuery('')}

@@ -111,7 +111,7 @@ const ClientListScreen = ({ navigation }) => {
         { text: 'סגירה' },
         { text: 'עריכה', onPress: () => navigation.navigate('NewClient', { clientId: client.id }) },
         { text: 'צפייה בחיות', onPress: () => navigation.navigate('Pets', {
-          screen: 'Voltar',
+          screen: 'רשימת חיות מחמד',
           params: { clientId: client.id }
         }) }
       ]

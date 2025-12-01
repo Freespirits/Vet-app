@@ -3,8 +3,8 @@ import { View, Text, ActivityIndicator } from 'react-native';
 import { Colors } from '../../constants/Colors';
 import { globalStyles } from '../../styles/globalStyles';
 
-const Loading = ({ 
-  message = 'Carregando...', 
+const Loading = ({
+  message = 'טוען...',
   size = 'large',
   color = Colors.primary,
   style,

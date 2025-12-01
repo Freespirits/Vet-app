@@ -187,7 +187,7 @@ const NewConsultationScreen = ({ navigation, route }) => {
         loadPetsForClient(selectedClientId);
       }
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao carregar dados');
+      Alert.alert('שגיאה', 'שגיאה בטעינת נתונים');
     }
   };
 
@@ -196,7 +196,7 @@ const NewConsultationScreen = ({ navigation, route }) => {
       const clientPets = await PetService.getByClientId(clientId);
       setAvailablePets(clientPets);
     } catch (error) {
-      console.error('Erro ao carregar pets do cliente:', error);
+      console.error('שגיאה בטעינת חיות מחמד של הלקוח:', error);
     }
   };
 
@@ -223,7 +223,7 @@ const NewConsultationScreen = ({ navigation, route }) => {
         });
       }
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao carregar dados da consulta');
+      Alert.alert('שגיאה', 'שגיאה בטעינת נתוני הייעוץ');
     } finally {
       setLoadingData(false);
     }
@@ -233,19 +233,19 @@ const NewConsultationScreen = ({ navigation, route }) => {
     const newErrors = {};
 
     if (!validateRequired(formData.clientId)) {
-      newErrors.clientId = 'Cliente é obrigatório';
+      newErrors.clientId = 'לקוח הוא שדה חובה';
     }
 
     if (!validateRequired(formData.petId)) {
-      newErrors.petId = 'Pet é obrigatório';
+      newErrors.petId = 'חיית מחמד היא שדה חובה';
     }
 
     if (!validateRequired(formData.type)) {
-      newErrors.type = 'Tipo de consulta é obrigatório';
+      newErrors.type = 'סוג ייעוץ הוא שדה חובה';
     }
 
     if (!validateRequired(formData.symptoms)) {
-      newErrors.symptoms = 'Sintomas são obrigatórios';
+      newErrors.symptoms = 'תסמינים הם שדה חובה';
     }
 
     setErrors(newErrors);
@@ -283,16 +283,16 @@ const NewConsultationScreen = ({ navigation, route }) => {
 
       if (result.success) {
         Alert.alert(
-          'Sucesso',
-          `Consulta ${isEditing ? 'atualizada' : 'registrada'} com sucesso!`,
-          [{ text: 'OK', onPress: () => navigation.goBack() }]
+          'הצלחה',
+          `${isEditing ? 'הייעוץ עודכן' : 'הייעוץ נרשם'} בהצלחה!`,
+          [{ text: 'אישור', onPress: () => navigation.goBack() }]
         );
       } else {
-        Alert.alert('Erro', result.error);
+        Alert.alert('שגיאה', result.error);
       }
     } catch (error) {
-      console.error('Erro ao salvar consulta:', error);
-      Alert.alert('Erro', 'Erro interno do sistema');
+      console.error('שגיאה בשמירת ייעוץ:', error);
+      Alert.alert('שגיאה', 'אירעה שגיאה פנימית במערכת');
     } finally {
       setLoading(false);
     }
@@ -321,7 +321,7 @@ const NewConsultationScreen = ({ navigation, route }) => {
     }
   };
 
-  // Preparar opções para os seletores
+  // הכנת אפשרויות לבוחרים
   const clientOptions = clients.map(client => ({
     id: client.id,
     name: client.name,
@@ -349,7 +349,7 @@ const NewConsultationScreen = ({ navigation, route }) => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>Carregando dados...</Text>
+          <Text style={styles.loadingText}>טוען נתונים...</Text>
         </View>
       </SafeAreaView>
     );
@@ -376,10 +376,10 @@ const NewConsultationScreen = ({ navigation, route }) => {
             </View>
             <View>
               <Text style={styles.headerTitle}>
-                {isEditing ? 'Editar Consulta' : 'Nova Consulta'}
+                {isEditing ? 'עריכת ייעוץ' : 'ייעוץ חדש'}
               </Text>
               <Text style={styles.headerSubtitle}>
-                {isEditing ? 'Atualize os dados da consulta' : 'Registre uma nova consulta'}
+                {isEditing ? 'עדכון פרטי הייעוץ' : 'יצירת ייעוץ חדש'}
               </Text>
             </View>
           </View>
@@ -395,18 +395,18 @@ const NewConsultationScreen = ({ navigation, route }) => {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Seção: Paciente */}
+          {/* מקטע מטופל */}
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Ionicons name="people" size={20} color={Colors.primary} />
-              <Text style={styles.sectionTitle}>Paciente</Text>
+              <Text style={styles.sectionTitle}>מטופל</Text>
             </View>
 
-            {/* Cliente */}
+            {/* לקוח */}
             <CustomSelector
-              label="Cliente"
+              label="לקוח"
               value={formData.clientId}
-              placeholder="Selecione o cliente"
+              placeholder="בחרו לקוח"
               options={clientOptions}
               onSelect={(value) => {
                 updateField('clientId', value);
@@ -427,11 +427,11 @@ const NewConsultationScreen = ({ navigation, route }) => {
               </View>
             )}
 
-            {/* Pet */}
+            {/* חיית מחמד */}
             <CustomSelector
-              label="Pet"
+              label="חיית מחמד"
               value={formData.petId}
-              placeholder="Selecione o pet"
+              placeholder="בחרו חיית מחמד"
               options={petOptions}
               onSelect={(value) => updateField('petId', value)}
               error={errors.petId}
@@ -445,16 +445,16 @@ const NewConsultationScreen = ({ navigation, route }) => {
               <View style={styles.infoBox}>
                 <Ionicons name="paw" size={16} color={Colors.secondary} />
                 <Text style={styles.infoText}>
-                  {selectedPet.species} • {selectedPet.breed || 'SRD'} • {selectedPet.gender}
+                  {selectedPet.species} • {selectedPet.breed || 'לא ידוע'} • {selectedPet.gender}
                 </Text>
               </View>
             )}
 
-            {/* Tipo de Consulta */}
+            {/* סוג ייעוץ */}
             <CustomSelector
-              label="Tipo de Consulta"
+              label="סוג ייעוץ"
               value={formData.type}
-              placeholder="Selecione o tipo de consulta"
+              placeholder="בחרו סוג ייעוץ"
               options={typeOptions}
               onSelect={(value) => updateField('type', value)}
               error={errors.type}
@@ -464,17 +464,17 @@ const NewConsultationScreen = ({ navigation, route }) => {
             />
           </View>
 
-          {/* Seção: Sinais Vitais */}
+          {/* סימנים חיוניים */}
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Ionicons name="fitness" size={20} color={Colors.success} />
-              <Text style={styles.sectionTitle}>Sinais Vitais</Text>
+              <Text style={styles.sectionTitle}>סימנים חיוניים</Text>
             </View>
 
             <View style={styles.row}>
               <View style={styles.halfWidth}>
                 <Input
-                  label="Peso (kg)"
+                  label="משקל (ק\"ג)"
                   value={formData.weight}
                   onChangeText={(value) => updateField('weight', value)}
                   placeholder="0.0"
@@ -484,7 +484,7 @@ const NewConsultationScreen = ({ navigation, route }) => {
               </View>
               <View style={styles.halfWidth}>
                 <Input
-                  label="Temperatura (°C)"
+                  label="טמפרטורה (°C)"
                   value={formData.temperature}
                   onChangeText={(value) => updateField('temperature', value)}
                   placeholder="0.0"
@@ -495,7 +495,7 @@ const NewConsultationScreen = ({ navigation, route }) => {
             </View>
 
             <Input
-              label="Frequência Cardíaca (bpm)"
+              label="דופק (bpm)"
               value={formData.heartRate}
               onChangeText={(value) => updateField('heartRate', value)}
               placeholder="0"
@@ -504,18 +504,18 @@ const NewConsultationScreen = ({ navigation, route }) => {
             />
           </View>
 
-          {/* Seção: Consulta */}
+          {/* נתוני ייעוץ */}
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Ionicons name="medical" size={20} color={Colors.error} />
-              <Text style={styles.sectionTitle}>Dados da Consulta</Text>
+              <Text style={styles.sectionTitle}>נתוני הייעוץ</Text>
             </View>
 
             <Input
-              label="Sintomas"
+              label="תסמינים"
               value={formData.symptoms}
               onChangeText={(value) => updateField('symptoms', value)}
-              placeholder="Descreva os sintomas apresentados pelo animal"
+              placeholder="תארו את התסמינים שהוצגו"
               multiline
               numberOfLines={3}
               error={errors.symptoms}
@@ -524,65 +524,65 @@ const NewConsultationScreen = ({ navigation, route }) => {
             />
 
             <Input
-              label="Diagnóstico"
+              label="אבחנה"
               value={formData.diagnosis}
               onChangeText={(value) => updateField('diagnosis', value)}
-              placeholder="Diagnóstico ou suspeita clínica"
+              placeholder="אבחנה או חשד קליני"
               multiline
               numberOfLines={3}
               autoCapitalize="sentences"
             />
 
             <Input
-              label="Tratamento"
+              label="טיפול"
               value={formData.treatment}
               onChangeText={(value) => updateField('treatment', value)}
-              placeholder="Tratamento realizado ou recomendado"
+              placeholder="טיפול שבוצע או מומלץ"
               multiline
               numberOfLines={3}
               autoCapitalize="sentences"
             />
 
             <Input
-              label="Prescrição"
+              label="מרשם"
               value={formData.prescription}
               onChangeText={(value) => updateField('prescription', value)}
-              placeholder="Medicamentos prescritos e posologia"
+              placeholder="תרופות ופרוטוקול מתן"
               multiline
               numberOfLines={3}
               autoCapitalize="sentences"
             />
 
             <Input
-              label="Observações"
+              label="הערות"
               value={formData.observations}
               onChangeText={(value) => updateField('observations', value)}
-              placeholder="Observações adicionais sobre a consulta"
+              placeholder="הערות נוספות על הייעוץ"
               multiline
               numberOfLines={2}
               autoCapitalize="sentences"
             />
           </View>
 
-          {/* Seção: Informações Adicionais */}
+          {/* מידע נוסף */}
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Ionicons name="information-circle" size={20} color={Colors.info} />
-              <Text style={styles.sectionTitle}>Informações Adicionais</Text>
+              <Text style={styles.sectionTitle}>מידע נוסף</Text>
             </View>
 
             <Input
-              label="Data de Retorno"
+              label="תאריך חזרה"
               value={formData.followUpDate}
               onChangeText={(value) => updateField('followUpDate', formatDateTimeInput(value))}
-              placeholder="DD/MM/AAAA HH:MM"
+              placeholder="DD/MM/YYYY HH:MM"
               keyboardType="numeric"
               leftIcon="calendar"
               maxLength={16}
             />
 
             <Input
-              label="Valor da Consulta (R$)"
+              label="עלות הייעוץ (₪)"
               value={formData.price}
               onChangeText={(value) => updateField('price', value)}
               placeholder="0.00"
@@ -591,31 +591,31 @@ const NewConsultationScreen = ({ navigation, route }) => {
             />
           </View>
 
-          {/* Resumo da Consulta */}
+          {/* סיכום הייעוץ */}
           {formData.clientId && formData.petId && formData.type && (
             <View style={styles.summarySection}>
               <View style={styles.summaryCard}>
                 <View style={styles.summaryHeader}>
                   <Ionicons name="checkmark-circle" size={24} color={Colors.success} />
-                  <Text style={styles.summaryTitle}>Resumo da Consulta</Text>
+                  <Text style={styles.summaryTitle}>סיכום הייעוץ</Text>
                 </View>
 
                 <View style={styles.summaryItem}>
-                  <Text style={styles.summaryLabel}>Tipo:</Text>
+                  <Text style={styles.summaryLabel}>סוג:</Text>
                   <Text style={styles.summaryValue}>{formData.type}</Text>
                 </View>
                 <View style={styles.summaryItem}>
-                  <Text style={styles.summaryLabel}>Cliente:</Text>
+                  <Text style={styles.summaryLabel}>לקוח:</Text>
                   <Text style={styles.summaryValue}>{selectedClient?.name}</Text>
                 </View>
                 <View style={styles.summaryItem}>
-                  <Text style={styles.summaryLabel}>Pet:</Text>
+                  <Text style={styles.summaryLabel}>חיית מחמד:</Text>
                   <Text style={styles.summaryValue}>{selectedPet?.name} ({selectedPet?.species})</Text>
                 </View>
                 {formData.price && (
                   <View style={styles.summaryItem}>
-                    <Text style={styles.summaryLabel}>Valor:</Text>
-                    <Text style={styles.summaryValue}>R$ {formData.price}</Text>
+                    <Text style={styles.summaryLabel}>עלות:</Text>
+                    <Text style={styles.summaryValue}>₪ {formData.price}</Text>
                   </View>
                 )}
               </View>
@@ -625,17 +625,17 @@ const NewConsultationScreen = ({ navigation, route }) => {
           <View style={styles.bottomSpacing} />
         </ScrollView>
 
-        {/* Botões de Ação */}
+        {/* פעולות */}
         <View style={styles.actionContainer}>
           <Button
-            title="Cancelar"
+            title="ביטול"
             variant="outline"
             onPress={() => navigation.goBack()}
             style={styles.cancelButton}
             disabled={loading}
           />
           <Button
-            title={isEditing ? 'Atualizar' : 'Registrar'}
+            title={isEditing ? 'עדכון' : 'שמירה'}
             onPress={handleSave}
             loading={loading}
             style={styles.saveButton}
