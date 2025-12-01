@@ -1,216 +1,216 @@
-# Guia de Compilação - PetCare Pro
+# מדריך הידור - PetCare Pro
 
-Este documento fornece instruções detalhadas para compilar e executar o aplicativo PetCare Pro em diferentes plataformas.
+מסמך זה מספק הוראות מפורטות לקימפול ולהפעלה של אפליקציית PetCare Pro על פני פלטפורמות שונות.
 
-## 📋 Pré-requisitos
+## 📋 דרישות מוקדמות
 
-### Ferramentas Obrigatórias
-- **Node.js**: versão 18.x ou superior
-- **npm** ou **yarn**: gerenciador de pacotes
+### כלים חובה
+- **Node.js**: גרסה 18.x או חדשה יותר
+- **npm** או **yarn**: מנהל חבילות
 - **Expo CLI**: `npm install -g @expo/cli`
-- **Git**: para controle de versão
+- **Git**: לניהול גרסאות
 
-### Para Desenvolvimento iOS
-- **macOS**: obrigatório para compilação iOS
-- **Xcode**: versão mais recente
-- **iOS Simulator**: incluído no Xcode
-- **Apple Developer Account**: para deploy em dispositivos físicos
+### לפיתוח iOS
+- **macOS**: נדרש לקימפול iOS
+- **Xcode**: הגרסה העדכנית
+- **iOS Simulator**: מגיע עם Xcode
+- **חשבון מפתח Apple**: לפריסה על מכשירים פיזיים
 
-### Para Desenvolvimento Android
-- **Android Studio**: com SDK e emuladores configurados
-- **Java Development Kit (JDK)**: versão 11 ou superior
-- **Android SDK**: API level 33 ou superior
+### לפיתוח Android
+- **Android Studio**: עם SDK ואמולטורים מוגדרים
+- **Java Development Kit (JDK)**: גרסה 11 או חדשה יותר
+- **Android SDK**: רמת API 33 או גבוהה יותר
 
-## 🚀 Configuração do Ambiente
+## 🚀 הגדרת הסביבה
 
-### 1. Clone o Repositório
+### 1. שכפול המאגר
 ```bash
 git clone https://github.com/PetCareAi/consultorio-app.git
 cd consultorio-app
 ```
 
-### 2. Instale as Dependências
+### 2. התקנת התלויות
 ```bash
 npm install
-# ou
+# או
 yarn install
 ```
 
-### 3. Configure o Banco de Dados
-Execute o script SQL fornecido em `db/supabase.sql` no seu projeto Supabase.
+### 3. הגדרת מסד הנתונים
+הריצו את סקריפט ה-SQL המסופק ב-`db/supabase.sql` בפרויקט ה-Supabase שלכם.
 
-### 4. Configure as Variáveis de Ambiente
-Crie um arquivo `.env` na raiz do projeto:
+### 4. הגדרת משתני סביבה
+צרו קובץ `.env` בשורש הפרויקט:
 ```env
 EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
 EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-## 🛠️ Processo de Compilação
+## 🛠️ תהליך הקימפול
 
-### Desenvolvimento Local
+### פיתוח מקומי
 ```bash
-# Inicia o servidor de desenvolvimento
+# מפעיל את שרת הפיתוח
 npx expo start
 
-# Para iOS
+# עבור iOS
 npx expo start --ios
 
-# Para Android
+# עבור Android
 npx expo start --android
 
-# Para Web
+# עבור Web
 npx expo start --web
 ```
 
-### Compilação para Produção
+### קימפול להפקה
 
-#### Usando EAS Build (Recomendado)
+#### שימוש ב-EAS Build (מומלץ)
 ```bash
-# Instala EAS CLI
+# התקנת EAS CLI
 npm install -g eas-cli
 
-# Login no Expo
+# התחברות ל-Expo
 eas login
 
-# Configura o projeto
+# הגדרת הפרויקט
 eas build:configure
 
-# Compila para Android
+# קימפול ל-Android
 eas build --platform android
 
-# Compila para iOS
+# קימפול ל-iOS
 eas build --platform ios
 
-# Compila para ambas as plataformas
+# קימפול לשתי הפלטפורמות
 eas build --platform all
 ```
 
-#### Compilação Local
+#### קימפול מקומי
 ```bash
-# Gera arquivos nativos
+# ייצור קבצים נטיביים
 npx expo prebuild
 
-# Para Android
+# עבור Android
 npx expo run:android
 
-# Para iOS
+# עבור iOS
 npx expo run:ios
 ```
 
-## 📱 Testando a Aplicação
+## 📱 בדיקת האפליקציה
 
-### Emuladores
+### אמולטורים
 ```bash
-# Inicia emulador Android
+# הפעלה באמולטור Android
 npx expo start --android
 
-# Inicia simulador iOS (macOS apenas)
+# הפעלה בסימולטור iOS (macOS בלבד)
 npx expo start --ios
 ```
 
-### Dispositivos Físicos
-1. Instale o app **Expo Go** no seu dispositivo
-2. Execute `npx expo start`
-3. Escaneie o QR code com a câmera (iOS) ou Expo Go (Android)
+### מכשירים פיזיים
+1. התקינו את האפליקציה **Expo Go** במכשיר
+2. הריצו `npx expo start`
+3. סרקו את קוד ה-QR עם המצלמה (iOS) או Expo Go (Android)
 
-## 🔧 Solução de Problemas
+## 🔧 פתרון בעיות
 
-### Limpar Cache
+### ניקוי Cache
 ```bash
-# Limpa cache do Expo
+# ניקוי cache של Expo
 npx expo start --clear
 
-# Limpa cache do npm
+# ניקוי cache של npm
 npm start -- --reset-cache
 
-# Limpa node_modules
+# ניקוי node_modules
 rm -rf node_modules
 npm install
 ```
 
-### Problemas de Dependências
+### בעיות בתלויות
 ```bash
-# Corrige dependências automaticamente
+# תיקון תלויות אוטומטי
 npx expo install --fix
 
-# Reinstala todas as dependências
+# התקנה מחדש של כל התלויות
 rm -rf node_modules package-lock.json
 npm install
 ```
 
-### Problemas com Builds
+### בעיות בקימפולים
 ```bash
-# Limpa builds anteriores
+# ניקוי קימפולים קודמים
 npx expo prebuild --clean
 
-# Reseta completamente o projeto
+# איפוס מלא של הפרויקט
 rm -rf .expo android ios
 npx expo prebuild
 ```
 
-## 📊 Métricas de Build
+## 📊 מדדי Build
 
-### Tamanhos de Bundle
-- **Android APK**: ~25-30 MB
-- **iOS IPA**: ~30-35 MB
-- **Web Bundle**: ~5-8 MB
+### גדלי Bundle
+- **Android APK**: כ-25-30 MB
+- **iOS IPA**: כ-30-35 MB
+- **Web Bundle**: כ-5-8 MB
 
-### Tempo de Compilação
-- **Desenvolvimento**: 30-60 segundos
-- **Produção Android**: 5-10 minutos
-- **Produção iOS**: 10-15 minutos
+### זמני קימפול
+- **פיתוח**: 30-60 שניות
+- **הפקת Android**: 5-10 דקות
+- **הפקת iOS**: 10-15 דקות
 
-## 🌐 Deploy para Lojas
+## 🌐 הפצה לחנויות
 
 ### Google Play Store
-1. Configure as assinaturas no EAS
-2. Execute `eas build --platform android --profile production`
-3. Faça upload do AAB gerado para o Play Console
+1. הגדירו חתימות ב-EAS
+2. הריצו `eas build --platform android --profile production`
+3. העלו את קובץ ה-AAB שנוצר ל-Play Console
 
 ### Apple App Store
-1. Configure certificados de distribuição
-2. Execute `eas build --platform ios --profile production`
-3. Use Xcode ou EAS Submit para enviar para a App Store
+1. הגדירו תעודות הפצה
+2. הריצו `eas build --platform ios --profile production`
+3. השתמשו ב-Xcode או ב-EAS Submit לשליחה ל-App Store
 
-## 🔄 Automação CI/CD
+## 🔄 אוטומציית CI/CD
 
 ### GitHub Actions
-O projeto inclui workflows para:
-- Testes automatizados
-- Build de desenvolvimento
-- Deploy automático
-- Análise de código
+הפרויקט כולל Workflows עבור:
+- בדיקות אוטומטיות
+- Build פיתוח
+- פריסה אוטומטית
+- ניתוח קוד
 
-### Scripts Disponíveis
+### סקריפטים זמינים
 ```bash
-# Desenvolvimento
+# פיתוח
 npm start
 
-# Testes
+# בדיקות
 npm test
 
-# Build de produção
+# Build להפקה
 npm run build:android
 npm run build:ios
 
 # Linting
 npm run lint
 
-# Formatação de código
+# פורמט קוד
 npm run format
 ```
 
-## 📚 Recursos Adicionais
+## 📚 משאבים נוספים
 
-- [Documentação do Expo](https://docs.expo.dev/)
-- [Documentação do React Native](https://reactnative.dev/)
-- [Guia EAS Build](https://docs.expo.dev/build/introduction/)
-- [Supabase Documentation](https://supabase.com/docs)
+- [תיעוד Expo](https://docs.expo.dev/)
+- [תיעוד React Native](https://reactnative.dev/)
+- [מדריך EAS Build](https://docs.expo.dev/build/introduction/)
+- [תיעוד Supabase](https://supabase.com/docs)
 
-## 🆘 Suporte
+## 🆘 תמיכה
 
-Se encontrar problemas durante a compilação:
-1. Verifique os [problemas conhecidos](./TROUBLESHOOTING.md)
-2. Consulte a [documentação de contribuição](./CONTRIBUTING.md)
-3. Abra uma issue no GitHub com detalhes do erro
+אם אתם נתקלים בבעיות במהלך הקימפול:
+1. בדקו את [הבעיות הידועות](./TROUBLESHOOTING.md)
+2. עיינו ב[תיעוד התרומה](./CONTRIBUTING.md)
+3. פתחו Issue ב-GitHub עם פרטי השגיאה

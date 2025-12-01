@@ -1,732 +1,732 @@
-# Requisitos do Sistema - PetCare Pro
-
-## Visão Geral
-
-O PetCare Pro é um sistema completo de gestão veterinária desenvolvido para dispositivos móveis, permitindo que veterinários gerenciem consultas, pacientes, agendamentos e mantenham um histórico médico completo dos animais atendidos.
-
-## Requisitos Funcionais
-
-### RF001 - Gestão de Usuários
-
-#### RF001.1 - Autenticação
-- **Descrição**: O sistema deve permitir o cadastro e login de veterinários
-- **Critérios de Aceitação**:
-  - Cadastro com email, senha, nome, profissão, clínica, CRMV e telefone
-  - Login com email e senha
-  - Validação de email único por usuário
-  - Recuperação de senha via email
-  - Logout seguro
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado
-
-#### RF001.2 - Perfil do Usuário
-- **Descrição**: O veterinário deve poder visualizar e editar suas informações pessoais
-- **Critérios de Aceitação**:
-  - Visualização do perfil completo
-  - Edição de dados pessoais e profissionais
-  - Alteração de senha
-  - Upload de foto de perfil
-- **Prioridade**: Média
-- **Status**: ✅ Implementado (exceto upload de foto)
-
-### RF002 - Gestão de Clientes
-
-#### RF002.1 - Cadastro de Clientes
-- **Descrição**: O sistema deve permitir o cadastro de proprietários de animais
-- **Critérios de Aceitação**:
-  - Campos obrigatórios: nome, email, telefone
-  - Campos opcionais: CPF, endereço completo, observações
-  - Validação de email único por veterinário
-  - Validação de CPF quando informado
-  - Formatação automática de telefone e CPF
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado
-
-#### RF002.2 - Listagem e Busca de Clientes
-- **Descrição**: O sistema deve permitir listar e buscar clientes cadastrados
-- **Critérios de Aceitação**:
-  - Listagem paginada de clientes
-  - Busca por nome, email, telefone ou CPF
-  - Ordenação por data de cadastro
-  - Contagem de pets por cliente
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado
-
-#### RF002.3 - Edição e Exclusão de Clientes
-- **Descrição**: O sistema deve permitir editar e excluir clientes
-- **Critérios de Aceitação**:
-  - Edição de todos os campos do cliente
-  - Exclusão apenas se não houver pets cadastrados
-  - Confirmação antes da exclusão
-  - Histórico de alterações
-- **Prioridade**: Média
-- **Status**: ✅ Implementado
-
-### RF003 - Gestão de Pets
-
-#### RF003.1 - Cadastro de Pets
-- **Descrição**: O sistema deve permitir o cadastro de animais de estimação
-- **Critérios de Aceitação**:
-  - Campos obrigatórios: nome, proprietário, espécie, sexo
-  - Campos opcionais: raça, data nascimento, peso, cor, microchip, observações
-  - Seleção de espécie com raças correspondentes
-  - Cálculo automático da idade
-  - Upload de foto do animal
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado (exceto upload de foto)
-
-#### RF003.2 - Listagem e Busca de Pets
-- **Descrição**: O sistema deve permitir listar e buscar pets cadastrados
-- **Critérios de Aceitação**:
-  - Listagem com informações do proprietário
-  - Busca por nome, espécie, raça ou microchip
-  - Filtro por proprietário
-  - Visualização da idade calculada
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado
-
-#### RF003.3 - Histórico Médico
-- **Descrição**: O sistema deve manter o histórico médico completo de cada pet
-- **Critérios de Aceitação**:
-  - Visualização de todas as consultas do animal
-  - Acesso rápido às últimas consultas
-  - Histórico de peso e sinais vitais
-  - Informações sobre vacinas e medicamentos
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado
-
-### RF004 - Gestão de Consultas
-
-#### RF004.1 - Registro de Consultas
-- **Descrição**: O sistema deve permitir registrar consultas veterinárias
-- **Critérios de Aceitação**:
-  - Campos obrigatórios: cliente, pet, tipo de consulta, sintomas
-  - Campos opcionais: diagnóstico, tratamento, prescrição, observações
-  - Registro de sinais vitais (peso, temperatura, frequência cardíaca)
-  - Data de retorno e valor da consulta
-  - Histórico automático por pet
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado
-
-#### RF004.2 - Tipos de Consulta
-- **Descrição**: O sistema deve suportar diferentes tipos de consulta
-- **Critérios de Aceitação**:
-  - Tipos pré-definidos: rotina, vacinação, emergência, cirurgia, etc.
-  - Possibilidade de consultas personalizadas
-  - Categorizaçao automática no histórico
-- **Prioridade**: Média
-- **Status**: ✅ Implementado
-
-#### RF004.3 - Edição de Consultas
-- **Descrição**: O sistema deve permitir editar consultas já registradas
-- **Critérios de Aceitação**:
-  - Edição de todos os campos da consulta
-  - Manutenção do histórico de alterações
-  - Notificação em caso de mudanças importantes
-- **Prioridade**: Média
-- **Status**: ✅ Implementado
-
-### RF005 - Sistema de Agendamento
-
-#### RF005.1 - Criar Agendamentos
-- **Descrição**: O sistema deve permitir agendar consultas futuras
-- **Critérios de Aceitação**:
-  - Seleção de cliente e pet
-  - Definição de data, hora e duração
-  - Tipos de agendamento (consulta, vacina, cirurgia, etc.)
-  - Status do agendamento (agendado, confirmado, em andamento, concluído, cancelado)
-  - Descrição opcional do agendamento
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado
-
-#### RF005.2 - Visualização da Agenda
-- **Descrição**: O sistema deve fornecer diferentes visualizações da agenda
-- **Critérios de Aceitação**:
-  - Visualização por dia, semana e mês
-  - Navegação entre períodos
-  - Código de cores por status
-  - Indicação de conflitos de horário
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado
-
-#### RF005.3 - Gestão de Agendamentos
-- **Descrição**: O sistema deve permitir gerenciar agendamentos existentes
-- **Critérios de Aceitação**:
-  - Edição de agendamentos futuros
-  - Cancelamento com motivo
-  - Reagendamento automático
-  - Conversão para consulta realizada
-- **Prioridade**: Média
-- **Status**: ✅ Implementado
-
-### RF006 - Biblioteca Veterinária
-
-#### RF006.1 - Gestão de Medicamentos
-- **Descrição**: O sistema deve permitir catalogar medicamentos veterinários
-- **Critérios de Aceitação**:
-  - Cadastro com nome, categoria, dosagem, frequência
-  - Contraindicações e observações
-  - Espécies aplicáveis
-  - Preço de referência
-- **Prioridade**: Média
-- **Status**: ✅ Implementado
-
-#### RF006.2 - Protocolos de Vacinação
-- **Descrição**: O sistema deve incluir protocolos de vacinas
-- **Critérios de Aceitação**:
-  - Vacinas por espécie animal
-  - Cronograma de aplicação
-  - Doenças prevenidas
-  - Reforços necessários
-- **Prioridade**: Média
-- **Status**: ✅ Implementado
-
-#### RF006.3 - Procedimentos Veterinários
-- **Descrição**: O sistema deve catalogar procedimentos comuns
-- **Critérios de Aceitação**:
-  - Lista de procedimentos com duração
-  - Preços de referência
-  - Protocolos de execução
-  - Cuidados pós-procedimento
-- **Prioridade**: Baixa
-- **Status**: ✅ Implementado
-
-### RF007 - Sistema de Notificações
-
-#### RF007.1 - Lembretes de Consulta
-- **Descrição**: O sistema deve enviar lembretes de consultas agendadas
-- **Critérios de Aceitação**:
-  - Notificação 24h antes da consulta
-  - Notificação 1h antes da consulta
-  - Possibilidade de personalizar horários
-  - Cancelamento automático se consulta for cancelada
-- **Prioridade**: Média
-- **Status**: 🟡 Parcialmente implementado (simulado)
-
-#### RF007.2 - Retornos e Vacinas
-- **Descrição**: O sistema deve lembrar sobre retornos e revacinações
-- **Critérios de Aceitação**:
-  - Cálculo automático de datas de retorno
-  - Lembretes de revacinação anual
-  - Notificações personalizáveis por tipo
-- **Prioridade**: Média
-- **Status**: 🟡 Parcialmente implementado
-
-#### RF007.3 - Configurações de Notificação
-- **Descrição**: O usuário deve poder configurar suas preferências de notificação
-- **Critérios de Aceitação**:
-  - Ativar/desativar tipos específicos
-  - Horários personalizados
-  - Canais de notificação (push, email)
-- **Prioridade**: Baixa
-- **Status**: ✅ Implementado
-
-### RF008 - Backup e Sincronização
-
-#### RF008.1 - Backup Local
-- **Descrição**: O sistema deve permitir backup dos dados localmente
-- **Critérios de Aceitação**:
-  - Backup manual de todos os dados
-  - Compressão e criptografia
-  - Listagem de backups disponíveis
-  - Restauração seletiva
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado
-
-#### RF008.2 - Sincronização em Nuvem
-- **Descrição**: Os dados devem ser sincronizados automaticamente
-- **Critérios de Aceitação**:
-  - Sincronização automática em tempo real
-  - Resolução de conflitos
-  - Funcionamento offline com sincronização posterior
-- **Prioridade**: Alta
-- **Status**: ✅ Implementado (via Supabase)
-
-### RF009 - Relatórios e Estatísticas
-
-#### RF009.1 - Dashboard Principal
-- **Descrição**: O sistema deve fornecer uma visão geral das atividades
-- **Critérios de Aceitação**:
-  - Consultas do dia/semana/mês
-  - Próximos agendamentos
-  - Pacientes recentes
-  - Estatísticas básicas
-- **Prioridade**: Média
-- **Status**: ✅ Implementado
-
-#### RF009.2 - Relatórios Detalhados
-- **Descrição**: O sistema deve gerar relatórios específicos
-- **Critérios de Aceitação**:
-  - Relatório por período
-  - Relatório por tipo de consulta
-  - Relatório financeiro
-  - Exportação em PDF/Excel
-- **Prioridade**: Baixa
-- **Status**: ❌ Não implementado
-
-### RF010 - Configurações e Preferências
-
-#### RF010.1 - Configurações Gerais
-- **Descrição**: O usuário deve poder personalizar o sistema
-- **Critérios de Aceitação**:
-  - Tema claro/escuro
-  - Idioma da interface
-  - Formato de data e hora
-  - Moeda padrão
-- **Prioridade**: Baixa
-- **Status**: 🟡 Parcialmente implementado
-
-#### RF010.2 - Configurações de Negócio
-- **Descrição**: O veterinário deve poder configurar aspectos do negócio
-- **Critérios de Aceitação**:
-  - Horário de funcionamento
-  - Valores padrão de consulta
-  - Templates de prescrição
-  - Assinatura digital
-- **Prioridade**: Baixa
-- **Status**: ❌ Não implementado
-
-## Requisitos Não Funcionais
-
-### RNF001 - Performance
-
-#### RNF001.1 - Tempo de Resposta
-- **Descrição**: O sistema deve ter tempos de resposta aceitáveis
-- **Critérios de Aceitação**:
-  - Carregamento inicial < 3 segundos
-  - Navegação entre telas < 1 segundo
-  - Operações CRUD < 2 segundos
-  - Busca de dados < 1 segundo
-- **Prioridade**: Alta
-- **Status**: ✅ Atendido
-
-#### RNF001.2 - Uso de Memória
-- **Descrição**: O aplicativo deve ter uso eficiente de memória
-- **Critérios de Aceitação**:
-  - Uso máximo de 150MB RAM
-  - Gerenciamento automático de cache
-  - Liberação de recursos não utilizados
-- **Prioridade**: Média
-- **Status**: ✅ Atendido
-
-#### RNF001.3 - Tamanho do Aplicativo
-- **Descrição**: O aplicativo deve ter tamanho otimizado
-- **Critérios de Aceitação**:
-  - Tamanho final < 50MB
-  - Assets otimizados
-  - Code splitting implementado
-- **Prioridade**: Média
-- **Status**: ✅ Atendido (~25MB)
-
-### RNF002 - Usabilidade
-
-#### RNF002.1 - Interface Intuitiva
-- **Descrição**: A interface deve ser fácil de usar
-- **Critérios de Aceitação**:
-  - Navegação clara e consistente
-  - Feedback visual para todas as ações
-  - Ícones e textos compreensíveis
-  - Padrão de design consistente
-- **Prioridade**: Alta
-- **Status**: ✅ Atendido
-
-#### RNF002.2 - Acessibilidade
-- **Descrição**: O sistema deve ser acessível a diferentes usuários
-- **Critérios de Aceitação**:
-  - Contraste adequado para leitura
-  - Tamanhos de fonte ajustáveis
-  - Suporte a leitores de tela
-  - Navegação por teclado
-- **Prioridade**: Média
-- **Status**: 🟡 Parcialmente atendido
-
-#### RNF002.3 - Responsividade
-- **Descrição**: O aplicativo deve funcionar em diferentes tamanhos de tela
-- **Critérios de Aceitação**:
-  - Suporte a smartphones (5" a 7")
-  - Suporte a tablets (8" a 12")
-  - Layout adaptativo
-  - Orientação portrait e landscape
-- **Prioridade**: Média
-- **Status**: ✅ Atendido
-
-### RNF003 - Segurança
-
-#### RNF003.1 - Autenticação Segura
-- **Descrição**: O sistema deve implementar autenticação robusta
-- **Critérios de Aceitação**:
-  - Senhas criptografadas
-  - Tokens JWT com expiração
-  - Logout automático por inatividade
-  - Tentativas de login limitadas
-- **Prioridade**: Alta
-- **Status**: ✅ Atendido
-
-#### RNF003.2 - Proteção de Dados
-- **Descrição**: Os dados devem estar protegidos contra acesso não autorizado
-- **Critérios de Aceitação**:
-  - Comunicação HTTPS
-  - Dados locais criptografados
-  - Backup criptografado
-  - Sanitização de entrada de dados
-- **Prioridade**: Alta
-- **Status**: ✅ Atendido
-
-#### RNF003.3 - Privacidade
-- **Descrição**: O sistema deve respeitar a privacidade dos dados
-- **Critérios de Aceitação**:
-  - Conformidade com LGPD
-  - Política de privacidade clara
-  - Consentimento explícito para coleta
-  - Direito de exclusão de dados
-- **Prioridade**: Alta
-- **Status**: ✅ Atendido
-
-### RNF004 - Confiabilidade
-
-#### RNF004.1 - Disponibilidade
-- **Descrição**: O sistema deve estar disponível quando necessário
-- **Critérios de Aceitação**:
-  - Funcionamento offline básico
-  - Sincronização automática quando online
-  - Recuperação de falhas automática
-  - Uptime > 99% (servidor)
-- **Prioridade**: Alta
-- **Status**: ✅ Atendido
-
-#### RNF004.2 - Integridade dos Dados
-- **Descrição**: Os dados devem permanecer íntegros e consistentes
-- **Critérios de Aceitação**:
-  - Validação de dados em múltiplas camadas
-  - Transações atômicas no banco
-  - Verificação de integridade em backups
-  - Logs de auditoria para alterações críticas
-- **Prioridade**: Alta
-- **Status**: ✅ Atendido
-
-#### RNF004.3 - Recuperação de Falhas
-- **Descrição**: O sistema deve se recuperar graciosamente de falhas
-- **Critérios de Aceitação**:
-  - Tratamento de erros sem crash
-  - Mensagens de erro informativas
-  - Retry automático para falhas de rede
-  - Estado consistente após recuperação
-- **Prioridade**: Alta
-- **Status**: ✅ Atendido
-
-### RNF005 - Compatibilidade
-
-#### RNF005.1 - Sistemas Operacionais
-- **Descrição**: O aplicativo deve funcionar nos principais SOs mobile
-- **Critérios de Aceitação**:
-  - iOS 12.0 ou superior
-  - Android 6.0 (API 23) ou superior
-  - Funcionalidades nativas de cada plataforma
-  - Look and feel nativo
-- **Prioridade**: Alta
-- **Status**: ✅ Atendido
-
-#### RNF005.2 - Dispositivos
-- **Descrição**: Suporte a diferentes tipos de dispositivos
-- **Critérios de Aceitação**:
-  - Smartphones com 2GB+ RAM
-  - Tablets com tela 8" ou superior
-  - Dispositivos com câmera (para fotos)
-  - Armazenamento mínimo 1GB disponível
-- **Prioridade**: Média
-- **Status**: ✅ Atendido
-
-#### RNF005.3 - Conectividade
-- **Descrição**: O sistema deve funcionar com diferentes tipos de conexão
-- **Critérios de Aceitação**:
-  - WiFi de diferentes velocidades
-  - Dados móveis 3G/4G/5G
-  - Modo offline para funcionalidades básicas
-  - Sincronização inteligente
-- **Prioridade**: Alta
-- **Status**: ✅ Atendido
-
-### RNF006 - Manutenibilidade
-
-#### RNF006.1 - Código Limpo
-- **Descrição**: O código deve ser mantível e extensível
-- **Critérios de Aceitação**:
-  - Arquitetura modular bem definida
-  - Separação clara de responsabilidades
-  - Documentação adequada
-  - Padrões de codificação consistentes
-- **Prioridade**: Média
-- **Status**: ✅ Atendido
-
-#### RNF006.2 - Versionamento
-- **Descrição**: O sistema deve suportar atualizações controladas
-- **Critérios de Aceitação**:
-  - Versionamento semântico
-  - Migrações de dados automáticas
-  - Rollback em caso de problemas
-  - Atualizações incrementais
-- **Prioridade**: Média
-- **Status**: ✅ Atendido
-
-#### RNF006.3 - Monitoramento
-- **Descrição**: O sistema deve permitir monitoramento de saúde
-- **Critérios de Aceitação**:
-  - Logs estruturados
-  - Métricas de performance
-  - Alertas para erros críticos
-  - Dashboard de monitoramento
-- **Prioridade**: Baixa
-- **Status**: 🟡 Parcialmente atendido
-
-### RNF007 - Escalabilidade
-
-#### RNF007.1 - Crescimento de Usuários
-- **Descrição**: O sistema deve suportar crescimento no número de usuários
-- **Critérios de Aceitação**:
-  - Suporte a 1000+ veterinários simultâneos
-  - Performance mantida com crescimento
-  - Recursos dimensionáveis
-  - Load balancing automático (backend)
-- **Prioridade**: Média
-- **Status**: ✅ Atendido (via Supabase)
-
-#### RNF007.2 - Volume de Dados
-- **Descrição**: O sistema deve gerenciar grandes volumes de dados
-- **Critérios de Aceitação**:
-  - Suporte a 100k+ registros por veterinário
-  - Consultas otimizadas
-  - Paginação eficiente
-  - Arquivamento automático de dados antigos
-- **Prioridade**: Média
-- **Status**: ✅ Atendido
-
-## Requisitos de Interface
+# דרישות מערכת - PetCare Pro
+
+## סקירה כללית
+
+PetCare Pro הוא מערכת ניהול וטרינרית מלאה למובייל, שמאפשרת לווטרינרים לנהל פגישות, מטופלים, יומן והיסטוריה רפואית מלאה של חיות המחמד.
+
+## דרישות פונקציונליות
+
+### RF001 - ניהול משתמשים
+
+#### RF001.1 - אימות
+- **תיאור**: המערכת חייבת לאפשר הרשמה והתחברות של וטרינרים
+- **קריטריוני קבלה**:
+  - הרשמה עם אימייל, סיסמה, שם, מקצוע, מרפאה, CRMV וטלפון
+  - התחברות עם אימייל וסיסמה
+  - אימות ייחודיות אימייל לכל משתמש
+  - שחזור סיסמה דרך אימייל
+  - התנתקות מאובטחת
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם
+
+#### RF001.2 - פרופיל משתמש
+- **תיאור**: הווטרינר צריך לצפות ולעדכן מידע אישי
+- **קריטריוני קבלה**:
+  - צפייה בפרופיל מלא
+  - עריכת פרטים אישיים ומקצועיים
+  - שינוי סיסמה
+  - העלאת תמונת פרופיל
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מיושם (למעט העלאת תמונה)
+
+### RF002 - ניהול לקוחות
+
+#### RF002.1 - רישום לקוחות
+- **תיאור**: המערכת חייבת לאפשר רישום בעלי חיות
+- **קריטריוני קבלה**:
+  - שדות חובה: שם, אימייל, טלפון
+  - שדות אופציונליים: CPF, כתובת מלאה, הערות
+  - אימות ייחודיות אימייל לכל וטרינר
+  - אימות CPF כאשר קיים
+  - פורמט אוטומטי לטלפון ו-CPF
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם
+
+#### RF002.2 - רשימה וחיפוש לקוחות
+- **תיאור**: המערכת חייבת לאפשר רשימה וחיפוש של לקוחות
+- **קריטריוני קבלה**:
+  - רשימה עם עימוד
+  - חיפוש לפי שם, אימייל, טלפון או CPF
+  - מיון לפי תאריך רישום
+  - ספירת חיות לכל לקוח
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם
+
+#### RF002.3 - עריכה ומחיקה של לקוחות
+- **תיאור**: המערכת חייבת לאפשר עריכת ומחיקת לקוחות
+- **קריטריוני קבלה**:
+  - עריכת כל שדות הלקוח
+  - מחיקה רק ללא חיות מחמד משויכות
+  - אישור לפני מחיקה
+  - היסטוריית שינויים
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מיושם
+
+### RF003 - ניהול חיות מחמד
+
+#### RF003.1 - רישום חיות
+- **תיאור**: המערכת חייבת לאפשר רישום חיות מחמד
+- **קריטריוני קבלה**:
+  - שדות חובה: שם, בעלים, מין ביולוגי, מין/סוג
+  - שדות אופציונליים: גזע, תאריך לידה, משקל, צבע, שבב, הערות
+  - בחירת מין עם גזעים מתאימים
+  - חישוב אוטומטי של גיל
+  - העלאת תמונת חיה
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם (למעט העלאת תמונה)
+
+#### RF003.2 - רשימה וחיפוש חיות
+- **תיאור**: המערכת חייבת לאפשר רשימה וחיפוש של חיות מחמד
+- **קריטריוני קבלה**:
+  - רשימה עם פרטי הבעלים
+  - חיפוש לפי שם, מין, גזע או שבב
+  - פילטר לפי בעלים
+  - הצגת גיל מחושב
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם
+
+#### RF003.3 - היסטוריה רפואית
+- **תיאור**: המערכת חייבת לשמור היסטוריה רפואית מלאה לכל חיה
+- **קריטריוני קבלה**:
+  - צפייה בכל הביקורים של החיה
+  - גישה מהירה לביקורים האחרונים
+  - היסטוריית משקל וסימנים חיוניים
+  - מידע על חיסונים ותרופות
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם
+
+### RF004 - ניהול ביקורים
+
+#### RF004.1 - רישום ביקורים
+- **תיאור**: המערכת חייבת לאפשר רישום ביקורים וטרינריים
+- **קריטריוני קבלה**:
+  - שדות חובה: לקוח, חיה, סוג ביקור, סימפטומים
+  - שדות אופציונליים: אבחנה, טיפול, מרשם, הערות
+  - רישום סימנים חיוניים (משקל, חום, דופק)
+  - תאריך חזרה ומחיר ביקור
+  - היסטוריה אוטומטית לפי חיה
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם
+
+#### RF004.2 - סוגי ביקור
+- **תיאור**: המערכת צריכה לתמוך בסוגי ביקור שונים
+- **קריטריוני קבלה**:
+  - סוגים מוגדרים מראש: שגרה, חיסון, חירום, ניתוח וכו'
+  - אפשרות לביקורים מותאמים
+  - קטלוג אוטומטי בהיסטוריה
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מיושם
+
+#### RF004.3 - עריכת ביקורים
+- **תיאור**: המערכת חייבת לאפשר עריכת ביקורים רשומים
+- **קריטריוני קבלה**:
+  - עריכת כל שדות הביקור
+  - שמירת היסטוריית שינויים
+  - הודעה במקרה של שינוי חשוב
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מיושם
+
+### RF005 - מערכת יומן
+
+#### RF005.1 - יצירת תורים
+- **תיאור**: המערכת חייבת לאפשר קביעת ביקורים עתידיים
+- **קריטריוני קבלה**:
+  - בחירת לקוח וחיה
+  - הגדרת תאריך, שעה ומשך
+  - סוגי תור (ביקור, חיסון, ניתוח וכו')
+  - סטטוס (מתוזמן, מאושר, בתהליך, הושלם, בוטל)
+  - תיאור אופציונלי
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם
+
+#### RF005.2 - צפייה ביומן
+- **תיאור**: המערכת צריכה לספק תצוגות יומן שונות
+- **קריטריוני קבלה**:
+  - תצוגת יום, שבוע וחודש
+  - ניווט בין תקופות
+  - קוד צבע לסטטוס
+  - סימון התנגשות בזמנים
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם
+
+#### RF005.3 - ניהול תורים
+- **תיאור**: המערכת חייבת לאפשר ניהול של תורים קיימים
+- **קריטריוני קבלה**:
+  - עריכת תורים עתידיים
+  - ביטול עם סיבה
+  - קביעת מועד חדש אוטומטית
+  - המרה לביקור שבוצע
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מיושם
+
+### RF006 - ספרייה וטרינרית
+
+#### RF006.1 - ניהול תרופות
+- **תיאור**: המערכת חייבת לאפשר קטלוג תרופות וטרינריות
+- **קריטריוני קבלה**:
+  - רישום שם, קטגוריה, מינון, תדירות
+  - התוויות נגד והערות
+  - מינים מתאימים
+  - מחיר ייחוס
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מיושם
+
+#### RF006.2 - פרוטוקולי חיסון
+- **תיאור**: המערכת חייבת לכלול פרוטוקולי חיסון
+- **קריטריוני קבלה**:
+  - חיסונים לפי מין חיה
+  - לוח זמנים
+  - מחלות מניעתיות
+  - צורך בבוסטרים
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מיושם
+
+#### RF006.3 - פרוצדורות וטרינריות
+- **תיאור**: המערכת חייבת לקטלג פרוצדורות נפוצות
+- **קריטריוני קבלה**:
+  - רשימת פרוצדורות עם משך
+  - מחירי ייחוס
+  - פרוטוקולי ביצוע
+  - הנחיות לאחר פרוצדורה
+- **עדיפות**: נמוכה
+- **סטטוס**: ✅ מיושם
+
+### RF007 - מערכת התראות
+
+#### RF007.1 - תזכורות ביקור
+- **תיאור**: המערכת חייבת לשלוח תזכורות לביקורים מתוזמנים
+- **קריטריוני קבלה**:
+  - התראה 24 שעות לפני
+  - התראה שעה לפני
+  - אפשרות התאמה אישית
+  - ביטול אוטומטי אם הביקור בוטל
+- **עדיפות**: בינונית
+- **סטטוס**: 🟡 מיושם חלקית (סימולציה)
+
+#### RF007.2 - חזרות וחיסונים
+- **תיאור**: המערכת חייבת להזכיר חזרות וחיסונים חוזרים
+- **קריטריוני קבלה**:
+  - חישוב אוטומטי של תאריכי חזרה
+  - תזכורות חיסון שנתיות
+  - התראות מותאמות לפי סוג
+- **עדיפות**: בינונית
+- **סטטוס**: 🟡 מיושם חלקית
+
+#### RF007.3 - הגדרות התראה
+- **תיאור**: המשתמש צריך להגדיר העדפות התראה
+- **קריטריוני קבלה**:
+  - הפעלה/כיבוי של סוגים ספציפיים
+  - זמני התראה מותאמים
+  - ערוצי התראה (Push, אימייל)
+- **עדיפות**: נמוכה
+- **סטטוס**: ✅ מיושם
+
+### RF008 - גיבוי וסנכרון
+
+#### RF008.1 - גיבוי מקומי
+- **תיאור**: המערכת חייבת לאפשר גיבוי מקומי של נתונים
+- **קריטריוני קבלה**:
+  - גיבוי ידני מלא
+  - דחיסה והצפנה
+  - רשימת גיבויים זמינים
+  - שחזור סלקטיבי
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם
+
+#### RF008.2 - סנכרון בענן
+- **תיאור**: הנתונים חייבים להסתנכרן אוטומטית
+- **קריטריוני קבלה**:
+  - סנכרון אוטומטי בזמן אמת
+  - פתרון קונפליקטים
+  - עבודה אופליין עם סנכרון מאוחר
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מיושם (Supabase)
+
+### RF009 - דוחות וסטטיסטיקה
+
+#### RF009.1 - לוח ראשי
+- **תיאור**: המערכת חייבת לספק מבט על הפעילות
+- **קריטריוני קבלה**:
+  - ביקורים ליום/שבוע/חודש
+  - תורים קרובים
+  - מטופלים חדשים
+  - סטטיסטיקות בסיסיות
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מיושם
+
+#### RF009.2 - דוחות מפורטים
+- **תיאור**: המערכת חייבת ליצור דוחות ייעודיים
+- **קריטריוני קבלה**:
+  - דוחות לפי תקופה
+  - דוחות לפי סוג ביקור
+  - דוח כספי
+  - ייצוא PDF/Excel
+- **עדיפות**: נמוכה
+- **סטטוס**: ❌ לא מיושם
+
+### RF010 - הגדרות והעדפות
+
+#### RF010.1 - הגדרות כלליות
+- **תיאור**: המשתמש צריך להתאים אישית את המערכת
+- **קריטריוני קבלה**:
+  - מצב בהיר/כהה
+  - שפת ממשק
+  - פורמט תאריך ושעה
+  - מטבע ברירת מחדל
+- **עדיפות**: נמוכה
+- **סטטוס**: 🟡 מיושם חלקית
+
+#### RF010.2 - הגדרות עסקיות
+- **תיאור**: הווטרינר צריך להגדיר מאפיינים עסקיים
+- **קריטריוני קבלה**:
+  - שעות פעילות
+  - מחירי ביקור ברירת מחדל
+  - תבניות מרשם
+  - חתימה דיגיטלית
+- **עדיפות**: נמוכה
+- **סטטוס**: ❌ לא מיושם
+
+## דרישות לא-פונקציונליות
+
+### RNF001 - ביצועים
+
+#### RNF001.1 - זמני תגובה
+- **תיאור**: המערכת חייבת לספק זמני תגובה מהירים
+- **קריטריוני קבלה**:
+  - טעינה ראשונית < 3 שניות
+  - ניווט בין מסכים < 1 שנייה
+  - פעולות CRUD < 2 שניות
+  - חיפוש נתונים < 1 שנייה
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מתקיים
+
+#### RNF001.2 - שימוש בזיכרון
+- **תיאור**: האפליקציה חייבת להשתמש בזיכרון ביעילות
+- **קריטריוני קבלה**:
+  - שימוש מקסימלי 150MB RAM
+  - ניהול Cache אוטומטי
+  - שחרור משאבים שאינם בשימוש
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מתקיים
+
+#### RNF001.3 - גודל האפליקציה
+- **תיאור**: האפליקציה צריכה להיות קטנה
+- **קריטריוני קבלה**:
+  - גודל סופי < 50MB
+  - אופטימיזציה לנכסים
+  - Code Splitting
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מתקיים (~25MB)
+
+### RNF002 - שימושיות
+
+#### RNF002.1 - ממשק אינטואיטיבי
+- **תיאור**: הממשק חייב להיות פשוט לשימוש
+- **קריטריוני קבלה**:
+  - ניווט ברור ועקבי
+  - משוב חזותי לכל פעולה
+  - אייקונים וטקסטים ברורים
+  - דפוס עיצוב אחיד
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מתקיים
+
+#### RNF002.2 - נגישות
+- **תיאור**: המערכת חייבת להיות נגישה למגוון משתמשים
+- **קריטריוני קבלה**:
+  - ניגודיות מתאימה
+  - גדלי גופן מתכווננים
+  - תמיכה בקוראי מסך
+  - ניווט באמצעות מקלדת
+- **עדיפות**: בינונית
+- **סטטוס**: 🟡 מתקיים חלקית
+
+#### RNF002.3 - רספונסיביות
+- **תיאור**: האפליקציה חייבת לפעול במגוון גדלי מסך
+- **קריטריוני קבלה**:
+  - תמיכה בסמארטפונים (5" עד 7")
+  - תמיכה בטאבלטים (8" עד 12")
+  - פריסות מותאמות
+  - מצב אנכי ואופקי
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מתקיים
+
+### RNF003 - אבטחה
+
+#### RNF003.1 - אימות מאובטח
+- **תיאור**: המערכת חייבת ליישם אימות חזק
+- **קריטריוני קבלה**:
+  - סיסמאות מוצפנות
+  - אסימוני JWT עם תפוגה
+  - התנתקות אוטומטית בחוסר פעילות
+  - הגבלת ניסיונות התחברות
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מתקיים
+
+#### RNF003.2 - הגנת נתונים
+- **תיאור**: הנתונים חייבים להיות מוגנים מגישה לא מורשית
+- **קריטריוני קבלה**:
+  - תקשורת HTTPS
+  - נתונים מקומיים מוצפנים
+  - גיבוי מוצפן
+  - סניטציה של קלט
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מתקיים
+
+#### RNF003.3 - פרטיות
+- **תיאור**: המערכת חייבת לשמור על פרטיות הנתונים
+- **קריטריוני קבלה**:
+  - תאימות ל-LGPD
+  - מדיניות פרטיות ברורה
+  - הסכמה מפורשת לאיסוף
+  - זכות למחיקת נתונים
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מתקיים
+
+### RNF004 - אמינות
+
+#### RNF004.1 - זמינות
+- **תיאור**: המערכת חייבת להיות זמינה בעת הצורך
+- **קריטריוני קבלה**:
+  - פעילות בסיסית אופליין
+  - סנכרון אוטומטי בעת חיבור
+  - התאוששות אוטומטית מתקלות
+  - זמינות שרת > 99%
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מתקיים
+
+#### RNF004.2 - שלמות נתונים
+- **תיאור**: הנתונים חייבים להישאר שלמים ועקביים
+- **קריטריוני קבלה**:
+  - ולידציה במספר שכבות
+  - עסקאות אטומיות בבסיס הנתונים
+  - בדיקת שלמות בגיבויים
+  - לוג ביקורת לשינויים קריטיים
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מתקיים
+
+#### RNF004.3 - התאוששות מתקלות
+- **תיאור**: המערכת חייבת להתאושש בחן מתקלות
+- **קריטריוני קבלה**:
+  - טיפול שגיאות בלי קריסות
+  - הודעות שגיאה אינפורמטיביות
+  - ניסיונות חוזרים אוטומטיים לכשלי רשת
+  - מצב עקבי לאחר התאוששות
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מתקיים
+
+### RNF005 - תאימות
+
+#### RNF005.1 - מערכות הפעלה
+- **תיאור**: האפליקציה חייבת לפעול במערכות מובייל מרכזיות
+- **קריטריוני קבלה**:
+  - iOS 12.0 ומעלה
+  - Android 6.0 (API 23) ומעלה
+  - תמיכה בפיצ'רים מקוריים
+  - מראה ותחושה מקוריים
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מתקיים
+
+#### RNF005.2 - מכשירים
+- **תיאור**: תמיכה במגוון מכשירים
+- **קריטריוני קבלה**:
+  - סמארטפונים עם 2GB+ RAM
+  - טאבלטים עם מסך 8" ומעלה
+  - מכשירים עם מצלמה (לתמונות)
+  - אחסון פנוי מינימלי 1GB
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מתקיים
+
+#### RNF005.3 - קישוריות
+- **תיאור**: המערכת חייבת לפעול עם סוגי חיבור שונים
+- **קריטריוני קבלה**:
+  - WiFi במהירויות שונות
+  - רשת סלולרית 3G/4G/5G
+  - מצב אופליין לפעולות בסיסיות
+  - סנכרון חכם
+- **עדיפות**: גבוהה
+- **סטטוס**: ✅ מתקיים
+
+### RNF006 - תחזוקתיות
+
+#### RNF006.1 - קוד נקי
+- **תיאור**: הקוד חייב להיות ניתן לתחזוקה ולהרחבה
+- **קריטריוני קבלה**:
+  - ארכיטקטורה מודולרית
+  - הפרדת אחריות ברורה
+  - תיעוד מתאים
+  - סטנדרטי קוד עקביים
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מתקיים
+
+#### RNF006.2 - ניהול גרסאות
+- **תיאור**: המערכת צריכה לתמוך בעדכונים מבוקרים
+- **קריטריוני קבלה**:
+  - ניהול גרסאות סמנטי
+  - מיגרציות נתונים אוטומטיות
+  - Rollback במקרה בעיות
+  - עדכונים מדורגים
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מתקיים
+
+#### RNF006.3 - ניטור
+- **תיאור**: המערכת צריכה לאפשר ניטור מצב בריאות
+- **קריטריוני קבלה**:
+  - לוגים מובנים
+  - מדדי ביצועים
+  - התראות לשגיאות קריטיות
+  - Dashboard ניטור
+- **עדיפות**: נמוכה
+- **סטטוס**: 🟡 מתקיים חלקית
+
+### RNF007 - סקיילביליות
+
+#### RNF007.1 - גדילת משתמשים
+- **תיאור**: המערכת חייבת לתמוך בצמיחה בכמות המשתמשים
+- **קריטריוני קבלה**:
+  - תמיכה ב-1000+ וטרינרים במקביל
+  - שמירת ביצועים גם עם גדילה
+  - משאבים ניתנים להרחבה
+  - איזון עומסים אוטומטי (Backend)
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מתקיים (Supabase)
+
+#### RNF007.2 - נפח נתונים
+- **תיאור**: המערכת צריכה לנהל נפחי נתונים גדולים
+- **קריטריוני קבלה**:
+  - תמיכה ב-100k+ רשומות לווטרינר
+  - שאילתות אופטימליות
+  - עימוד יעיל
+  - ארכוב אוטומטי לנתונים ישנים
+- **עדיפות**: בינונית
+- **סטטוס**: ✅ מתקיים
+
+## דרישות ממשק
 
 ### RI001 - Design System
 
-#### RI001.1 - Paleta de Cores
-- **Descrição**: Definição de cores consistentes para o aplicativo
-- **Especificações**:
-  - **Primary**: #2E7D32 (Verde veterinário)
+#### RI001.1 - פלטת צבעים
+- **תיאור**: הגדרת צבעים עקבית לאפליקציה
+- **מפרט**:
+  - **Primary**: #2E7D32 (ירוק וטרינרי)
   - **Primary Dark**: #1B5E20
-  - **Secondary**: #81C784 (Verde claro)
-  - **Background**: #F1F8E9 (Verde muito claro)
-  - **Surface**: #FFFFFF (Branco)
-  - **Error**: #F44336 (Vermelho)
-  - **Success**: #4CAF50 (Verde sucesso)
-- **Status**: ✅ Implementado
+  - **Secondary**: #81C784 (ירוק בהיר)
+  - **Background**: #F1F8E9 (ירוק בהיר מאוד)
+  - **Surface**: #FFFFFF (לבן)
+  - **Error**: #F44336 (אדום)
+  - **Success**: #4CAF50 (ירוק הצלחה)
+- **סטטוס**: ✅ מיושם
 
-#### RI001.2 - Tipografia
-- **Descrição**: Hierarquia tipográfica clara e legível
-- **Especificações**:
-  - **Títulos**: 24px, bold
-  - **Subtítulos**: 18px, semibold
-  - **Corpo**: 16px, regular
-  - **Caption**: 12px, regular
-  - **Font Family**: System fonts (San Francisco iOS, Roboto Android)
-- **Status**: ✅ Implementado
+#### RI001.2 - טיפוגרפיה
+- **תיאור**: היררכיה טיפוגרפית ברורה וקריאה
+- **מפרט**:
+  - **כותרות**: ‎24px, Bold
+  - **כותרות משנה**: ‎18px, Semi-bold
+  - **גוף**: ‎16px, Regular
+  - **Caption**: ‎12px, Regular
+  - **Font Family**: פונטים מערכתיים (San Francisco ב-iOS, Roboto ב-Android)
+- **סטטוס**: ✅ מיושם
 
-#### RI001.3 - Componentes
-- **Descrição**: Biblioteca de componentes reutilizáveis
-- **Componentes Incluídos**:
-  - Button (variants: primary, secondary, outline, danger)
-  - Input (text, password, multiline, com validação)
-  - Card (container padrão)
-  - Loading (estados de carregamento)
-  - SearchBar (busca padronizada)
-- **Status**: ✅ Implementado
+#### RI001.3 - רכיבים
+- **תיאור**: ספריית רכיבים לשימוש חוזר
+- **רכיבים כלולים**:
+  - כפתור (Primary, Secondary, Outline, Danger)
+  - שדה קלט (טקסט, סיסמה, רב-שורה, עם ולידציה)
+  - כרטיס (Container סטנדרטי)
+  - מצב טעינה
+  - שורת חיפוש אחידה
+- **סטטוס**: ✅ מיושם
 
-### RI002 - Navegação
+### RI002 - ניווט
 
-#### RI002.1 - Estrutura Principal
-- **Descrição**: Navegação principal do aplicativo
-- **Estrutura**:
-  - **Bottom Tabs**: Início, Clientes, Pets, Agenda, Biblioteca
-  - **Stack Navigation**: Navegação hierárquica dentro de cada seção
-  - **Modal Navigation**: Formulários e detalhes
-- **Status**: ✅ Implementado
+#### RI002.1 - מבנה ראשי
+- **תיאור**: הניווט המרכזי של האפליקציה
+- **מבנה**:
+  - **Bottom Tabs**: דף הבית, לקוחות, חיות, יומן, ספרייה
+  - **Stack Navigation**: ניווט היררכי בכל אזור
+  - **Modal Navigation**: טפסים ופירוט
+- **סטטוס**: ✅ מיושם
 
-#### RI002.2 - Breadcrumbs e Header
-- **Descrição**: Orientação clara da localização do usuário
-- **Especificações**:
-  - Header com título da tela atual
-  - Botão voltar consistente
-  - Ações contextuais (adicionar, editar, etc.)
-- **Status**: ✅ Implementado
+#### RI002.2 - Breadcrumbs וכותרת
+- **תיאור**: הנחיה ברורה למיקום המשתמש
+- **מפרט**:
+  - כותרת עם שם המסך הנוכחי
+  - כפתור חזרה עקבי
+  - פעולות קונטקסט (הוספה, עריכה וכו')
+- **סטטוס**: ✅ מיושם
 
-### RI003 - Responsividade
+### RI003 - רספונסיביות
 
-#### RI003.1 - Breakpoints
-- **Descrição**: Pontos de quebra para diferentes tamanhos de tela
+#### RI003.1 - נקודות שבירה
+- **תיאור**: נקודות שבירה לגדלי מסך שונים
 - **Breakpoints**:
-  - **Small**: < 380px (smartphones pequenos)
-  - **Medium**: 380px - 768px (smartphones normais)
-  - **Large**: > 768px (tablets)
-- **Status**: ✅ Implementado
+  - **Small**: פחות מ-380px (טלפונים קטנים)
+  - **Medium**: 380px עד 768px (טלפונים רגילים)
+  - **Large**: מעל 768px (טאבלטים)
+- **סטטוס**: ✅ מיושם
 
-#### RI003.2 - Layout Adaptativo
-- **Descrição**: Interface que se adapta ao tamanho da tela
-- **Características**:
-  - Grids flexíveis
-  - Componentes que se ajustam
-  - Espaçamento proporcional
-  - Imagens responsivas
-- **Status**: ✅ Implementado
+#### RI003.2 - Layout אדפטיבי
+- **תיאור**: ממשק שמותאם לגודל המסך
+- **מאפיינים**:
+  - Grid גמיש
+  - רכיבים שמתרחבים ומתכווצים
+  - מרווח יחסי
+  - תמונות רספונסיביות
+- **סטטוס**: ✅ מיושם
 
-## Requisitos de Integração
+## דרישות אינטגרציה
 
 ### RI001 - API Backend
 
-#### RI001.1 - Supabase Integration
-- **Descrição**: Integração com Supabase como backend principal
-- **Funcionalidades**:
-  - Autenticação JWT
-  - CRUD operations via REST API
-  - Real-time subscriptions
-  - File storage (futuro)
-- **Status**: ✅ Implementado
+#### RI001.1 - אינטגרציית Supabase
+- **תיאור**: אינטגרציה עם Supabase כ-Backend מרכזי
+- **יכולות**:
+  - אימות JWT
+  - פעולות CRUD דרך REST API
+  - Subscriptions בזמן אמת
+  - אחסון קבצים (עתידי)
+- **סטטוס**: ✅ מיושם
 
 #### RI001.2 - Offline First
-- **Descrição**: Funcionamento offline com sincronização
-- **Características**:
-  - Cache local com AsyncStorage
-  - Queue de operações offline
-  - Sincronização automática quando online
-  - Resolução de conflitos
-- **Status**: ✅ Implementado
+- **תיאור**: עבודה אופליין עם סנכרון
+- **מאפיינים**:
+  - Cache מקומי עם AsyncStorage
+  - תור פעולות אופליין
+  - סנכרון אוטומטי בעת חיבור
+  - פתרון קונפליקטים
+- **סטטוס**: ✅ מיושם
 
-### RI002 - Serviços Externos (Futuro)
+### RI002 - שירותים חיצוניים (עתידי)
 
-#### RI002.1 - Notificações Push
-- **Descrição**: Integração com serviços de push notification
-- **Especificações**:
+#### RI002.1 - התראות Push
+- **תיאור**: אינטגרציה עם שירותי Push
+- **מפרט**:
   - Firebase Cloud Messaging (Android)
   - Apple Push Notification Service (iOS)
-  - Agendamento de notificações locais
-- **Status**: 🟡 Simulado
+  - תזמון התראות מקומיות
+- **סטטוס**: 🟡 מסומן כסימולציה
 
-#### RI002.2 - Cloud Storage
-- **Descrição**: Armazenamento de arquivos na nuvem
-- **Funcionalidades**:
-  - Upload de fotos de pets
-  - Documentos e relatórios
-  - Backup de arquivos
-- **Status**: ❌ Não implementado
+#### RI002.2 - אחסון בענן
+- **תיאור**: אחסון קבצים בענן
+- **יכולות**:
+  - העלאת תמונות חיות מחמד
+  - מסמכים ודוחות
+  - גיבוי קבצים
+- **סטטוס**: ❌ לא מיושם
 
-## Critérios de Aceitação Gerais
+## קריטריוני קבלה כלליים
 
-### Funcionalidade
-- ✅ Todas as funcionalidades principais implementadas
-- ✅ Fluxos de usuário testados e funcionando
-- ✅ Validações de entrada de dados implementadas
-- ✅ Tratamento de erros adequado
+### פונקציונליות
+- ✅ כל הפונקציות המרכזיות מיושמות
+- ✅ זרימות משתמש נבדקו ועובדות
+- ✅ ולידציות קלט קיימות
+- ✅ טיפול שגיאות מתאים
 
-### Performance
-- ✅ Tempo de carregamento inicial < 3 segundos
-- ✅ Navegação fluida entre telas
-- ✅ Operações CRUD responsivas
-- ✅ Uso eficiente de memória
+### ביצועים
+- ✅ טעינה ראשונית < 3 שניות
+- ✅ ניווט חלק בין מסכים
+- ✅ פעולות CRUD מהירות
+- ✅ שימוש בזיכרון יעיל
 
-### Usabilidade
-- ✅ Interface intuitiva e consistente
-- ✅ Feedback visual para todas as ações
-- ✅ Mensagens de erro compreensíveis
-- ✅ Navegação clara e lógica
+### שימושיות
+- ✅ ממשק אינטואיטיבי ועקבי
+- ✅ משוב חזותי לכל פעולה
+- ✅ הודעות שגיאה מובנות
+- ✅ ניווט ברור ולוגי
 
-### Segurança
-- ✅ Autenticação segura implementada
-- ✅ Dados sensíveis protegidos
-- ✅ Comunicação criptografada
-- ✅ Validação de entrada de dados
+### אבטחה
+- ✅ אימות מאובטח מיושם
+- ✅ נתונים רגישים מוגנים
+- ✅ תקשורת מוצפנת
+- ✅ ולידציה לקלט
 
-### Confiabilidade
-- ✅ Sistema estável sem crashes
-- ✅ Recuperação graceful de erros
-- ✅ Integridade de dados mantida
-- ✅ Funcionalidade offline básica
+### אמינות
+- ✅ מערכת יציבה ללא קריסות
+- ✅ התאוששות שגיאות חכמה
+- ✅ שלמות נתונים נשמרת
+- ✅ פונקציונליות בסיסית אופליין
 
-## Dependências e Restrições
+## תלותים ומגבלות
 
-### Dependências Técnicas
-- **React Native**: Framework base
-- **Expo**: Plataforma de desenvolvimento
-- **Supabase**: Backend e banco de dados
-- **AsyncStorage**: Armazenamento local
-- **React Navigation**: Sistema de navegação
+### תלותים טכניים
+- **React Native**: Framework בסיס
+- **Expo**: פלטפורמת פיתוח
+- **Supabase**: Backend ומסד נתונים
+- **AsyncStorage**: אחסון מקומי
+- **React Navigation**: מערכת ניווט
 
-### Dependências de Negócio
-- **Conectividade Internet**: Para sincronização de dados
-- **Câmera do Dispositivo**: Para fotos (futuro)
-- **Notificações Push**: Para lembretes (futuro)
+### תלותים עסקיים
+- **חיבור אינטרנט**: לסנכרון נתונים
+- **מצלמת מכשיר**: לתמונות (עתידי)
+- **התראות Push**: לתזכורות (עתידי)
 
-### Restrições
-- **Plataforma Mobile**: Apenas iOS e Android
-- **Idioma**: Português brasileiro inicialmente
-- **Conectividade**: Funcionalidade limitada offline
-- **Armazenamento**: Dependente do dispositivo
+### מגבלות
+- **פלטפורמה**: מובייל בלבד (iOS/Android)
+- **שפה**: ברירת מחדל עברית לאחר התרגום
+- **קישוריות**: יכולות מוגבלות אופליין
+- **אחסון**: תלוי במכשיר
 
-## Roadmap de Implementação
+## מפת דרכים ליישום
 
-### Fase 1 - MVP ✅ (Concluída)
-- Autenticação de usuários
-- CRUD de clientes e pets
-- Sistema básico de consultas
-- Agendamento simples
-- Interface básica
+### שלב 1 - MVP ✅ (הושלם)
+- אימות משתמשים
+- CRUD של לקוחות וחיות מחמד
+- מערכת ביקורים בסיסית
+- תזמון פשוט
+- ממשק בסיסי
 
-### Fase 2 - Melhorias ✅ (Concluída)
-- Biblioteca veterinária
-- Sistema de backup
-- Melhorias na interface
-- Validações avançadas
-- Sistema de perfil
+### שלב 2 - שיפורים ✅ (הושלם)
+- ספרייה וטרינרית
+- מערכת גיבוי
+- שיפורי ממשק
+- ולידציות מתקדמות
+- מערכת פרופיל
 
-### Fase 3 - Recursos Avançados 🟡 (Em andamento)
-- Notificações push reais
-- Upload de imagens
-- Relatórios detalhados
-- Configurações avançadas
-- Múltiplos idiomas
+### שלב 3 - יכולות מתקדמות 🟡 (בתהליך)
+- התראות Push אמיתיות
+- העלאת תמונות
+- דוחות מפורטים
+- הגדרות מתקדמות
+- תמיכה בריבוי שפות
 
-### Fase 4 - Escalabilidade 📋 (Planejada)
-- Multi-tenancy
-- Integrações externas
-- Analytics avançados
-- Performance otimizada
-- Versão web
+### שלב 4 - סקיילביליות 📋 (מתוכנן)
+- Multi-tenant
+- אינטגרציות חיצוניות
+- אנליטיקה מתקדמת
+- ביצועים משופרים
+- גרסת Web
 
-## Métricas de Sucesso
+## מדדי הצלחה
 
-### Métricas Técnicas
-- **Performance**: Tempo de carregamento < 3s
-- **Estabilidade**: Crash rate < 1%
-- **Disponibilidade**: Uptime > 99%
-- **Segurança**: Zero vazamentos de dados
+### מדדים טכניים
+- **ביצועים**: טעינה < 3 שניות
+- **יציבות**: שיעור קריסה < 1%
+- **זמינות**: Uptime > 99%
+- **אבטחה**: ללא דליפות נתונים
 
-### Métricas de Usuário
-- **Adoção**: 100+ veterinários ativos
-- **Satisfação**: Rating > 4.5 estrelas
-- **Retenção**: 80% usuários ativos mensalmente
-- **Produtividade**: 50% redução tempo cadastros
+### מדדי משתמש
+- **אימוץ**: 100+ וטרינרים פעילים
+- **שביעות רצון**: ציון > 4.5 כוכבים
+- **שימור**: 80% משתמשים פעילים חודשית
+- **פרודוקטיביות**: קיצור 50% בזמן רישום
 
-### Métricas de Negócio
-- **Consultas**: 1000+ consultas registradas
-- **Pacientes**: 5000+ pets cadastrados
-- **Uso**: 10+ horas por semana por veterinário
-- **Crescimento**: 20% crescimento mensal
+### מדדי עסק
+- **ביקורים**: 1000+ ביקורים רשומים
+- **מטופלים**: 5000+ חיות מחמד רשומות
+- **שימוש**: 10+ שעות שבועיות לווטרינר
+- **צמיחה**: 20% צמיחה חודשית
 
-## Conclusão
+## סיכום
 
-O PetCare Pro atende aos principais requisitos funcionais e não funcionais para um sistema de gestão veterinária móvel. A implementação atual cobre as funcionalidades essenciais, fornecendo uma base sólida para futuras expansões.
+PetCare Pro עומדת בדרישות הפונקציונליות והלא-פונקציונליות המרכזיות עבור מערכת ניהול וטרינרית למובייל. היישום הנוכחי מכסה את היכולות החיוניות ומהווה בסיס יציב להרחבות עתידיות.
 
-**Status Geral do Projeto**: ✅ 85% Implementado
+**סטטוס כללי של הפרויקט**: ✅ 85% מיושם
 
-### Próximos Passos
-1. Implementar notificações push reais
-2. Adicionar sistema de upload de imagens
-3. Desenvolver relatórios avançados
-4. Melhorar sistema de configurações
-5. Implementar testes automatizados
-6. Preparar para lançamento nas lojas
+### צעדים הבאים
+1. ליישם התראות Push אמיתיות
+2. להוסיף מערכת העלאת תמונות
+3. לפתח דוחות מתקדמים
+4. לשפר את מערכת ההגדרות
+5. להטמיע בדיקות אוטומטיות
+6. להתכונן להשקה בחנויות
 
-Este documento serve como referência para o desenvolvimento contínuo e manutenção do sistema, garantindo que todos os requisitos sejam atendidos de forma consistente e eficaz.
+מסמך זה משמש רפרנס לפיתוח ותחזוקה מתמשכים, ומבטיח שכל הדרישות ייענו בצורה עקבית ויעילה.
