@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # =============================================================================
-# PetCare Pro - Script de Execução
+# PetCare Pro - סקריפט הפעלה
 # =============================================================================
-# Este script facilita a execução do PetCare Pro em diferentes modos e
-# plataformas, com verificações automáticas e opções de desenvolvimento
+# סקריפט זה מקל על הפעלת PetCare Pro במצבי עבודה ופלטפורמות שונים,
+# עם בדיקות אוטומטיות ואפשרויות פיתוח
 # =============================================================================
 
 set -e
 
-# Cores para output
+# צבעים לפלט
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -19,7 +19,7 @@ CYAN='\033[0;36m'
 WHITE='\033[1;37m'
 NC='\033[0m'
 
-# Símbolos
+# סמלים
 SUCCESS="✅"
 ERROR="❌"
 WARNING="⚠️"
@@ -29,7 +29,7 @@ ROCKET="🚀"
 PHONE="📱"
 COMPUTER="💻"
 
-# Função para logging
+# פונקציה ללוגים
 log() {
     local level=$1
     shift
@@ -45,68 +45,68 @@ log() {
     esac
 }
 
-# Banner principal
+# באנר ראשי
 print_banner() {
     clear
     echo -e "${PURPLE}"
     echo "╔══════════════════════════════════════════════════════════════╗"
     echo "║                      PetCare Pro                            ║"
-    echo "║                   Script de Execução v1.0                   ║"
+    echo "║                   סקריפט הפעלה v1.0                        ║"
     echo "║                                                              ║"
-    echo "║              🚀 Pronto para desenvolvimento!                ║"
+    echo "║              🚀 מוכן לפיתוח!                               ║"
     echo "╚══════════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
     echo ""
 }
 
-# Função para mostrar help
+# פונקציה להצגת עזרה
 show_help() {
-    echo -e "${WHITE}📖 PetCare Pro - Guia de Execução${NC}"
+    echo -e "${WHITE}📖 PetCare Pro - מדריך הפעלה${NC}"
     echo ""
-    echo -e "${YELLOW}Uso:${NC} ./run.sh [opção]"
+    echo -e "${YELLOW}שימוש:${NC} ./run.sh [אפשרות]"
     echo ""
-    echo -e "${YELLOW}Opções disponíveis:${NC}"
+    echo -e "${YELLOW}אפשרויות זמינות:${NC}"
     echo ""
-    echo -e "${CYAN}  start${NC}          Inicia servidor de desenvolvimento"
-    echo -e "${CYAN}  ios${NC}            Inicia para iOS"
-    echo -e "${CYAN}  android${NC}        Inicia para Android"
-    echo -e "${CYAN}  web${NC}            Inicia para Web"
-    echo -e "${CYAN}  tunnel${NC}         Inicia com tunnel (rede externa)"
-    echo -e "${CYAN}  build${NC}          Menu de builds"
-    echo -e "${CYAN}  test${NC}           Executa testes"
-    echo -e "${CYAN}  lint${NC}           Executa verificação de código"
-    echo -e "${CYAN}  clean${NC}          Limpa cache e dependências"
-    echo -e "${CYAN}  check${NC}          Verifica status do projeto"
-    echo -e "${CYAN}  doctor${NC}         Diagnóstico completo"
-    echo -e "${CYAN}  help${NC}           Mostra esta ajuda"
+    echo -e "${CYAN}  start${NC}          מפעיל שרת פיתוח"
+    echo -e "${CYAN}  ios${NC}            מפעיל עבור iOS"
+    echo -e "${CYAN}  android${NC}        מפעיל עבור Android"
+    echo -e "${CYAN}  web${NC}            מפעיל עבור Web"
+    echo -e "${CYAN}  tunnel${NC}         מפעיל עם Tunnel (רשת חיצונית)"
+    echo -e "${CYAN}  build${NC}          תפריט Builds"
+    echo -e "${CYAN}  test${NC}           מריץ בדיקות"
+    echo -e "${CYAN}  lint${NC}           מבצע בדיקת קוד"
+    echo -e "${CYAN}  clean${NC}          מנקה מטמון ותלויות"
+    echo -e "${CYAN}  check${NC}          בודק מצב הפרויקט"
+    echo -e "${CYAN}  doctor${NC}         אבחון מלא"
+    echo -e "${CYAN}  help${NC}           מציג עזרה זו"
     echo ""
-    echo -e "${YELLOW}Exemplos:${NC}"
-    echo -e "${CYAN}  ./run.sh start${NC}    # Inicia desenvolvimento normal"
-    echo -e "${CYAN}  ./run.sh ios${NC}      # Testa no simulador iOS"
-    echo -e "${CYAN}  ./run.sh build${NC}    # Menu de opções de build"
-    echo -e "${CYAN}  ./run.sh doctor${NC}   # Diagnóstico completo"
+    echo -e "${YELLOW}דוגמאות:${NC}"
+    echo -e "${CYAN}  ./run.sh start${NC}    # הפעלה רגילה לפיתוח"
+    echo -e "${CYAN}  ./run.sh ios${NC}      # בדיקה בסימולטור iOS"
+    echo -e "${CYAN}  ./run.sh build${NC}    # פתיחת תפריט Build"
+    echo -e "${CYAN}  ./run.sh doctor${NC}   # אבחון מלא"
     echo ""
 }
 
-# Verificar se está no diretório correto
+# בדיקה שהסקריפט מורץ בתיקייה הנכונה
 check_project_directory() {
     if [ ! -f "package.json" ] || [ ! -f "App.js" ]; then
-        log "ERROR" "Execute este script no diretório raiz do projeto PetCare Pro"
+        log "ERROR" "הפעילו את הסקריפט בתיקיית השורש של פרויקט PetCare Pro"
         exit 1
     fi
 
     if grep -q "petcarepro\|PetCare Pro" package.json; then
         log "SUCCESS" "Projeto PetCare Pro detectado"
     else
-        log "WARNING" "Este pode não ser o projeto PetCare Pro correto"
+        log "WARNING" "ייתכן שזה אינו פרויקט PetCare Pro הנכון"
     fi
 }
 
-# Verificar pré-requisitos
+# בדיקת דרישות מקדימות
 check_prerequisites() {
     local errors=0
 
-    log "PROGRESS" "Verificando pré-requisitos..."
+    log "PROGRESS" "בודק דרישות מקדימות..."
 
     # Node.js
     if command -v node >/dev/null 2>&1; then
@@ -116,11 +116,11 @@ check_prerequisites() {
         if [ "$major_version" -ge 18 ]; then
             log "SUCCESS" "Node.js v$node_version ✓"
         else
-            log "ERROR" "Node.js v$node_version é muito antiga. Necessário v18+"
+            log "ERROR" "גרסת Node.js v$node_version ישנה מדי. נדרש v18+"
             errors=$((errors + 1))
         fi
     else
-        log "ERROR" "Node.js não encontrado"
+        log "ERROR" "Node.js לא נמצא"
         errors=$((errors + 1))
     fi
 
@@ -129,7 +129,7 @@ check_prerequisites() {
         local npm_version=$(npm --version)
         log "SUCCESS" "npm v$npm_version ✓"
     else
-        log "ERROR" "npm não encontrado"
+        log "ERROR" "npm לא נמצא"
         errors=$((errors + 1))
     fi
 
@@ -138,10 +138,10 @@ check_prerequisites() {
         if npx expo --version >/dev/null 2>&1; then
             log "SUCCESS" "Expo CLI ✓"
         else
-            log "WARNING" "Expo CLI não encontrado. Será instalado automaticamente."
+            log "WARNING" "Expo CLI לא נמצא. תתבצע התקנה אוטומטית."
         fi
     else
-        log "ERROR" "npx não encontrado"
+        log "ERROR" "npx לא נמצא"
         errors=$((errors + 1))
     fi
 
@@ -153,29 +153,29 @@ check_prerequisites() {
             log "WARNING" "Arquivo .env incompleto"
         fi
     else
-        log "WARNING" "Arquivo .env não encontrado"
+        log "WARNING" "קובץ .env לא נמצא"
     fi
 
     # Verificar node_modules
     if [ -d "node_modules" ]; then
-        log "SUCCESS" "Dependências instaladas ✓"
+        log "SUCCESS" "התלויות הותקנו ✓"
     else
-        log "WARNING" "Dependências não instaladas. Execute: npm install"
+        log "WARNING" "תלויות אינן מותקנות. הריצו: npm install"
     fi
 
     return $errors
 }
 
-# Instalar dependências se necessário
+# התקנת תלויות במקרה הצורך
 ensure_dependencies() {
     if [ ! -d "node_modules" ]; then
-        log "PROGRESS" "Instalando dependências..."
+        log "PROGRESS" "מתקין תלויות..."
         npm install
-        log "SUCCESS" "Dependências instaladas"
+        log "SUCCESS" "תלויות הותקנו"
     fi
 }
 
-# Função para iniciar desenvolvimento normal
+# פונקציה להפעלה רגילה לפיתוח
 start_development() {
     log "PROGRESS" "Iniciando servidor de desenvolvimento..."
 
@@ -184,9 +184,9 @@ start_development() {
     echo ""
     echo -e "${WHITE}📱 Como conectar seu dispositivo:${NC}"
     echo ""
-    echo -e "${YELLOW}📱 Dispositivo físico:${NC}"
+    echo -e "${YELLOW}📱 מכשיר פיזי:${NC}"
     echo "   1. Instale o app 'Expo Go' na loja do seu dispositivo"
-    echo "   2. Escaneie o QR code que aparecerá"
+    echo "   2. סרקו את ה-QR שיופיע"
     echo ""
     echo -e "${YELLOW}💻 Emulador/Simulador:${NC}"
     echo "   • Pressione 'a' para Android"
@@ -199,10 +199,10 @@ start_development() {
     npx expo start
 }
 
-# Função para iniciar no iOS
+# פונקציה להפעלה ב-iOS
 start_ios() {
     if [[ "$OSTYPE" != "darwin"* ]]; then
-        log "ERROR" "iOS só é suportado no macOS"
+        log "ERROR" "iOS נתמך רק ב-macOS"
         exit 1
     fi
 
@@ -211,27 +211,27 @@ start_ios() {
     npx expo start --ios
 }
 
-# Função para iniciar no Android
+# פונקציה להפעלה ב-Android
 start_android() {
     ensure_dependencies
     log "PROGRESS" "Iniciando para Android..."
 
-    # Verificar se Android SDK está configurado
+    # בדיקה שה-Android SDK מוגדר
     if [ -z "$ANDROID_HOME" ]; then
-        log "WARNING" "ANDROID_HOME não configurado. Pode não funcionar em emulador."
+        log "WARNING" "ANDROID_HOME לא מוגדר. ייתכן שהאמולטור לא יעבוד."
     fi
 
     npx expo start --android
 }
 
-# Função para iniciar na web
+# פונקציה להפעלה ב-Web
 start_web() {
     ensure_dependencies
     log "PROGRESS" "Iniciando para Web..."
     npx expo start --web
 }
 
-# Função para iniciar com tunnel
+# פונקציה להפעלה עם Tunnel
 start_tunnel() {
     ensure_dependencies
     log "PROGRESS" "Iniciando com tunnel (acesso externo)..."
@@ -245,14 +245,14 @@ build_menu() {
     echo ""
     echo "1. Build de desenvolvimento (local)"
     echo "2. Build de desenvolvimento (EAS)"
-    echo "3. Build de produção (EAS)"
+    echo "3. Build פרודקשן (EAS)"
     echo "4. Build para Android apenas"
     echo "5. Build para iOS apenas"
     echo "6. Verificar status dos builds"
     echo "0. Voltar"
     echo ""
 
-    read -p "Escolha uma opção: " choice
+    read -p "בחרו אפשרות: " choice
 
     case $choice in
         1)
@@ -277,7 +277,7 @@ build_menu() {
             return
             ;;
         *)
-            log "ERROR" "Opção inválida"
+            log "ERROR" "אפשרות לא חוקית"
             ;;
     esac
 }
@@ -303,7 +303,7 @@ build_local_dev() {
             if [[ "$OSTYPE" == "darwin"* ]]; then
                 npx expo run:ios
             else
-                log "ERROR" "iOS só é suportado no macOS"
+                log "ERROR" "iOS נתמך רק ב-macOS"
             fi
             ;;
         "ambas"|"both"|"b")
@@ -314,7 +314,7 @@ build_local_dev() {
             wait
             ;;
         *)
-            log "ERROR" "Plataforma inválida"
+            log "ERROR" "פלטפורמה לא תקפה"
             ;;
     esac
 }
@@ -324,34 +324,34 @@ build_eas_dev() {
     log "PROGRESS" "Criando build EAS de desenvolvimento..."
 
     if ! command -v eas >/dev/null 2>&1; then
-        log "ERROR" "EAS CLI não encontrado. Instale com: npm install -g eas-cli"
+        log "ERROR" "EAS CLI לא נמצא. התקינו עם: npm install -g eas-cli"
         return 1
     fi
 
     eas build --platform all --profile development
 }
 
-# Build EAS produção
+# Build EAS לפרודקשן
 build_eas_production() {
-    log "PROGRESS" "Criando build EAS de produção..."
+    log "PROGRESS" "יוצר Build EAS לפרודקשן..."
 
     if ! command -v eas >/dev/null 2>&1; then
-        log "ERROR" "EAS CLI não encontrado. Instale com: npm install -g eas-cli"
+        log "ERROR" "EAS CLI לא נמצא. התקינו עם: npm install -g eas-cli"
         return 1
     fi
 
-    echo -e "${YELLOW}⚠️  Build de produção! Certifique-se de que:${NC}"
+    echo -e "${YELLOW}⚠️  Build פרודקשן! ודאו כי:${NC}"
     echo "   ✓ Todos os testes passam"
-    echo "   ✓ Código foi revisado"
-    echo "   ✓ Versão foi atualizada"
+    echo "   ✓ הקוד עבר סקירה"
+    echo "   ✓ הגרסה עודכנה"
     echo ""
 
-    read -p "Continuar com build de produção? (y/N): " -n 1 -r
+    read -p "להמשיך עם Build לפרודקשן? (y/N): " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         eas build --platform all --profile production
     else
-        log "INFO" "Build de produção cancelado"
+        log "INFO" "Build לפרודקשן בוטל"
     fi
 }
 
@@ -360,7 +360,7 @@ build_android_only() {
     log "PROGRESS" "Criando build Android..."
 
     if ! command -v eas >/dev/null 2>&1; then
-        log "ERROR" "EAS CLI não encontrado"
+        log "ERROR" "EAS CLI לא נמצא"
         return 1
     fi
 
@@ -375,7 +375,7 @@ build_ios_only() {
     log "PROGRESS" "Criando build iOS..."
 
     if ! command -v eas >/dev/null 2>&1; then
-        log "ERROR" "EAS CLI não encontrado"
+        log "ERROR" "EAS CLI לא נמצא"
         return 1
     fi
 
@@ -392,7 +392,7 @@ check_build_status() {
     if command -v eas >/dev/null 2>&1; then
         eas build:list
     else
-        log "ERROR" "EAS CLI não encontrado"
+        log "ERROR" "EAS CLI לא נמצא"
     fi
 }
 
@@ -405,10 +405,10 @@ run_tests() {
     if grep -q "\"test\"" package.json; then
         npm test
     else
-        log "WARNING" "Scripts de teste não configurados"
-        log "INFO" "Configurando testes básicos..."
+        log "WARNING" "סקריפטי בדיקה לא מוגדרים"
+        log "INFO" "מגדיר בדיקות בסיסיות..."
 
-        # Executar verificações básicas
+        # הרצת בדיקות בסיסיות
         echo "Verificando sintaxe dos arquivos..."
 
         # Verificar arquivos JavaScript/TypeScript
@@ -424,17 +424,17 @@ run_tests() {
 
 # Executar lint
 run_lint() {
-    log "PROGRESS" "Executando verificação de código..."
+    log "PROGRESS" "מריץ בדיקת קוד..."
 
     ensure_dependencies
 
     if grep -q "\"lint\"" package.json; then
         npm run lint
     else
-        log "WARNING" "ESLint não configurado"
+        log "WARNING" "ESLint לא מוגדר"
 
-        # Verificação básica com Node.js
-        echo "Executando verificação básica de sintaxe..."
+        # בדיקת תחביר בסיסית עם Node.js
+        echo "מריץ בדיקת תחביר בסיסית..."
         find src -name "*.js" -o -name "*.jsx" | while read file; do
             if node -c "$file" 2>/dev/null; then
                 echo "✅ $file"
@@ -445,7 +445,7 @@ run_lint() {
     fi
 }
 
-# Limpar cache e dependências
+# ניקוי מטמון ותלויות
 clean_project() {
     log "PROGRESS" "Limpando projeto..."
 
@@ -455,7 +455,7 @@ clean_project() {
     echo "3. Limpeza completa (node_modules, cache, builds)"
     echo "0. Cancelar"
 
-    read -p "Escolha uma opção: " choice
+    read -p "בחרו אפשרות: " choice
 
     case $choice in
         1)
@@ -486,7 +486,7 @@ clean_project() {
             log "INFO" "Limpeza cancelada"
             ;;
         *)
-            log "ERROR" "Opção inválida"
+            log "ERROR" "אפשרות לא חוקית"
             ;;
     esac
 }
@@ -499,12 +499,12 @@ check_status() {
     echo -e "${WHITE}📊 Status do Projeto PetCare Pro${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-    # Informações básicas
+    # מידע בסיסי
     if [ -f "package.json" ]; then
         local app_name=$(grep -o '"name": "[^"]*"' package.json | cut -d'"' -f4)
         local app_version=$(grep -o '"version": "[^"]*"' package.json | cut -d'"' -f4)
         echo -e "${CYAN}📦 Projeto:${NC} $app_name"
-        echo -e "${CYAN}🔢 Versão:${NC} $app_version"
+        echo -e "${CYAN}🔢 גרסה:${NC} $app_version"
     fi
 
     # Node.js e npm
@@ -527,13 +527,13 @@ check_status() {
 
     # Verificar arquivos importantes
     local files_to_check=(
-        "package.json:📄 Configuração do projeto"
+        "package.json:📄 תצורת הפרויקט"
         "App.js:⚡ Arquivo principal"
-        ".env:🔐 Variáveis de ambiente"
-        "app.json:📱 Configuração do app"
-        "eas.json:🏗️ Configuração EAS"
-        "src/config/supabase.js:🗄️ Configuração do banco"
-        "src/navigation/AppNavigator.js:🧭 Navegação"
+        ".env:🔐 משתני סביבה"
+        "app.json:📱 תצורת האפליקציה"
+        "eas.json:🏗️ תצורת EAS"
+        "src/config/supabase.js:🗄️ תצורת בסיס הנתונים"
+        "src/navigation/AppNavigator.js:🧭 ניווט"
     )
 
     for item in "${files_to_check[@]}"; do
@@ -548,14 +548,14 @@ check_status() {
     done
 
     echo ""
-    echo -e "${WHITE}🔧 Dependências${NC}"
+    echo -e "${WHITE}🔧 תלויות${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
     if [ -d "node_modules" ]; then
         local pkg_count=$(find node_modules -maxdepth 1 -type d | wc -l)
         echo -e "${GREEN}✅${NC} $((pkg_count - 1)) pacotes instalados"
 
-        # Verificar algumas dependências importantes
+        # בדיקת תלויות חשובות
         local deps_to_check=("react" "react-native" "expo" "@supabase/supabase-js")
 
         for dep in "${deps_to_check[@]}"; do
@@ -566,11 +566,11 @@ check_status() {
             fi
         done
     else
-        echo -e "${RED}❌${NC} Dependências não instaladas"
+        echo -e "${RED}❌${NC} תלויות אינן מותקנות"
     fi
 
     echo ""
-    echo -e "${WHITE}🗄️ Configuração do Banco${NC}"
+    echo -e "${WHITE}🗄️ תצורת בסיס הנתונים${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
     if [ -f ".env" ]; then
@@ -582,24 +582,24 @@ check_status() {
                 echo -e "${YELLOW}⚠️${NC}  URL do Supabase pode estar incorreta"
             fi
         else
-            echo -e "${RED}❌${NC} URL do Supabase não configurada"
+            echo -e "${RED}❌${NC} כתובת Supabase לא מוגדרת"
         fi
 
         if grep -q "EXPO_PUBLIC_SUPABASE_ANON_KEY" .env; then
             echo -e "${GREEN}✅${NC} Chave do Supabase configurada"
         else
-            echo -e "${RED}❌${NC} Chave do Supabase não configurada"
+            echo -e "${RED}❌${NC} מפתח Supabase לא מוגדר"
         fi
     else
-        echo -e "${RED}❌${NC} Arquivo .env não encontrado"
+        echo -e "${RED}❌${NC} קובץ .env לא נמצא"
     fi
 
     echo ""
 }
 
-# Diagnóstico completo
+# אבחון מלא
 run_doctor() {
-    log "PROGRESS" "Executando diagnóstico completo..."
+    log "PROGRESS" "מריץ אבחון מלא..."
 
     print_banner
 
@@ -607,7 +607,7 @@ run_doctor() {
     check_status
 
     echo ""
-    echo -e "${WHITE}🔍 Diagnóstico Detalhado${NC}"
+    echo -e "${WHITE}🔍 אבחון מפורט${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
     # Verificar conectividade
@@ -616,18 +616,18 @@ run_doctor() {
         log "PROGRESS" "Testando conectividade..."
 
         if curl -s --head --request GET https://expo.dev | grep "200 OK" > /dev/null; then
-            echo -e "${GREEN}✅${NC} Conexão com Expo"
+            echo -e "${GREEN}✅${NC} חיבור ל-Expo"
         else
-            echo -e "${RED}❌${NC} Problemas de conexão com Expo"
+            echo -e "${RED}❌${NC} בעיות חיבור ל-Expo"
         fi
 
         if [ -f ".env" ] && grep -q "EXPO_PUBLIC_SUPABASE_URL" .env; then
             local supabase_url=$(grep "EXPO_PUBLIC_SUPABASE_URL" .env | cut -d'=' -f2)
             if [ ! -z "$supabase_url" ] && [ "$supabase_url" != "your_supabase_url_here" ]; then
                 if curl -s --head --request GET "$supabase_url" | grep "200\|404" > /dev/null; then
-                    echo -e "${GREEN}✅${NC} Conexão com Supabase"
+                    echo -e "${GREEN}✅${NC} חיבור ל-Supabase"
                 else
-                    echo -e "${RED}❌${NC} Problemas de conexão com Supabase"
+                    echo -e "${RED}❌${NC} בעיות חיבור ל-Supabase"
                 fi
             fi
         fi
@@ -641,31 +641,31 @@ run_doctor() {
     for port in "${ports_to_check[@]}"; do
         if command -v lsof >/dev/null 2>&1; then
             if lsof -i :$port >/dev/null 2>&1; then
-                echo -e "${YELLOW}⚠️${NC}  Porta $port está em uso"
+                echo -e "${YELLOW}⚠️${NC}  הפורט $port בשימוש"
             else
-                echo -e "${GREEN}✅${NC} Porta $port disponível"
+                echo -e "${GREEN}✅${NC} הפורט $port פנוי"
             fi
         fi
     done
 
-    # Verificar espaço em disco
+    # בדיקת מקום פנוי בדיסק
     echo ""
-    log "PROGRESS" "Verificando espaço em disco..."
+    log "PROGRESS" "בודק מקום פנוי בדיסק..."
 
     if command -v df >/dev/null 2>&1; then
         local available_space=$(df . | tail -1 | awk '{print $4}')
         local available_gb=$((available_space / 1024 / 1024))
 
         if [ $available_gb -gt 5 ]; then
-            echo -e "${GREEN}✅${NC} Espaço em disco: ${available_gb}GB disponível"
+            echo -e "${GREEN}✅${NC} שטח דיסק: ${available_gb}GB פנוי"
         else
-            echo -e "${YELLOW}⚠️${NC}  Pouco espaço em disco: ${available_gb}GB disponível"
+            echo -e "${YELLOW}⚠️${NC}  מעט שטח דיסק: ${available_gb}GB פנוי"
         fi
     fi
 
-    # Recomendações
+    # המלצות
     echo ""
-    echo -e "${WHITE}💡 Recomendações${NC}"
+    echo -e "${WHITE}💡 המלצות${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
     if [ ! -f ".env" ]; then
@@ -698,14 +698,14 @@ interactive_menu() {
         echo -e "${CYAN}5.${NC} 🌐 Iniciar com tunnel"
         echo -e "${CYAN}6.${NC} 🏗️  Menu de builds"
         echo -e "${CYAN}7.${NC} 🧪 Executar testes"
-        echo -e "${CYAN}8.${NC} 🔍 Verificar código (lint)"
+        echo -e "${CYAN}8.${NC} 🔍 בדיקת קוד (lint)"
         echo -e "${CYAN}9.${NC} 🧹 Limpar projeto"
         echo -e "${CYAN}10.${NC} 📊 Status do projeto"
-        echo -e "${CYAN}11.${NC} 🩺 Diagnóstico completo"
+        echo -e "${CYAN}11.${NC} 🩺 אבחון מלא"
         echo -e "${CYAN}0.${NC} 🚪 Sair"
         echo ""
 
-        read -p "Escolha uma opção: " choice
+        read -p "בחרו אפשרות: " choice
 
         case $choice in
             1) start_development ;;
@@ -724,7 +724,7 @@ interactive_menu() {
                 exit 0
                 ;;
             *)
-                log "ERROR" "Opção inválida"
+                log "ERROR" "אפשרות לא חוקית"
                 sleep 2
                 ;;
         esac
@@ -736,12 +736,12 @@ interactive_menu() {
     done
 }
 
-# Função principal
+# פונקציה ראשית
 main() {
-    # Verificar diretório do projeto
+    # בדיקת תיקיית הפרויקט
     check_project_directory
 
-    # Se não há argumentos, mostrar menu interativo
+    # אם אין ארגומנטים, מציגים תפריט אינטראקטיבי
     if [ $# -eq 0 ]; then
         interactive_menu
         exit 0
@@ -752,7 +752,7 @@ main() {
         "start"|"dev"|"run")
             print_banner
             if ! check_prerequisites; then
-                log "ERROR" "Corrija os pré-requisitos antes de continuar"
+                log "ERROR" "תקנו את הדרישות המקדימות לפני המשך"
                 exit 1
             fi
             start_development
@@ -804,7 +804,7 @@ main() {
             show_help
             ;;
         *)
-            log "ERROR" "Opção desconhecida: $1"
+            log "ERROR" "אפשרות לא מוכרת: $1"
             echo ""
             show_help
             exit 1
@@ -812,9 +812,9 @@ main() {
     esac
 }
 
-# Verificar se é root (não recomendado)
+# בדיקת הרצה כ-root (לא מומלץ)
 if [ "$EUID" -eq 0 ]; then
-    log "WARNING" "Não é recomendado executar como root"
+    log "WARNING" "לא מומלץ להריץ כ-root"
     read -p "Continuar mesmo assim? (y/N): " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -822,13 +822,13 @@ if [ "$EUID" -eq 0 ]; then
     fi
 fi
 
-# Função de limpeza em caso de interrupção
+# ניקוי במקרה של עצירה
 cleanup() {
-    log "WARNING" "Execução interrompida pelo usuário"
+    log "WARNING" "ההרצה הופסקה על ידי המשתמש"
     exit 1
 }
 
 trap cleanup SIGINT
 
-# Executar função principal
+# הפעלת הפונקציה הראשית
 main "$@"

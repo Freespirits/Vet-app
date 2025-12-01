@@ -1,26 +1,26 @@
-# Makefile para PetCare Pro
-# Automatiza tarefas comuns de desenvolvimento e deploy
+# Makefile עבור PetCare Pro
+# אוטומטיזציה של משימות פיתוח ופריסה נפוצות
 
 .PHONY: help install start build test lint format clean setup deploy
 .DEFAULT_GOAL := help
 
 # ==============================================================================
-# VARIÁVEIS
+# משתנים
 # ==============================================================================
 
-# Cores para output
+# צבעים לפלט
 RED=\033[0;31m
 GREEN=\033[0;32m
 YELLOW=\033[1;33m
 BLUE=\033[0;34m
 NC=\033[0m # No Color
 
-# Configurações do projeto
+# הגדרות הפרויקט
 PROJECT_NAME=petcare-pro
 NODE_VERSION=18
 EXPO_CLI_VERSION=latest
 
-# Diretórios
+# תיקיות
 SRC_DIR=src
 BUILD_DIR=build
 DIST_DIR=dist
@@ -28,292 +28,292 @@ DOCS_DIR=docs
 TEST_DIR=__tests__
 
 # ==============================================================================
-# HELP - Lista todos os comandos disponíveis
+# עזרה - רשימת כל הפקודות הזמינות
 # ==============================================================================
 
-help: ## Mostra esta mensagem de ajuda
-	@echo "${BLUE}PetCare Pro - Comandos Disponíveis${NC}"
+help: ## מציג הודעת עזרה זו
+	@echo "${BLUE}PetCare Pro - פקודות זמינות${NC}"
 	@echo "=================================="
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "${GREEN}%-20s${NC} %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 	@echo ""
-	@echo "${YELLOW}Uso: make <comando>${NC}"
+	@echo "${YELLOW}שימוש: make <פקודה>${NC}"
 
 # ==============================================================================
-# CONFIGURAÇÃO E INSTALAÇÃO
+# תצורה והתקנה
 # ==============================================================================
 
-check-node: ## Verifica se Node.js está instalado
-	@echo "${BLUE}Verificando Node.js...${NC}"
-	@node --version || (echo "${RED}Node.js não encontrado. Instale Node.js ${NODE_VERSION}+${NC}" && exit 1)
-	@npm --version || (echo "${RED}NPM não encontrado${NC}" && exit 1)
+check-node: ## בודק אם Node.js מותקן
+	@echo "${BLUE}בודק את Node.js...${NC}"
+	@node --version || (echo "${RED}Node.js לא נמצא. התקן Node.js ${NODE_VERSION}+${NC}" && exit 1)
+	@npm --version || (echo "${RED}NPM לא נמצא${NC}" && exit 1)
 
-check-expo: ## Verifica se Expo CLI está instalado
-	@echo "${BLUE}Verificando Expo CLI...${NC}"
-	@expo --version || (echo "${YELLOW}Expo CLI não encontrado. Instalando...${NC}" && npm install -g expo-cli@${EXPO_CLI_VERSION})
+check-expo: ## בודק אם Expo CLI מותקן
+	@echo "${BLUE}בודק את Expo CLI...${NC}"
+	@expo --version || (echo "${YELLOW}Expo CLI לא נמצא. מתקין...${NC}" && npm install -g expo-cli@${EXPO_CLI_VERSION})
 
-install: check-node ## Instala todas as dependências
-	@echo "${BLUE}Instalando dependências...${NC}"
+install: check-node ## מתקין את כל התלויות
+	@echo "${BLUE}מתקין תלויות...${NC}"
 	npm ci
-	@echo "${GREEN}✓ Dependências instaladas com sucesso${NC}"
+	@echo "${GREEN}✓ התלויות הותקנו בהצלחה${NC}"
 
-install-dev: install ## Instala dependências incluindo as de desenvolvimento
-	@echo "${BLUE}Instalando dependências de desenvolvimento...${NC}"
+install-dev: install ## מתקין תלויות כולל תלויות פיתוח
+	@echo "${BLUE}מתקין תלויות פיתוח...${NC}"
 	npm install --include=dev
-	@echo "${GREEN}✓ Dependências de desenvolvimento instaladas${NC}"
+	@echo "${GREEN}✓ תלויות הפיתוח הותקנו${NC}"
 
-setup: check-node check-expo install ## Configuração inicial completa do projeto
-	@echo "${BLUE}Configurando projeto...${NC}"
+setup: check-node check-expo install ## הגדרת פרויקט מלאה
+	@echo "${BLUE}מגדיר את הפרויקט...${NC}"
 	npm run prepare || true
-	@echo "${GREEN}✓ Projeto configurado com sucesso${NC}"
-	@echo "${YELLOW}Execute 'make start' para iniciar o desenvolvimento${NC}"
+	@echo "${GREEN}✓ הפרויקט הוגדר בהצלחה${NC}"
+	@echo "${YELLOW}הריצו 'make start' כדי להתחיל בפיתוח${NC}"
 
 # ==============================================================================
-# DESENVOLVIMENTO
+# פיתוח
 # ==============================================================================
 
-start: ## Inicia o servidor de desenvolvimento
-	@echo "${BLUE}Iniciando servidor de desenvolvimento...${NC}"
+start: ## מפעיל את שרת הפיתוח
+	@echo "${BLUE}מפעיל שרת פיתוח...${NC}"
 	npm start
 
-start-ios: ## Inicia no simulador iOS
-	@echo "${BLUE}Iniciando no iOS...${NC}"
+start-ios: ## מפעיל בסימולטור iOS
+	@echo "${BLUE}מפעיל ב-iOS...${NC}"
 	npm run ios
 
-start-android: ## Inicia no emulador Android
-	@echo "${BLUE}Iniciando no Android...${NC}"
+start-android: ## מפעיל באמולטור Android
+	@echo "${BLUE}מפעיל ב-Android...${NC}"
 	npm run android
 
-start-web: ## Inicia versão web
-	@echo "${BLUE}Iniciando versão web...${NC}"
+start-web: ## מפעיל גרסת ווב
+	@echo "${BLUE}מפעיל גרסת ווב...${NC}"
 	npm run web
 
-dev: start ## Alias para start
+dev: start ## קיצור להפעלת start
 
 # ==============================================================================
-# BUILD E DISTRIBUIÇÃO
+# Build והפצה
 # ==============================================================================
 
-build: ## Faz build para produção
-	@echo "${BLUE}Criando build de produção...${NC}"
+build: ## יוצר Build לסביבת הפקה
+	@echo "${BLUE}יוצר Build לפרודקשן...${NC}"
 	npm run build
-	@echo "${GREEN}✓ Build criado com sucesso${NC}"
+	@echo "${GREEN}✓ Build נוצר בהצלחה${NC}"
 
-build-ios: ## Build para iOS
-	@echo "${BLUE}Criando build iOS...${NC}"
+build-ios: ## Build ל-iOS
+	@echo "${BLUE}יוצר Build ל-iOS...${NC}"
 	expo build:ios
-	@echo "${GREEN}✓ Build iOS criado${NC}"
+	@echo "${GREEN}✓ Build ל-iOS נוצר${NC}"
 
-build-android: ## Build para Android
-	@echo "${BLUE}Criando build Android...${NC}"
+build-android: ## Build ל-Android
+	@echo "${BLUE}יוצר Build ל-Android...${NC}"
 	expo build:android
-	@echo "${GREEN}✓ Build Android criado${NC}"
+	@echo "${GREEN}✓ Build ל-Android נוצר${NC}"
 
-bundle: ## Cria bundle JavaScript
-	@echo "${BLUE}Criando bundle...${NC}"
+bundle: ## יוצר Bundle של JavaScript
+	@echo "${BLUE}יוצר Bundle...${NC}"
 	npx react-native bundle --platform android --dev false --entry-file App.js --bundle-output android/app/src/main/assets/index.android.bundle
-	@echo "${GREEN}✓ Bundle criado${NC}"
+	@echo "${GREEN}✓ Bundle נוצר${NC}"
 
 # ==============================================================================
-# TESTES E QUALIDADE
+# בדיקות ואיכות
 # ==============================================================================
 
-test: ## Executa todos os testes
-	@echo "${BLUE}Executando testes...${NC}"
+test: ## מפעיל את כל הבדיקות
+	@echo "${BLUE}מריץ בדיקות...${NC}"
 	npm test
-	@echo "${GREEN}✓ Testes executados${NC}"
+	@echo "${GREEN}✓ בדיקות הושלמו${NC}"
 
-test-watch: ## Executa testes em modo watch
-	@echo "${BLUE}Executando testes em modo watch...${NC}"
+test-watch: ## מפעיל בדיקות במצב מעקב
+	@echo "${BLUE}מריץ בדיקות במצב watch...${NC}"
 	npm run test:watch
 
-test-coverage: ## Executa testes com relatório de cobertura
-	@echo "${BLUE}Executando testes com cobertura...${NC}"
+test-coverage: ## מפעיל בדיקות עם דוח כיסוי
+	@echo "${BLUE}מריץ בדיקות עם כיסוי...${NC}"
 	npm run test:coverage
-	@echo "${GREEN}✓ Relatório de cobertura gerado${NC}"
+	@echo "${GREEN}✓ דוח כיסוי נוצר${NC}"
 
-test-ci: ## Executa testes para CI/CD
-	@echo "${BLUE}Executando testes para CI...${NC}"
+test-ci: ## מפעיל בדיקות ל-CI/CD
+	@echo "${BLUE}מריץ בדיקות ל-CI...${NC}"
 	npm run test:ci
 
-lint: ## Executa linting do código
-	@echo "${BLUE}Executando linting...${NC}"
+lint: ## מפעיל Linting על הקוד
+	@echo "${BLUE}מריץ Linting...${NC}"
 	npm run lint
-	@echo "${GREEN}✓ Linting concluído${NC}"
+	@echo "${GREEN}✓ Linting הסתיים${NC}"
 
-lint-fix: ## Corrige automaticamente problemas de linting
-	@echo "${BLUE}Corrigindo problemas de linting...${NC}"
+lint-fix: ## מתקן אוטומטית בעיות Linting
+	@echo "${BLUE}מתקן בעיות Linting...${NC}"
 	npm run lint:fix
-	@echo "${GREEN}✓ Problemas de linting corrigidos${NC}"
+	@echo "${GREEN}✓ בעיות Linting תוקנו${NC}"
 
-format: ## Formata o código com Prettier
-	@echo "${BLUE}Formatando código...${NC}"
+format: ## מפעיל עיצוב קוד עם Prettier
+	@echo "${BLUE}מעצב קוד...${NC}"
 	npm run format
-	@echo "${GREEN}✓ Código formatado${NC}"
+	@echo "${GREEN}✓ הקוד עוצב${NC}"
 
-quality: lint test ## Executa verificações de qualidade (lint + test)
+quality: lint test ## מפעיל בדיקות איכות (lint + test)
 
 # ==============================================================================
-# LIMPEZA E MANUTENÇÃO
+# ניקוי ותחזוקה
 # ==============================================================================
 
-clean: ## Remove arquivos temporários e cache
-	@echo "${BLUE}Limpando arquivos temporários...${NC}"
+clean: ## מסיר קבצים זמניים ומטמון
+	@echo "${BLUE}מנקה קבצים זמניים...${NC}"
 	rm -rf node_modules/.cache
 	rm -rf .expo
 	rm -rf ${BUILD_DIR}
 	rm -rf ${DIST_DIR}
 	rm -rf .tmp
 	npm cache clean --force
-	@echo "${GREEN}✓ Limpeza concluída${NC}"
+	@echo "${GREEN}✓ הניקוי הסתיים${NC}"
 
-clean-all: clean ## Limpeza completa incluindo node_modules
-	@echo "${BLUE}Removendo node_modules...${NC}"
+clean-all: clean ## ניקוי מלא כולל node_modules
+	@echo "${BLUE}מסיר node_modules...${NC}"
 	rm -rf node_modules
 	rm -rf package-lock.json
-	@echo "${GREEN}✓ Limpeza completa concluída${NC}"
+	@echo "${GREEN}✓ ניקוי מלא הושלם${NC}"
 
-reset: clean-all install ## Reset completo do projeto
+reset: clean-all install ## איפוס מלא של הפרויקט
 
 # ==============================================================================
-# SEGURANÇA E AUDITORIA
+# אבטחה וביקורת
 # ==============================================================================
 
-audit: ## Executa auditoria de segurança
-	@echo "${BLUE}Executando auditoria de segurança...${NC}"
+audit: ## מפעיל ביקורת אבטחה
+	@echo "${BLUE}מריץ ביקורת אבטחה...${NC}"
 	npm audit
-	@echo "${GREEN}✓ Auditoria concluída${NC}"
+	@echo "${GREEN}✓ ביקורת הסתיימה${NC}"
 
-audit-fix: ## Corrige vulnerabilidades encontradas
-	@echo "${BLUE}Corrigindo vulnerabilidades...${NC}"
+audit-fix: ## מתקן פגיעויות שנמצאו
+	@echo "${BLUE}מתקן פגיעויות...${NC}"
 	npm audit fix
-	@echo "${GREEN}✓ Vulnerabilidades corrigidas${NC}"
+	@echo "${GREEN}✓ פגיעויות תוקנו${NC}"
 
-security-check: ## Verificações de segurança completas
-	@echo "${BLUE}Executando verificações de segurança...${NC}"
+security-check: ## בדיקות אבטחה מלאות
+	@echo "${BLUE}מריץ בדיקות אבטחה...${NC}"
 	npm run security:check || true
-	@echo "${GREEN}✓ Verificações de segurança concluídas${NC}"
+	@echo "${GREEN}✓ בדיקות האבטחה הסתיימו${NC}"
 
 # ==============================================================================
-# BANCO DE DADOS
+# בסיס נתונים
 # ==============================================================================
 
-db-setup: ## Configura banco de dados
-	@echo "${BLUE}Configurando banco de dados...${NC}"
+db-setup: ## מגדיר את בסיס הנתונים
+	@echo "${BLUE}מגדיר את בסיס הנתונים...${NC}"
 	@if [ -f "db/setup.sql" ]; then \
-		echo "Executando setup do banco..."; \
-		npm run db:setup; \
+	echo "מריץ הגדרת בסיס נתונים..."; \
+	npm run db:setup; \
 	else \
-		echo "${YELLOW}Arquivo db/setup.sql não encontrado${NC}"; \
+	echo "${YELLOW}הקובץ db/setup.sql לא נמצא${NC}"; \
 	fi
 
-db-migrate: ## Executa migrações do banco
-	@echo "${BLUE}Executando migrações...${NC}"
-	npm run db:migrate || echo "${YELLOW}Comando db:migrate não configurado${NC}"
+db-migrate: ## מפעיל מיגרציות למסד הנתונים
+	@echo "${BLUE}מריץ מיגרציות...${NC}"
+	npm run db:migrate || echo "${YELLOW}הפקודה db:migrate לא מוגדרת${NC}"
 
-db-seed: ## Popula banco com dados de teste
-	@echo "${BLUE}Populando banco com dados de teste...${NC}"
-	npm run db:seed || echo "${YELLOW}Comando db:seed não configurado${NC}"
+db-seed: ## מאכלס את הבסיס בנתוני בדיקה
+	@echo "${BLUE}מזין נתוני בדיקה...${NC}"
+	npm run db:seed || echo "${YELLOW}הפקודה db:seed לא מוגדרת${NC}"
 
 # ==============================================================================
-# DOCUMENTAÇÃO
+# תיעוד
 # ==============================================================================
 
-docs: ## Gera documentação
-	@echo "${BLUE}Gerando documentação...${NC}"
+docs: ## יוצר תיעוד
+	@echo "${BLUE}מייצר תיעוד...${NC}"
 	@if [ -d "${DOCS_DIR}" ]; then \
-		npm run docs:generate || echo "${YELLOW}Comando docs:generate não configurado${NC}"; \
+	npm run docs:generate || echo "${YELLOW}הפקודה docs:generate לא מוגדרת${NC}"; \
 	else \
-		echo "${YELLOW}Diretório ${DOCS_DIR} não encontrado${NC}"; \
+	echo "${YELLOW}התיקייה ${DOCS_DIR} לא נמצאה${NC}"; \
 	fi
 
-docs-serve: ## Serve documentação localmente
-	@echo "${BLUE}Servindo documentação...${NC}"
-	npm run docs:serve || echo "${YELLOW}Comando docs:serve não configurado${NC}"
+docs-serve: ## מגיש תיעוד מקומית
+	@echo "${BLUE}מגיש תיעוד מקומית...${NC}"
+	npm run docs:serve || echo "${YELLOW}הפקודה docs:serve לא מוגדרת${NC}"
 
 # ==============================================================================
-# DEPLOY E RELEASE
+# פריסה ו-Release
 # ==============================================================================
 
-deploy-staging: ## Deploy para ambiente de staging
-	@echo "${BLUE}Fazendo deploy para staging...${NC}"
+deploy-staging: ## פריסה לסביבת Staging
+	@echo "${BLUE}מפריס ל-Staging...${NC}"
 	npm run deploy:staging
-	@echo "${GREEN}✓ Deploy para staging concluído${NC}"
+	@echo "${GREEN}✓ הפריסה ל-Staging הושלמה${NC}"
 
-deploy-prod: build ## Deploy para produção
-	@echo "${BLUE}Fazendo deploy para produção...${NC}"
-	@echo "${RED}⚠️  Você está fazendo deploy para PRODUÇÃO!${NC}"
-	@read -p "Tem certeza? (y/N): " confirm && [ "$$confirm" = "y" ]
+deploy-prod: build ## פריסה לסביבת הפקה
+	@echo "${BLUE}מפריס לפרודקשן...${NC}"
+	@echo "${RED}⚠️  אתה עומד לפרוס לפרודקשן!${NC}"
+	@read -p "להמשיך? (y/N): " confirm && [ "$$confirm" = "y" ]
 	npm run deploy:production
-	@echo "${GREEN}✓ Deploy para produção concluído${NC}"
+	@echo "${GREEN}✓ הפריסה לפרודקשן הושלמה${NC}"
 
-release: ## Cria nova release
-	@echo "${BLUE}Criando nova release...${NC}"
+release: ## יוצר Release חדשה
+	@echo "${BLUE}יוצר Release חדשה...${NC}"
 	npm run release
-	@echo "${GREEN}✓ Release criada${NC}"
+	@echo "${GREEN}✓ Release נוצרה${NC}"
 
 # ==============================================================================
-# UTILITÁRIOS
+# כלים נוספים
 # ==============================================================================
 
-logs: ## Mostra logs da aplicação
-	@echo "${BLUE}Mostrando logs...${NC}"
+logs: ## מציג לוגים של היישום
+	@echo "${BLUE}מציג לוגים...${NC}"
 	npm run logs || expo logs
 
-debug: ## Inicia modo debug
-	@echo "${BLUE}Iniciando modo debug...${NC}"
+debug: ## מפעיל מצב Debug
+	@echo "${BLUE}מפעיל מצב Debug...${NC}"
 	npm run debug || expo start --dev-client
 
-tunnel: ## Inicia com tunnel público
-	@echo "${BLUE}Iniciando com tunnel...${NC}"
+tunnel: ## מפעיל עם מנהרת גישה ציבורית
+	@echo "${BLUE}מפעיל עם Tunnel...${NC}"
 	expo start --tunnel
 
-info: ## Mostra informações do ambiente
-	@echo "${BLUE}Informações do Ambiente${NC}"
+info: ## מציג מידע על הסביבה
+	@echo "${BLUE}מידע על הסביבה${NC}"
 	@echo "========================"
 	@echo "${GREEN}Node.js:${NC} $$(node --version)"
 	@echo "${GREEN}NPM:${NC} $$(npm --version)"
-	@echo "${GREEN}Expo CLI:${NC} $$(expo --version 2>/dev/null || echo 'Não instalado')"
-	@echo "${GREEN}Sistema:${NC} $$(uname -s)"
-	@echo "${GREEN}Arquitetura:${NC} $$(uname -m)"
-	@echo "${GREEN}Diretório:${NC} $$(pwd)"
+	@echo "${GREEN}Expo CLI:${NC} $$(expo --version 2>/dev/null || echo 'לא מותקן')"
+	@echo "${GREEN}מערכת:${NC} $$(uname -s)"
+	@echo "${GREEN}ארכיטקטורה:${NC} $$(uname -m)"
+	@echo "${GREEN}תיקייה:${NC} $$(pwd)"
 	@echo "${GREEN}Git Branch:${NC} $$(git branch --show-current 2>/dev/null || echo 'N/A')"
-	@echo "${GREEN}Git Status:${NC} $$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ') arquivos modificados"
+	@echo "${GREEN}Git Status:${NC} $$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ') קבצים שהשתנו"
 
-dependencies: ## Lista dependências do projeto
-	@echo "${BLUE}Dependências do Projeto${NC}"
-	@echo "======================="
-	@npm list --depth=0
+dependencies: ## מציג את התלויות של הפרויקט
+@echo "${BLUE}תלויות הפרויקט${NC}"
+@echo "======================="
+@npm list --depth=0
 
-outdated: ## Verifica dependências desatualizadas
-	@echo "${BLUE}Verificando dependências desatualizadas...${NC}"
-	npm outdated
+outdated: ## בודק תלויות מיושנות
+@echo "${BLUE}בודק תלויות מיושנות...${NC}"
+npm outdated
 
-update-deps: ## Atualiza dependências
-	@echo "${BLUE}Atualizando dependências...${NC}"
-	npm update
-	@echo "${GREEN}✓ Dependências atualizadas${NC}"
-
-# ==============================================================================
-# COMANDOS COMPOSTOS
-# ==============================================================================
-
-ci: install lint test build ## Pipeline completa de CI
-	@echo "${GREEN}✓ Pipeline de CI concluída com sucesso${NC}"
-
-full-check: clean install lint test-coverage audit build ## Verificação completa do projeto
-	@echo "${GREEN}✓ Verificação completa concluída${NC}"
-
-quick-check: lint test ## Verificação rápida (lint + test)
-	@echo "${GREEN}✓ Verificação rápida concluída${NC}"
+update-deps: ## מעדכן תלויות
+@echo "${BLUE}מעדכן תלויות...${NC}"
+npm update
+@echo "${GREEN}✓ התלויות עודכנו${NC}"
 
 # ==============================================================================
-# ALIASES ÚTEIS
+# פקודות מורכבות
 # ==============================================================================
 
-i: install ## Alias para install
-s: start ## Alias para start
-b: build ## Alias para build
-t: test ## Alias para test
-l: lint ## Alias para lint
-f: format ## Alias para format
-c: clean ## Alias para clean
+ci: install lint test build ## פייפליין CI מלאה
+@echo "${GREEN}✓ פייפליין CI הסתיימה בהצלחה${NC}"
+
+full-check: clean install lint test-coverage audit build ## בדיקה מלאה של הפרויקט
+@echo "${GREEN}✓ בדיקה מלאה הושלמה${NC}"
+
+quick-check: lint test ## בדיקה מהירה (lint + test)
+@echo "${GREEN}✓ בדיקה מהירה הושלמה${NC}"
+
+# ==============================================================================
+# קיצורי דרך שימושיים
+# ==============================================================================
+
+i: install ## קיצור ל-install
+s: start ## קיצור ל-start
+b: build ## קיצור ל-build
+t: test ## קיצור ל-test
+l: lint ## קיצור ל-lint
+f: format ## קיצור ל-format
+c: clean ## קיצור ל-clean

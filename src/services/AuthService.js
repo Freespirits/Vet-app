@@ -13,7 +13,7 @@ export const AuthService = {
         .single();
 
       if (error && error.code === 'PGRST116') {
-        // Se não encontrar pelo ID, tentar pelo email
+        // אם לא נמצא לפי מזהה, ננסה באמצעות האימייל
         const { data: profileByEmail, error: emailError } = await supabase
           .from('users_consultorio')
           .select('*')
@@ -21,20 +21,20 @@ export const AuthService = {
           .single();
 
         if (emailError) {
-          console.error('Erro ao buscar usuário:', emailError);
+          console.error('שגיאה בעת חיפוש המשתמש:', emailError);
           return null;
         }
         return profileByEmail;
       }
 
       if (error) {
-        console.error('Erro ao buscar usuário:', error);
+        console.error('שגיאה בעת חיפוש המשתמש:', error);
         return null;
       }
 
       return data;
     } catch (error) {
-      console.error('Erro ao obter usuário atual:', error);
+      console.error('שגיאה בקבלת המשתמש הנוכחי:', error);
       return null;
     }
   },
@@ -43,7 +43,7 @@ export const AuthService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Usuário não autenticado' };
+        return { success: false, error: 'משתמש אינו מאומת' };
       }
 
       const { data, error } = await supabase
@@ -62,8 +62,8 @@ export const AuthService = {
 
       return { success: true, data };
     } catch (error) {
-      console.error('Erro ao atualizar perfil:', error);
-      return { success: false, error: 'Erro ao atualizar perfil' };
+      console.error('שגיאה בעדכון הפרופיל:', error);
+      return { success: false, error: 'שגיאה בעדכון הפרופיל' };
     }
   },
 
@@ -135,11 +135,11 @@ export const AuthService = {
       }
 
       if (!authData.user) {
-        return { success: false, error: 'Falha ao criar usuário' };
+        return { success: false, error: 'כשל ביצירת משתמש' };
       }
 
-      // Se o Supabase exigir confirmação de email, não haverá sessão ativa.
-      // Nessa situação não podemos salvar o perfil ainda.
+      // אם Supabase דורש אישור אימייל, לא תהיה סשן פעיל.
+      // במצב כזה לא ניתן עדיין לשמור את הפרופיל.
       if (!authData.session) {
         return {
           success: true,
@@ -152,7 +152,7 @@ export const AuthService = {
         id: authData.user.id,
         email: email,
         name: userData.name.trim(),
-        profession: userData.profession || 'Veterinário(a)',
+        profession: userData.profession || 'וטרינר/ית',
         clinic: userData.clinic.trim(),
         crmv: userData.crmv.trim(),
         phone: userData.phone.trim(),
@@ -189,7 +189,7 @@ export const AuthService = {
       return { success: true };
     } catch (error) {
       console.error('Erro ao resetar senha:', error);
-      return { success: false, error: 'Erro ao enviar email de recuperação' };
+      return { success: false, error: 'שגיאה בשליחת אימייל שחזור' };
     }
   }
 };

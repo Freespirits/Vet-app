@@ -1,6 +1,6 @@
 -- ====================================================================
 -- SCRIPT COMPLETO PARA RECRIAR BANCO DE DADOS PETCARE PRO
--- VERSÃO ULTRA ROBUSTA - REMOVE CONSTRAINTS E ÍNDICES CORRETAMENTE
+-- גרסה חזקה במיוחד - מסירה אילוצים ואינדקסים בצורה נכונה
 -- ====================================================================
 
 -- 1. LIMPEZA ULTRA AGRESSIVA - REMOVER CONSTRAINTS PRIMEIRO
@@ -41,7 +41,7 @@ BEGIN
         EXECUTE 'ALTER TABLE ' || quote_ident(r.table_name) || ' DROP CONSTRAINT IF EXISTS ' || quote_ident(r.constraint_name);
     END LOOP;
     
-    -- Remover todas as políticas RLS em tabelas consultorio
+    -- הסרת כל מדיניות ה-RLS בטבלאות הקליניקה
     FOR r IN (
         SELECT schemaname, tablename, policyname 
         FROM pg_policies 
@@ -50,7 +50,7 @@ BEGIN
         EXECUTE 'DROP POLICY IF EXISTS ' || quote_ident(r.policyname) || ' ON ' || quote_ident(r.schemaname) || '.' || quote_ident(r.tablename);
     END LOOP;
     
-    -- Remover todos os índices não-primários em tabelas consultorio
+    -- הסרת כל האינדקסים שאינם ראשיים בטבלאות הקליניקה
     FOR r IN (
         SELECT schemaname, indexname 
         FROM pg_indexes 
@@ -60,13 +60,13 @@ BEGIN
         EXECUTE 'DROP INDEX IF EXISTS ' || quote_ident(r.schemaname) || '.' || quote_ident(r.indexname);
     END LOOP;
     
-    RAISE NOTICE 'Constraints e índices removidos com sucesso';
+    RAISE NOTICE 'האילוצים והאינדקסים הוסרו בהצלחה';
 END $$;
 
--- Remover funções relacionadas
+-- הסרת פונקציות קשורות
 DROP FUNCTION IF EXISTS register_user CASCADE;
 
--- Remover tabelas (ordem inversa devido às dependências)
+-- הסרת טבלאות (בסדר הפוך בגלל תלויות)
 DROP TABLE IF EXISTS library_items_consultorio CASCADE;
 DROP TABLE IF EXISTS appointments_consultorio CASCADE;
 DROP TABLE IF EXISTS consultations_consultorio CASCADE;
@@ -78,17 +78,17 @@ DROP TABLE IF EXISTS users_consultorio CASCADE;
 DROP TYPE IF EXISTS appointment_status CASCADE;
 DROP TYPE IF EXISTS consultation_type CASCADE;
 
-SELECT 'Limpeza ultra agressiva concluída. Tudo removido.' as status;
+SELECT 'ניקוי אגרסיבי הושלם. הכל הוסר.' as status;
 
--- 2. CRIAÇÃO DAS TABELAS DO ZERO (SEM CONSTRAINTS EXTERNAS)
+-- 2. יצירת הטבלאות מאפס (ללא אילוצי חוץ)
 -- ====================================================================
 
--- Tabela de usuários (perfis dos veterinários)
+-- טבלת משתמשים (פרופילי הווטרינרים)
 CREATE TABLE users_consultorio (
     id UUID PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
-    profession VARCHAR(100) DEFAULT 'Veterinário(a)',
+    profession VARCHAR(100) DEFAULT 'וטרינר/ית',
     clinic VARCHAR(255),
     crmv VARCHAR(50),
     phone VARCHAR(20),
@@ -169,7 +169,7 @@ CREATE TABLE appointments_consultorio (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Tabela de biblioteca veterinária
+-- טבלת ספרייה וטרינרית
 CREATE TABLE library_items_consultorio (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     user_id UUID,
@@ -193,10 +193,10 @@ CREATE TABLE library_items_consultorio (
 
 SELECT 'Todas as tabelas criadas sem constraints externas.' as status;
 
--- 3. ADIÇÃO DE CONSTRAINTS ÚNICAS E FOREIGN KEYS
+-- 3. הוספת אילוצים ייחודיים ומפתחות זרים
 -- ====================================================================
 
--- Unique constraint para email do usuário
+-- אילוץ ייחודי לאימייל המשתמש
 ALTER TABLE users_consultorio ADD CONSTRAINT users_consultorio_email_unique UNIQUE (email);
 
 -- Foreign keys para clients_consultorio
@@ -242,7 +242,7 @@ FOREIGN KEY (user_id) REFERENCES users_consultorio(id) ON DELETE CASCADE;
 
 SELECT 'Constraints e foreign keys adicionadas com sucesso.' as status;
 
--- 4. CRIAÇÃO DOS ÍNDICES PARA PERFORMANCE
+-- 4. יצירת אינדקסים עבור ביצועים
 -- ====================================================================
 
 -- Índices para clients_consultorio
@@ -276,14 +276,14 @@ CREATE INDEX library_items_consultorio_name_idx ON library_items_consultorio(nam
 
 SELECT 'Índices de performance criados com sucesso.' as status;
 
--- 5. CONFIGURAÇÃO DE PERMISSÕES
+-- 5. הגדרת הרשאות
 -- ====================================================================
 
--- Dar permissões completas para usuários autenticados
+-- מתן הרשאות מלאות למשתמשים מאומתים
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO authenticated;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;
 
--- Permissões específicas para cada tabela
+-- הרשאות ספציפיות לכל טבלה
 GRANT INSERT, SELECT, UPDATE, DELETE ON users_consultorio TO authenticated;
 GRANT INSERT, SELECT, UPDATE, DELETE ON clients_consultorio TO authenticated;
 GRANT INSERT, SELECT, UPDATE, DELETE ON pets_consultorio TO authenticated;
@@ -291,7 +291,7 @@ GRANT INSERT, SELECT, UPDATE, DELETE ON consultations_consultorio TO authenticat
 GRANT INSERT, SELECT, UPDATE, DELETE ON appointments_consultorio TO authenticated;
 GRANT INSERT, SELECT, UPDATE, DELETE ON library_items_consultorio TO authenticated;
 
-SELECT 'Permissões configuradas para usuários autenticados.' as status;
+SELECT 'ההרשאות הוגדרו עבור משתמשים מאומתים.' as status;
 
 -- 6. DESABILITAR RLS PARA DESENVOLVIMENTO
 -- ====================================================================
@@ -308,7 +308,7 @@ SELECT 'RLS desabilitado para facilitar desenvolvimento.' as status;
 -- 7. INSERIR DADOS DE TESTE
 -- ====================================================================
 
--- Usuário de teste para desenvolvimento
+-- משתמש בדיקה לפיתוח
 INSERT INTO users_consultorio (
     id, 
     email, 
@@ -322,9 +322,9 @@ INSERT INTO users_consultorio (
 ) VALUES (
     '550e8400-e29b-41d4-a716-446655440000',
     'admin@petcare.com',
-    'Dr. João Silva',
-    'Veterinário',
-    'Clínica VetCare',
+    'ד"ר ז׳ואאו סילבה',
+    'וטרינר',
+    'מרפאת VetCare',
     '12345-SP',
     '(11) 99999-9999',
     NOW(),
@@ -352,7 +352,7 @@ INSERT INTO clients_consultorio (
     '(11) 98888-8888',
     '123.456.789-00',
     'Rua das Flores, 123',
-    'São Paulo',
+    'סאו פאולו',
     'SP',
     NOW(),
     NOW()
@@ -375,7 +375,7 @@ INSERT INTO pets_consultorio (
     '770e8400-e29b-41d4-a716-446655440002',
     '660e8400-e29b-41d4-a716-446655440001',
     'Rex',
-    'Cão',
+    'כלב',
     'Labrador',
     'Macho',
     '2020-01-15',
@@ -407,7 +407,7 @@ INSERT INTO consultations_consultorio (
     'Consulta de Rotina',
     NOW() - INTERVAL '1 day',
     'Animal apresentando comportamento normal',
-    'Exame de rotina - animal saudável',
+    'בדיקת שגרה - חיה בריאה',
     'Manter cuidados regulares',
     80.00,
     NOW(),
@@ -432,8 +432,8 @@ INSERT INTO appointments_consultorio (
     '660e8400-e29b-41d4-a716-446655440001',
     '770e8400-e29b-41d4-a716-446655440002',
     '550e8400-e29b-41d4-a716-446655440000',
-    'Vacinação Anual',
-    'Aplicação de vacina V10',
+    'חיסון שנתי',
+    'מתן חיסון V10',
     NOW() + INTERVAL '7 days',
     30,
     'scheduled',
@@ -441,9 +441,9 @@ INSERT INTO appointments_consultorio (
     NOW()
 ) ON CONFLICT (id) DO NOTHING;
 
-SELECT 'Dados de teste inseridos com segurança (sem duplicatas).' as status;
+SELECT 'נתוני הבדיקה הוזנו בבטחה (ללא כפילויות).' as status;
 
--- 8. TESTE DE FUNCIONALIDADE
+-- 8. בדיקת פונקציונליות
 -- ====================================================================
 
 DO $$
@@ -451,27 +451,27 @@ DECLARE
     test_id UUID := gen_random_uuid();
     test_email TEXT := 'teste_' || extract(epoch from now()) || '@exemplo.com';
 BEGIN
-    -- Teste de inserção
+    -- בדיקת הזנה
     INSERT INTO users_consultorio (id, email, name, clinic, crmv, phone) 
     VALUES (test_id, test_email, 'Teste User', 'Teste Clinic', 'TEST-123', '11999999999');
     
-    -- Teste de atualização
+    -- בדיקת עדכון
     UPDATE users_consultorio 
     SET name = 'Teste User Atualizado' 
     WHERE id = test_id;
     
-    -- Teste de seleção
+    -- בדיקת שליפה
     IF NOT EXISTS (SELECT 1 FROM users_consultorio WHERE id = test_id AND name = 'Teste User Atualizado') THEN
-        RAISE EXCEPTION 'Falha no teste de seleção';
+        RAISE EXCEPTION 'כשל בבדיקת השליפה';
     END IF;
     
     -- Limpeza do teste
     DELETE FROM users_consultorio WHERE id = test_id;
     
-    RAISE NOTICE '✅ TESTE DE FUNCIONALIDADE: Todas as operações CRUD funcionando perfeitamente!';
+    RAISE NOTICE '✅ בדיקת פונקציונליות: כל פעולות ה-CRUD עובדות בצורה מושלמת!';
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE NOTICE '❌ TESTE DE FUNCIONALIDADE: Erro - %', SQLERRM;
+        RAISE NOTICE '❌ בדיקת פונקציונליות: Erro - %', SQLERRM;
 END
 $$;
 
@@ -488,7 +488,7 @@ FROM pg_tables
 WHERE tablename LIKE '%_consultorio' 
 ORDER BY tablename;
 
--- Resumo dos índices
+-- סיכום האינדקסים
 SELECT 
     '🔍 ÍNDICES CRIADOS' as categoria,
     count(*) as total_indices
@@ -530,9 +530,9 @@ SELECT
 
 SELECT 
     '🔑 PRÓXIMOS PASSOS:' as info,
-    '1. Teste o registro no app | 2. Configure autenticação no Supabase | 3. Desenvolva as funcionalidades' as passos;
+    '1. 1. בדקו רישום באפליקציה | 2. הגדירו אימות ב-Supabase | 3. פתחו את הפונקציונליות' as passos;
 
--- Informações importantes
+-- מידע חשוב
 SELECT 
     '⚠️  INFORMAÇÕES IMPORTANTES:' as tipo,
-    'RLS desabilitado para desenvolvimento. Email único obrigatório. Dados de teste incluídos.' as detalhes;
+    'RLS מושבת לפיתוח. אימייל ייחודי הוא חובה. נתוני בדיקה כלולים.' as detalhes;
