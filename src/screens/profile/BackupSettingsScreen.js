@@ -12,7 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { he } from 'date-fns/locale';
 import { Colors } from '../../constants/Colors';
 import { BackupService } from '../../services/BackupService';
 
@@ -32,7 +32,7 @@ const BackupSettingsScreen = ({ navigation }) => {
       const backupList = await BackupService.listBackups();
       setBackups(backupList);
     } catch (error) {
-      console.error('Erro ao carregar backups:', error);
+      console.error('שגיאה בטעינת הגיבויים:', error);
     } finally {
       setLoading(false);
     }
@@ -40,12 +40,12 @@ const BackupSettingsScreen = ({ navigation }) => {
 
   const handleCreateBackup = async () => {
     Alert.alert(
-      'Criar Backup',
-      'Deseja criar um backup completo dos seus dados? Isso pode levar alguns minutos.',
+      'יצירת גיבוי',
+      'להתחיל ליצור גיבוי מלא של הנתונים? הפעולה עשויה להימשך מספר דקות.',
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: 'ביטול', style: 'cancel' },
         {
-          text: 'Criar',
+          text: 'צור',
           onPress: async () => {
             try {
               setCreating(true);
@@ -53,16 +53,16 @@ const BackupSettingsScreen = ({ navigation }) => {
               
               if (result.success) {
                 Alert.alert(
-                  'Backup Criado',
-                  `Backup criado com sucesso!\n\nArquivo: ${result.filename}\nTamanho: ${result.size}\nItens: ${result.itemsCount}`
+                  'הגיבוי נוצר',
+                  `הגיבוי נוצר בהצלחה!\n\nקובץ: ${result.filename}\nגודל: ${result.size}\nפריטים: ${result.itemsCount}`
                 );
                 await loadBackups();
               } else {
-                Alert.alert('Erro', result.error || 'Erro ao criar backup');
+                Alert.alert('שגיאה', result.error || 'שגיאה ביצירת הגיבוי');
               }
             } catch (error) {
-              console.error('Erro ao criar backup:', error);
-              Alert.alert('Erro', 'Erro interno ao criar backup');
+              console.error('שגיאה ביצירת הגיבוי:', error);
+              Alert.alert('שגיאה', 'שגיאה פנימית בעת יצירת גיבוי');
             } finally {
               setCreating(false);
             }
@@ -74,12 +74,12 @@ const BackupSettingsScreen = ({ navigation }) => {
 
   const handleRestoreBackup = (backup) => {
     Alert.alert(
-      'Restaurar Backup',
-      `Deseja restaurar o backup de ${format(new Date(backup.date), "dd 'de' MMMM 'às' HH:mm", { locale: ptBR })}?\n\nISTO SUBSTITUIRÁ TODOS OS DADOS ATUAIS!`,
+      'שחזור גיבוי',
+      `להמשיך בשחזור הגיבוי מ-${format(new Date(backup.date), "dd MMMM 'בשעה' HH:mm", { locale: he })}?\n\nפעולה זו תחליף את כל הנתונים הנוכחיים!`,
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: 'ביטול', style: 'cancel' },
         {
-          text: 'Restaurar',
+          text: 'שחזר',
           style: 'destructive',
           onPress: async () => {
             try {
@@ -88,8 +88,8 @@ const BackupSettingsScreen = ({ navigation }) => {
               
               if (result.success) {
                 Alert.alert(
-                  'Backup Restaurado',
-                  'Dados restaurados com sucesso! O aplicativo será reiniciado.',
+                  'הגיבוי שוחזר',
+                  'הנתונים שוחזרו בהצלחה! האפליקציה תופעל מחדש.',
                   [
                     {
                       text: 'OK',
@@ -103,11 +103,11 @@ const BackupSettingsScreen = ({ navigation }) => {
                   ]
                 );
               } else {
-                Alert.alert('Erro', result.error || 'Erro ao restaurar backup');
+                Alert.alert('שגיאה', result.error || 'שגיאה בשחזור הגיבוי');
               }
             } catch (error) {
-              console.error('Erro ao restaurar backup:', error);
-              Alert.alert('Erro', 'Erro interno ao restaurar backup');
+              console.error('שגיאה בשחזור הגיבוי:', error);
+              Alert.alert('שגיאה', 'שגיאה פנימית בשחזור הגיבוי');
             } finally {
               setRestoring(false);
             }
@@ -119,12 +119,12 @@ const BackupSettingsScreen = ({ navigation }) => {
 
   const handleDeleteBackup = (backup) => {
     Alert.alert(
-      'Excluir Backup',
-      `Deseja excluir o backup de ${format(new Date(backup.date), "dd 'de' MMMM", { locale: ptBR })}?`,
+      'מחיקת גיבוי',
+      `להמשיך במחיקת הגיבוי מ-${format(new Date(backup.date), 'dd MMMM', { locale: he })}?`,
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: 'ביטול', style: 'cancel' },
         {
-          text: 'Excluir',
+          text: 'מחק',
           style: 'destructive',
           onPress: async () => {
             try {
@@ -133,11 +133,11 @@ const BackupSettingsScreen = ({ navigation }) => {
               if (result.success) {
                 await loadBackups();
               } else {
-                Alert.alert('Erro', result.error || 'Erro ao excluir backup');
+                Alert.alert('שגיאה', result.error || 'שגיאה במחיקת הגיבוי');
               }
             } catch (error) {
-              console.error('Erro ao excluir backup:', error);
-              Alert.alert('Erro', 'Erro interno ao excluir backup');
+              console.error('שגיאה במחיקת הגיבוי:', error);
+              Alert.alert('שגיאה', 'שגיאה פנימית במחיקת הגיבוי');
             }
           }
         }
@@ -150,10 +150,10 @@ const BackupSettingsScreen = ({ navigation }) => {
       <View style={styles.backupInfo}>
         <View style={styles.backupHeader}>
           <Text style={styles.backupDate}>
-            {format(new Date(backup.date), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+            {format(new Date(backup.date), "dd MMMM yyyy", { locale: he })}
           </Text>
           <Text style={styles.backupTime}>
-            {format(new Date(backup.date), 'HH:mm', { locale: ptBR })}
+            {format(new Date(backup.date), 'HH:mm', { locale: he })}
           </Text>
         </View>
         <Text style={styles.backupDetails}>
@@ -192,7 +192,7 @@ const BackupSettingsScreen = ({ navigation }) => {
           >
             <Ionicons name="arrow-back" size={24} color={Colors.surface} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Backup e Restauração</Text>
+          <Text style={styles.headerTitle}>גיבוי ושחזור</Text>
           <View style={styles.headerSpacer} />
         </View>
       </LinearGradient>
@@ -200,7 +200,7 @@ const BackupSettingsScreen = ({ navigation }) => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Create Backup Section */}
         <View style={styles.createSection}>
-          <Text style={styles.sectionTitle}>Criar Backup</Text>
+          <Text style={styles.sectionTitle}>יצירת גיבוי</Text>
           <TouchableOpacity
             style={styles.createButton}
             onPress={handleCreateBackup}
@@ -216,7 +216,7 @@ const BackupSettingsScreen = ({ navigation }) => {
                 <Ionicons name="cloud-upload-outline" size={24} color={Colors.surface} />
               )}
               <Text style={styles.createButtonText}>
-                {creating ? 'Criando Backup...' : 'Criar Novo Backup'}
+                {creating ? 'יוצר גיבוי...' : 'צור גיבוי חדש'}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -224,19 +224,19 @@ const BackupSettingsScreen = ({ navigation }) => {
           <View style={styles.infoCard}>
             <Ionicons name="information-circle" size={20} color={Colors.info} />
             <Text style={styles.infoText}>
-              O backup inclui todas as consultas, pacientes, configurações e dados do aplicativo.
+              הגיבוי כולל את כל הייעוצים, המטופלים, ההגדרות ונתוני האפליקציה.
             </Text>
           </View>
         </View>
 
         {/* Backups List */}
         <View style={styles.backupsSection}>
-          <Text style={styles.sectionTitle}>Backups Disponíveis</Text>
+          <Text style={styles.sectionTitle}>גיבויים זמינים</Text>
           
           {loading ? (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color={Colors.primary} />
-              <Text style={styles.loadingText}>Carregando backups...</Text>
+              <Text style={styles.loadingText}>טוען גיבויים...</Text>
             </View>
           ) : backups.length > 0 ? (
             <View style={styles.backupsList}>
@@ -245,9 +245,9 @@ const BackupSettingsScreen = ({ navigation }) => {
           ) : (
             <View style={styles.emptyState}>
               <Ionicons name="cloud-outline" size={48} color={Colors.textSecondary} />
-              <Text style={styles.emptyTitle}>Nenhum backup encontrado</Text>
+              <Text style={styles.emptyTitle}>לא נמצאו גיבויים</Text>
               <Text style={styles.emptySubtitle}>
-                Crie seu primeiro backup para proteger seus dados
+                צרו את הגיבוי הראשון כדי להגן על הנתונים שלכם
               </Text>
             </View>
           )}
@@ -258,12 +258,12 @@ const BackupSettingsScreen = ({ navigation }) => {
           <View style={styles.warningCard}>
             <Ionicons name="warning" size={24} color={Colors.warning} />
             <View style={styles.warningContent}>
-              <Text style={styles.warningTitle}>Importante</Text>
-              <Text style={styles.warningText}>
-                • Restaurar um backup substitui todos os dados atuais{'\n'}
-                • Mantenha backups regulares para proteger seus dados{'\n'}
-                • Backups são armazenados localmente no dispositivo
-              </Text>
+              <Text style={styles.warningTitle}>חשוב</Text>
+                <Text style={styles.warningText}>
+                  • שחזור גיבוי מחליף את כל הנתונים הקיימים{'\n'}
+                  • בצעו גיבויים קבועים כדי להגן על הנתונים{'\n'}
+                  • הגיבויים נשמרים מקומית במכשיר
+                </Text>
             </View>
           </View>
         </View>
@@ -276,8 +276,8 @@ const BackupSettingsScreen = ({ navigation }) => {
         <View style={styles.loadingOverlay}>
           <View style={styles.loadingModal}>
             <ActivityIndicator size="large" color={Colors.primary} />
-            <Text style={styles.loadingModalText}>Restaurando backup...</Text>
-            <Text style={styles.loadingModalSubtext}>Não feche o aplicativo</Text>
+            <Text style={styles.loadingModalText}>משחזר גיבוי...</Text>
+            <Text style={styles.loadingModalSubtext}>אל תסגרו את האפליקציה</Text>
           </View>
         </View>
       )}

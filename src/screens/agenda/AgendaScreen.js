@@ -48,7 +48,7 @@ const AgendaScreen = ({ navigation }) => {
       setAppointments(allAppointments);
       setConsultations(allConsultations);
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao carregar agenda');
+      Alert.alert('שגיאה', 'שגיאה בטעינת היומן');
     } finally {
       setLoading(false);
     }
@@ -116,12 +116,12 @@ const AgendaScreen = ({ navigation }) => {
     if (item.type) {
       // É uma consulta - mostrar detalhes
       Alert.alert(
-        'Consulta',
-        `Tipo: ${item.type}\nCliente: ${item.client?.name}\nPet: ${item.pet?.name}\nData: ${formatDateTime(item.date)}`,
+        'ייעוץ',
+        `סוג: ${item.type}\nלקוח: ${item.client?.name}\nחיית מחמד: ${item.pet?.name}\nתאריך: ${formatDateTime(item.date)}`,
         [
           { text: 'OK' },
-          { 
-            text: 'Editar', 
+          {
+            text: 'עריכה',
             onPress: () => navigation.navigate('NewConsultation', { consultationId: item.id })
           }
         ]
@@ -129,12 +129,12 @@ const AgendaScreen = ({ navigation }) => {
     } else {
       // É um agendamento - mostrar detalhes
       Alert.alert(
-        'Agendamento',
-        `Título: ${item.title}\nCliente: ${item.client?.name}\nPet: ${item.pet?.name}\nData: ${formatDateTime(item.date)}`,
+        'קביעת תור',
+        `כותרת: ${item.title}\nלקוח: ${item.client?.name}\nחיית מחמד: ${item.pet?.name}\nתאריך: ${formatDateTime(item.date)}`,
         [
           { text: 'OK' },
-          { 
-            text: 'Editar', 
+          {
+            text: 'עריכה',
             onPress: () => navigation.navigate('NewAppointment', { appointmentId: item.id })
           }
         ]
@@ -190,7 +190,7 @@ const AgendaScreen = ({ navigation }) => {
 
         {item.symptoms && (
           <View style={styles.itemSymptoms}>
-            <Text style={styles.symptomsLabel}>Sintomas:</Text>
+            <Text style={styles.symptomsLabel}>תסמינים:</Text>
             <Text style={styles.symptomsText}>{item.symptoms}</Text>
           </View>
         )}
@@ -220,7 +220,7 @@ const AgendaScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.dateButton}>
         <Text style={styles.dateText}>
           {viewMode === 'day' && formatDate(selectedDate)}
-          {viewMode === 'week' && `Semana de ${formatDate(getWeekDates(selectedDate)[0])}`}
+          {viewMode === 'week' && `שבוע מ- ${formatDate(getWeekDates(selectedDate)[0])}`}
           {viewMode === 'month' && selectedDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
         </Text>
       </TouchableOpacity>
@@ -259,7 +259,7 @@ const AgendaScreen = ({ navigation }) => {
             styles.viewModeText,
             viewMode === mode && styles.viewModeTextActive
           ]}>
-            {mode === 'day' ? 'Dia' : mode === 'week' ? 'Semana' : 'Mês'}
+            {mode === 'day' ? 'יום' : mode === 'week' ? 'שבוע' : 'חודש'}
           </Text>
         </TouchableOpacity>
       ))}
@@ -276,7 +276,7 @@ const AgendaScreen = ({ navigation }) => {
             <Ionicons name="calendar-outline" size={48} color={Colors.textSecondary} />
             <Text style={styles.emptyDayText}>Nenhum compromisso para este dia</Text>
             <Button
-              title="Agendar Consulta"
+              title="קבע ייעוץ"
               onPress={() => navigation.navigate('NewAppointment', { 
                 selectedDate: selectedDate.toISOString() 
               })}
@@ -362,14 +362,14 @@ const AgendaScreen = ({ navigation }) => {
     return (
       <View style={styles.monthView}>
         <Text style={styles.monthTitle}>
-          {selectedDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+          {selectedDate.toLocaleDateString('he-IL', { month: 'long', year: 'numeric' })}
         </Text>
         
         <ScrollView style={styles.monthContent}>
           {monthItems.length === 0 ? (
             <View style={styles.emptyMonth}>
               <Ionicons name="calendar-outline" size={48} color={Colors.textSecondary} />
-              <Text style={styles.emptyMonthText}>Nenhum compromisso neste mês</Text>
+              <Text style={styles.emptyMonthText}>אין פגישות בחודש זה</Text>
             </View>
           ) : (
             monthItems
@@ -384,7 +384,7 @@ const AgendaScreen = ({ navigation }) => {
   };
 
   if (loading) {
-    return <Loading message="Carregando agenda..." />;
+    return <Loading message="טוען יומן..." />;
   }
 
   return (
@@ -395,7 +395,7 @@ const AgendaScreen = ({ navigation }) => {
         style={styles.header}
       >
         <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Agenda</Text>
+          <Text style={styles.headerTitle}>יומן</Text>
           <TouchableOpacity
             style={styles.headerButton}
             onPress={() => navigation.navigate('NewAppointment')}
@@ -426,7 +426,7 @@ const AgendaScreen = ({ navigation }) => {
 
         {/* Estatísticas rápidas */}
         <Card style={styles.statsCard}>
-          <Text style={styles.statsTitle}>Resumo da Agenda</Text>
+          <Text style={styles.statsTitle}>סיכום היומן</Text>
           <View style={styles.statsGrid}>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>
@@ -434,7 +434,7 @@ const AgendaScreen = ({ navigation }) => {
                   new Date(a.date).toDateString() === new Date().toDateString()
                 ).length}
               </Text>
-              <Text style={styles.statLabel}>Hoje</Text>
+              <Text style={styles.statLabel}>היום</Text>
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>
@@ -444,7 +444,7 @@ const AgendaScreen = ({ navigation }) => {
                   return date > now && date.getDate() === now.getDate() + 1;
                 }).length}
               </Text>
-              <Text style={styles.statLabel}>Amanhã</Text>
+              <Text style={styles.statLabel}>מחר</Text>
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>
@@ -456,7 +456,7 @@ const AgendaScreen = ({ navigation }) => {
                   return date > now && date <= nextWeek;
                 }).length}
               </Text>
-              <Text style={styles.statLabel}>Esta Semana</Text>
+              <Text style={styles.statLabel}>השבוע</Text>
             </View>
           </View>
         </Card>

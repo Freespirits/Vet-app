@@ -52,31 +52,31 @@ const NewAppointmentScreen = ({ navigation, route }) => {
   const [loadingData, setLoadingData] = useState(true);
 
   const appointmentTypes = [
-    { value: 'Consulta de Rotina', icon: 'medical', color: Colors.primary },
-    { value: 'Vacinação', icon: 'shield-checkmark', color: Colors.success },
-    { value: 'Cirurgia', icon: 'cut', color: Colors.error },
-    { value: 'Exame', icon: 'search', color: Colors.info },
-    { value: 'Emergência', icon: 'alarm', color: Colors.warning },
-    { value: 'Retorno', icon: 'refresh', color: Colors.secondary },
-    { value: 'Banho e Tosa', icon: 'water', color: '#00BCD4' },
-    { value: 'Castração', icon: 'medical', color: '#9C27B0' },
+    { value: 'ביקור שגרתי', icon: 'medical', color: Colors.primary },
+    { value: 'חיסון', icon: 'shield-checkmark', color: Colors.success },
+    { value: 'ניתוח', icon: 'cut', color: Colors.error },
+    { value: 'בדיקה', icon: 'search', color: Colors.info },
+    { value: 'מקרה חירום', icon: 'alarm', color: Colors.warning },
+    { value: 'מעקב', icon: 'refresh', color: Colors.secondary },
+    { value: 'רחצה ותספורת', icon: 'water', color: '#00BCD4' },
+    { value: 'סירוס', icon: 'medical', color: '#9C27B0' },
   ];
 
   const durations = [
-    { value: '15', label: '15 min', icon: 'timer' },
-    { value: '30', label: '30 min', icon: 'timer' },
-    { value: '45', label: '45 min', icon: 'timer' },
-    { value: '60', label: '1 hora', icon: 'time' },
-    { value: '90', label: '1h 30min', icon: 'time' },
-    { value: '120', label: '2 horas', icon: 'time' },
+    { value: '15', label: '15 דק׳', icon: 'timer' },
+    { value: '30', label: '30 דק׳', icon: 'timer' },
+    { value: '45', label: '45 דק׳', icon: 'timer' },
+    { value: '60', label: 'שעה אחת', icon: 'time' },
+    { value: '90', label: 'שעה וחצי', icon: 'time' },
+    { value: '120', label: 'שעתיים', icon: 'time' },
   ];
 
   const statusOptions = [
-    { value: 'scheduled', label: 'Agendado', color: Colors.info, icon: 'calendar' },
-    { value: 'confirmed', label: 'Confirmado', color: Colors.success, icon: 'checkmark-circle' },
-    { value: 'in-progress', label: 'Em andamento', color: Colors.warning, icon: 'play-circle' },
-    { value: 'completed', label: 'Concluído', color: Colors.primary, icon: 'checkmark-done' },
-    { value: 'cancelled', label: 'Cancelado', color: Colors.error, icon: 'close-circle' },
+    { value: 'scheduled', label: 'מתוזמן', color: Colors.info, icon: 'calendar' },
+    { value: 'confirmed', label: 'מאושר', color: Colors.success, icon: 'checkmark-circle' },
+    { value: 'in-progress', label: 'בתהליך', color: Colors.warning, icon: 'play-circle' },
+    { value: 'completed', label: 'הושלם', color: Colors.primary, icon: 'checkmark-done' },
+    { value: 'cancelled', label: 'בוטל', color: Colors.error, icon: 'close-circle' },
   ];
 
   useEffect(() => {
@@ -109,7 +109,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
         loadPetsForClient(selectedClientId);
       }
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao carregar dados');
+      Alert.alert('שגיאה', 'שגיאה בטעינת הנתונים');
     }
   };
 
@@ -118,7 +118,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
       const clientPets = await PetService.getByClientId(clientId);
       setAvailablePets(clientPets);
     } catch (error) {
-      console.error('Erro ao carregar pets do cliente:', error);
+      console.error('שגיאה בטעינת חיות המחמד של הלקוח:', error);
     }
   };
 
@@ -138,7 +138,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
         });
       }
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao carregar dados do agendamento');
+      Alert.alert('שגיאה', 'שגיאה בטעינת נתוני התור');
     } finally {
       setLoadingData(false);
     }
@@ -148,19 +148,19 @@ const NewAppointmentScreen = ({ navigation, route }) => {
     const newErrors = {};
 
     if (!validateRequired(formData.clientId)) {
-      newErrors.clientId = 'Cliente é obrigatório';
+      newErrors.clientId = 'הלקוח הוא שדה חובה';
     }
 
     if (!validateRequired(formData.petId)) {
-      newErrors.petId = 'Pet é obrigatório';
+      newErrors.petId = 'חיית המחמד היא שדה חובה';
     }
 
     if (!validateRequired(formData.title)) {
-      newErrors.title = 'Tipo de consulta é obrigatório';
+      newErrors.title = 'סוג הביקור הוא שדה חובה';
     }
 
     if (!validateRequired(formData.date)) {
-      newErrors.date = 'Data e hora são obrigatórias';
+      newErrors.date = 'תאריך ושעה הם שדות חובה';
     }
 
     setErrors(newErrors);
@@ -191,16 +191,16 @@ const NewAppointmentScreen = ({ navigation, route }) => {
 
       if (result.success) {
         Alert.alert(
-          'Sucesso', 
-          `Agendamento ${isEditing ? 'atualizado' : 'criado'} com sucesso!`,
+          'הצלחה', 
+          `התור ${isEditing ? 'עודכן' : 'נוצר'} בהצלחה!`,
           [{ text: 'OK', onPress: () => navigation.goBack() }]
         );
       } else {
-        Alert.alert('Erro', result.error);
+        Alert.alert('שגיאה', result.error);
       }
     } catch (error) {
-      console.error('Erro ao salvar agendamento:', error);
-      Alert.alert('Erro', 'Erro interno do sistema');
+      console.error('שגיאה בשמירת התור:', error);
+      Alert.alert('שגיאה', 'שגיאה פנימית במערכת');
     } finally {
       setLoading(false);
     }
@@ -239,7 +239,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
     return (
       <SafeAreaView style={globalStyles.container}>
         <View style={[globalStyles.container, globalStyles.justifyCenter, globalStyles.alignCenter]}>
-          <Text style={globalStyles.textRegular}>Carregando dados...</Text>
+          <Text style={globalStyles.textRegular}>טוען נתונים...</Text>
         </View>
       </SafeAreaView>
     );
@@ -266,10 +266,10 @@ const NewAppointmentScreen = ({ navigation, route }) => {
             </View>
             <View>
               <Text style={styles.headerTitle}>
-                {isEditing ? 'Editar Agendamento' : 'Novo Agendamento'}
+                {isEditing ? 'עריכת תור' : 'תור חדש'}
               </Text>
               <Text style={styles.headerSubtitle}>
-                {isEditing ? 'Atualize os dados do agendamento' : 'Agende uma nova consulta'}
+                {isEditing ? 'עדכנו את פרטי התור' : 'קבעו ייעוץ חדש'}
               </Text>
             </View>
           </View>
@@ -291,7 +291,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
         >
           {/* Card Principal */}
           <View style={styles.mainCard}>
-            {/* Seção: Tipo de Consulta */}
+            {/* Seção: סוג הביקור */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <LinearGradient
@@ -300,7 +300,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 >
                   <Ionicons name="medical" size={20} color={Colors.surface} />
                 </LinearGradient>
-                <Text style={styles.sectionTitle}>Tipo de Consulta</Text>
+                <Text style={styles.sectionTitle}>סוג הביקור</Text>
               </View>
               
               <View style={styles.appointmentTypesContainer}>
@@ -339,10 +339,10 @@ const NewAppointmentScreen = ({ navigation, route }) => {
               {errors.title && <Text style={styles.errorText}>{errors.title}</Text>}
 
               <Input
-                label="Descrição Adicional"
+                label="תיאור נוסף"
                 value={formData.description}
                 onChangeText={(value) => updateField('description', value)}
-                placeholder="Detalhes específicos da consulta (opcional)"
+                placeholder="פרטי ייעוץ ספציפיים (אופציונלי)"
                 multiline
                 numberOfLines={3}
                 leftIcon="document-text"
@@ -353,7 +353,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
               />
             </View>
 
-            {/* Seção: Paciente */}
+            {/* Seção: מטופל */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <LinearGradient
@@ -362,13 +362,13 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 >
                   <Ionicons name="paw" size={20} color={Colors.surface} />
                 </LinearGradient>
-                <Text style={styles.sectionTitle}>Paciente</Text>
+                <Text style={styles.sectionTitle}>מטופל</Text>
               </View>
               
-              {/* Cliente Selector */}
+              {/* לקוח Selector */}
               <View style={styles.pickerSection}>
                 <Text style={styles.pickerLabel}>
-                  Cliente <Text style={styles.required}>*</Text>
+                  לקוח <Text style={styles.required}>*</Text>
                 </Text>
                 <View style={[styles.pickerContainer, errors.clientId && styles.pickerError]}>
                   <LinearGradient
@@ -386,7 +386,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                       mode="dropdown"
                       dropdownIconColor={Colors.primary}
                     >
-                      <Picker.Item label="Selecione o cliente..." value="" />
+                      <Picker.Item label="בחרו לקוח..." value="" />
                       {clients.map(client => (
                         <Picker.Item 
                           key={client.id} 
@@ -408,10 +408,10 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 )}
               </View>
 
-              {/* Pet Selector */}
+              {/* חיית מחמד Selector */}
               <View style={styles.pickerSection}>
                 <Text style={styles.pickerLabel}>
-                  Pet <Text style={styles.required}>*</Text>
+                  חיית מחמד <Text style={styles.required}>*</Text>
                 </Text>
                 <View style={[styles.pickerContainer, errors.petId && styles.pickerError, !formData.clientId && styles.pickerDisabled]}>
                   <LinearGradient
@@ -432,7 +432,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                       mode="dropdown"
                       dropdownIconColor={formData.clientId ? Colors.primary : Colors.textSecondary}
                     >
-                      <Picker.Item label="Selecione o pet..." value="" />
+                      <Picker.Item label="בחרו חיית מחמד..." value="" />
                       {availablePets.map(pet => (
                         <Picker.Item 
                           key={pet.id} 
@@ -444,7 +444,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                   </LinearGradient>
                 </View>
                 {errors.petId && <Text style={styles.errorText}>{errors.petId}</Text>}
-                {selectedPet && (
+                {selectedחיית מחמד && (
                   <View style={styles.selectedPetInfo}>
                     <Ionicons name="checkmark-circle" size={16} color={Colors.success} />
                     <Text style={styles.petInfoText}>
@@ -455,7 +455,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
               </View>
             </View>
 
-            {/* Seção: Data e Configurações */}
+            {/* Seção: תאריך והגדרות */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <LinearGradient
@@ -464,11 +464,11 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 >
                   <Ionicons name="time" size={20} color={Colors.surface} />
                 </LinearGradient>
-                <Text style={styles.sectionTitle}>Data e Configurações</Text>
+                <Text style={styles.sectionTitle}>תאריך והגדרות</Text>
               </View>
               
               <Input
-                label="Data e Hora"
+                label="תאריך ושעה"
                 value={formatDateTime(formData.date)}
                 onChangeText={(value) => updateField('date', value)}
                 placeholder="DD/MM/AAAA HH:MM"
@@ -482,9 +482,9 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 style={styles.inputField}
               />
 
-              {/* Duração com botões visuais */}
+              {/* משך com botões visuais */}
               <View style={styles.pickerSection}>
-                <Text style={styles.pickerLabel}>Duração</Text>
+                <Text style={styles.pickerLabel}>משך</Text>
                 <View style={styles.durationContainer}>
                   {durations.map(duration => (
                     <TouchableOpacity
@@ -519,9 +519,9 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 </View>
               </View>
 
-              {/* Status com botões visuais */}
+              {/* סטטוס com botões visuais */}
               <View style={styles.pickerSection}>
-                <Text style={styles.pickerLabel}>Status</Text>
+                <Text style={styles.pickerLabel}>סטטוס</Text>
                 <View style={styles.statusContainer}>
                   {statusOptions.map(status => (
                     <TouchableOpacity
@@ -558,7 +558,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
               </View>
             </View>
 
-            {/* Resumo do Agendamento */}
+            {/* סיכום התור */}
             {formData.title && formData.clientId && formData.petId && (
               <View style={styles.summarySection}>
                 <LinearGradient
@@ -567,7 +567,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                 >
                   <View style={styles.summaryHeader}>
                     <Ionicons name="checkmark-circle" size={24} color={Colors.success} />
-                    <Text style={styles.summaryTitle}>Resumo do Agendamento</Text>
+                    <Text style={styles.summaryTitle}>סיכום התור</Text>
                   </View>
                   
                   <View style={styles.summaryContent}>
@@ -588,8 +588,8 @@ const NewAppointmentScreen = ({ navigation, route }) => {
                       <Text style={styles.summaryText}>{selectedDuration?.label}</Text>
                     </View>
                     <View style={styles.summaryItem}>
-                      <Ionicons name={selectedStatus?.icon} size={16} color={Colors.success} />
-                      <Text style={styles.summaryText}>{selectedStatus?.label}</Text>
+                      <Ionicons name={selectedסטטוס?.icon} size={16} color={Colors.success} />
+                      <Text style={styles.summaryText}>{selectedסטטוס?.label}</Text>
                     </View>
                   </View>
                 </LinearGradient>
@@ -605,7 +605,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
         >
           <View style={styles.actionButtons}>
             <Button
-              title="Cancelar"
+              title="ביטול"
               variant="outline"
               onPress={() => navigation.goBack()}
               style={styles.cancelButton}
@@ -613,7 +613,7 @@ const NewAppointmentScreen = ({ navigation, route }) => {
               icon={<Ionicons name="close" size={16} color={Colors.textSecondary} />}
             />
             <Button
-              title={isEditing ? 'Atualizar' : 'Agendar'}
+              title={isEditing ? 'עדכן' : 'קבע תור'}
               onPress={handleSave}
               loading={loading}
               style={styles.saveButton}
