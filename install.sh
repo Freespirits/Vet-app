@@ -129,26 +129,16 @@ install_nodejs() {
 }
 
 # Função para instalar Expo CLI
+# Função para instalar Expo CLI (pulada, usamos CLI local via npx)
 install_expo_cli() {
-    log "PROGRESS" "Instalando Expo CLI..."
-
-    if npm install -g @expo/cli; then
-        log "SUCCESS" "Expo CLI instalado com sucesso"
-    else
-        log "ERROR" "Falha ao instalar Expo CLI"
-        exit 1
-    fi
+    log "PROGRESS" "Pulando instalação global do Expo CLI (use npx expo)..."
+    return 0
 }
 
-# Função para instalar EAS CLI
+# Função para instalar EAS CLI (pulada)
 install_eas_cli() {
-    log "PROGRESS" "Instalando EAS CLI..."
-
-    if npm install -g eas-cli; then
-        log "SUCCESS" "EAS CLI instalado com sucesso"
-    else
-        log "WARNING" "Falha ao instalar EAS CLI (opcional para desenvolvimento)"
-    fi
+    log "PROGRESS" "Pulando instalação global do EAS CLI (use npx eas se necessário)..."
+    return 0
 }
 
 # Função para verificar Git

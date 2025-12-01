@@ -1,12 +1,10 @@
-﻿// keep: ×ª×¨×•×¤×•×ª
-// keep: '×”×›×•×œ'
 import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  SafeAreaView, 
-  ScrollView, 
-  TouchableOpacity, 
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
   Alert,
   StyleSheet,
   Dimensions,
@@ -17,9 +15,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Picker } from '@react-native-picker/picker';
 import SearchBar from '../../components/common/SearchBar';
-import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import { LibraryService } from '../../services/LibraryService';
@@ -33,13 +29,11 @@ const VetLibraryScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [medications, setMedications] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  // Modal states
+
   const [modalVisible, setModalVisible] = useState(false);
   const [editingMedication, setEditingMedication] = useState(null);
   const [saving, setSaving] = useState(false);
-  
-  // Form states
+
   const [formData, setFormData] = useState({
     name: '',
     category: 'medicamento',
@@ -56,25 +50,22 @@ const VetLibraryScreen = ({ navigation }) => {
     price: '',
   });
 
-  // Keep Hebrew label markers for automated content checks: 'x"x>xxo' and xÂ¦x"xxxxÂ¦
   const categories = [
-    { id: 'all', name: 'הכול', icon: 'medical', color: Colors.primary },
-    { id: 'medicamento', name: 'תרופות', icon: 'medical', color: Colors.success },
-    { id: 'vacina', name: 'חיסונים', icon: 'shield-checkmark', color: Colors.info },
-    { id: 'procedimento', name: 'פרוצדורות', icon: 'cut', color: Colors.warning },
-    { id: 'exame', name: 'בדיקות', icon: 'search', color: Colors.error },
-    { id: 'tratamento', name: 'טיפולים', icon: 'fitness', color: Colors.secondary },
+    { id: 'all', name: 'Todos', icon: 'medical', color: Colors.primary },
+    { id: 'medicamento', name: 'Medicamentos', icon: 'medical', color: Colors.success },
+    { id: 'vacina', name: 'Vacinas', icon: 'shield-checkmark', color: Colors.info },
+    { id: 'procedimento', name: 'Procedimentos', icon: 'cut', color: Colors.warning },
+    { id: 'exame', name: 'Exames', icon: 'search', color: Colors.error },
+    { id: 'tratamento', name: 'Tratamentos', icon: 'fitness', color: Colors.secondary },
   ];
 
   const categoryOptions = [
-    { value: 'medicamento', label: 'תרופה', icon: 'medical', color: Colors.success },
-    { value: 'vacina', label: 'חיסון', icon: 'shield-checkmark', color: Colors.info },
-    { value: 'procedimento', label: 'פרוצדורה', icon: 'cut', color: Colors.warning },
-    { value: 'exame', label: 'בדיקה', icon: 'search', color: Colors.error },
-    { value: 'tratamento', label: 'טיפול', icon: 'fitness', color: Colors.secondary },
+    { value: 'medicamento', label: 'Medicamento', icon: 'medical', color: Colors.success },
+    { value: 'vacina', label: 'Vacina', icon: 'shield-checkmark', color: Colors.info },
+    { value: 'procedimento', label: 'Procedimento', icon: 'cut', color: Colors.warning },
+    { value: 'exame', label: 'Exame', icon: 'search', color: Colors.error },
+    { value: 'tratamento', label: 'Tratamento', icon: 'fitness', color: Colors.secondary },
   ];
-
-  const speciesOptions = ['כלב', 'חתול', 'ציפורים', 'בקר', 'סוסים', 'חזירים', 'הכול'];
 
   useEffect(() => {
     loadMedications();
@@ -86,8 +77,8 @@ const VetLibraryScreen = ({ navigation }) => {
       const data = await LibraryService.getAll();
       setMedications(data);
     } catch (error) {
-      console.error('Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€ Ã—â€˜Ã—ËœÃ—Â¢Ã—â„¢Ã—Â Ã—Âª Ã—Â¡Ã—Â¤Ã—Â¨Ã—â„¢Ã—â„¢Ã—Âª Ã—â€Ã—ÂªÃ—Â¨Ã—â€¢Ã—Â¤Ã—â€¢Ã—Âª:', error);
-      Alert.alert('Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€', 'Ã—ÂÃ—â„¢Ã—Â¨Ã—Â¢Ã—â€ Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€ Ã—â€˜Ã—Â¢Ã—Âª Ã—ËœÃ—Â¢Ã—â„¢Ã—Â Ã—Âª Ã—Â¡Ã—Â¤Ã—Â¨Ã—â„¢Ã—â„¢Ã—Âª Ã—â€Ã—ÂªÃ—Â¨Ã—â€¢Ã—Â¤Ã—â€¢Ã—Âª');
+      console.error('Erro ao carregar itens da biblioteca:', error);
+      Alert.alert('Erro', 'Nao foi possivel carregar os itens da biblioteca.');
     } finally {
       setLoading(false);
     }
@@ -100,21 +91,21 @@ const VetLibraryScreen = ({ navigation }) => {
   };
 
   const filteredMedications = medications.filter(med => {
-    const matchesSearch = med.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         med.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
+    const name = (med.name || '').toLowerCase();
+    const description = (med.description || '').toLowerCase();
+    const search = searchQuery.toLowerCase();
+    const matchesSearch = name.includes(search) || description.includes(search);
     const matchesCategory = activeCategory === 'all' || med.category === activeCategory;
-    
     return matchesSearch && matchesCategory;
   });
 
   const handleMedicationPress = (medication) => {
     Alert.alert(
       medication.name,
-      `Ã—Â§Ã—ËœÃ—â€™Ã—â€¢Ã—Â¨Ã—â„¢Ã—â€: ${getCategoryLabel(medication.category)}\n\nÃ—ÂªÃ—â„¢Ã—ÂÃ—â€¢Ã—Â¨: ${medication.description || 'Ã—Å“Ã—Â Ã—Â¦Ã—â€¢Ã—â„¢Ã—Å¸'}\n\nÃ—Å¾Ã—â„¢Ã—Â Ã—â€¢Ã—Å¸: ${medication.dosage || 'Ã—Å“Ã—Â Ã—Â¦Ã—â€¢Ã—â„¢Ã—Å¸'}\nÃ—ÂªÃ—â€œÃ—â„¢Ã—Â¨Ã—â€¢Ã—Âª: ${medication.frequency || 'Ã—Å“Ã—Â Ã—Â¦Ã—â€¢Ã—â„¢Ã—Å¸'}\n\nÃ—Å¾Ã—â„¢Ã—Â Ã—â„¢Ã—Â: ${medication.species || 'Ã—Å“Ã—Â Ã—Â¦Ã—â€¢Ã—â„¢Ã—Â Ã—â€¢'}\n\nÃ—â€Ã—ÂªÃ—â€¢Ã—â€¢Ã—â„¢Ã—â€¢Ã—Âª Ã—Â Ã—â€™Ã—â€œ: ${medication.contraindications || 'Ã—Å“Ã—Â Ã—Â¦Ã—â€¢Ã—â„¢Ã—Â Ã—â€¢'}`,
+      `Categoria: ${getCategoryLabel(medication.category)}\n\nDescricao: ${medication.description || 'Sem descricao'}\n\nDosagem: ${medication.dosage || 'Nao informado'}\nFrequencia: ${medication.frequency || 'Nao informado'}\n\nEspecies: ${medication.species || 'Nao informado'}\n\nContraindicacoes: ${medication.contraindications || 'Nao informado'}`,
       [
-        { text: 'Ã—ÂÃ—â„¢Ã—Â©Ã—â€¢Ã—Â¨' },
-        { text: 'Ã—Â¢Ã—Â¨Ã—â„¢Ã—â€ºÃ—â€', onPress: () => openEditModal(medication) }
+        { text: 'Fechar' },
+        { text: 'Editar', onPress: () => openEditModal(medication) }
       ],
       { cancelable: true }
     );
@@ -182,7 +173,7 @@ const VetLibraryScreen = ({ navigation }) => {
 
   const handleSave = async () => {
     if (!formData.name.trim()) {
-      Alert.alert('Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€', 'Ã—Â©Ã—Â Ã—â€Ã—â€¢Ã—Â Ã—Â©Ã—â€œÃ—â€ Ã—â€”Ã—â€¢Ã—â€˜Ã—â€');
+      Alert.alert('Erro', 'Informe o nome do item.');
       return;
     }
 
@@ -197,10 +188,13 @@ const VetLibraryScreen = ({ navigation }) => {
         contraindications: formData.contraindications.trim(),
         observations: formData.observations.trim(),
         species: formData.species.trim(),
-        diseases: formData.diseases.split(',').map(d => d.trim()).filter(d => d),
+        diseases: formData.diseases
+          .split(',')
+          .map(d => d.trim())
+          .filter(d => d),
         schedule: formData.schedule.trim(),
         booster: formData.booster.trim(),
-        duration: formData.duration ? parseInt(formData.duration) : null,
+        duration: formData.duration ? parseInt(formData.duration, 10) : null,
         price: formData.price ? parseFloat(formData.price) : null,
       };
 
@@ -214,16 +208,13 @@ const VetLibraryScreen = ({ navigation }) => {
       if (result.success) {
         closeModal();
         await loadMedications();
-        Alert.alert(
-          'Ã—â€Ã—Â¦Ã—Å“Ã—â€”Ã—â€',
-          `${editingMedication ? 'Ã—â€Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ Ã—Â¢Ã—â€¢Ã—â€œÃ—â€ºÃ—Å¸ Ã—â€˜Ã—â€Ã—Â¦Ã—Å“Ã—â€”Ã—â€' : 'Ã—â€Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ Ã—Â Ã—â€¢Ã—Â¡Ã—Â£ Ã—â€˜Ã—â€Ã—Â¦Ã—Å“Ã—â€”Ã—â€'}`
-        );
+        Alert.alert('Sucesso', editingMedication ? 'Item atualizado com sucesso.' : 'Item adicionado com sucesso.');
       } else {
-        Alert.alert('Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€', result.error || 'Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€ Ã—â€˜Ã—Â¢Ã—Âª Ã—Â©Ã—Å¾Ã—â„¢Ã—Â¨Ã—Âª Ã—â€Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ');
+        Alert.alert('Erro', result.error || 'Nao foi possivel salvar o item.');
       }
     } catch (error) {
-      console.error('Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€ Ã—â€˜Ã—Â¢Ã—Âª Ã—Â©Ã—Å¾Ã—â„¢Ã—Â¨Ã—Âª Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ Ã—â€˜Ã—Â¡Ã—Â¤Ã—Â¨Ã—â„¢Ã—â„¢Ã—â€:', error);
-      Alert.alert('Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€', 'Ã—ÂÃ—â„¢Ã—Â¨Ã—Â¢Ã—â€ Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€ Ã—Â¤Ã—Â Ã—â„¢Ã—Å¾Ã—â„¢Ã—Âª Ã—â€˜Ã—Å¾Ã—Â¢Ã—Â¨Ã—â€ºÃ—Âª');
+      console.error('Erro ao salvar item:', error);
+      Alert.alert('Erro', 'Nao foi possivel salvar o item.');
     } finally {
       setSaving(false);
     }
@@ -231,25 +222,25 @@ const VetLibraryScreen = ({ navigation }) => {
 
   const handleDelete = async (medication) => {
     Alert.alert(
-      'Ã—ÂÃ—â„¢Ã—Â©Ã—â€¢Ã—Â¨ Ã—Å¾Ã—â€”Ã—â„¢Ã—Â§Ã—â€',
-      `Ã—â€Ã—ÂÃ—Â Ã—Å“Ã—Å¾Ã—â€”Ã—â€¢Ã—Â§ Ã—ÂÃ—Âª "${medication.name}"?`,
+      'Remover item',
+      `Deseja remover "${medication.name}"?`,
       [
-        { text: 'Ã—â€˜Ã—â„¢Ã—ËœÃ—â€¢Ã—Å“', style: 'cancel' },
+        { text: 'Cancelar', style: 'cancel' },
         {
-          text: 'Ã—Å¾Ã—â€”Ã—â„¢Ã—Â§Ã—â€',
+          text: 'Remover',
           style: 'destructive',
           onPress: async () => {
             try {
               const result = await LibraryService.delete(medication.id);
               if (result.success) {
                 await loadMedications();
-                Alert.alert('Ã—â€Ã—Â¦Ã—Å“Ã—â€”Ã—â€', 'Ã—â€Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ Ã—Â Ã—Å¾Ã—â€”Ã—Â§ Ã—â€˜Ã—â€Ã—Â¦Ã—Å“Ã—â€”Ã—â€');
+                Alert.alert('Sucesso', 'Item removido com sucesso.');
               } else {
-                Alert.alert('Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€', result.error || 'Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€ Ã—â€˜Ã—Å¾Ã—â€”Ã—â„¢Ã—Â§Ã—Âª Ã—â€Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ');
+                Alert.alert('Erro', result.error || 'Nao foi possivel remover o item.');
               }
             } catch (error) {
-              console.error('Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€ Ã—â€˜Ã—Å¾Ã—â€”Ã—â„¢Ã—Â§Ã—Âª Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ Ã—Å¾Ã—â€Ã—Â¡Ã—Â¤Ã—Â¨Ã—â„¢Ã—â„¢Ã—â€:', error);
-              Alert.alert('Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€', 'Ã—ÂÃ—â„¢Ã—Â¨Ã—Â¢Ã—â€ Ã—Â©Ã—â€™Ã—â„¢Ã—ÂÃ—â€ Ã—Â¤Ã—Â Ã—â„¢Ã—Å¾Ã—â„¢Ã—Âª Ã—â€˜Ã—Å¾Ã—Â¢Ã—Â¨Ã—â€ºÃ—Âª');
+              console.error('Erro ao remover item:', error);
+              Alert.alert('Erro', 'Nao foi possivel remover o item.');
             }
           }
         }
@@ -267,9 +258,10 @@ const VetLibraryScreen = ({ navigation }) => {
   };
 
   const getCategoryLabel = (category) => {
-    const categoryConfig = categoryOptions.find(cat => cat.value === category) ||
+    const categoryConfig =
+      categoryOptions.find(cat => cat.value === category) ||
       categories.find(cat => cat.id === category);
-    return categoryConfig ? (categoryConfig.label || categoryConfig.name) : 'Ã—ÂÃ—â€”Ã—Â¨';
+    return categoryConfig ? (categoryConfig.label || categoryConfig.name) : 'Desconhecida';
   };
 
   const getCategoryIcon = (category) => {
@@ -290,10 +282,10 @@ const VetLibraryScreen = ({ navigation }) => {
       >
         <View style={styles.medicationHeader}>
           <View style={[styles.categoryBadge, { backgroundColor: `${getCategoryColor(medication.category)}20` }]}>
-            <Ionicons 
-              name={getCategoryIcon(medication.category)} 
-              size={16} 
-              color={getCategoryColor(medication.category)} 
+            <Ionicons
+              name={getCategoryIcon(medication.category)}
+              size={16}
+              color={getCategoryColor(medication.category)}
             />
           </View>
           <View style={styles.medicationInfo}>
@@ -307,33 +299,33 @@ const VetLibraryScreen = ({ navigation }) => {
             <Ionicons name="trash" size={16} color={Colors.error} />
           </TouchableOpacity>
         </View>
-        
+
         <Text style={styles.medicationDescription} numberOfLines={2}>
-          {medication.description || 'Ã—Å“Ã—Å“Ã—Â Ã—ÂªÃ—â„¢Ã—ÂÃ—â€¢Ã—Â¨'}
+          {medication.description || 'Sem descricao'}
         </Text>
-        
+
         <View style={styles.medicationDetails}>
-          {medication.dosage && (
+          {medication.dosage ? (
             <View style={styles.detailItem}>
               <Ionicons name="scale" size={14} color={Colors.primary} />
               <Text style={styles.detailText}>{medication.dosage}</Text>
             </View>
-          )}
-          {medication.frequency && (
+          ) : null}
+          {medication.frequency ? (
             <View style={styles.detailItem}>
               <Ionicons name="time" size={14} color={Colors.primary} />
               <Text style={styles.detailText}>{medication.frequency}</Text>
             </View>
-          )}
+          ) : null}
         </View>
-        
-        {medication.species && (
+
+        {medication.species ? (
           <View style={styles.speciesContainer}>
             <View style={styles.speciesBadge}>
               <Text style={styles.speciesText}>{medication.species}</Text>
             </View>
           </View>
-        )}
+        ) : null}
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -351,8 +343,8 @@ const VetLibraryScreen = ({ navigation }) => {
               <Ionicons name="library" size={28} color={Colors.surface} />
             </View>
             <View>
-              <Text style={styles.headerTitle}>Ã—â€Ã—Â¡Ã—Â¤Ã—Â¨Ã—â„¢Ã—â„¢Ã—â€ Ã—â€Ã—â€¢Ã—â€¢Ã—ËœÃ—Â¨Ã—â„¢Ã—Â Ã—Â¨Ã—â„¢Ã—Âª</Text>
-              <Text style={styles.headerSubtitle}>Ã—ÂªÃ—Â¨Ã—â€¢Ã—Â¤Ã—â€¢Ã—Âª Ã—â€¢Ã—Â¤Ã—Â¨Ã—â€¢Ã—ËœÃ—â€¢Ã—Â§Ã—â€¢Ã—Å“Ã—â„¢Ã—Â</Text>
+              <Text style={styles.headerTitle}>Biblioteca veterinaria</Text>
+              <Text style={styles.headerSubtitle}>Medicamentos, vacinas e protocolos em um so lugar.</Text>
             </View>
           </View>
         </View>
@@ -361,13 +353,13 @@ const VetLibraryScreen = ({ navigation }) => {
       {/* Search and Filter */}
       <View style={styles.searchContainer}>
         <SearchBar
-          placeholder="Search medications..."
+          placeholder="Buscar na biblioteca..."
           value={searchQuery}
           onChangeText={setSearchQuery}
           onClear={() => setSearchQuery('')}
           style={styles.searchBar}
         />
-        
+
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -384,16 +376,16 @@ const VetLibraryScreen = ({ navigation }) => {
               onPress={() => setActiveCategory(category.id)}
             >
               <LinearGradient
-                colors={activeCategory === category.id ? 
-                  [category.color, `${category.color}CC`] : 
+                colors={activeCategory === category.id ?
+                  [category.color, `${category.color}CC`] :
                   ['transparent', 'transparent']
                 }
                 style={styles.categoryGradient}
               >
-                <Ionicons 
-                  name={category.icon} 
-                  size={16} 
-                  color={activeCategory === category.id ? Colors.surface : category.color} 
+                <Ionicons
+                  name={category.icon}
+                  size={16}
+                  color={activeCategory === category.id ? Colors.surface : category.color}
                 />
                 <Text style={[
                   styles.categoryText,
@@ -417,13 +409,13 @@ const VetLibraryScreen = ({ navigation }) => {
       >
         <View style={styles.resultsHeader}>
           <Text style={styles.resultsCount}>
-            {`${filteredMedications.length} ${filteredMedications.length === 1 ? 'Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ Ã—Â Ã—Å¾Ã—Â¦Ã—Â' : 'Ã—Â¤Ã—Â¨Ã—â„¢Ã—ËœÃ—â„¢Ã—Â Ã—Â Ã—Å¾Ã—Â¦Ã—ÂÃ—â€¢'}`}
+            {`${filteredMedications.length} ${filteredMedications.length === 1 ? 'resultado' : 'resultados'}`}
           </Text>
         </View>
 
         {loading ? (
           <View style={styles.loadingContainer}>
-            <Text style={styles.loadingText}>Ã—ËœÃ—â€¢Ã—Â¢Ã—Å¸ Ã—Â Ã—ÂªÃ—â€¢Ã—Â Ã—â„¢Ã—Â...</Text>
+            <Text style={styles.loadingText}>Carregando dados...</Text>
           </View>
         ) : filteredMedications.length === 0 ? (
           <View style={styles.emptyState}>
@@ -432,12 +424,12 @@ const VetLibraryScreen = ({ navigation }) => {
               style={styles.emptyGradient}
             >
               <Ionicons name="search" size={64} color={Colors.textSecondary} />
-              <Text style={styles.emptyTitle}>Ã—Å“Ã—Â Ã—Â Ã—Å¾Ã—Â¦Ã—ÂÃ—â€¢ Ã—Â¤Ã—Â¨Ã—â„¢Ã—ËœÃ—â„¢Ã—Â</Text>
+              <Text style={styles.emptyTitle}>Nenhum item encontrado</Text>
               <Text style={styles.emptyDescription}>
-                {searchQuery ? 'Ã—Â Ã—Â¡Ã—â€¢ Ã—Å“Ã—â€Ã—ÂªÃ—ÂÃ—â„¢Ã—Â Ã—ÂÃ—Âª Ã—â€Ã—Å¾Ã—Â¡Ã—Â Ã—Å¸ Ã—ÂÃ—â€¢ Ã—Å¾Ã—â„¢Ã—Å“Ã—â€¢Ã—Âª Ã—â€Ã—â€”Ã—â„¢Ã—Â¤Ã—â€¢Ã—Â©' : 'Ã—â€Ã—â€¢Ã—Â¡Ã—â„¢Ã—Â¤Ã—â€¢ Ã—ÂÃ—Âª Ã—â€Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ Ã—â€Ã—Â¨Ã—ÂÃ—Â©Ã—â€¢Ã—Å¸ Ã—Å“Ã—Â¡Ã—Â¤Ã—Â¨Ã—â„¢Ã—â„¢Ã—â€ Ã—Â©Ã—Å“Ã—â€ºÃ—Â'}
+                {searchQuery ? 'Ajuste a busca ou tente outros termos.' : 'Adicione o primeiro item para montar sua biblioteca.'}
               </Text>
               <Button
-                title="Ã—â€Ã—â€¢Ã—Â¡Ã—Â¤Ã—Âª Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ"
+                title="Adicionar item"
                 onPress={openAddModal}
                 style={styles.addButton}
                 icon={<Ionicons name="add" size={16} color={Colors.surface} />}
@@ -465,10 +457,10 @@ const VetLibraryScreen = ({ navigation }) => {
             <Ionicons name="add" size={24} color={Colors.surface} />
           </LinearGradient>
         </TouchableOpacity>
-        <Text style={styles.fabLabel}>Ã—â€Ã—â€¢Ã—Â¡Ã—Â¤Ã—â€</Text>
+        <Text style={styles.fabLabel}>Adicionar</Text>
       </View>
 
-      {/* Ã—â€”Ã—Å“Ã—â€¢Ã—Å¸ Ã—Â§Ã—â€¢Ã—Â¤Ã—Â¥ Ã—Å“Ã—â€Ã—â€¢Ã—Â¡Ã—Â¤Ã—â€/Ã—Â¢Ã—Â¨Ã—â„¢Ã—â€ºÃ—â€ */}
+      {/* Modal add/edit */}
       <Modal
         visible={modalVisible}
         animationType="slide"
@@ -486,33 +478,31 @@ const VetLibraryScreen = ({ navigation }) => {
                 <Ionicons name="close" size={24} color={Colors.surface} />
               </TouchableOpacity>
               <Text style={styles.modalTitle}>
-                {editingMedication ? 'Ã—Â¢Ã—Â¨Ã—â„¢Ã—â€ºÃ—Âª Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ' : 'Ã—Â¤Ã—Â¨Ã—â„¢Ã—Ëœ Ã—â€”Ã—â€œÃ—Â©'}
+                {editingMedication ? 'Editar item' : 'Adicionar item'}
               </Text>
               <View style={styles.modalHeaderSpacer} />
             </View>
           </LinearGradient>
 
           {/* Modal Content */}
-          <KeyboardAvoidingView 
+          <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.modalKeyboardView}
           >
             <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
               <View style={styles.formContainer}>
-                {/* Ã—Â©Ã—Â */}
                 <Input
-                  label="Ã—Â©Ã—Â"
+                  label="Nome"
                   value={formData.name}
                   onChangeText={(value) => updateField('name', value)}
-                  placeholder="Medication name"
+                  placeholder="Nome do item"
                   required
                   autoCapitalize="words"
                 />
 
-                {/* Ã—Â§Ã—ËœÃ—â€™Ã—â€¢Ã—Â¨Ã—â„¢Ã—â€ Ã—Â¢Ã—Â Ã—â€ºÃ—Â¤Ã—ÂªÃ—â€¢Ã—Â¨Ã—â„¢Ã—Â Ã—â€”Ã—â€“Ã—â€¢Ã—ÂªÃ—â„¢Ã—â„¢Ã—Â */}
                 <View style={styles.categorySection}>
                   <Text style={styles.sectionLabel}>
-                    Ã—Â§Ã—ËœÃ—â€™Ã—â€¢Ã—Â¨Ã—â„¢Ã—â€ <Text style={styles.required}>*</Text>
+                    Categoria <Text style={styles.required}>*</Text>
                   </Text>
                   <View style={styles.categoryGrid}>
                     {categoryOptions.map(option => (
@@ -526,16 +516,16 @@ const VetLibraryScreen = ({ navigation }) => {
                         onPress={() => updateField('category', option.value)}
                       >
                         <LinearGradient
-                          colors={formData.category === option.value ? 
-                            [option.color, `${option.color}CC`] : 
+                          colors={formData.category === option.value ?
+                            [option.color, `${option.color}CC`] :
                             ['transparent', 'transparent']
                           }
                           style={styles.categoryOptionGradient}
                         >
-                          <Ionicons 
-                            name={option.icon} 
-                            size={20} 
-                            color={formData.category === option.value ? Colors.surface : option.color} 
+                          <Ionicons
+                            name={option.icon}
+                            size={20}
+                            color={formData.category === option.value ? Colors.surface : option.color}
                           />
                           <Text style={[
                             styles.categoryOptionText,
@@ -549,22 +539,20 @@ const VetLibraryScreen = ({ navigation }) => {
                   </View>
                 </View>
 
-                {/* Ã—ÂªÃ—â„¢Ã—ÂÃ—â€¢Ã—Â¨ */}
                 <Input
-                  label="Ã—ÂªÃ—â„¢Ã—ÂÃ—â€¢Ã—Â¨"
+                  label="Descricao"
                   value={formData.description}
                   onChangeText={(value) => updateField('description', value)}
-                  placeholder="Brief description"
+                  placeholder="Descricao resumida"
                   multiline
                   numberOfLines={3}
                   autoCapitalize="sentences"
                 />
 
-                {/* Ã—Å¾Ã—â„¢Ã—Â Ã—â€¢Ã—Å¸ Ã—â€¢Ã—ÂªÃ—â€œÃ—â„¢Ã—Â¨Ã—â€¢Ã—Âª */}
                 <View style={styles.rowInputs}>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Ã—Å¾Ã—â„¢Ã—Â Ã—â€¢Ã—Å¸"
+                      label="Dosagem"
                       value={formData.dosage}
                       onChangeText={(value) => updateField('dosage', value)}
                       placeholder="Ex: 2-4 mg/kg"
@@ -572,67 +560,62 @@ const VetLibraryScreen = ({ navigation }) => {
                   </View>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Ã—ÂªÃ—â€œÃ—â„¢Ã—Â¨Ã—â€¢Ã—Âª"
+                      label="Frequencia"
                       value={formData.frequency}
                       onChangeText={(value) => updateField('frequency', value)}
-                      placeholder="Ex: every 12h"
+                      placeholder="Ex: a cada 12h"
                     />
                   </View>
                 </View>
 
-                {/* Ã—Å¾Ã—â„¢Ã—Â Ã—â„¢Ã—Â */}
                 <Input
-                  label="Ã—Å¾Ã—â„¢Ã—Â Ã—â„¢Ã—Â"
+                  label="Especies"
                   value={formData.species}
                   onChangeText={(value) => updateField('species', value)}
-                  placeholder="Ex: dog, cat, equine"
+                  placeholder="Ex: cao, gato, equino"
                 />
 
-                {/* Ã—Å¾Ã—â€”Ã—Å“Ã—â€¢Ã—Âª/Ã—â€Ã—ÂªÃ—â€¢Ã—â€¢Ã—â„¢Ã—â€¢Ã—Âª */}
                 <Input
-                  label="Ã—Å¾Ã—â€”Ã—Å“Ã—â€¢Ã—Âª/Ã—â€Ã—ÂªÃ—â€¢Ã—â€¢Ã—â„¢Ã—â€¢Ã—Âª"
+                  label="Doencas/indicacoes"
                   value={formData.diseases}
                   onChangeText={(value) => updateField('diseases', value)}
-                  placeholder="Ex: parvo, distemper"
+                  placeholder="Ex: parvo, cinomose"
                   multiline
                   numberOfLines={2}
                 />
 
-                {/* Ã—â€Ã—ÂªÃ—â€¢Ã—â€¢Ã—â„¢Ã—â€¢Ã—Âª Ã—Â Ã—â€™Ã—â€œ */}
                 <Input
-                  label="Ã—â€Ã—ÂªÃ—â€¢Ã—â€¢Ã—â„¢Ã—â€¢Ã—Âª Ã—Â Ã—â€™Ã—â€œ"
+                  label="Contraindicacoes"
                   value={formData.contraindications}
                   onChangeText={(value) => updateField('contraindications', value)}
-                  placeholder="Ex: renal disease"
+                  placeholder="Ex: doenca renal"
                   multiline
                   numberOfLines={3}
                 />
 
-                {/* Ã—Å“Ã—â€¢Ã—â€” Ã—â€“Ã—Å¾Ã—Â Ã—â„¢Ã—Â Ã—â€¢Ã—â€˜Ã—â€¢Ã—Â¡Ã—ËœÃ—Â¨ */}
                 <View style={styles.rowInputs}>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Ã—Å“Ã—â€¢Ã—â€” Ã—â€“Ã—Å¾Ã—Â Ã—â„¢Ã—Â"
+                      label="Calendario"
                       value={formData.schedule}
                       onChangeText={(value) => updateField('schedule', value)}
-                      placeholder="Ex: weeks 6-8"
+                      placeholder="Ex: semanas 6-8"
                     />
                   </View>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Ã—Å¾Ã—Â Ã—Âª Ã—â€˜Ã—â€¢Ã—Â¡Ã—ËœÃ—Â¨"
+                      label="Reforco"
                       value={formData.booster}
                       onChangeText={(value) => updateField('booster', value)}
-                      placeholder="Ex: annually"
+                      placeholder="Ex: anual"
                     />
                   </View>
                 </View>
 
-                {/* Ã—Å¾Ã—Â©Ã—Å¡ Ã—â€¢Ã—Å¾Ã—â€”Ã—â„¢Ã—Â¨ */}
                 <View style={styles.rowInputs}>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Ã—Å¾Ã—Â©Ã—Å¡ (Ã—â„¢Ã—Å¾Ã—â„¢Ã—Â)"
+                      label="Duracao (dias)"
                       value={formData.duration}
                       onChangeText={(value) => updateField('duration', value)}
                       placeholder="Ex: 7"
@@ -641,7 +624,7 @@ const VetLibraryScreen = ({ navigation }) => {
                   </View>
                   <View style={styles.halfInput}>
                     <Input
-                      label="Ã—Å¾Ã—â€”Ã—â„¢Ã—Â¨ (Ã¢â€šÂª)"
+                      label="Preco (R$)"
                       value={formData.price}
                       onChangeText={(value) => updateField('price', value)}
                       placeholder="Ex: 25.90"
@@ -650,12 +633,11 @@ const VetLibraryScreen = ({ navigation }) => {
                   </View>
                 </View>
 
-                {/* Ã—â€Ã—Â¢Ã—Â¨Ã—â€¢Ã—Âª */}
                 <Input
-                  label="Ã—â€Ã—Â¢Ã—Â¨Ã—â€¢Ã—Âª"
+                  label="Observacoes"
                   value={formData.observations}
                   onChangeText={(value) => updateField('observations', value)}
-                  placeholder="Additional notes"
+                  placeholder="Anotacoes adicionais"
                   multiline
                   numberOfLines={3}
                   autoCapitalize="sentences"
@@ -666,14 +648,14 @@ const VetLibraryScreen = ({ navigation }) => {
             {/* Modal Actions */}
             <View style={styles.modalActions}>
               <Button
-                title="Ã—â€˜Ã—â„¢Ã—ËœÃ—â€¢Ã—Å“"
+                title="Cancelar"
                 variant="outline"
                 onPress={closeModal}
                 style={styles.cancelButton}
                 disabled={saving}
               />
               <Button
-                title={editingMedication ? 'Ã—Â¢Ã—â€œÃ—â€ºÃ—â€¢Ã—Å¸' : 'Ã—Â©Ã—Å¾Ã—â„¢Ã—Â¨Ã—â€'}
+                title={editingMedication ? 'Atualizar' : 'Salvar'}
                 onPress={handleSave}
                 loading={saving}
                 style={styles.saveButton}
