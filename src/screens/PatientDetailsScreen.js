@@ -37,26 +37,26 @@ const PatientDetailsScreen = ({ navigation, route }) => {
       setPatient(patientData);
       setConsultations(consultationData);
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao carregar detalhes do paciente');
+      Alert.alert('שגיאה', 'שגיאה בטעינת פרטי המטופל');
     } finally {
       setLoading(false);
     }
   };
 
   if (loading) {
-    return <Loading message="Carregando detalhes..." />;
+    return <Loading message="טוען פרטים..." />;
   }
 
   if (!patient) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>Paciente não encontrado</Text>
+          <Text style={styles.errorText}>מטופל לא נמצא</Text>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Text style={styles.backButtonText}>Voltar</Text>
+            <Text style={styles.backButtonText}>חזרה</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -76,7 +76,7 @@ const PatientDetailsScreen = ({ navigation, route }) => {
           >
             <Ionicons name="arrow-back" size={24} color={Colors.surface} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Detalhes do Paciente</Text>
+          <Text style={styles.headerTitle}>פרטי מטופל</Text>
           <TouchableOpacity
             style={styles.editButton}
             onPress={() => navigation.navigate('NewPet', { petId: patientId })}
@@ -92,52 +92,52 @@ const PatientDetailsScreen = ({ navigation, route }) => {
           
           <View style={styles.infoRow}>
             <Ionicons name="paw" size={20} color={Colors.primary} />
-            <Text style={styles.infoText}>Espécie: {patient.species}</Text>
+            <Text style={styles.infoText}>מין: {patient.species}</Text>
           </View>
           
           {patient.breed && (
             <View style={styles.infoRow}>
               <Ionicons name="bookmark" size={20} color={Colors.primary} />
-              <Text style={styles.infoText}>Raça: {patient.breed}</Text>
+              <Text style={styles.infoText}>גזע: {patient.breed}</Text>
             </View>
           )}
           
           <View style={styles.infoRow}>
             <Ionicons name={patient.gender === 'Macho' ? 'male' : 'female'} size={20} color={Colors.primary} />
-            <Text style={styles.infoText}>Sexo: {patient.gender}</Text>
+            <Text style={styles.infoText}>מין ביולוגי: {patient.gender}</Text>
           </View>
           
           {patient.birth_date && (
             <View style={styles.infoRow}>
               <Ionicons name="calendar" size={20} color={Colors.primary} />
-              <Text style={styles.infoText}>Idade: {calculateAge(patient.birth_date)}</Text>
+              <Text style={styles.infoText}>גיל: {calculateAge(patient.birth_date)}</Text>
             </View>
           )}
           
           {patient.weight && (
             <View style={styles.infoRow}>
               <Ionicons name="fitness" size={20} color={Colors.primary} />
-              <Text style={styles.infoText}>Peso: {patient.weight} kg</Text>
+              <Text style={styles.infoText}>משקל: {patient.weight} kg</Text>
             </View>
           )}
           
           {patient.color && (
             <View style={styles.infoRow}>
               <Ionicons name="color-palette" size={20} color={Colors.primary} />
-              <Text style={styles.infoText}>Cor: {patient.color}</Text>
+              <Text style={styles.infoText}>צבע: {patient.color}</Text>
             </View>
           )}
           
           {patient.microchip && (
             <View style={styles.infoRow}>
               <Ionicons name="radio" size={20} color={Colors.primary} />
-              <Text style={styles.infoText}>Microchip: {patient.microchip}</Text>
+              <Text style={styles.infoText}>שבב: {patient.microchip}</Text>
             </View>
           )}
           
           {patient.notes && (
             <View style={styles.notesSection}>
-              <Text style={styles.notesTitle}>Observações</Text>
+              <Text style={styles.notesTitle}>תצפיות</Text>
               <Text style={styles.notesText}>{patient.notes}</Text>
             </View>
           )}
@@ -145,18 +145,18 @@ const PatientDetailsScreen = ({ navigation, route }) => {
 
         {consultations.length > 0 && (
           <Card style={styles.consultationsCard}>
-            <Text style={styles.consultationsTitle}>Histórico de Consultas</Text>
+            <Text style={styles.consultationsTitle}>היסטוריית ייעוצים</Text>
             {consultations.slice(0, 5).map((consultation, index) => (
               <View key={consultation.id} style={styles.consultationItem}>
                 <Text style={styles.consultationType}>{consultation.type}</Text>
                 <Text style={styles.consultationDate}>
-                  {new Date(consultation.date).toLocaleDateString('pt-BR')}
+                  {new Date(consultation.date).toLocaleDateString('he-IL')}
                 </Text>
               </View>
             ))}
             {consultations.length > 5 && (
               <Text style={styles.moreConsultations}>
-                E mais {consultations.length - 5} consultas...
+                ועוד {consultations.length - 5} ייעוצים נוספים...
               </Text>
             )}
           </Card>
