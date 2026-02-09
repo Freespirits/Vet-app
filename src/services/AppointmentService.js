@@ -48,7 +48,7 @@ export const AppointmentService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Usuário não autenticado' };
+        return { success: false, error: 'משתמש אינו מאומת' };
       }
 
       const { data, error } = await supabase
@@ -74,7 +74,7 @@ export const AppointmentService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Usuário não autenticado' };
+        return { success: false, error: 'משתמש אינו מאומת' };
       }
 
       const { data, error } = await supabase
@@ -100,7 +100,7 @@ export const AppointmentService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Usuário não autenticado' };
+        return { success: false, error: 'משתמש אינו מאומת' };
       }
 
       const { error } = await supabase
@@ -170,7 +170,7 @@ export const AppointmentService = {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar próximos agendamentos:', error);
+      console.error('שגיאה באחזור התורים הקרובים:', error);
       return [];
     }
   }

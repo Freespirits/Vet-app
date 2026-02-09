@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # =============================================================================
-# PetCare Pro - Script de Instalação Automatizada
+# PetCare Pro - סקריפט התקנה אוטומטי
 # =============================================================================
-# Este script automatiza a instalação e configuração do ambiente de
+# סקריפט זה מאיץ את התקנת ההגדרות של סביבת הפיתוח
 # desenvolvimento para o aplicativo PetCare Pro
 # =============================================================================
 
-set -e  # Para execução em caso de erro
+set -e  # כדי לעצור במקרה של שגיאה
 
 # Cores para output
 RED='\033[0;31m'
@@ -19,7 +19,7 @@ CYAN='\033[0;36m'
 WHITE='\033[1;37m'
 NC='\033[0m' # No Color
 
-# Símbolos
+# סמלים
 SUCCESS="✅"
 ERROR="❌"
 WARNING="⚠️"
@@ -33,15 +33,15 @@ print_banner() {
     echo -e "${PURPLE}"
     echo "╔══════════════════════════════════════════════════════════════╗"
     echo "║                        PetCare Pro                          ║"
-    echo "║                 Script de Instalação v1.0                   ║"
+    echo "║                 סקריפט התקנה v1.0                   ║"
     echo "║                                                              ║"
-    echo "║           Sistema Completo para Veterinários                ║"
+    echo "║           מערכת מלאה לווטרינרים                ║"
     echo "╚══════════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
     echo ""
 }
 
-# Função para logging
+# פונקציה ללוגים
 log() {
     local level=$1
     shift
@@ -67,12 +67,12 @@ log() {
     esac
 }
 
-# Função para verificar se comando existe
+# פונקציה לבדיקה שהפקודה קיימת
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Função para verificar versão do Node.js
+# פונקציה לבדוק את גרסת Node.js
 check_node_version() {
     if command_exists node; then
         local node_version=$(node --version | cut -d'v' -f2)
@@ -82,16 +82,16 @@ check_node_version() {
             log "SUCCESS" "Node.js v$node_version encontrado"
             return 0
         else
-            log "WARNING" "Node.js v$node_version encontrado, mas é recomendado v18+"
+            log "WARNING" "נמצאה גרסת Node.js v$node_version, מומלץ v18+"
             return 1
         fi
     else
-        log "ERROR" "Node.js não encontrado"
+        log "ERROR" "Node.js לא נמצא"
         return 1
     fi
 }
 
-# Função para instalar Node.js
+# פונקציה להתקנת Node.js
 install_nodejs() {
     log "PROGRESS" "Instalando Node.js..."
 
@@ -100,7 +100,7 @@ install_nodejs() {
         if command_exists brew; then
             brew install node
         else
-            log "ERROR" "Homebrew não encontrado. Instale em: https://brew.sh/"
+            log "ERROR" "Homebrew לא נמצא. התקינו בכתובת: https://brew.sh/"
             exit 1
         fi
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -114,7 +114,7 @@ install_nodejs() {
             curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -
             sudo yum install -y nodejs npm
         else
-            log "ERROR" "Gerenciador de pacotes não suportado"
+            log "ERROR" "מנהל החבילות אינו נתמך"
             exit 1
         fi
     elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]]; then
@@ -123,47 +123,37 @@ install_nodejs() {
         log "INFO" "Ou use: winget install OpenJS.NodeJS"
         exit 1
     else
-        log "ERROR" "Sistema operacional não suportado: $OSTYPE"
+        log "ERROR" "מערכת ההפעלה אינה נתמכת: $OSTYPE"
         exit 1
     fi
 }
 
-# Função para instalar Expo CLI
+# פונקציה להתקנת Expo CLI
+# פונקציה להתקנת Expo CLI (pulada, usamos CLI local via npx)
 install_expo_cli() {
-    log "PROGRESS" "Instalando Expo CLI..."
-
-    if npm install -g @expo/cli; then
-        log "SUCCESS" "Expo CLI instalado com sucesso"
-    else
-        log "ERROR" "Falha ao instalar Expo CLI"
-        exit 1
-    fi
+    log "PROGRESS" "מדלגים על התקנה גלובלית של Expo CLI (השתמשו ב-npx expo)..."
+    return 0
 }
 
-# Função para instalar EAS CLI
+# פונקציה להתקנת EAS CLI (מדולגת)
 install_eas_cli() {
-    log "PROGRESS" "Instalando EAS CLI..."
-
-    if npm install -g eas-cli; then
-        log "SUCCESS" "EAS CLI instalado com sucesso"
-    else
-        log "WARNING" "Falha ao instalar EAS CLI (opcional para desenvolvimento)"
-    fi
+    log "PROGRESS" "מדלגים על התקנה גלובלית של EAS CLI (השתמשו ב-npx eas בעת הצורך)..."
+    return 0
 }
 
-# Função para verificar Git
+# פונקציה לבדוק את Git
 check_git() {
     if command_exists git; then
         local git_version=$(git --version | awk '{print $3}')
         log "SUCCESS" "Git $git_version encontrado"
         return 0
     else
-        log "ERROR" "Git não encontrado"
+        log "ERROR" "Git לא נמצא"
         return 1
     fi
 }
 
-# Função para instalar Git
+# פונקציה להתקנת Git
 install_git() {
     log "PROGRESS" "Instalando Git..."
 
@@ -187,69 +177,69 @@ install_git() {
     fi
 }
 
-# Função para clonar repositório
+# פונקציה לשיבוט המאגר
 clone_repository() {
     local repo_url="https://github.com/PetCareAi/consultorio-app.git"
     local project_dir="petcare-pro"
 
     if [ -d "$project_dir" ]; then
-        log "WARNING" "Diretório $project_dir já existe"
+        log "WARNING" "התיקייה $project_dir כבר קיימת"
         read -p "Deseja remover e clonar novamente? (y/N): " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             rm -rf "$project_dir"
         else
-            log "INFO" "Usando diretório existente"
+            log "INFO" "משתמשים בתיקייה קיימת"
             cd "$project_dir"
             return 0
         fi
     fi
 
-    log "PROGRESS" "Clonando repositório PetCare Pro..."
+    log "PROGRESS" "משכפל את מאגר PetCare Pro..."
 
     if git clone "$repo_url" "$project_dir"; then
-        log "SUCCESS" "Repositório clonado com sucesso"
+        log "SUCCESS" "המאגר שוכפל בהצלחה"
         cd "$project_dir"
     else
-        log "ERROR" "Falha ao clonar repositório"
+        log "ERROR" "שגיאה בשכפול המאגר"
         exit 1
     fi
 }
 
-# Função para instalar dependências do projeto
+# פונקציה להתקנת תלויות הפרויקט
 install_dependencies() {
-    log "PROGRESS" "Instalando dependências do projeto..."
+    log "PROGRESS" "מתקין את תלויות הפרויקט..."
 
     if [ -f "package.json" ]; then
         if npm install; then
-            log "SUCCESS" "Dependências instaladas com sucesso"
+            log "SUCCESS" "התלויות הותקנו בהצלחה"
         else
-            log "ERROR" "Falha ao instalar dependências"
+            log "ERROR" "כשל בהתקנת תלויות"
             exit 1
         fi
     else
-        log "ERROR" "package.json não encontrado"
+        log "ERROR" "package.json לא נמצא"
         exit 1
     fi
 }
 
-# Função para configurar ambiente
+# פונקציה להגדרת הסביבה
 setup_environment() {
     log "PROGRESS" "Configurando ambiente de desenvolvimento..."
 
-    # Criar arquivo .env se não existir
+    # יצירת קובץ .env אם אינו קיים
     if [ ! -f ".env" ]; then
         if [ -f ".env.example" ]; then
             cp .env.example .env
             log "SUCCESS" "Arquivo .env criado a partir do exemplo"
         else
-            # Criar .env básico
+            # יצירת קובץ .env בסיסי
             cat > .env << EOL
-# Configurações do Supabase
+# הגדרות Supabase
 EXPO_PUBLIC_SUPABASE_URL=your_supabase_url_here
 EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 
-# Configurações de Desenvolvimento
+# הגדרות פיתוח
 EXPO_PUBLIC_DEV_MODE=true
 EXPO_PUBLIC_API_URL=http://localhost:3000
 EOL
@@ -258,37 +248,37 @@ EOL
 
         log "WARNING" "Configure o arquivo .env com suas credenciais do Supabase"
     else
-        log "INFO" "Arquivo .env já existe"
+        log "INFO" "קובץ .env כבר קיים"
     fi
 }
 
-# Função para verificar Android SDK (opcional)
+# פונקציה לבדוק Android SDK (רשות)
 check_android_sdk() {
     if [ -n "$ANDROID_HOME" ] && [ -d "$ANDROID_HOME" ]; then
         log "SUCCESS" "Android SDK encontrado em: $ANDROID_HOME"
     else
-        log "WARNING" "Android SDK não encontrado"
+        log "WARNING" "Android SDK לא נמצא"
         log "INFO" "Para desenvolvimento Android, instale Android Studio"
         log "INFO" "Download: https://developer.android.com/studio"
     fi
 }
 
-# Função para verificar Xcode (macOS apenas)
+# פונקציה לבדוק Xcode (macOS בלבד)
 check_xcode() {
     if [[ "$OSTYPE" == "darwin"* ]]; then
         if command_exists xcodebuild; then
             local xcode_version=$(xcodebuild -version | head -n1)
             log "SUCCESS" "$xcode_version encontrado"
         else
-            log "WARNING" "Xcode não encontrado"
+            log "WARNING" "Xcode לא נמצא"
             log "INFO" "Para desenvolvimento iOS, instale Xcode da App Store"
         fi
     fi
 }
 
-# Função para executar testes básicos
+# פונקציה להרצת בדיקות בסיסיות
 run_basic_tests() {
-    log "PROGRESS" "Executando verificações básicas..."
+    log "PROGRESS" "מריץ בדיקות בסיסיות..."
 
     # Verificar se o projeto pode ser iniciado
     if npm run lint --silent > /dev/null 2>&1; then
@@ -304,50 +294,50 @@ run_basic_tests() {
         if [ -f "$file" ]; then
             log "SUCCESS" "Arquivo essencial encontrado: $file"
         else
-            log "ERROR" "Arquivo essencial não encontrado: $file"
+            log "ERROR" "קובץ חיוני לא נמצא: $file"
         fi
     done
 }
 
-# Função para mostrar próximos passos
+# פונקציה להצגת הצעדים הבאים
 show_next_steps() {
     echo ""
-    echo -e "${GREEN}${ROCKET} Instalação concluída com sucesso!${NC}"
+    echo -e "${GREEN}${ROCKET} ההתקנה הושלמה בהצלחה!${NC}"
     echo ""
-    echo -e "${WHITE}📋 Próximos passos:${NC}"
+    echo -e "${WHITE}📋 צעדים הבאים:${NC}"
     echo ""
     echo -e "${YELLOW}1.${NC} Configure o arquivo .env com suas credenciais do Supabase:"
     echo -e "   ${CYAN}nano .env${NC}"
     echo ""
     echo -e "${YELLOW}2.${NC} Execute o banco de dados SQL:"
-    echo -e "   ${CYAN}# Copie e execute o conteúdo de db/supabase.sql no seu projeto Supabase${NC}"
+    echo -e "   ${CYAN}# העתיקו והריצו את התוכן של db/supabase.sql בפרויקט Supabase שלכם${NC}"
     echo ""
     echo -e "${YELLOW}3.${NC} Inicie o servidor de desenvolvimento:"
     echo -e "   ${CYAN}npm start${NC}"
     echo ""
-    echo -e "${YELLOW}4.${NC} Para testar em dispositivo físico:"
+    echo -e "${YELLOW}4.${NC} כדי לבדוק במכשיר פיזי:"
     echo -e "   ${CYAN}# Instale o app 'Expo Go' no seu dispositivo${NC}"
-    echo -e "   ${CYAN}# Escaneie o QR code que aparecerá${NC}"
+    echo -e "   ${CYAN}# סרקו את קוד ה-QR שיופיע${NC}"
     echo ""
-    echo -e "${YELLOW}5.${NC} Para compilar para produção:"
+    echo -e "${YELLOW}5.${NC} כדי לקמפל לפרודקשן:"
     echo -e "   ${CYAN}eas build --platform all${NC}"
     echo ""
-    echo -e "${WHITE}📚 Recursos úteis:${NC}"
-    echo -e "   ${BLUE}• Documentação: README.md${NC}"
+    echo -e "${WHITE}📚 משאבים שימושיים:${NC}"
+    echo -e "   ${BLUE}• תיעוד: README.md${NC}"
     echo -e "   ${BLUE}• Problemas: TROUBLESHOOTING.md${NC}"
     echo -e "   ${BLUE}• Contribuir: CONTRIBUTING.md${NC}"
     echo ""
     echo -e "${GREEN}Divirta-se desenvolvendo com PetCare Pro! 🐾${NC}"
 }
 
-# Função principal
+# פונקציה ראשית
 main() {
     print_banner
 
-    log "INFO" "Iniciando instalação do PetCare Pro..."
+    log "INFO" "מתחיל את התקנת PetCare Pro..."
 
-    # Verificações de pré-requisitos
-    log "PROGRESS" "Verificando pré-requisitos..."
+    # בדיקות דרישות מקדימות
+    log "PROGRESS" "בודק דרישות מקדימות..."
 
     # Verificar/instalar Git
     if ! check_git; then
@@ -361,14 +351,14 @@ main() {
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             install_nodejs
         else
-            log "ERROR" "Node.js v18+ é obrigatório"
+            log "ERROR" "נדרש Node.js v18+"
             exit 1
         fi
     fi
 
-    # Verificar se npm está funcionando
+    # בדיקת תקינות npm
     if ! command_exists npm; then
-        log "ERROR" "npm não encontrado após instalação do Node.js"
+        log "ERROR" "npm לא נמצא לאחר התקנת Node.js"
         exit 1
     fi
 
@@ -381,31 +371,31 @@ main() {
     install_dependencies
     setup_environment
 
-    # Verificações opcionais
+    # בדיקות רשות
     check_android_sdk
     check_xcode
 
-    # Testes básicos
+    # בדיקות בסיסיות
     run_basic_tests
 
-    # Finalização
+    # סיום
     show_next_steps
 
-    log "SUCCESS" "Instalação do PetCare Pro concluída!"
+    log "SUCCESS" "התקנת PetCare Pro הושלמה!"
 }
 
-# Função de limpeza em caso de interrupção
+# פונקציה לניקוי במקרה של עצירה
 cleanup() {
-    log "WARNING" "Instalação interrompida pelo usuário"
+    log "WARNING" "ההתקנה הופסקה על ידי המשתמש"
     exit 1
 }
 
 # Capturar Ctrl+C
 trap cleanup SIGINT
 
-# Verificar se é root (não recomendado)
+# בדיקת הרצה כ-root (לא מומלץ)
 if [ "$EUID" -eq 0 ]; then
-    log "WARNING" "Não é recomendado executar como root"
+    log "WARNING" "לא מומלץ להריץ כ-root"
     read -p "Continuar mesmo assim? (y/N): " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -413,5 +403,5 @@ if [ "$EUID" -eq 0 ]; then
     fi
 fi
 
-# Executar função principal
+# הפעלת הפונקציה הראשית
 main "$@"

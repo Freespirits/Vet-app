@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_GnmitkW62mLcvTTiRcrT6ZEJSWj3",
+  "orgId": "team_7NOLzfGosmTced4cuIosA0OW",
+  "projectName": "vet-app",
+  "settings": {
+    "createdAt": 1764603608441,
+    "framework": null,
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": "npm install && npx expo export --platform web --output-dir dist",
+    "outputDirectory": null,
+    "rootDirectory": "dist",
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}

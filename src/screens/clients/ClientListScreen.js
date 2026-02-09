@@ -46,7 +46,7 @@ const ClientListScreen = ({ navigation }) => {
       setClients(clientsWithPets);
       setFilteredClients(clientsWithPets);
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao carregar clientes');
+      Alert.alert('שגיאה', 'אירעה שגיאה בעת טעינת הלקוחות');
     } finally {
       setLoading(false);
     }
@@ -76,12 +76,12 @@ const ClientListScreen = ({ navigation }) => {
 
   const handleDeleteClient = (client) => {
     Alert.alert(
-      'Confirmar Exclusão',
-      `Deseja realmente excluir o cliente ${client.name}?`,
+      'מחיקת לקוח',
+      `להסיר את הלקוח ${client.name}?`,
       [
-        { text: 'Cancelar', style: 'cancel' },
-        { 
-          text: 'Excluir', 
+        { text: 'ביטול', style: 'cancel' },
+        {
+          text: 'מחיקה',
           style: 'destructive',
           onPress: () => deleteClient(client.id)
         }
@@ -94,24 +94,24 @@ const ClientListScreen = ({ navigation }) => {
       const result = await ClientService.delete(clientId);
       if (result.success) {
         await loadClients();
-        Alert.alert('Sucesso', 'Cliente excluído com sucesso');
+        Alert.alert('הצלחה', 'הלקוח נמחק בהצלחה');
       } else {
-        Alert.alert('Erro', result.error);
+        Alert.alert('שגיאה', result.error);
       }
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao excluir cliente');
+      Alert.alert('שגיאה', 'לא ניתן היה למחוק את הלקוח');
     }
   };
 
   const handleClientPress = (client) => {
     Alert.alert(
-      'Cliente',
-      `Nome: ${client.name}\nEmail: ${client.email}\nTelefone: ${formatPhone(client.phone)}\nPets: ${client.petsCount}`,
+      'פרטי לקוח',
+      `שם: ${client.name}\nאימייל: ${client.email}\nטלפון: ${formatPhone(client.phone)}\nמספר חיות: ${client.petsCount}`,
       [
-        { text: 'OK' },
-        { text: 'Editar', onPress: () => navigation.navigate('NewClient', { clientId: client.id }) },
-        { text: 'Ver Pets', onPress: () => navigation.navigate('Pets', { 
-          screen: 'Voltar',
+        { text: 'סגירה' },
+        { text: 'עריכה', onPress: () => navigation.navigate('NewClient', { clientId: client.id }) },
+        { text: 'צפייה בחיות', onPress: () => navigation.navigate('Pets', {
+          screen: 'רשימת חיות מחמד',
           params: { clientId: client.id }
         }) }
       ]
@@ -136,7 +136,7 @@ const ClientListScreen = ({ navigation }) => {
           <View style={styles.clientStats}>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>{item.petsCount}</Text>
-              <Text style={styles.statLabel}>Pets</Text>
+              <Text style={styles.statLabel}>חיות</Text>
             </View>
           </View>
         </View>
@@ -148,7 +148,7 @@ const ClientListScreen = ({ navigation }) => {
           onPress={() => navigation.navigate('NewClient', { clientId: item.id })}
         >
           <Ionicons name="create" size={16} color={Colors.primary} />
-          <Text style={styles.editButtonText}>Editar</Text>
+          <Text style={styles.editButtonText}>עריכה</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
@@ -156,7 +156,7 @@ const ClientListScreen = ({ navigation }) => {
           onPress={() => navigation.navigate('NewPet', { clientId: item.id })}
         >
           <Ionicons name="add" size={16} color={Colors.secondary} />
-          <Text style={styles.petsButtonText}>+ Pet</Text>
+          <Text style={styles.petsButtonText}>+ חיית מחמד</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
@@ -164,7 +164,7 @@ const ClientListScreen = ({ navigation }) => {
           onPress={() => handleDeleteClient(item)}
         >
           <Ionicons name="trash" size={16} color={Colors.error} />
-          <Text style={styles.deleteButtonText}>Excluir</Text>
+          <Text style={styles.deleteButtonText}>מחיקה</Text>
         </TouchableOpacity>
       </View>
     </Card>
@@ -179,14 +179,14 @@ const ClientListScreen = ({ navigation }) => {
         style={globalStyles.emptyStateIcon}
       />
       <Text style={globalStyles.emptyStateTitle}>
-        Nenhum cliente encontrado
+        לא נמצאו לקוחות
       </Text>
       <Text style={globalStyles.emptyStateText}>
-        {searchQuery ? 'Tente uma busca diferente' : 'Cadastre o primeiro cliente para começar'}
+        {searchQuery ? 'נסו חיפוש אחר' : 'הוסיפו את הלקוח הראשון כדי להתחיל'}
       </Text>
       {!searchQuery && (
         <Button
-          title="Cadastrar Cliente"
+          title="הוספת לקוח"
           onPress={() => navigation.navigate('NewClient')}
           style={globalStyles.emptyStateButton}
         />
@@ -195,7 +195,7 @@ const ClientListScreen = ({ navigation }) => {
   );
 
   if (loading) {
-    return <Loading message="Carregando clientes..." />;
+    return <Loading message="טוען לקוחות..." />;
   }
 
   return (
@@ -204,12 +204,12 @@ const ClientListScreen = ({ navigation }) => {
         <Input
           value={searchQuery}
           onChangeText={handleSearch}
-          placeholder="Buscar clientes..."
+          placeholder="חיפוש לקוחות..."
           leftIcon="search"
           style={styles.searchInput}
         />
         <Button
-          title="Novo"
+          title="חדש"
           onPress={() => navigation.navigate('NewClient')}
           style={styles.newButton}
           icon={<Ionicons name="add" size={16} color={Colors.surface} />}

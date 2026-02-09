@@ -22,14 +22,14 @@ const HelpSupportScreen = ({ navigation }) => {
     {
       id: 'whatsapp',
       title: 'WhatsApp',
-      subtitle: 'Suporte via WhatsApp',
+      subtitle: 'תמיכה דרך WhatsApp',
       icon: 'logo-whatsapp',
       color: '#25D366',
       onPress: () => openWhatsApp(),
     },
     {
       id: 'email',
-      title: 'Email',
+      title: 'אימייל',
       subtitle: 'suporte@vetapp.com',
       icon: 'mail-outline',
       color: Colors.primary,
@@ -37,7 +37,7 @@ const HelpSupportScreen = ({ navigation }) => {
     },
     {
       id: 'phone',
-      title: 'Telefone',
+      title: 'טלפון',
       subtitle: '(11) 9999-9999',
       icon: 'call-outline',
       color: Colors.success,
@@ -45,7 +45,7 @@ const HelpSupportScreen = ({ navigation }) => {
     },
     {
       id: 'website',
-      title: 'Site',
+      title: 'אתר',
       subtitle: 'www.vetapp.com',
       icon: 'globe-outline',
       color: Colors.info,
@@ -55,69 +55,69 @@ const HelpSupportScreen = ({ navigation }) => {
 
   const faqItems = [
     {
-      question: 'Como agendar uma consulta?',
-      answer: 'Toque em "Nova Consulta" na tela inicial, preencha os dados do paciente e escolha data/hora disponível.',
+      question: 'איך קובעים ייעוץ?',
+      answer: 'במסך הבית הקישו על "ייעוץ חדש", מלאו את פרטי המטופל ובחרו תאריך ושעה פנויים.',
     },
     {
-      question: 'Como cadastrar um novo paciente?',
-      answer: 'Na tela inicial, toque em "Novo Paciente" ou vá em Pacientes > Adicionar. Preencha as informações básicas do pet.',
+      question: 'איך מוסיפים מטופל חדש?',
+      answer: 'במסך הבית לחצו על "מטופל חדש" או עברו לחיות מחמד > הוספה ומלאו את פרטי החיה.',
     },
     {
-      question: 'Como fazer backup dos dados?',
-      answer: 'Vá em Perfil > Backup e Restauração > Criar Novo Backup. O backup será salvo localmente no seu dispositivo.',
+      question: 'איך מבצעים גיבוי נתונים?',
+      answer: 'היכנסו לפרופיל > גיבוי ושחזור > יצירת גיבוי חדש. הקובץ יישמר מקומית במכשיר.',
     },
     {
-      question: 'Como ativar notificações?',
-      answer: 'Acesse Perfil > Notificações e ative os tipos de lembretes que deseja receber.',
+      question: 'איך מפעילים התראות?',
+      answer: 'כנסו לפרופיל > התראות והפעילו את סוגי התזכורות הרצויים.',
     },
     {
-      question: 'Posso usar offline?',
-      answer: 'Sim, o app funciona offline. Os dados são sincronizados quando a internet estiver disponível.',
+      question: 'האם ניתן לעבוד ללא חיבור?',
+      answer: 'כן, האפליקציה פועלת גם ללא אינטרנט והנתונים מסתנכרנים כאשר החיבור חוזר.',
     },
   ];
 
   const openWhatsApp = () => {
     const phoneNumber = '5511999999999';
-    const message = 'Olá! Preciso de ajuda com o VetApp.';
+    const message = 'שלום! אני צריך עזרה עם VetApp.';
     const url = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
     
     Linking.canOpenURL(url).then(supported => {
       if (supported) {
         Linking.openURL(url);
       } else {
-        Alert.alert('Erro', 'WhatsApp não está instalado');
+        Alert.alert('שגיאה', 'אפליקציית WhatsApp אינה מותקנת');
       }
     });
   };
 
   const openEmail = () => {
     const email = 'suporte@vetapp.com';
-    const subject = 'Suporte VetApp';
-    const body = 'Olá, preciso de ajuda com...';
+    const subject = 'תמיכה ב-VetApp';
+    const body = 'שלום, אשמח לעזרה בנוגע ל...';
     const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
+
     Linking.openURL(url).catch(() => {
-      Alert.alert('Erro', 'Não foi possível abrir o cliente de email');
+      Alert.alert('שגיאה', 'לא ניתן היה לפתוח את אפליקציית הדוא\"ל');
     });
   };
 
   const openPhone = () => {
     const phoneNumber = 'tel:+5511999999999';
     Linking.openURL(phoneNumber).catch(() => {
-      Alert.alert('Erro', 'Não foi possível fazer a ligação');
+      Alert.alert('שגיאה', 'לא ניתן היה לבצע את השיחה');
     });
   };
 
   const openWebsite = () => {
     const url = 'https://www.vetapp.com';
     Linking.openURL(url).catch(() => {
-      Alert.alert('Erro', 'Não foi possível abrir o site');
+      Alert.alert('שגיאה', 'לא ניתן היה לפתוח את האתר');
     });
   };
 
   const sendMessage = async () => {
     if (!message.trim()) {
-      Alert.alert('Erro', 'Digite sua mensagem');
+      Alert.alert('שגיאה', 'אנא הקלידו הודעה');
       return;
     }
 
@@ -127,12 +127,12 @@ const HelpSupportScreen = ({ navigation }) => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       Alert.alert(
-        'Mensagem Enviada',
-        'Sua mensagem foi enviada com sucesso! Entraremos em contato em breve.',
-        [{ text: 'OK', onPress: () => setMessage('') }]
+        'הודעה נשלחה',
+        'הודעתכם נשלחה בהצלחה! נחזור אליכם בהקדם.',
+        [{ text: 'אישור', onPress: () => setMessage('') }]
       );
     } catch (error) {
-      Alert.alert('Erro', 'Não foi possível enviar a mensagem');
+      Alert.alert('שגיאה', 'לא ניתן היה לשלוח את ההודעה');
     } finally {
       setSending(false);
     }
@@ -177,7 +177,7 @@ const HelpSupportScreen = ({ navigation }) => {
           >
             <Ionicons name="arrow-back" size={24} color={Colors.surface} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Ajuda e Suporte</Text>
+          <Text style={styles.headerTitle}>עזרה ותמיכה</Text>
           <View style={styles.headerSpacer} />
         </View>
       </LinearGradient>
@@ -185,7 +185,7 @@ const HelpSupportScreen = ({ navigation }) => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Support Options */}
         <View style={styles.supportSection}>
-          <Text style={styles.sectionTitle}>Canais de Atendimento</Text>
+          <Text style={styles.sectionTitle}>ערוצי שירות</Text>
           <View style={styles.supportList}>
             {supportOptions.map(renderSupportOption)}
           </View>
@@ -193,11 +193,11 @@ const HelpSupportScreen = ({ navigation }) => {
 
         {/* Contact Form */}
         <View style={styles.contactSection}>
-          <Text style={styles.sectionTitle}>Envie uma Mensagem</Text>
+          <Text style={styles.sectionTitle}>שליחת הודעה</Text>
           <View style={styles.contactForm}>
             <TextInput
               style={styles.messageInput}
-              placeholder="Descreva sua dúvida ou problema..."
+              placeholder="תארו את השאלה או הבעיה שלכם..."
               placeholderTextColor={Colors.textSecondary}
               value={message}
               onChangeText={setMessage}
@@ -216,7 +216,7 @@ const HelpSupportScreen = ({ navigation }) => {
               >
                 <Ionicons name="send" size={20} color={Colors.surface} />
                 <Text style={styles.sendButtonText}>
-                  {sending ? 'Enviando...' : 'Enviar Mensagem'}
+                  {sending ? 'שולחים...' : 'שליחת הודעה'}
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
@@ -225,7 +225,7 @@ const HelpSupportScreen = ({ navigation }) => {
 
         {/* FAQ */}
         <View style={styles.faqSection}>
-          <Text style={styles.sectionTitle}>Perguntas Frequentes</Text>
+          <Text style={styles.sectionTitle}>שאלות נפוצות</Text>
           <View style={styles.faqList}>
             {faqItems.map(renderFAQItem)}
           </View>
@@ -236,11 +236,11 @@ const HelpSupportScreen = ({ navigation }) => {
           <View style={styles.infoCard}>
             <Ionicons name="information-circle" size={24} color={Colors.info} />
             <View style={styles.infoContent}>
-              <Text style={styles.infoTitle}>Horário de Atendimento</Text>
+              <Text style={styles.infoTitle}>שעות פעילות</Text>
               <Text style={styles.infoText}>
-                Segunda a Sexta: 8h às 18h{'\n'}
-                Sábado: 8h às 12h{'\n'}
-                Suporte por WhatsApp: 24h
+                ראשון-חמישי: 08:00-18:00{'\n'}
+                שבת: 08:00-12:00{'\n'}
+                תמיכה ב-WhatsApp: 24/7
               </Text>
             </View>
           </View>

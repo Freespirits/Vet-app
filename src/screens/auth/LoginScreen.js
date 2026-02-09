@@ -25,7 +25,7 @@ const LoginScreen = ({ navigation }) => {
     email: '',
     password: '',
     name: '',
-    profession: 'Veterinário(a)',
+    profession: 'וטרינר/ית',
     clinic: '',
     crmv: '',
     phone: ''
@@ -39,29 +39,29 @@ const LoginScreen = ({ navigation }) => {
     const newErrors = {};
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email é obrigatório';
+      newErrors.email = 'אימייל הוא שדה חובה';
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Email inválido';
+      newErrors.email = 'אימייל לא תקין';
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = 'Senha é obrigatória';
+      newErrors.password = 'סיסמה היא שדה חובה';
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Senha deve ter pelo menos 6 caracteres';
+      newErrors.password = 'הסיסמה חייבת להכיל לפחות 6 תווים';
     }
 
     if (!isLogin) {
       if (!formData.name.trim()) {
-        newErrors.name = 'Nome é obrigatório';
+        newErrors.name = 'שם הוא שדה חובה';
       }
       if (!formData.clinic.trim()) {
-        newErrors.clinic = 'Clínica é obrigatória';
+        newErrors.clinic = 'שם המרפאה הוא שדה חובה';
       }
       if (!formData.crmv.trim()) {
-        newErrors.crmv = 'CRMV é obrigatório';
+        newErrors.crmv = 'מספר CRMV הוא שדה חובה';
       }
       if (!formData.phone.trim()) {
-        newErrors.phone = 'Telefone é obrigatório';
+        newErrors.phone = 'טלפון הוא שדה חובה';
       }
     }
 
@@ -77,10 +77,10 @@ const LoginScreen = ({ navigation }) => {
 
     try {
       if (isLogin) {
-        console.log('Tentando fazer login...');
+        console.log('מנסה להתחבר...');
         result = await login(formData.email, formData.password);
       } else {
-        console.log('Tentando registrar usuário...');
+        console.log('מנסה לרשום משתמש...');
         result = await register(formData);
       }
 
@@ -89,42 +89,42 @@ const LoginScreen = ({ navigation }) => {
 
         // Tratar diferentes tipos de erro
         if (errorMessage.includes('Invalid login credentials')) {
-          errorMessage = 'Email ou senha incorretos';
+          errorMessage = 'אימייל או סיסמה שגויים';
         } else if (errorMessage.includes('User already registered')) {
-          errorMessage = 'Este email já está cadastrado. Tente fazer login.';
+          errorMessage = 'האימייל הזה כבר רשום. נסה להתחבר.';
           setIsLogin(true);
         } else if (errorMessage.includes('Password should be at least 6 characters')) {
-          errorMessage = 'A senha deve ter pelo menos 6 caracteres';
+          errorMessage = 'הסיסמה חייבת להכיל לפחות 6 תווים';
         } else if (errorMessage.includes('Unable to validate email address')) {
-          errorMessage = 'Email inválido';
+          errorMessage = 'אימייל לא תקין';
         } else if (errorMessage.includes('Email not confirmed')) {
-          errorMessage = 'Email não confirmado. Verifique sua caixa de entrada.';
+          errorMessage = 'האימייל לא אומת. בדוק את תיבת הדואר שלך.';
         } else if (errorMessage.includes('signup is disabled')) {
-          errorMessage = 'Cadastro de novos usuários está temporariamente desabilitado.';
+          errorMessage = 'הרשמת משתמשים חדשים מושבתת זמנית.';
         } else if (errorMessage.includes('permission denied')) {
-          errorMessage = 'Erro de permissão. Verifique suas credenciais.';
+          errorMessage = 'שגיאת הרשאה. בדוק את פרטי ההתחברות.';
         } else if (errorMessage.includes('PGRST116')) {
-          errorMessage = 'Erro de configuração do perfil. Tente novamente.';
+          errorMessage = 'שגיאת הגדרות פרופיל. נסה שוב.';
         } else if (errorMessage.includes('duplicate key value violates unique constraint')) {
-          errorMessage = 'Este email já está cadastrado. Tente fazer login.';
+          errorMessage = 'האימייל הזה כבר רשום. נסה להתחבר.';
           setIsLogin(true);
         }
 
-        Alert.alert('Erro', errorMessage);
+        Alert.alert('שגיאה', errorMessage);
       } else if (!isLogin) {
         // Registro bem-sucedido
         Alert.alert(
-          'Cadastro Realizado!',
-          'Sua conta foi criada com sucesso. Você já está logado!',
-          [{ text: 'OK' }]
+          'ההרשמה הצליחה!',
+          'החשבון שלך נוצר בהצלחה. אתה כבר מחובר!',
+          [{ text: 'אישור' }]
         );
       } else {
-        // Login bem-sucedido - não precisa fazer nada, o AuthContext redirecionará
-        console.log('Login realizado com sucesso');
+        // התחברות מוצלחת - AuthContext מטפל בניווט
+        console.log('התחברות בוצעה בהצלחה');
       }
     } catch (error) {
-      console.error('Erro inesperado:', error);
-      Alert.alert('Erro', 'Erro inesperado. Verifique sua conexão e tente novamente.');
+      console.error('שגיאה לא צפויה:', error);
+      Alert.alert('שגיאה', 'שגיאה לא צפויה. בדוק את החיבור ונסה שוב.');
     } finally {
       setLoading(false);
     }
@@ -143,7 +143,7 @@ const LoginScreen = ({ navigation }) => {
 
     setFormData(prev => ({ ...prev, [field]: formattedValue }));
 
-    // Limpar erro do campo quando usuário começar a digitar
+    // ניקוי שגיאת שדה כאשר המשתמש מתחיל להקליד
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: null }));
     }
@@ -159,7 +159,7 @@ const LoginScreen = ({ navigation }) => {
         email: prev.email, // Manter email
         password: prev.password, // Manter senha
         name: '',
-        profession: 'Veterinário(a)',
+        profession: 'וטרינר/ית',
         clinic: '',
         crmv: '',
         phone: ''
@@ -177,7 +177,7 @@ const LoginScreen = ({ navigation }) => {
       email: '',
       password: '',
       name: '',
-      profession: 'Veterinário(a)',
+      profession: 'וטרינר/ית',
       clinic: '',
       crmv: '',
       phone: ''
@@ -199,16 +199,16 @@ const LoginScreen = ({ navigation }) => {
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
           >
-            {/* Logo and Header */}
+            {/* לוגו וכותרת */}
             <View style={styles.header}>
               <View style={styles.logoContainer}>
                 <View style={styles.logoPlaceholder}>
                   <Text style={styles.logoEmoji}>🐾</Text>
                 </View>
               </View>
-              <Text style={styles.appTitle}>PetCare Pro</Text>
+              <Text style={styles.appTitle}>פטקייר פרו</Text>
               <Text style={styles.appSubtitle}>
-                Sistema Completo para Veterinários
+                מערכת שלמה לווטרינרים
               </Text>
             </View>
 
@@ -221,7 +221,7 @@ const LoginScreen = ({ navigation }) => {
                   disabled={loading}
                 >
                   <Text style={[styles.tabText, isLogin && styles.activeTabText]}>
-                    Entrar
+                    התחברות
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -230,7 +230,7 @@ const LoginScreen = ({ navigation }) => {
                   disabled={loading}
                 >
                   <Text style={[styles.tabText, !isLogin && styles.activeTabText]}>
-                    Cadastrar
+                    הרשמה
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -239,10 +239,10 @@ const LoginScreen = ({ navigation }) => {
               {!isLogin && (
                 <>
                   <Input
-                    label="Nome Completo"
+                    label="שם מלא"
                     value={formData.name}
                     onChangeText={(value) => updateField('name', value)}
-                    placeholder="Seu nome completo"
+                    placeholder="השם המלא שלך"
                     leftIcon="person"
                     error={errors.name}
                     required
@@ -250,19 +250,19 @@ const LoginScreen = ({ navigation }) => {
                   />
 
                   <Input
-                    label="Profissão"
+                    label="מקצוע"
                     value={formData.profession}
                     onChangeText={(value) => updateField('profession', value)}
-                    placeholder="Veterinário(a)"
+                    placeholder="וטרינר/ית"
                     leftIcon="medical"
                     editable={!loading}
                   />
 
                   <Input
-                    label="Clínica/Hospital"
+                    label="מרפאה/בית חולים וטרינרי"
                     value={formData.clinic}
                     onChangeText={(value) => updateField('clinic', value)}
-                    placeholder="Nome da clínica"
+                    placeholder="שם המרפאה"
                     leftIcon="business"
                     error={errors.clinic}
                     required
@@ -282,10 +282,10 @@ const LoginScreen = ({ navigation }) => {
                   />
 
                   <Input
-                    label="Telefone"
+                    label="טלפון"
                     value={formData.phone}
                     onChangeText={(value) => updateField('phone', value)}
-                    placeholder="(11) 99999-9999"
+                    placeholder="(05X) 123-4567"
                     keyboardType="phone-pad"
                     leftIcon="call"
                     error={errors.phone}
@@ -297,10 +297,10 @@ const LoginScreen = ({ navigation }) => {
 
               {/* Campos Comuns */}
               <Input
-                label="Email"
+                label="אימייל"
                 value={formData.email}
                 onChangeText={(value) => updateField('email', value)}
-                placeholder="seu@email.com"
+                placeholder="example@mail.com"
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -311,10 +311,10 @@ const LoginScreen = ({ navigation }) => {
               />
 
               <Input
-                label="Senha"
+                label="סיסמה"
                 value={formData.password}
                 onChangeText={(value) => updateField('password', value)}
-                placeholder="Sua senha"
+                placeholder="הסיסמה שלך"
                 secureTextEntry
                 leftIcon="lock-closed"
                 error={errors.password}
@@ -322,62 +322,62 @@ const LoginScreen = ({ navigation }) => {
                 editable={!loading}
               />
 
-              {/* Botão Principal */}
+              {/* כפתור ראשי */}
               <Button
-                title={isLogin ? 'Entrar' : 'Cadastrar'}
+                title={isLogin ? 'התחברות' : 'הרשמה'}
                 onPress={handleSubmit}
                 loading={loading}
                 style={styles.authButton}
                 fullWidth
               />
 
-              {/* Credenciais Demo - apenas no login */}
+              {/* נתוני הדגמה - רק במסך התחברות */}
               {/* {isLogin && (
                 <View style={styles.demoContainer}>
-                  <Text style={styles.demoTitle}>Credenciais de Demonstração:</Text>
+                  <Text style={styles.demoTitle}>נתוני הדגמה:</Text>
                   <TouchableOpacity
                     onPress={fillDemoCredentials}
                     disabled={loading}
                     style={styles.demoCredentials}
                   >
-                    <Text style={styles.demoText}>📧 Email: admin@petcare.com</Text>
-                    <Text style={styles.demoText}>🔒 Senha: 123456</Text>
-                    <Text style={styles.demoHint}>Toque aqui para preencher automaticamente</Text>
+                    <Text style={styles.demoText}>📧 אימייל: admin@petcare.com</Text>
+                    <Text style={styles.demoText}>🔒 סיסמה: 123456</Text>
+                    <Text style={styles.demoHint}>הקש כאן למילוי אוטומטי</Text>
                   </TouchableOpacity>
                 </View>
               )} */}
 
-              {/* Termos de Uso - apenas no cadastro */}
+              {/* תנאי שימוש - רק בהרשמה */}
               {!isLogin && (
                 <View style={styles.termsContainer}>
                   <Text style={styles.termsText}>
-                    Ao cadastrar-se, você concorda com nossos{' '}
-                    <Text style={styles.termsLink}>Termos de Uso</Text> e{' '}
-                    <Text style={styles.termsLink}>Política de Privacidade</Text>.
+                    בעת ההרשמה אתה מסכים ל{' '}
+                    <Text style={styles.termsLink}>תנאי השימוש</Text> ו{' '}
+                    <Text style={styles.termsLink}>מדיניות הפרטיות</Text> שלנו.
                   </Text>
                 </View>
               )}
 
-              {/* Link para recuperação de senha - apenas no login */}
+              {/* קישור לשחזור סיסמה - רק בהתחברות */}
               {isLogin && (
                 <TouchableOpacity
                   style={styles.forgotPassword}
                   disabled={loading}
                 >
                   <Text style={styles.forgotPasswordText}>
-                    Esqueceu sua senha?
+                    שכחת סיסמה?
                   </Text>
                 </TouchableOpacity>
               )}
 
-              {/* Botão para limpar formulário */}
+              {/* כפתור לניקוי הטופס */}
               {!loading && (formData.email || formData.password || formData.name) && (
                 <TouchableOpacity
                   style={styles.clearButton}
                   onPress={clearForm}
                 >
                   <Text style={styles.clearButtonText}>
-                    Limpar Formulário
+                    ניקוי הטופס
                   </Text>
                 </TouchableOpacity>
               )}
@@ -386,10 +386,10 @@ const LoginScreen = ({ navigation }) => {
             {/* Footer */}
             <View style={styles.footer}>
               <Text style={styles.footerText}>
-                © 2024 PetCare Pro - Desenvolvido com ❤️ para veterinários brasileiros
+                © 2024 פטקייר פרו - פותח באהבה עבור וטרינרים
               </Text>
               <Text style={styles.footerVersion}>
-                Versão 1.0.0
+                גרסה 1.0.0
               </Text>
             </View>
           </ScrollView>

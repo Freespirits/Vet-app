@@ -34,7 +34,7 @@ const NotificationSettingsScreen = ({ navigation }) => {
       const currentSettings = await NotificationService.getSettings();
       setSettings(currentSettings);
     } catch (error) {
-      console.error('Erro ao carregar configurações:', error);
+      console.error('שגיאה בטעינת ההגדרות:', error);
     } finally {
       setLoading(false);
     }
@@ -50,65 +50,65 @@ const NotificationSettingsScreen = ({ navigation }) => {
         await NotificationService.cancelAll();
       }
     } catch (error) {
-      console.error('Erro ao atualizar configuração:', error);
-      Alert.alert('Erro', 'Não foi possível atualizar a configuração');
+      console.error('שגיאה בעדכון ההגדרה:', error);
+      Alert.alert('שגיאה', 'לא ניתן היה לעדכן את ההגדרה');
     }
   };
 
   const testNotification = async () => {
     try {
       await NotificationService.scheduleTest();
-      Alert.alert('Sucesso', 'Notificação de teste enviada!');
+      Alert.alert('הצלחה', 'התראת בדיקה נשלחה!');
     } catch (error) {
-      console.error('Erro ao enviar notificação de teste:', error);
-      Alert.alert('Erro', 'Não foi possível enviar a notificação de teste');
+      console.error('שגיאה בשליחת התראת הבדיקה:', error);
+      Alert.alert('שגיאה', 'לא ניתן היה לשלוח את התראת הבדיקה');
     }
   };
 
   const notificationOptions = [
     {
       key: 'enabled',
-      title: 'Notificações',
-      subtitle: 'Ativar/desativar todas as notificações',
+      title: 'התראות',
+      subtitle: 'הפעלת או כיבוי כל ההתראות',
       icon: 'notifications',
       color: Colors.primary,
     },
     {
       key: 'appointments',
-      title: 'Consultas',
-      subtitle: 'Lembretes de consultas agendadas',
+      title: 'ייעוצים',
+      subtitle: 'תזכורות לתורים מתוזמנים',
       icon: 'calendar',
       color: Colors.info,
       disabled: !settings.enabled,
     },
     {
       key: 'reminders',
-      title: 'Lembretes',
-      subtitle: 'Retornos e medicações',
+      title: 'תזכורות',
+      subtitle: 'חזרות ותרופות',
       icon: 'alarm',
       color: Colors.warning,
       disabled: !settings.enabled,
     },
     {
       key: 'emergencies',
-      title: 'Emergências',
-      subtitle: 'Alertas críticos e urgentes',
+      title: 'התראות דחופות',
+      subtitle: 'התראות קריטיות ודחופות',
       icon: 'medical',
       color: Colors.error,
       disabled: !settings.enabled,
     },
     {
       key: 'updates',
-      title: 'Atualizações',
-      subtitle: 'Novidades do aplicativo',
+      title: 'עדכונים',
+      subtitle: 'חדשות האפליקציה',
       icon: 'refresh',
       color: Colors.success,
       disabled: !settings.enabled,
     },
     {
       key: 'marketing',
-      title: 'Promocional',
-      subtitle: 'Ofertas e dicas veterinárias',
+      title: 'קידום מכירות',
+      subtitle: 'הצעות וטיפים וטרינריים',
       icon: 'gift',
       color: Colors.secondary,
       disabled: !settings.enabled,
@@ -168,7 +168,7 @@ const NotificationSettingsScreen = ({ navigation }) => {
           >
             <Ionicons name="arrow-back" size={24} color={Colors.surface} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Notificações</Text>
+          <Text style={styles.headerTitle}>התראות</Text>
           <View style={styles.headerSpacer} />
         </View>
       </LinearGradient>
@@ -177,13 +177,13 @@ const NotificationSettingsScreen = ({ navigation }) => {
         {/* Description */}
         <View style={styles.descriptionSection}>
           <Text style={styles.description}>
-            Configure quando e como deseja receber notificações do aplicativo.
+            הגדירו מתי וכיצד תרצו לקבל התראות מהאפליקציה.
           </Text>
         </View>
 
         {/* Notification Options */}
         <View style={styles.optionsSection}>
-          <Text style={styles.sectionTitle}>Tipos de Notificação</Text>
+          <Text style={styles.sectionTitle}>סוגי התראות</Text>
           <View style={styles.optionsList}>
             {notificationOptions.map(renderNotificationOption)}
           </View>
@@ -191,7 +191,7 @@ const NotificationSettingsScreen = ({ navigation }) => {
 
         {/* Test Section */}
         <View style={styles.testSection}>
-          <Text style={styles.sectionTitle}>Teste</Text>
+          <Text style={styles.sectionTitle}>בדיקה</Text>
           <TouchableOpacity
             style={styles.testButton}
             onPress={testNotification}
@@ -206,7 +206,7 @@ const NotificationSettingsScreen = ({ navigation }) => {
             >
               <Ionicons name="send" size={20} color={Colors.surface} />
               <Text style={styles.testButtonText}>
-                Enviar Notificação de Teste
+                שליחת התראת בדיקה
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -217,8 +217,8 @@ const NotificationSettingsScreen = ({ navigation }) => {
           <View style={styles.infoCard}>
             <Ionicons name="information-circle" size={24} color={Colors.info} />
             <Text style={styles.infoText}>
-              As notificações são essenciais para manter você informado sobre consultas 
-              e lembretes importantes. Você pode personalizar cada tipo conforme sua preferência.
+              התראות הן חיוניות כדי לשמור אתכם מעודכנים לגבי ייעוצים 
+              ותזכורות חשובות. ניתן להתאים אישית כל סוג לפי העדפתכם.
             </Text>
           </View>
         </View>

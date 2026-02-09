@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Linking,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -26,13 +27,13 @@ const VersionInfoScreen = ({ navigation }) => {
       date: '01/07/2025',
       type: 'major',
       changes: [
-        'Lançamento inicial do VetApp',
-        'Sistema completo de agendamento de consultas',
-        'Gestão de pacientes com histórico médico',
-        'Biblioteca veterinária com medicamentos',
-        'Sistema de notificações e lembretes',
-        'Backup e restauração de dados',
-        'Interface moderna e intuitiva',
+        'השקה ראשונית של VetApp',
+        'מערכת מלאה לתיאום פגישות',
+        'ניהול מטופלים עם היסטוריה רפואית',
+        'ספרייה וטרינרית עם תרופות',
+        'מערכת התראות ותזכורות',
+        'גיבוי ושחזור נתונים',
+        'ממשק מודרני ואינטואיטיבי',
       ],
     },
     {
@@ -40,10 +41,10 @@ const VersionInfoScreen = ({ navigation }) => {
       date: '15/12/2023',
       type: 'minor',
       changes: [
-        'Melhorias na sincronização de dados',
-        'Correção de bugs na biblioteca de medicamentos',
-        'Otimização da performance geral',
-        'Melhorias na interface do usuário',
+        'שיפורים בסנכרון נתונים',
+        'תיקוני באגים בספריית התרופות',
+        'שיפור ביצועים כללי',
+        'שיפורי ממשק משתמש',
       ],
     },
     {
@@ -51,10 +52,10 @@ const VersionInfoScreen = ({ navigation }) => {
       date: '01/12/2023',
       type: 'minor',
       changes: [
-        'Adicionada funcionalidade de backup automático',
-        'Novo sistema de categorias para medicamentos',
-        'Melhorias no sistema de busca',
-        'Correções de estabilidade',
+        'נוספה יכולת גיבוי אוטומטי',
+        'מערכת קטגוריות חדשה לתרופות',
+        'שיפורים במערכת החיפוש',
+        'תיקוני יציבות',
       ],
     },
     {
@@ -62,10 +63,10 @@ const VersionInfoScreen = ({ navigation }) => {
       date: '15/11/2023',
       type: 'patch',
       changes: [
-        'Correção de bugs críticos',
-        'Melhorias na sincronização offline',
-        'Otimização do consumo de bateria',
-        'Pequenas melhorias na interface',
+        'תיקון באגים קריטיים',
+        'שיפורים בסנכרון לא מקוון',
+        'אופטימיזציה של צריכת הסוללה',
+        'שיפורי ממשק קטנים',
       ],
     },
     {
@@ -73,10 +74,10 @@ const VersionInfoScreen = ({ navigation }) => {
       date: '01/11/2023',
       type: 'minor',
       changes: [
-        'Nova biblioteca de medicamentos',
-        'Sistema de templates para consultas',
-        'Melhorias no calendário de agendamentos',
-        'Suporte a múltiplos idiomas',
+        'ספריית תרופות חדשה',
+        'מערכת תבניות לביקורים',
+        'שיפורים בלוח הזמנים לתורים',
+        'תמיכה בריבוי שפות',
       ],
     },
     {
@@ -84,21 +85,21 @@ const VersionInfoScreen = ({ navigation }) => {
       date: '15/10/2023',
       type: 'minor',
       changes: [
-        'Sistema de notificações push',
-        'Relatórios e estatísticas',
-        'Modo escuro',
-        'Melhorias na acessibilidade',
+        'מערכת התראות פוש',
+        'דוחות וסטטיסטיקות',
+        'מצב כהה',
+        'שיפורי נגישות',
       ],
     },
   ];
 
   const techInfo = [
-    { label: 'Plataforma', value: 'React Native' },
-    { label: 'Versão Mínima', value: 'iOS 12.0 / Android 6.0' },
-    { label: 'Banco de Dados', value: 'Supabase' },
-    { label: 'Autenticação', value: 'JWT + OAuth' },
-    { label: 'Armazenamento', value: 'Criptografado' },
-    { label: 'Sincronização', value: 'Tempo Real' },
+    { label: 'פלטפורמה', value: 'React Native' },
+    { label: 'גרסה מינימלית', value: 'iOS 12.0 / Android 6.0' },
+    { label: 'מסד נתונים', value: 'Supabase' },
+    { label: 'אימות', value: 'JWT + OAuth' },
+    { label: 'אחסון', value: 'מוצפן' },
+    { label: 'סנכרון', value: 'בזמן אמת' },
   ];
 
   const getVersionTypeColor = (type) => {
@@ -120,11 +121,11 @@ const VersionInfoScreen = ({ navigation }) => {
   };
 
   const openAppStore = () => {
-    // Link para a loja de aplicativos
+    // קישור לחנות האפליקציות
     const appStoreUrl = 'https://apps.apple.com/app/vetapp';
     const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.vetapp';
 
-    // Detectar plataforma e abrir a loja apropriada
+    // זיהוי הפלטפורמה ופתיחת החנות המתאימה
     Linking.openURL(Platform.OS === 'ios' ? appStoreUrl : playStoreUrl);
   };
 
@@ -135,15 +136,15 @@ const VersionInfoScreen = ({ navigation }) => {
         style={styles.versionGradient}
       >
         <Ionicons name="information-circle" size={48} color={Colors.surface} />
-        <Text style={styles.currentVersionTitle}>Versão Atual</Text>
+        <Text style={styles.currentVersionTitle}>גרסת אפליקציה נוכחית</Text>
         <Text style={styles.currentVersionNumber}>
           {currentVersion.version} ({currentVersion.build})
         </Text>
         <Text style={styles.currentVersionDate}>
-          Lançada em {currentVersion.releaseDate}
+          שוחררה ב-{currentVersion.releaseDate}
         </Text>
         <Text style={styles.currentVersionSize}>
-          Tamanho: {currentVersion.size}
+          גודל: {currentVersion.size}
         </Text>
       </LinearGradient>
     </View>
@@ -151,7 +152,7 @@ const VersionInfoScreen = ({ navigation }) => {
 
   const renderTechInfo = () => (
     <View style={styles.techInfoSection}>
-      <Text style={styles.sectionTitle}>Informações Técnicas</Text>
+      <Text style={styles.sectionTitle}>מידע טכני</Text>
       <View style={styles.techInfoList}>
         {techInfo.map((info, index) => (
           <View key={index} style={styles.techInfoItem}>
@@ -208,7 +209,7 @@ const VersionInfoScreen = ({ navigation }) => {
           >
             <Ionicons name="arrow-back" size={24} color={Colors.surface} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Versão</Text>
+          <Text style={styles.headerTitle}>גרסה</Text>
           <TouchableOpacity
             style={styles.updateButton}
             onPress={openAppStore}
@@ -238,14 +239,14 @@ const VersionInfoScreen = ({ navigation }) => {
               style={styles.updateActionGradient}
             >
               <Ionicons name="download" size={20} color={Colors.surface} />
-              <Text style={styles.updateActionText}>Verificar Atualizações</Text>
+              <Text style={styles.updateActionText}>בדיקת עדכונים</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
 
         {/* Changelog */}
         <View style={styles.changelogSection}>
-          <Text style={styles.sectionTitle}>Histórico de Versões</Text>
+          <Text style={styles.sectionTitle}>יומן שינויים</Text>
           <View style={styles.changelogList}>
             {changelog.map(renderChangelogItem)}
           </View>
@@ -256,10 +257,10 @@ const VersionInfoScreen = ({ navigation }) => {
           <View style={styles.infoCard}>
             <Ionicons name="information-circle" size={24} color={Colors.info} />
             <View style={styles.infoContent}>
-              <Text style={styles.infoTitle}>Atualizações Automáticas</Text>
+              <Text style={styles.infoTitle}>עדכונים אוטומטיים</Text>
               <Text style={styles.infoText}>
-                Mantenha seu app sempre atualizado para ter acesso às últimas funcionalidades
-                e correções de segurança. Ative as atualizações automáticas na sua loja de aplicativos.
+                שמרו את האפליקציה מעודכנת כדי לקבל את הפיצ'רים האחרונים ותיקוני האבטחה החשובים.
+                הפעילו עדכונים אוטומטיים בחנות האפליקציות שלכם.
               </Text>
             </View>
           </View>

@@ -6,7 +6,7 @@ import { AuthProvider } from './src/contexts/AuthContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import { Colors } from './src/constants/Colors';
 
-// Prevenir que o splash screen desapareça automaticamente
+// מניעת סגירה אוטומטית של מסך הפתיחה
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
-        // Simular carregamento inicial
+        // סימולציה של טעינה ראשונית
         await new Promise(resolve => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
@@ -38,7 +38,7 @@ export default function App() {
       <View style={styles.splashContainer}>
         <View style={styles.logoPlaceholder}>
           <Text style={styles.logoText}>🐾</Text>
-          <Text style={styles.appName}>PetCare Pro</Text>
+          <Text style={styles.appName}>פטקייר פרו</Text>
         </View>
         <StatusBar style="light" backgroundColor={Colors.primary} />
       </View>

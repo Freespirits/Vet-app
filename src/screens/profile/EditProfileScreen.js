@@ -47,15 +47,15 @@ const EditProfileScreen = ({ navigation }) => {
     const newErrors = {};
 
     if (!validateRequired(formData.name)) {
-      newErrors.name = 'Nome é obrigatório';
+      newErrors.name = 'שם הוא שדה חובה';
     }
 
     if (!validateRequired(formData.profession)) {
-      newErrors.profession = 'Profissão é obrigatória';
+      newErrors.profession = 'מקצוע הוא שדה חובה';
     }
 
     if (!validateRequired(formData.clinic)) {
-      newErrors.clinic = 'Clínica é obrigatória';
+      newErrors.clinic = 'שם המרפאה הוא שדה חובה';
     }
 
     setErrors(newErrors);
@@ -71,16 +71,16 @@ const EditProfileScreen = ({ navigation }) => {
       
       if (result.success) {
         Alert.alert(
-          'Sucesso',
-          'Perfil atualizado com sucesso!',
-          [{ text: 'OK', onPress: () => navigation.goBack() }]
+          'הצלחה',
+          'הפרופיל עודכן בהצלחה!',
+          [{ text: 'אישור', onPress: () => navigation.goBack() }]
         );
       } else {
-        Alert.alert('Erro', result.error || 'Erro ao atualizar perfil');
+        Alert.alert('שגיאה', result.error || 'שגיאה בעת עדכון הפרופיל');
       }
     } catch (error) {
-      console.error('Erro ao atualizar perfil:', error);
-      Alert.alert('Erro', 'Erro interno do sistema');
+      console.error('שגיאה בעדכון פרופיל:', error);
+      Alert.alert('שגיאה', 'אירעה שגיאה פנימית במערכת');
     } finally {
       setLoading(false);
     }
@@ -122,8 +122,8 @@ const EditProfileScreen = ({ navigation }) => {
               <Ionicons name="person" size={28} color={Colors.surface} />
             </View>
             <View>
-              <Text style={styles.headerTitle}>Editar Perfil</Text>
-              <Text style={styles.headerSubtitle}>Atualize suas informações</Text>
+              <Text style={styles.headerTitle}>עריכת פרופיל</Text>
+              <Text style={styles.headerSubtitle}>עדכנו את פרטי המרפאה והצוות</Text>
             </View>
           </View>
         </View>
@@ -140,13 +140,13 @@ const EditProfileScreen = ({ navigation }) => {
         >
           <View style={styles.formContainer}>
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Informações Pessoais</Text>
-              
+              <Text style={styles.sectionTitle}>פרטים אישיים</Text>
+
               <Input
-                label="Nome Completo"
+                label="שם מלא"
                 value={formData.name}
                 onChangeText={(value) => updateField('name', value)}
-                placeholder="Seu nome completo"
+                placeholder="הקלידו שם מלא"
                 leftIcon="person"
                 error={errors.name}
                 required
@@ -154,36 +154,36 @@ const EditProfileScreen = ({ navigation }) => {
               />
 
               <Input
-                label="Email"
+                label="אימייל"
                 value={user?.email || ''}
-                placeholder="seu@email.com"
+                placeholder="user@email.com"
                 leftIcon="mail"
                 editable={false}
                 style={styles.disabledInput}
               />
               <Text style={styles.helperText}>
-                O email não pode ser alterado
+                לא ניתן לשנות את האימייל במערכת
               </Text>
             </View>
 
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Informações Profissionais</Text>
-              
+              <Text style={styles.sectionTitle}>פרטים מקצועיים</Text>
+
               <Input
-                label="Profissão"
+                label="מקצוע"
                 value={formData.profession}
                 onChangeText={(value) => updateField('profession', value)}
-                placeholder="Veterinário(a)"
+                placeholder="וטרינר/ית"
                 leftIcon="medical"
                 error={errors.profession}
                 required
               />
 
               <Input
-                label="Clínica/Hospital"
+                label="שם המרפאה"
                 value={formData.clinic}
                 onChangeText={(value) => updateField('clinic', value)}
-                placeholder="Nome da clínica"
+                placeholder="שם המרפאה"
                 leftIcon="business"
                 error={errors.clinic}
                 required
@@ -193,16 +193,16 @@ const EditProfileScreen = ({ navigation }) => {
                 label="CRMV"
                 value={formData.crmv}
                 onChangeText={(value) => updateField('crmv', value)}
-                placeholder="12345-UF"
+                placeholder="12345-IL"
                 leftIcon="card"
                 autoCapitalize="characters"
               />
 
               <Input
-                label="Telefone"
+                label="טלפון"
                 value={formData.phone}
                 onChangeText={(value) => updateField('phone', value)}
-                placeholder="(11) 99999-9999"
+                placeholder="050-0000000"
                 keyboardType="phone-pad"
                 leftIcon="call"
               />
@@ -213,14 +213,14 @@ const EditProfileScreen = ({ navigation }) => {
         {/* Action Buttons */}
         <View style={styles.actionContainer}>
           <Button
-            title="Cancelar"
+            title="ביטול"
             variant="outline"
             onPress={() => navigation.goBack()}
             style={styles.cancelButton}
             disabled={loading}
           />
           <Button
-            title="Salvar"
+            title="שמירה"
             onPress={handleSave}
             loading={loading}
             style={styles.saveButton}

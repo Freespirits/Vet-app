@@ -3,47 +3,68 @@ import { supabase } from '../config/supabase';
 export const LibraryService = {
   async getAll() {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error('משתמש לא מחובר בזמן טעינת הספרייה');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('library_items_consultorio')
         .select('*')
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar itens da biblioteca:', error);
+      console.error('שגיאה בשליפת פריטי הספרייה:', error);
       return [];
     }
   },
 
   async getByCategory(category) {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error('משתמש לא מחובר בעת סינון הספרייה');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('library_items_consultorio')
         .select('*')
         .eq('category', category)
+        .eq('user_id', user.id)
         .order('name', { ascending: true });
 
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar itens por categoria:', error);
+      console.error('שגיאה בשליפת פריטים לפי קטגוריה:', error);
       return [];
     }
   },
 
   async getById(id) {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error('משתמש לא מחובר בעת שליפת פריט ספרייה');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('library_items_consultorio')
         .select('*')
         .eq('id', id)
+        .eq('user_id', user.id)
         .single();
 
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Erro ao buscar item da biblioteca:', error);
+      console.error('שגיאה בשליפת פריט מהספרייה:', error);
       return null;
     }
   },
@@ -52,7 +73,7 @@ export const LibraryService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Usuário não autenticado' };
+        return { success: false, error: 'המשתמש אינו מחובר' };
       }
 
       const { data, error } = await supabase
@@ -69,8 +90,8 @@ export const LibraryService = {
       if (error) throw error;
       return { success: true, data };
     } catch (error) {
-      console.error('Erro ao criar item da biblioteca:', error);
-      return { success: false, error: 'Erro ao salvar item' };
+      console.error('שגיאה ביצירת פריט בספרייה:', error);
+      return { success: false, error: 'אירעה שגיאה בשמירת הפריט' };
     }
   },
 
@@ -78,7 +99,7 @@ export const LibraryService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Usuário não autenticado' };
+        return { success: false, error: 'המשתמש אינו מחובר' };
       }
 
       const { data, error } = await supabase
@@ -95,8 +116,8 @@ export const LibraryService = {
       if (error) throw error;
       return { success: true, data };
     } catch (error) {
-      console.error('Erro ao atualizar item da biblioteca:', error);
-      return { success: false, error: 'Erro ao atualizar item' };
+      console.error('שגיאה בעדכון פריט בספרייה:', error);
+      return { success: false, error: 'אירעה שגיאה בעדכון הפריט' };
     }
   },
 
@@ -104,7 +125,7 @@ export const LibraryService = {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Usuário não autenticado' };
+        return { success: false, error: 'המשתמש אינו מחובר' };
       }
 
       const { error } = await supabase
@@ -116,23 +137,30 @@ export const LibraryService = {
       if (error) throw error;
       return { success: true };
     } catch (error) {
-      console.error('Erro ao deletar item da biblioteca:', error);
-      return { success: false, error: 'Erro ao deletar item' };
+      console.error('שגיאה במחיקת פריט מהספרייה:', error);
+      return { success: false, error: 'אירעה שגיאה במחיקת הפריט' };
     }
   },
 
   async search(query) {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error('משתמש לא מחובר בעת חיפוש בספרייה');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('library_items_consultorio')
         .select('*')
+        .eq('user_id', user.id)
         .or(`name.ilike.%${query}%,description.ilike.%${query}%,category.ilike.%${query}%`)
         .order('name', { ascending: true });
 
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro na busca:', error);
+      console.error('שגיאה בחיפוש הספרייה:', error);
       return [];
     }
   }
